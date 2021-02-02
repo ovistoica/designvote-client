@@ -1,14 +1,14 @@
-import {ColorModeScript} from '@chakra-ui/react'
-import React, {StrictMode} from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './app'
 import reportWebVitals from './reportWebVitals'
+import {AppProviders} from 'context'
 
 ReactDOM.render(
-  <StrictMode>
-    <ColorModeScript />
+  <AppProviders>
     <App />
-  </StrictMode>,
+  </AppProviders>,
+
   document.getElementById('root'),
 )
 

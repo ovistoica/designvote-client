@@ -1,6 +1,14 @@
 import React from 'react'
-import {useColorMode, useColorModeValue, IconButton} from '@chakra-ui/react'
-import {FaMoon, FaSun} from 'react-icons/fa'
+import {
+  useColorMode,
+  useColorModeValue,
+  IconButton,
+  Flex,
+  keyframes,
+  Text,
+} from '@chakra-ui/react'
+import {FaMoon, FaSpinner, FaSun} from 'react-icons/fa'
+import styled from '@emotion/styled'
 
 const ColorModeSwitcher = props => {
   const {toggleColorMode} = useColorMode()
@@ -22,4 +30,30 @@ const ColorModeSwitcher = props => {
   )
 }
 
-export {ColorModeSwitcher}
+const spin = keyframes({
+  '0%': {transform: 'rotate(0deg)'},
+  '100%': {transform: 'rotate(360deg)'},
+})
+
+const Spinner = styled(FaSpinner)({
+  animation: `${spin} 1s linear infinite`,
+})
+Spinner.defaultProps = {
+  'aria-label': 'loading',
+}
+
+function FullPageSpinner() {
+  return (
+    <Flex
+      direction="column"
+      h="100vh"
+      align="center"
+      justify="center"
+      fontSize="4em"
+    >
+      <Spinner />
+    </Flex>
+  )
+}
+
+export {ColorModeSwitcher, FullPageSpinner}
