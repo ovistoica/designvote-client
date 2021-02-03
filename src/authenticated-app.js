@@ -1,4 +1,4 @@
-import {Box, Text, VStack, Grid, Button, Flex} from '@chakra-ui/react'
+import {Box, Grid, Button, Flex} from '@chakra-ui/react'
 import {
   ColorModeSwitcher,
   ErrorMessage,
@@ -6,7 +6,7 @@ import {
 } from 'components/lib'
 import {useAuth0} from '@auth0/auth0-react'
 import {ErrorBoundary} from 'react-error-boundary'
-import {Routes, Route, Link as RouterLink, useMatch} from 'react-router-dom'
+import {Routes, Route, Navigate} from 'react-router-dom'
 import {Dashboard} from 'screens/dashboard'
 import {Design} from 'screens/design'
 import {NotFoundScreen} from 'screens/not-found'
@@ -14,6 +14,9 @@ import {NotFoundScreen} from 'screens/not-found'
 function AppRoutes() {
   return (
     <Routes>
+      <Route path="/" exact>
+        <Navigate to="/dashboard" />
+      </Route>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/design" element={<Design />} />
       <Route path="*" element={<NotFoundScreen />} />
