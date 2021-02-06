@@ -3,6 +3,7 @@ import {
   ColorModeSwitcher,
   ErrorMessage,
   FullPageErrorFallback,
+  Nav,
 } from 'components/lib'
 import {useAuth0} from '@auth0/auth0-react'
 import {ErrorBoundary} from 'react-error-boundary'
@@ -56,7 +57,19 @@ function AuthenticatedApp() {
           Logout
         </Button>
       </Flex>
-      <Grid minH="100vh" p={3}>
+
+      <Grid
+        minH="100vh"
+        p="4em 2em"
+        m="0 auto"
+        maxW="840px"
+        w="100%"
+        gridGap="1em"
+        gridTemplateColumns="1fr 3fr"
+      >
+        <Box css={{position: 'relative'}}>
+          <Nav />
+        </Box>
         <Box as="main" w="100%">
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <AppRoutes />

@@ -1,5 +1,5 @@
 import {useClient} from 'context/auth-context'
-import {useQuery} from 'react-query'
+import {useQuery, useMutation, useQueryClient} from 'react-query'
 
 function useDesigns({onSuccess, ...options} = {}) {
   const client = useClient()
@@ -13,4 +13,23 @@ function useDesigns({onSuccess, ...options} = {}) {
   return designs ?? {public: [], drafts: []}
 }
 
-export {useDesigns}
+const defaultMutationOptions = {
+  onError: (err, variables, recover) =>
+    typeof recover === 'function' ? recover() : null,
+}
+
+function useCreateDesign(options) {
+  const qc = useQueryClient()
+  const client = useClient()
+  const {mutate} = useMutation(
+    ({name, description = null, img = null}) =>
+      client(`v1/designs`, {data: {name, description, img}}),
+    {
+      ...defaultMutationOptions,
+      ...options,
+    },
+  )
+  return mutate
+}
+
+export {useDesigns, useCreateDesign}

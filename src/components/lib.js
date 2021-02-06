@@ -7,9 +7,66 @@ import {
   Text,
   Box,
   Spinner,
+  Button as ChakraButton,
+  Link,
+  UnorderedList,
+  ListItem,
 } from '@chakra-ui/react'
 import {FaMoon, FaSun} from 'react-icons/fa'
 import * as colors from 'styles/colors'
+import * as mq from 'styles/media-queries'
+import styled from '@emotion/styled/'
+import {lightenDarkenColor} from 'utils/color'
+import {useMatch, Link as RouterLink} from 'react-router-dom'
+
+const buttonVariants = {
+  primary: {
+    background:
+      'linear-gradient(69.05deg, #F07320 2.77%, #F19852 73.44%, #F3CE9A 94.45%)',
+    ':hover': {
+      background: `linear-gradient(69.05deg, ${lightenDarkenColor(
+        '#F07320',
+        -10,
+      )} 2.77%,${lightenDarkenColor(
+        '#F19852',
+        -10,
+      )} 73.44%,${lightenDarkenColor('#F3CE9A', -10)} 94.45%)`,
+    },
+    ':active': {
+      background: `linear-gradient(69.05deg, ${lightenDarkenColor(
+        '#F07320',
+        -10,
+      )} 2.77%,${lightenDarkenColor(
+        '#F19852',
+        -10,
+      )} 73.44%,${lightenDarkenColor('#F3CE9A', -10)} 94.45%)`,
+    },
+  },
+  secondary: {
+    background: '#059FA3',
+    ':hover': {
+      background: '#00868A',
+    },
+    ':active': {
+      background: '#00868A',
+    },
+  },
+}
+
+const Button = styled(ChakraButton)(
+  {
+    color: 'white',
+    transition: 'all .25s ease',
+    textTransform: 'uppercase',
+    fontFamily: 'Lato',
+    ':focus': {
+      boxShadow: 'none',
+    },
+  },
+  ({variant = 'primary'}) => buttonVariants[variant],
+)
+
+Button.defaultProps = {colorScheme: 'orange'}
 
 const ColorModeSwitcher = props => {
   const {toggleColorMode} = useColorMode()
@@ -81,6 +138,7 @@ function FullPageErrorFallback({error}) {
   return (
     <Box
       role="alert"
+      bg="background3"
       css={{
         color: colors.danger,
         height: '100vh',
@@ -96,4 +154,77 @@ function FullPageErrorFallback({error}) {
   )
 }
 
-export {ColorModeSwitcher, FullPageSpinner, ErrorMessage, FullPageErrorFallback}
+function NavLink(props) {
+  const match = useMatch(props.to)
+  return (
+    <Link
+      as={RouterLink}
+      _hover={{
+        color: colors.brand,
+        textDecoration: 'none',
+      }}
+      _focus={{outline: 'none'}}
+      _active={{outline: 'none'}}
+      display="block"
+      padding="8px 15px 8px 10px"
+      margin="5px 0"
+      width="100%"
+      height="100%"
+      borderRadius="2px"
+      borderLeft="5px solid transparent"
+      {...(match
+        ? {
+            color: 'brand',
+            borderLeft: `5px solid ${colors.brand}`,
+          }
+        : null)}
+      {...props}
+    />
+  )
+}
+
+function Nav(params) {
+  return (
+    <Box
+      as="nav"
+      css={{
+        position: 'sticky',
+        top: '4px',
+        padding: '1em 1.5em',
+        border: `1px solid ${colors.gray10}`,
+        borderRadius: '3px',
+        [mq.small]: {
+          position: 'static',
+          top: 'auto',
+        },
+      }}
+    >
+      <UnorderedList
+        css={{
+          listStyle: 'none',
+          padding: '0',
+        }}
+      >
+        <ListItem>
+          <NavLink to="/dashboard">Dashboard</NavLink>
+        </ListItem>
+        <ListItem>
+          <NavLink to="/settings">Settings</NavLink>
+        </ListItem>
+        <ListItem>
+          <NavLink to="/account">Account</NavLink>
+        </ListItem>
+      </UnorderedList>
+    </Box>
+  )
+}
+
+export {
+  ColorModeSwitcher,
+  FullPageSpinner,
+  ErrorMessage,
+  FullPageErrorFallback,
+  Button,
+  Nav,
+  NavLink,
+}

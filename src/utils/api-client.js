@@ -1,4 +1,3 @@
-import {queryCache} from 'react-query'
 const apiURL = process.env.REACT_APP_API_URL
 
 async function client(
@@ -18,7 +17,6 @@ async function client(
 
   return window.fetch(`${apiURL}/${endpoint}`, config).then(async response => {
     if (response.status === 401) {
-      queryCache.clear()
       if (logout) {
         await logout()
       }

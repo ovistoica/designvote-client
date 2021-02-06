@@ -3,6 +3,7 @@ import {Auth0Provider as BaseAuth0Provider, useAuth0} from '@auth0/auth0-react'
 import {useAsync} from 'utils/hooks'
 import {FullPageSpinner, FullPageErrorFallback} from 'components/lib'
 import {client} from 'utils/api-client'
+import {useQueryClient} from 'react-query'
 
 function Auth0Provider({children}) {
   return (
@@ -66,7 +67,14 @@ function useAuth() {
 }
 
 function useClient() {
-  const {logout, token} = useAuth()
+  const {logout: authLogout, token} = useAuth()
+  const qc = useQueryClient()
+
+  // Clear react query cache and log out user
+  const logout = React.useCallback(async () => {
+    return Promise.all([qc.clear(), authLogout()])
+  }, [authLogout, qc])
+
   return React.useCallback(
     (endpoint, config) => client(endpoint, {...config, token, logout}),
     [token, logout],
