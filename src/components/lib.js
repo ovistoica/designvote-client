@@ -191,7 +191,6 @@ function Nav(params) {
         position: 'sticky',
         top: '4px',
         padding: '1em 1.5em',
-        border: `1px solid ${colors.gray10}`,
         borderRadius: '3px',
         [mq.small]: {
           position: 'static',

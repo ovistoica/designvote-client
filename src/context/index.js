@@ -29,6 +29,8 @@ const theme = extendTheme({
   colors: {
     brand: colors.brand,
     background3: colors.background3,
+    info: colors.info,
+    surface: colors.surface,
   },
   styles: {
     global: props => ({

@@ -19,7 +19,7 @@ function AppRoutes() {
         <Navigate to="/dashboard" />
       </Route>
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/design" element={<Design />} />
+      <Route path="/design/:designId" element={<Design />} />
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
   )
@@ -62,10 +62,10 @@ function AuthenticatedApp() {
         minH="100vh"
         p="4em 2em"
         m="0 auto"
-        maxW="840px"
+        maxW="1440px"
         w="100%"
         gridGap="1em"
-        gridTemplateColumns="1fr 3fr"
+        gridTemplateColumns="1fr 6fr"
       >
         <Box css={{position: 'relative'}}>
           <Nav />
