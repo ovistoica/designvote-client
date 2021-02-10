@@ -1,7 +1,9 @@
 import * as React from 'react'
 import {
   Box,
+  Image,
   Input,
+  Progress,
   SimpleGrid,
   Stack,
   Text,
@@ -11,52 +13,73 @@ import {useParams} from 'react-router-dom'
 import {useDesign} from 'utils/designs'
 import {useDropzone} from 'react-dropzone'
 import {HangedImage} from 'assets/icons'
+import {useUploadImage} from 'utils/file-upload'
 
-function ImageDropInput({onDrop}) {
+function ImageDropInput() {
   const bg = useColorModeValue('surface', 'gray.700')
+  const {
+    uploadImage: onDrop,
+    isLoading,
+    progress,
+    imageUrl,
+    isSuccess,
+  } = useUploadImage()
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
   return (
-    <Stack
-      w="18em"
-      h="32em"
-      _focus={{outline: 'none'}}
-      bg={bg}
-      align="center"
-      px="3em"
-      pt="10em"
-      cursor="pointer"
-      aria-label="Upload image"
-      {...getRootProps()}
-    >
-      <HangedImage />
-
-      {isDragActive ? (
-        <Text>Drop the image</Text>
-      ) : (
-        <>
-          <Text
-            textTransform="uppercase"
-            textAlign="center"
-            letterSpacing="0.02em"
-            color="info"
-          >
-            Drag and drop some images here or{' '}
-            <Text as="span" textDecor="underline dashed">
-              browse
+    <Stack align="center">
+      <Stack
+        w="18em"
+        h="32em"
+        _focus={{outline: 'none'}}
+        bg={bg}
+        align="center"
+        px="3em"
+        pt="10em"
+        cursor="pointer"
+        aria-label="Upload image"
+        border="dashed"
+        borderWidth="1px"
+        borderColor="info"
+        {...getRootProps()}
+      >
+        <HangedImage />
+        {isDragActive ? (
+          <Text textAlign="center" letterSpacing="0.02em" color="info">
+            Drop the image
+          </Text>
+        ) : (
+          <Text>
+            <Text
+              textTransform="uppercase"
+              textAlign="center"
+              letterSpacing="0.02em"
+              color="info"
+            >
+              Drag and drop some images here or{' '}
+              <Text as="span" textDecor="underline dashed">
+                browse
+              </Text>
+            </Text>
+            <Text textAlign="center" letterSpacing="0.02em" color="info">
+              (jpg, png, gif, webp ideally oriented for mobile phones)
             </Text>
           </Text>
-          <Text textAlign="center" letterSpacing="0.02em" color="info">
-            (jpg, png, gif, webp ideally oriented for mobile phones)
-          </Text>
-        </>
-      )}
-
+        )}
+        <Input
+          type="file"
+          _focus={{outline: 'none'}}
+          _active={{outline: 'none'}}
+          {...getInputProps()}
+        />
+        {isLoading ? (
+          <Progress colorScheme="orange" size="lg" value={progress} hasStripe />
+        ) : null}
+      </Stack>
       <Input
-        type="file"
-        _focus={{outline: 'none'}}
-        _active={{outline: 'none'}}
-        {...getInputProps()}
+        w="14em"
+        border="none"
+        placeholder="Signature, for example, sign-up screen 1"
       />
     </Stack>
   )
@@ -65,16 +88,13 @@ function ImageDropInput({onDrop}) {
 function Design() {
   const {designId} = useParams()
   const design = useDesign(designId)
-  const onDrop = React.useCallback(acceptedFiles => {
-    // Do something with the files
-    console.log(acceptedFiles)
-  }, [])
 
   return (
     <Box>
       <Text fontSize="2rem" textAlign="center">
         Upload two or more versions of the same design
       </Text>
+
       <SimpleGrid
         m="1em"
         mt="3em"
@@ -83,9 +103,9 @@ function Design() {
         columnGap="2.5em"
         alignContent="center"
       >
-        <ImageDropInput onDrop={onDrop} />
-        <ImageDropInput onDrop={onDrop} />
-        <ImageDropInput onDrop={onDrop} />
+        <ImageDropInput />
+        <ImageDropInput />
+        <ImageDropInput />
       </SimpleGrid>
     </Box>
   )

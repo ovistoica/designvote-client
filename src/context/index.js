@@ -2,6 +2,7 @@ import {ChakraProvider, ColorModeScript, extendTheme} from '@chakra-ui/react'
 import {StrictMode} from 'react'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {QueryClient, QueryClientProvider} from 'react-query'
+import {ReactQueryDevtools} from 'react-query/devtools'
 import {AuthProvider, Auth0Provider} from './auth-context'
 import {Fonts} from 'assets/fonts'
 import * as colors from 'styles/colors'
@@ -54,6 +55,7 @@ function AppProviders({children}) {
           <AuthProvider>
             <QueryClientProvider client={queryClient}>
               <Router>{children}</Router>
+              <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
           </AuthProvider>
         </Auth0Provider>

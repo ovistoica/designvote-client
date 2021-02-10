@@ -32,7 +32,7 @@ const defaultMutationOptions = {
     typeof recover === 'function' ? recover() : null,
 }
 
-function useCreateDesign(options) {
+function useCreateDesign(options = {}) {
   const qc = useQueryClient()
   const client = useClient()
   const {mutate} = useMutation(
