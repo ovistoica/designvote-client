@@ -23,14 +23,40 @@
     "react-scripts": "4.0.1",
     "web-vitals": "^0.2.2"
   },
+  "devDependencies": {
+    "husky": "^5.0.9",
+    "is-ci": "^2.0.0",
+    "is-ci-cli": "^2.1.2",
+    "jest-watch-typeahead": "^0.6.1",
+    "lint-staged": "^10.5.4",
+    "msw": "^0.26.2",
+    "whatwg-fetch": "^3.5.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test": "is-ci \"test:coverage\" \"test:watch\"",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --watch=false --coverage",
+    "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --watch --runInBand"
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "lint-staged": {
+    "*.+(js|ts|tsx)": [
+      "eslint",
+      "jest --findRelatedTests"
+    ],
+    "**/*.+(js|json|ts|tsx|md)": [
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint-staged"
+    }
   },
   "browserslist": {
     "production": [
