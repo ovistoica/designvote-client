@@ -39,24 +39,20 @@
     "test": "is-ci \"test:coverage\" \"test:watch\"",
     "test:watch": "jest --watch",
     "test:coverage": "jest --watch=false --coverage",
-    "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --watch --runInBand"
+    "test:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --watch --runInBand",
+    "lint-staged": "lint-staged"
   },
   "eslintConfig": {
     "extends": "react-app"
   },
   "lint-staged": {
-    "*.+(js|ts|tsx)": [
+    "*.+(js|jsx|ts|tsx)": [
       "eslint",
       "jest --findRelatedTests"
     ],
-    "**/*.+(js|json|ts|tsx|md)": [
+    "**/*.+(js|ts|tsx|md)": [
       "prettier --write"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint-staged"
-    }
   },
   "browserslist": {
     "production": [
