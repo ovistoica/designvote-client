@@ -14,6 +14,8 @@ import {useDropzone} from 'react-dropzone'
 import {HangedImage} from 'assets/icons'
 import {useUploadImage} from 'utils/file-upload'
 
+let a
+
 function ImageDropInput() {
   const bg = useColorModeValue('surface', 'gray.700')
   const {uploadImage: onDrop, isLoading, progress} = useUploadImage()
