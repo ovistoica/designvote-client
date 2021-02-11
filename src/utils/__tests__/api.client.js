@@ -58,6 +58,23 @@ test('when data is provided, it is stringified and the method defaults to POST',
       return res(ctx.json(mockResult))
     }),
   )
+
   await client(endpoint, {data: mockData})
   expect(request.body).toEqual(mockData)
+})
+
+test('Calls logout when receives 401 from the server', async () => {
+  const endpoint = 'test-endpoint'
+  const mockResult = {mockValue: 'VALUE'}
+
+  let logout = jest.fn(() => Promise.resolve(mockResult))
+  server.use(
+    rest.get(`${apiURL}/${endpoint}`, async (req, res, ctx) => {
+      return res(ctx.status(401), ctx.json(mockResult))
+    }),
+  )
+  const result = await client(endpoint, {logout}).catch(e => e)
+
+  expect(result.message).toMatchInlineSnapshot(`"Please re-authenticate."`)
+  expect(logout).toHaveBeenCalledTimes(1)
 })
