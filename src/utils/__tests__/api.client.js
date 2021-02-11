@@ -63,7 +63,7 @@ test('when data is provided, it is stringified and the method defaults to POST',
   expect(request.body).toEqual(mockData)
 })
 
-test('Calls logout when receives 401 from the server', async () => {
+test('calls logout function when it receives 401 from the server', async () => {
   const endpoint = 'test-endpoint'
   const mockResult = {mockValue: 'VALUE'}
 
@@ -77,4 +77,16 @@ test('Calls logout when receives 401 from the server', async () => {
 
   expect(result.message).toMatchInlineSnapshot(`"Please re-authenticate."`)
   expect(logout).toHaveBeenCalledTimes(1)
+})
+
+test('correctly rejects error if request fails', async () => {
+  const endpoint = 'test-endpoint'
+  const testError = {message: 'Test error'}
+
+  server.use(
+    rest.get(`${apiURL}/${endpoint}`, async (req, res, ctx) => {
+      return res(ctx.status(400), ctx.json(testError))
+    }),
+  )
+  await expect(client(endpoint)).rejects.toEqual(testError)
 })
