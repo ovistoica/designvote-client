@@ -12,6 +12,8 @@ import {Dashboard} from 'screens/dashboard'
 import {Design} from 'screens/design'
 import {NotFoundScreen} from 'screens/not-found'
 
+let a
+
 function AppRoutes() {
   return (
     <Routes>

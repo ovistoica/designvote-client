@@ -24,12 +24,14 @@
     "web-vitals": "^0.2.2"
   },
   "devDependencies": {
+    "eslint": "^7.14.0",
     "husky": "^5.0.9",
     "is-ci": "^2.0.0",
     "is-ci-cli": "^2.1.2",
     "jest-watch-typeahead": "^0.6.1",
     "lint-staged": "^10.5.4",
     "msw": "^0.26.2",
+    "prettier": "^2.2.1",
     "whatwg-fetch": "^3.5.0"
   },
   "scripts": {
@@ -50,7 +52,7 @@
       "eslint",
       "jest --findRelatedTests"
     ],
-    "**/*.+(js|ts|tsx|md)": [
+    "**/*.+(js|jsx|ts|tsx|md|json)": [
       "prettier --write"
     ]
   },
