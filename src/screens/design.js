@@ -1,7 +1,6 @@
 import * as React from 'react'
 import {
   Box,
-  Image,
   Input,
   Progress,
   SimpleGrid,
@@ -17,13 +16,7 @@ import {useUploadImage} from 'utils/file-upload'
 
 function ImageDropInput() {
   const bg = useColorModeValue('surface', 'gray.700')
-  const {
-    uploadImage: onDrop,
-    isLoading,
-    progress,
-    imageUrl,
-    isSuccess,
-  } = useUploadImage()
+  const {uploadImage: onDrop, isLoading, progress} = useUploadImage()
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
 
   return (
