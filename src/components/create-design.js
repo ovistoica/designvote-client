@@ -17,11 +17,14 @@ import {
 import {Button} from 'components/lib'
 import {EditIcon} from 'assets/icons'
 import {useCreateDesign} from 'utils/designs'
+import {useNavigate} from 'react-router-dom'
 
 function CreateDesignModal({isOpen, onClose}) {
   const [isFocused, setIsFocused] = React.useState(true)
-  const create = useCreateDesign()
+  const {mutate: createDesign, isLoading} = useCreateDesign()
   const [name, setName] = React.useState('')
+  const navigate = useNavigate()
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
@@ -55,9 +58,19 @@ function CreateDesignModal({isOpen, onClose}) {
 
         <ModalFooter>
           <Button
+            isLoading={isLoading}
             mr={3}
             textTransform="uppercase"
-            onClick={() => create({name})}
+            onClick={() =>
+              createDesign(
+                {name},
+                {
+                  onSettled: data =>
+                    navigate(`/upload-design/${data['design-id']}`),
+                },
+              )
+            }
+            type="submit"
           >
             Submit
           </Button>

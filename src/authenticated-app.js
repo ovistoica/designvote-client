@@ -11,6 +11,7 @@ import {Routes, Route, Navigate} from 'react-router-dom'
 import {Dashboard} from 'screens/dashboard'
 import {Design} from 'screens/design'
 import {NotFoundScreen} from 'screens/not-found'
+import {UploadDesign} from 'screens/upload-design-versions'
 
 function AppRoutes() {
   return (
@@ -20,6 +21,7 @@ function AppRoutes() {
       </Route>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/design/:designId" element={<Design />} />
+      <Route path="/upload-design/:designId" element={<UploadDesign />} />
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
   )

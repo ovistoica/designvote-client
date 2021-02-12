@@ -18,13 +18,13 @@ function useDesigns({onSuccess, ...options} = {}) {
 function useDesign(designId, {onSuccess, ...options} = {}) {
   const client = useClient()
 
-  const {data: design} = useQuery({
+  const {data: design, isLoading} = useQuery({
     queryKey: ['design', {designId}],
     queryFn: () => client(`v1/designs/${designId}`),
 
     ...options,
   })
-  return design ?? loadingDesign
+  return {design: design ?? loadingDesign, isLoading}
 }
 
 const defaultMutationOptions = {
@@ -35,7 +35,7 @@ const defaultMutationOptions = {
 function useCreateDesign(options = {}) {
   const qc = useQueryClient()
   const client = useClient()
-  const {mutate} = useMutation(
+  return useMutation(
     ({name, description = null, img = null}) =>
       client(`v1/designs`, {data: {name, description, img}}),
     {
@@ -44,7 +44,6 @@ function useCreateDesign(options = {}) {
       onSettled: () => qc.invalidateQueries({queryKey: 'designs'}),
     },
   )
-  return mutate
 }
 
 export {useDesigns, useDesign, useCreateDesign}

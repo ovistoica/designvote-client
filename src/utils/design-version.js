@@ -22,4 +22,32 @@ function useCreateDesignVersion(designId, options = {}) {
   )
 }
 
-export {useCreateDesignVersion}
+// upload multiple design versisons at once
+// USAGE:
+// const {mutate} = useUploadDesignVersions(designIid);
+// mutate(versions);
+function useUploadDesignVersions(designId, options = {}) {
+  const client = useClient()
+  const qc = useQueryClient()
+
+  return useMutation(
+    versions => {
+      return Promise.all([
+        versions.map(({name, pictures = [], description = null}) =>
+          client(`v1/designs/${designId}/versions`, {
+            data: {name, pictures, description},
+          }),
+        ),
+      ])
+    },
+    {
+      ...defaultMutationOptions,
+      ...options,
+      onSettled: async () => {
+        qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]})
+      },
+    },
+  )
+}
+
+export {useCreateDesignVersion, useUploadDesignVersions}
