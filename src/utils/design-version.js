@@ -31,15 +31,18 @@ function useUploadDesignVersions(designId, options = {}) {
   const qc = useQueryClient()
 
   return useMutation(
-    versions => {
-      return Promise.all([
-        versions.map(({name, pictures = [], description = null}) =>
-          client(`v1/designs/${designId}/versions`, {
-            data: {name, pictures, description},
-          }),
-        ),
-      ])
-    },
+    versions =>
+      client(`v1/designs/${designId}/versions/multiple`, {
+        data: {
+          versions: versions.map(
+            ({name, pictures = [], description = null}) => ({
+              name,
+              pictures,
+              description,
+            }),
+          ),
+        },
+      }),
     {
       ...defaultMutationOptions,
       ...options,
