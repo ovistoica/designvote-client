@@ -46,4 +46,17 @@ function useCreateDesign(options = {}) {
   )
 }
 
-export {useDesigns, useDesign, useCreateDesign}
+function useDeleteDesign(options = {}) {
+  const qc = useQueryClient()
+  const client = useClient()
+  return useMutation(
+    designId => client(`v1/designs/${designId}`, {method: 'DELETE'}),
+    {
+      ...defaultMutationOptions,
+      ...options,
+      onSettled: () => qc.invalidateQueries({queryKey: 'designs'}),
+    },
+  )
+}
+
+export {useDesigns, useDesign, useCreateDesign, useDeleteDesign}
