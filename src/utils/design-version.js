@@ -46,11 +46,30 @@ function useUploadDesignVersions(designId, options = {}) {
     {
       ...defaultMutationOptions,
       ...options,
-      onSettled: async () => {
+      onSettled: () => {
         qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]})
       },
     },
   )
 }
 
-export {useCreateDesignVersion, useUploadDesignVersions}
+function useDeleteDesignVersion(designId, options = {}) {
+  const qc = useQueryClient()
+  const client = useClient()
+  return useMutation(
+    versionId =>
+      client(`v1/designs/${designId}/versions`, {
+        method: 'DELETE',
+        data: {'version-id': versionId},
+      }),
+    {
+      ...defaultMutationOptions,
+      ...options,
+      onSettled: () => {
+        qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]})
+      },
+    },
+  )
+}
+
+export {useCreateDesignVersion, useUploadDesignVersions, useDeleteDesignVersion}

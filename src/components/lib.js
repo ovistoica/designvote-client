@@ -11,6 +11,12 @@ import {
   Link,
   UnorderedList,
   ListItem,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from '@chakra-ui/react'
 import {FaMoon, FaSun} from 'react-icons/fa'
 import * as colors from 'styles/colors'
@@ -218,6 +224,49 @@ function Nav(params) {
   )
 }
 
+function DeleteResourceAlert({
+  title = 'Delete resource',
+  body = "Are you sure? You can't undo this action afterwards.",
+  onDeletePress,
+  isOpen,
+  onClose,
+}) {
+  const cancelRef = React.useRef()
+  return (
+    <AlertDialog
+      isOpen={isOpen}
+      leastDestructiveRef={cancelRef}
+      onClose={onClose}
+    >
+      <AlertDialogOverlay>
+        <AlertDialogContent>
+          <AlertDialogHeader fontSize="lg" fontWeight="bold">
+            {title}
+          </AlertDialogHeader>
+
+          <AlertDialogBody>{body}</AlertDialogBody>
+
+          <AlertDialogFooter>
+            <ChakraButton ref={cancelRef} onClick={onClose}>
+              Cancel
+            </ChakraButton>
+            <ChakraButton
+              colorScheme="red"
+              onClick={() => {
+                onDeletePress()
+                onClose()
+              }}
+              ml={3}
+            >
+              Delete
+            </ChakraButton>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialogOverlay>
+    </AlertDialog>
+  )
+}
+
 export {
   ColorModeSwitcher,
   FullPageSpinner,
@@ -226,4 +275,5 @@ export {
   Button,
   Nav,
   NavLink,
+  DeleteResourceAlert,
 }

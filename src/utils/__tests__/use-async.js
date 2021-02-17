@@ -73,7 +73,6 @@ test('calling run with a promise which resolves', async () => {
   act(() => {
     result.current.reset()
   })
-  // 🐨 assert the result.current has actually been reset
   expect(result.current).toEqual(getAsyncState())
 })
 
