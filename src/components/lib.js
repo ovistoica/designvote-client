@@ -57,6 +57,18 @@ const buttonVariants = {
       background: '#00868A',
     },
   },
+  outlined: {
+    border: ' 2px solid #059FA3',
+    color: '#059FA3',
+    ':hover': {
+      background: '#059FA3',
+      color: 'white',
+    },
+    ':active': {
+      background: '#059FA3',
+      color: 'white',
+    },
+  },
 }
 
 const Button = styled(ChakraButton)(
