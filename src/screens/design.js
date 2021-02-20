@@ -17,7 +17,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import {DeleteResourceAlert, FullPageSpinner, Button} from 'components/lib'
-import {useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import {useDeleteDesignVersion} from 'utils/design-version'
 import {useDesign} from 'utils/designs'
 import {DeleteIcon, EditIcon, LinkIcon} from '@chakra-ui/icons'
@@ -86,9 +86,10 @@ function DesignVersionMenu({versionId, designId}) {
   )
 }
 
-function DesignStats({totalVotes, totalOpinions}) {
+function DesignStats({totalVotes, totalOpinions, designId}) {
   const statsBg = useColorModeValue('white', 'gray.700')
   const iconColor = useColorModeValue('#1A202C', 'rgba(255, 255, 255, 0.92)')
+  const navigate = useNavigate()
   return (
     <Flex
       flexDir="column"
@@ -114,7 +115,13 @@ function DesignStats({totalVotes, totalOpinions}) {
           <Text>Opinions</Text>
         </Stack>
       </Flex>
-      <Button variant="outlined" w="10em" h="3em" leftIcon={<LinkIcon />}>
+      <Button
+        variant="outlined"
+        w="10em"
+        h="3em"
+        leftIcon={<LinkIcon />}
+        onClick={() => navigate(`/vote/${designId}`)}
+      >
         SHARE DESIGN
       </Button>
     </Flex>
@@ -143,7 +150,11 @@ function Design() {
         <Text fontSize="2rem" textAlign="center">
           {design.name}
         </Text>
-        <DesignStats totalVotes={totalVotes} totalOpinions={totalOpinions} />
+        <DesignStats
+          totalVotes={totalVotes}
+          totalOpinions={totalOpinions}
+          designId={designId}
+        />
       </SimpleGrid>
       <SimpleGrid
         m="1em"

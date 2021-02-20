@@ -32,6 +32,17 @@ const theme = extendTheme({
     background3: colors.background3,
     info: colors.info,
     surface: colors.surface,
+    primary: {
+      100: '#fdf0e7',
+      200: '#fad2b7',
+      300: '#f7b488',
+      400: '#f49658',
+      500: '#f17828',
+      600: '#d75f0e',
+      700: '',
+      800: '',
+      900: '',
+    },
   },
   styles: {
     global: props => ({
