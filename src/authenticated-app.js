@@ -12,6 +12,9 @@ import {Dashboard} from 'screens/dashboard'
 import {Design} from 'screens/design'
 import {NotFoundScreen} from 'screens/not-found'
 import {UploadDesign} from 'screens/upload-design-versions'
+import {VoteScreen} from 'screens/vote-design'
+import {NavBar} from 'components/nav'
+import {useAuth} from 'context/auth-context'
 
 function AppRoutes() {
   return (
@@ -21,6 +24,7 @@ function AppRoutes() {
       </Route>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/design/:designId" element={<Design />} />
+      <Route path="/vote/:designId" element={<VoteScreen />} />
       <Route path="/upload-design/:designId" element={<UploadDesign />} />
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
@@ -43,10 +47,10 @@ function ErrorFallback({error}) {
 }
 
 function AuthenticatedApp() {
-  const {user, logout} = useAuth0()
+  const {user, logout} = useAuth()
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
-      <Flex
+      {/* <Flex
         align="center"
         justify="center"
         position="absolute"
@@ -58,20 +62,10 @@ function AuthenticatedApp() {
         <Button variant="secondary" css={{marginLeft: '10px'}} onClick={logout}>
           Logout
         </Button>
-      </Flex>
+      </Flex> */}
 
-      <Grid
-        minH="100vh"
-        p="4em 2em"
-        m="0 auto"
-        maxW="1440px"
-        w="100%"
-        gridGap="1em"
-        gridTemplateColumns="1fr 6fr"
-      >
-        <Box css={{position: 'relative'}}>
-          <Nav />
-        </Box>
+      <NavBar />
+      <Grid minH="100vh" p="4em 2em" m="0 auto" maxW="1440px" w="100%">
         <Box as="main" w="100%">
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <AppRoutes />
