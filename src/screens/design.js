@@ -1,6 +1,5 @@
 import {
   Button as ChakraButton,
-  Center,
   Circle,
   Divider,
   Flex,
@@ -24,7 +23,6 @@ import {DeleteIcon, EditIcon, LinkIcon} from '@chakra-ui/icons'
 import {HiDotsHorizontal} from 'react-icons/hi'
 import {FiLink} from 'react-icons/fi'
 import {OpinionIcon, VotesIcon} from 'assets/icons'
-import {useTheme} from '@emotion/react'
 
 function DesignVersionMenu({versionId, designId}) {
   const {mutate: deleteDesignVersion, isLoading} = useDeleteDesignVersion(

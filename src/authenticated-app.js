@@ -1,11 +1,5 @@
-import {Box, Grid, Button, Flex} from '@chakra-ui/react'
-import {
-  ColorModeSwitcher,
-  ErrorMessage,
-  FullPageErrorFallback,
-  Nav,
-} from 'components/lib'
-import {useAuth0} from '@auth0/auth0-react'
+import {Box, Grid} from '@chakra-ui/react'
+import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {ErrorBoundary} from 'react-error-boundary'
 import {Routes, Route, Navigate} from 'react-router-dom'
 import {Dashboard} from 'screens/dashboard'
@@ -50,20 +44,6 @@ function AuthenticatedApp() {
   const {user, logout} = useAuth()
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
-      {/* <Flex
-        align="center"
-        justify="center"
-        position="absolute"
-        top="10px"
-        right="10px"
-      >
-        <ColorModeSwitcher justifySelf="flex-end" mr="5px" />
-        {user.name}
-        <Button variant="secondary" css={{marginLeft: '10px'}} onClick={logout}>
-          Logout
-        </Button>
-      </Flex> */}
-
       <NavBar />
       <Grid minH="100vh" p="4em 2em" m="0 auto" maxW="1440px" w="100%">
         <Box as="main" w="100%">
