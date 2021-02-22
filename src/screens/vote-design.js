@@ -4,7 +4,6 @@ import {
   Flex,
   Image,
   SimpleGrid,
-  Stack,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
