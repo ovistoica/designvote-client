@@ -13,6 +13,10 @@ function Auth0Provider({children}) {
       redirectUri={window.location.origin}
       audience={process.env.REACT_APP_AUTH_AUDIENCE}
       scope="read:current_user update:current_user_metadata"
+      cacheLocation={
+        //process.env.NODE_ENV === 'test' ? 'localstorage' : 'memory' //for mocking auth in tests
+        true ? 'localstorage' : 'memory' //for mocking auth in tests
+      }
     >
       {children}
     </BaseAuth0Provider>

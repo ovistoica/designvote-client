@@ -1,0 +1,42 @@
+{
+  "public": [
+    {
+      "design-id": "a1995316-80ea-4a98-939d-7c6295e4bb46",
+      "name": "Feed",
+      "public": true,
+      "img": "https://res.cloudinary.com/stoica94/image/upload/v1611124828/samples/ecommerce/car-interior-design.jpg",
+      "description": null,
+      "total-votes": 4,
+      "uid": "jade@mailinator.com"
+    }
+  ],
+  "drafts": [
+    {
+      "design-id": "5c9aac42-149f-4bff-9af9-8167220d6ee3",
+      "name": "dawdawd",
+      "public": false,
+      "img": null,
+      "description": null,
+      "total-votes": 0,
+      "uid": "google-oauth2|117984597083645660112"
+    },
+    {
+      "design-id": "bface74b-360a-4a37-a416-b5884b0e3b32",
+      "name": "awdawdawd.  ",
+      "public": false,
+      "img": null,
+      "description": null,
+      "total-votes": 4,
+      "uid": "google-oauth2|117984597083645660112"
+    },
+    {
+      "design-id": "5601ffe1-ef77-4464-b5b5-2c7f81abf1b7",
+      "name": "my-cool-design",
+      "public": false,
+      "img": null,
+      "description": null,
+      "total-votes": 1,
+      "uid": "google-oauth2|117984597083645660112"
+    }
+  ]
+}
