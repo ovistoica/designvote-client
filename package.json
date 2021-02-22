@@ -6,7 +6,7 @@
     "@auth0/auth0-react": "^1.2.0",
     "@chakra-ui/icons": "^1.0.5",
     "@chakra-ui/react": "^1.0.0",
-    "@emotion/react": "^11.0.0",
+    "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.0.0",
     "@testing-library/jest-dom": "^5.9.0",
     "@testing-library/react": "^10.2.1",
