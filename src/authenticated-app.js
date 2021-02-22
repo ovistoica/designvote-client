@@ -12,6 +12,7 @@ import {Dashboard} from 'screens/dashboard'
 import {Design} from 'screens/design'
 import {NotFoundScreen} from 'screens/not-found'
 import {UploadDesign} from 'screens/upload-design-versions'
+import {VoteScreen} from 'screens/vote-design'
 
 function AppRoutes() {
   return (
@@ -22,6 +23,8 @@ function AppRoutes() {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/design/:designId" element={<Design />} />
       <Route path="/upload-design/:designId" element={<UploadDesign />} />
+      <Route path="/vote/:designId" element={<VoteScreen />} />
+
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
   )
