@@ -8,9 +8,6 @@ import {
   Box,
   Spinner,
   Button as ChakraButton,
-  Link,
-  UnorderedList,
-  ListItem,
   AlertDialog,
   AlertDialogOverlay,
   AlertDialogContent,
@@ -20,10 +17,9 @@ import {
 } from '@chakra-ui/react'
 import {FaMoon, FaSun} from 'react-icons/fa'
 import * as colors from 'styles/colors'
-import * as mq from 'styles/media-queries'
 import styled from '@emotion/styled/'
 import {lightenDarkenColor} from 'utils/color'
-import {useMatch, Link as RouterLink} from 'react-router-dom'
+import {useTheme} from '@emotion/react'
 
 const buttonVariants = {
   primary: {
@@ -90,6 +86,8 @@ const ColorModeSwitcher = props => {
   const {toggleColorMode} = useColorMode()
   const text = useColorModeValue('dark', 'light')
   const SwitchIcon = useColorModeValue(FaMoon, FaSun)
+  const {colors} = useTheme()
+  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
 
   return (
     <IconButton
@@ -97,10 +95,16 @@ const ColorModeSwitcher = props => {
       fontSize="lg"
       aria-label={`Switch to ${text} mode`}
       variant="ghost"
-      color="current"
+      color={['white', 'white', 'current']}
       marginLeft="2"
       onClick={toggleColorMode}
       icon={<SwitchIcon />}
+      _hover={{
+        color: ['white', 'white', brand],
+        textDecoration: 'none',
+      }}
+      _focus={{outline: 'none'}}
+      _active={{outline: 'none'}}
       {...props}
     />
   )
@@ -172,70 +176,6 @@ function FullPageErrorFallback({error}) {
   )
 }
 
-function NavLink(props) {
-  const match = useMatch(props.to)
-  return (
-    <Link
-      as={RouterLink}
-      _hover={{
-        color: colors.brand,
-        textDecoration: 'none',
-      }}
-      _focus={{outline: 'none'}}
-      _active={{outline: 'none'}}
-      display="block"
-      padding="8px 15px 8px 10px"
-      margin="5px 0"
-      width="100%"
-      height="100%"
-      borderRadius="2px"
-      borderLeft="5px solid transparent"
-      {...(match
-        ? {
-            color: 'brand',
-            borderLeft: `5px solid ${colors.brand}`,
-          }
-        : null)}
-      {...props}
-    />
-  )
-}
-
-function Nav(params) {
-  return (
-    <Box
-      as="nav"
-      css={{
-        position: 'sticky',
-        top: '4px',
-        padding: '1em 1.5em',
-        borderRadius: '3px',
-        [mq.small]: {
-          position: 'static',
-          top: 'auto',
-        },
-      }}
-    >
-      <UnorderedList
-        css={{
-          listStyle: 'none',
-          padding: '0',
-        }}
-      >
-        <ListItem>
-          <NavLink to="/dashboard">Dashboard</NavLink>
-        </ListItem>
-        <ListItem>
-          <NavLink to="/settings">Settings</NavLink>
-        </ListItem>
-        <ListItem>
-          <NavLink to="/account">Account</NavLink>
-        </ListItem>
-      </UnorderedList>
-    </Box>
-  )
-}
-
 function DeleteResourceAlert({
   title = 'Delete resource',
   body = "Are you sure? You can't undo this action afterwards.",
@@ -285,7 +225,5 @@ export {
   ErrorMessage,
   FullPageErrorFallback,
   Button,
-  Nav,
-  NavLink,
   DeleteResourceAlert,
 }

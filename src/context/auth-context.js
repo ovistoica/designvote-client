@@ -29,7 +29,7 @@ function AuthProvider(props) {
     isLoading,
     error,
     logout,
-    loginWithPopup,
+    loginWithRedirect,
     user,
     isAuthenticated,
   } = useAuth0()
@@ -43,8 +43,8 @@ function AuthProvider(props) {
   }, [run, getAccessTokenSilently, isAuthenticated])
 
   const value = React.useMemo(
-    () => ({token, logout, user, login: loginWithPopup, isAuthenticated}),
-    [token, logout, user, loginWithPopup, isAuthenticated],
+    () => ({token, logout, user, login: loginWithRedirect, isAuthenticated}),
+    [token, logout, user, loginWithRedirect, isAuthenticated],
   )
 
   if (isLoading) {
