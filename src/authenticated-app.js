@@ -8,7 +8,6 @@ import {NotFoundScreen} from 'screens/not-found'
 import {UploadDesign} from 'screens/upload-design-versions'
 import {VoteScreen} from 'screens/vote-design'
 import {NavBar} from 'components/nav'
-import {useAuth} from 'context/auth-context'
 
 function AppRoutes() {
   return (
@@ -41,7 +40,6 @@ function ErrorFallback({error}) {
 }
 
 function AuthenticatedApp() {
-  const {user, logout} = useAuth()
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
       <NavBar />

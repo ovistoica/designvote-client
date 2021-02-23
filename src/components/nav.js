@@ -3,33 +3,35 @@ import {
   Link,
   Box,
   Flex,
-  Text,
   Button,
   Stack,
-  Avatar,
+  useColorModeValue,
   Menu,
   MenuButton,
+  Avatar,
   MenuList,
-  useColorModeValue,
+  MenuItem,
+  useColorMode,
+  Text,
 } from '@chakra-ui/react'
 
 import Logo from './logo'
 import {useAuth} from 'context/auth-context'
-import {ColorModeSwitcher} from './lib'
 import {useTheme} from '@emotion/react'
+import {useMatch, Link as RouterLink} from 'react-router-dom'
+import {ExternalLinkIcon} from '@chakra-ui/icons'
 import {FaMoon, FaSun} from 'react-icons/fa'
 
 const NavBar = props => {
   const [isOpen, setIsOpen] = React.useState(false)
 
   const toggle = () => setIsOpen(!isOpen)
+  const {colors} = useTheme()
+  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
 
   return (
     <NavBarContainer {...props}>
-      <Logo
-        w="100px"
-        color={['white', 'white', 'primary.500', 'primary.500']}
-      />
+      <Logo w="100px" color={['white', 'white', brand, brand]} />
       <MenuToggle toggle={toggle} isOpen={isOpen} />
       <MenuLinks isOpen={isOpen} />
     </NavBarContainer>
@@ -66,21 +68,44 @@ const MenuToggle = ({toggle, isOpen}) => {
   )
 }
 
-const MenuItem = ({children, isLast, to = '/', ...rest}) => {
+function NavLink(props) {
+  const match = useMatch(props.to)
+  const {colors} = useTheme()
+  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
   return (
-    <Link href={to}>
-      <Text display="block" {...rest}>
-        {children}
-      </Text>
-    </Link>
+    <Link
+      as={RouterLink}
+      color={['white', 'white', 'current']}
+      _hover={{
+        color: brand,
+        textDecoration: 'none',
+      }}
+      _focus={{outline: 'none'}}
+      _active={{outline: 'none'}}
+      display="block"
+      width="100%"
+      height="100%"
+      borderRadius="2px"
+      borderLeft="5px solid transparent"
+      {...(match
+        ? {
+            color: ['white', 'white', brand],
+            // borderLeft: `5px solid ${colors.brand}`,
+          }
+        : null)}
+      {...props}
+    />
   )
 }
 
 const MenuLinks = ({isOpen}) => {
-  const {isAuthenticated, user, logout} = useAuth()
-  const theme = useTheme()
-  const text = useColorModeValue('dark', 'light')
+  const {isAuthenticated, user, logout, login} = useAuth()
+  const {colors} = useTheme()
+  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
   const SwitchIcon = useColorModeValue(FaMoon, FaSun)
+  const {toggleColorMode} = useColorMode()
+  const text = useColorModeValue('dark', 'light')
+  const colorSwithcerText = `Switch to ${text} mode`
   return (
     <Box
       display={{base: isOpen ? 'block' : 'none', md: 'block'}}
@@ -95,29 +120,63 @@ const MenuLinks = ({isOpen}) => {
       >
         {isAuthenticated ? (
           <>
+            <NavLink to="/dashboard">Dashboard</NavLink>
+            <NavLink to="/Settings">Settings</NavLink>
+            <Text
+              color={['white', 'white', 'current']}
+              _focus={{outline: 'none'}}
+              _active={{outline: 'none'}}
+              display="block"
+              width="100%"
+              cursor="default"
+              height="100%"
+              borderRadius="2px"
+              borderLeft="5px solid transparent"
+            >
+              {user.given_name}
+            </Text>
             <Menu>
               <MenuButton
+                cursor="pointer"
                 as={Avatar}
-                name={user.name}
-                src={user.picture}
                 size="sm"
-                aria-label="Options"
-                variant="outline"
-              />
+                onClick={e => e.stopPropagation()}
+                src={user.picture}
+              ></MenuButton>
               <MenuList>
-                <MenuItem>
-                  <SwitchIcon />
-                  <Text>Switch to {text} mode</Text>
+                <MenuItem
+                  icon={<SwitchIcon />}
+                  onClick={toggleColorMode}
+                  aria-label={colorSwithcerText}
+                >
+                  {colorSwithcerText}
+                </MenuItem>
+                <MenuItem onClick={logout} icon={<ExternalLinkIcon />}>
+                  Logout
                 </MenuItem>
               </MenuList>
             </Menu>
           </>
         ) : (
           <>
-            <MenuItem to="/how">How It works </MenuItem>
-            <MenuItem to="/features">Features </MenuItem>
-            <MenuItem to="/pricing">Pricing </MenuItem>
-            <MenuItem to="/signup" isLast>
+            <NavLink to="/demo">Demo</NavLink>
+            <NavLink to="/features">Features </NavLink>
+            <NavLink to="/pricing">Pricing </NavLink>
+            <Button
+              width="100%"
+              height="100%"
+              bg="transparent"
+              fontWeight="regular"
+              fontSize="xl"
+              _hover={{
+                color: brand,
+              }}
+              onClick={login}
+              color={['white', 'white', 'current']}
+            >
+              Login
+            </Button>
+            <NavLink to="/signup" isLast>
               <Button
                 size="sm"
                 rounded="md"
@@ -134,7 +193,7 @@ const MenuLinks = ({isOpen}) => {
               >
                 Create Account
               </Button>
-            </MenuItem>
+            </NavLink>
           </>
         )}
       </Stack>
@@ -143,6 +202,8 @@ const MenuLinks = ({isOpen}) => {
 }
 
 const NavBarContainer = ({children, ...props}) => {
+  const {colors} = useTheme()
+  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
   return (
     <Flex
       as="nav"
@@ -152,7 +213,7 @@ const NavBarContainer = ({children, ...props}) => {
       w="100%"
       mb={8}
       p={8}
-      bg={['primary.500', 'primary.500', 'transparent', 'transparent']}
+      bg={[brand, brand, 'transparent', 'transparent']}
       {...props}
     >
       {children}
