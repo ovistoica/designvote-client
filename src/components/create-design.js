@@ -32,16 +32,22 @@ function CreateDesignModal({isOpen, onClose}) {
         <ModalHeader>
           <Heading fontWeight="400">Create a Design</Heading>
         </ModalHeader>
-        <ModalCloseButton color="gray.500" fontSize="xl" fontWeight="800" />
+        <ModalCloseButton
+          color="gray.500"
+          fontSize="xl"
+          fontWeight="800"
+          onClick={onClose}
+        />
         <ModalBody pb={6}>
           <Text>
             Designs contain multiple versions from which your partners/costumers
             can choose{' '}
           </Text>
-          <FormControl id="design-name" label="design-name">
+          <FormControl id="design-name" aria-label="New design name">
             <Flex align="center">
               <EditIcon />
               <Input
+                aria-label="New design name"
                 autoFocus
                 value={name}
                 placeholder="my-cool-new-design"

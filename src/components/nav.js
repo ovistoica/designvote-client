@@ -18,7 +18,7 @@ import {
 import Logo from './logo'
 import {useAuth} from 'context/auth-context'
 import {useTheme} from '@emotion/react'
-import {useMatch, Link as RouterLink} from 'react-router-dom'
+import {useMatch, Link as RouterLink, useNavigate} from 'react-router-dom'
 import {ExternalLinkIcon} from '@chakra-ui/icons'
 import {FaMoon, FaSun} from 'react-icons/fa'
 
@@ -28,10 +28,18 @@ const NavBar = props => {
   const toggle = () => setIsOpen(!isOpen)
   const {colors} = useTheme()
   const brand = useColorModeValue(colors.primary[500], colors.primary[600])
+  const navigate = useNavigate()
+  const {isAuthenticated} = useAuth()
+  const to = isAuthenticated ? '/dashboard' : '/'
 
   return (
     <NavBarContainer {...props}>
-      <Logo w="100px" color={['white', 'white', brand, brand]} />
+      <Logo
+        w="100px"
+        color={['white', 'white', brand, brand]}
+        cursor="pointer"
+        onClick={() => navigate(to)}
+      />
       <MenuToggle toggle={toggle} isOpen={isOpen} />
       <MenuLinks isOpen={isOpen} />
     </NavBarContainer>
