@@ -225,9 +225,6 @@ function Design() {
               boxShadow="base"
               align="center"
               overflow="hidden"
-              // sx={{
-              //   boxShadow: '2px 2px 14px -6px rgba(0,0,0,0.56)',
-              // }}
             >
               <VersionHeader
                 versionId={versionId}
@@ -240,16 +237,7 @@ function Design() {
           )
         })}
       </SimpleGrid>
-      <Stack
-        maxW="80%"
-        m="1em"
-        p="1em"
-        borderRadius="0.5em"
-        boxShadow="base"
-        // sx={{
-        //   boxShadow: '2px 2px 14px -6px rgba(0,0,0,0.56)',
-        // }}
-      >
+      <Stack maxW="80%" m="1em" p="1em" borderRadius="0.5em" boxShadow="base">
         <Text fontSize="xl">
           <Text as="span" fontWeight="bold">
             {totalOpinions}{' '}
