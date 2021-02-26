@@ -1,11 +1,5 @@
 import * as React from 'react'
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
   Button,
   Flex,
   Menu,
@@ -24,6 +18,7 @@ import {FiLink} from 'react-icons/fi'
 import {CreateDesignModal} from 'components/create-design'
 import {useDeleteDesign, useDesigns} from 'utils/designs'
 import {useNavigate} from 'react-router-dom'
+import {DeleteResourceAlert} from 'components/lib'
 
 function DesignCard({designId, name}) {
   const navigate = useNavigate()
@@ -35,7 +30,6 @@ function DesignCard({designId, name}) {
   const cardHover = useColorModeValue('rgba(55, 53, 47, 0.03)', '#283240')
 
   // Delete alert specific
-  const cancelRef = React.useRef()
   const {
     isOpen: isAlertOpen,
     onOpen: onAlertOpen,
@@ -45,6 +39,7 @@ function DesignCard({designId, name}) {
   return (
     <>
       <Flex
+        aria-label={`Design ${name}`}
         boxShadow="md"
         h="5em"
         align="center"
@@ -96,39 +91,16 @@ function DesignCard({designId, name}) {
           </MenuList>
         </Menu>
       </Flex>
-      <AlertDialog
-        isOpen={isAlertOpen}
-        leastDestructiveRef={cancelRef}
+      <DeleteResourceAlert
         onClose={onAlertClose}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Delete Design
-            </AlertDialogHeader>
-
-            <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
-            </AlertDialogBody>
-
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onAlertClose}>
-                Cancel
-              </Button>
-              <Button
-                colorScheme="red"
-                onClick={() => {
-                  deleteDesign(designId)
-                  onAlertClose()
-                }}
-                ml={3}
-              >
-                Delete
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+        isOpen={isAlertOpen}
+        onDeletePress={() => {
+          deleteDesign(designId)
+          onAlertClose()
+        }}
+        title="Delete design"
+        body="Are you sure? This action cannot be undone"
+      />
     </>
   )
 }
@@ -146,6 +118,7 @@ function Dashboard() {
           Designs
         </Text>
         <Button
+          aria-label="Add design"
           variant="ghost"
           ml="1em"
           size="sm"

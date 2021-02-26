@@ -28,7 +28,6 @@ const theme = extendTheme({
     body: 'Lato',
   },
   colors: {
-    brand: colors.brand,
     background3: colors.background3,
     info: colors.info,
     surface: colors.surface,
@@ -41,6 +40,10 @@ const theme = extendTheme({
       600: '#D6661C',
       700: '#B05417',
       800: '#70360F',
+    },
+    brand: {
+      200: 'rgba(5, 159, 163, 0.5)',
+      500: '#059FA3',
     },
   },
   styles: {

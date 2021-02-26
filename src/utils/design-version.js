@@ -76,10 +76,11 @@ function useVoteDesignVersion(designId, options = {}) {
   const qc = useQueryClient()
   const client = useClient()
   return useMutation(
-    (versionId, opinion = null) =>
-      client(`v1/designs/${designId}/votes`, {
-        data: {'version-id': versionId, opinion},
-      }),
+    ({versionId, opinion = null}) => {
+      return client(`v1/designs/${designId}/votes`, {
+        data: {'version-id': versionId, opinion: !!opinion ? opinion : null},
+      })
+    },
     {
       ...defaultMutationOptions,
       ...options,

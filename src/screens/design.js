@@ -14,15 +14,18 @@ import {
   Text,
   useColorModeValue,
   useDisclosure,
+  Progress,
+  Heading,
 } from '@chakra-ui/react'
 import {DeleteResourceAlert, FullPageSpinner, Button} from 'components/lib'
 import {useNavigate, useParams} from 'react-router-dom'
 import {useDeleteDesignVersion} from 'utils/design-version'
 import {useDesign} from 'utils/designs'
-import {DeleteIcon, EditIcon, LinkIcon} from '@chakra-ui/icons'
+import {DeleteIcon, EditIcon, LinkIcon, ArrowUpIcon} from '@chakra-ui/icons'
 import {HiDotsHorizontal} from 'react-icons/hi'
 import {FiLink} from 'react-icons/fi'
-import {OpinionIcon, VotesIcon} from 'assets/icons'
+import {Check, OpinionIcon, VotesIcon} from 'assets/icons'
+import {getVotePercent} from 'utils/votes'
 
 function DesignVersionMenu({versionId, designId}) {
   const {mutate: deleteDesignVersion, isLoading} = useDeleteDesignVersion(
@@ -92,9 +95,8 @@ function DesignStats({totalVotes, totalOpinions, designId}) {
     <Flex
       flexDir="column"
       boxShadow="md"
-      w="22em"
-      h="15em"
       p="1em"
+      w="16em"
       bg={statsBg}
       borderRadius="0.5em"
       align="center"
@@ -126,6 +128,46 @@ function DesignStats({totalVotes, totalOpinions, designId}) {
   )
 }
 
+function VersionHeader({totalVotes, votes, designId, versionId, name}) {
+  const headerBg = useColorModeValue('white', 'gray.700')
+  const votePercent = getVotePercent(totalVotes, votes.length)
+  return (
+    <Flex
+      h="5em"
+      w="100%"
+      bg={headerBg}
+      align="center"
+      p="1em"
+      position="relative"
+    >
+      <DesignVersionMenu designId={designId} versionId={versionId} />
+      <Check />
+      <Flex direction="column" pl="1em" w="100%">
+        <Stack direction="row" align="center" justify="space-between">
+          <Flex direction="column">
+            <Text textTransform="uppercase" fontSize="0.95rem" mb="0">
+              {name}
+            </Text>
+            <Text color="info" fontSize="0.8rem">
+              {votes.length} votes
+            </Text>
+          </Flex>
+          <Text fontSize="xl" color="brand.500" fontWeight="bold">
+            {votePercent}%
+          </Text>
+        </Stack>
+        <Progress
+          value={votePercent}
+          borderRadius="20em"
+          h="0.3em"
+          background="brand.200"
+          colorScheme="brand"
+        />
+      </Flex>
+    </Flex>
+  )
+}
+
 function Design() {
   const {designId} = useParams()
   const {design, isLoading} = useDesign(designId)
@@ -143,11 +185,21 @@ function Design() {
   const totalOpinions = design?.opinions?.length ?? 0
 
   return (
-    <Flex flex="1" align="center" flexDir="column">
-      <SimpleGrid column={2} gridTemplateColumns="2fr 1fr" columnGap="2.5em">
-        <Text fontSize="2rem" textAlign="center">
-          {design.name}
-        </Text>
+    <Flex flex="1" flexDir="column">
+      <SimpleGrid
+        column={2}
+        gridTemplateColumns="2fr 1fr"
+        columnGap="2.5em"
+        alignItems="center"
+      >
+        <Stack maxW="40em" align="flex-start">
+          <Heading fontSize="2rem">{design.name}</Heading>
+          {/*//TODO: change this */}
+          <Text fontWeight="300" fontSize="xl">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          </Text>
+        </Stack>
         <DesignStats
           totalVotes={totalVotes}
           totalOpinions={totalOpinions}
@@ -156,27 +208,85 @@ function Design() {
       </SimpleGrid>
       <SimpleGrid
         m="1em"
-        mt="1.5em"
         column={3}
         gridTemplateColumns="repeat(3, 1fr)"
-        columnGap="2.5em"
+        columnGap="2em"
         alignContent="center"
+        maxW="80%"
       >
-        {versions.map(({pic, versionId, name}) => (
-          <Flex
-            key={pic['picture-id']}
-            direction="column"
-            position="relative"
-            flex="0"
-            role="group"
-            transition="0.25s all"
-          >
-            <DesignVersionMenu designId={designId} versionId={versionId} />
-            <Image src={pic.uri} maxH="32em" />
-            <Text textAlign="center">{name}</Text>
-          </Flex>
-        ))}
+        {versions.map(({pic, versionId, name, votes}) => {
+          return (
+            <Flex
+              key={pic['picture-id']}
+              direction="column"
+              role="group"
+              transition="0.25s all"
+              borderRadius="0.5em"
+              boxShadow="base"
+              align="center"
+              overflow="hidden"
+            >
+              <VersionHeader
+                versionId={versionId}
+                name={name}
+                votes={votes}
+                totalVotes={totalVotes}
+              />
+              <Image src={pic.uri} objectFit="contain" maxH="28em" w="100%" />
+            </Flex>
+          )
+        })}
       </SimpleGrid>
+      <Stack maxW="80%" m="1em" p="1em" borderRadius="0.5em" boxShadow="base">
+        <Text fontSize="xl">
+          <Text as="span" fontWeight="bold">
+            {totalOpinions}{' '}
+          </Text>
+          Opinions
+        </Text>
+        {design?.opinions?.map((opinion, index, array) => {
+          const versionId = opinion['version-id']
+          const version = design?.versions.find(
+            version => version['version-id'] === versionId,
+          )
+          return (
+            <>
+              <SimpleGrid
+                columns={3}
+                gridTemplateColumns="1fr 6fr 1fr"
+                columnGap="1em"
+                align="center"
+                p="1em"
+              >
+                <Stack
+                  borderWidth="1px"
+                  maxW="3em"
+                  align="center"
+                  justify="center"
+                  color="info"
+                  cursor="pointer"
+                  borderRadius="0.5em"
+                >
+                  <ArrowUpIcon />
+                  <Text>15</Text>
+                </Stack>
+                <Flex alignItems="center">
+                  <Text>{opinion.opinion}</Text>
+                </Flex>
+                <Image
+                  src={version?.pictures[0]?.uri}
+                  maxH="6em"
+                  maxW="6em"
+                  objectFit="contain"
+                  borderRadius="0.5em"
+                  resize="contain"
+                />
+              </SimpleGrid>
+              {index !== array.length - 1 ? <Divider /> : null}
+            </>
+          )
+        })}
+      </Stack>
     </Flex>
   )
 }
