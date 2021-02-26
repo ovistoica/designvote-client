@@ -2,26 +2,41 @@ import * as React from 'react'
 import {
   Box,
   Flex,
+  FormControl,
+  FormHelperText,
+  FormLabel,
   Image,
+  Input,
   SimpleGrid,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
 import {Button, FullPageSpinner} from 'components/lib'
-import {useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import {useDesign} from 'utils/designs'
 import {useVoteDesignVersion} from 'utils/design-version'
 import {Check, SelectedCheck} from 'assets/icons'
-import picBg from 'assets/picture-backgrounds/1.png'
 
 function VoteScreen() {
+  const [opinion, setOpinion] = React.useState('')
   const {designId} = useParams()
   const {design, isLoading} = useDesign(designId)
-  const {mutate: vote} = useVoteDesignVersion(designId)
+  const {
+    mutate: vote,
+    isSuccess,
+    isLoading: isVoteLoading,
+  } = useVoteDesignVersion(designId)
   const [selectedVersion, setSelectedVersion] = React.useState()
   const headerBg = useColorModeValue('white', 'gray.700')
+  const navigate = useNavigate()
 
-  if (isLoading) {
+  React.useEffect(() => {
+    if (isSuccess) {
+      navigate(`/design/${designId}`)
+    }
+  }, [isSuccess, navigate, designId])
+
+  if (isLoading || isVoteLoading) {
     return <FullPageSpinner />
   }
 
@@ -33,14 +48,9 @@ function VoteScreen() {
 
   return (
     <Flex flex="1" align="center" flexDir="column">
-      <SimpleGrid column={2} gridTemplateColumns="2fr 1fr" columnGap="2.5em">
-        <Text fontSize="2rem" textAlign="center">
-          {design.name}
-        </Text>
-      </SimpleGrid>
       <SimpleGrid
         m="1em"
-        mt="1.5em"
+        mt="0em"
         column={3}
         gridTemplateColumns="repeat(3, 1fr)"
         columnGap="2.5em"
@@ -60,7 +70,7 @@ function VoteScreen() {
               cursor="pointer"
               onClick={() => setSelectedVersion(versionId)}
             >
-              <Flex h="5em" w="22em" bg={headerBg} align="center" p="1em">
+              <Flex h="5em" maxW="20em" bg={headerBg} align="center" p="1em">
                 {selected ? <SelectedCheck /> : <Check />}
                 <Box pl="1em">
                   <Text textTransform="uppercase" fontSize="0.95rem">
@@ -78,22 +88,34 @@ function VoteScreen() {
                 </Box>
               </Flex>
               <Image
-                backgroundImage={`url(${picBg})`}
-                backgroundSize="cover"
                 src={pic.uri}
                 objectFit="contain"
-                maxH="32em"
+                maxH="28em"
+                maxW="20em"
               />
             </Flex>
           )
         })}
       </SimpleGrid>
+      <FormControl id="opinion" maxW="40em" mt="1em">
+        <FormLabel fontSize="sm">Leave opinion (optional)</FormLabel>
+        <Input
+          type="text"
+          as="textarea"
+          placeholder="Opinions help the designer to better understand your choice"
+          minH="5em"
+          onChange={e => setOpinion(e.target.value)}
+        />
+        <FormHelperText></FormHelperText>
+      </FormControl>
       <Button
         variant="secondary"
         w="12.5em"
         mt="1em"
         disabled={!selectedVersion}
-        onClick={() => vote(selectedVersion)}
+        onClick={() => {
+          vote({versionId: selectedVersion, opinion})
+        }}
       >
         Choose
       </Button>

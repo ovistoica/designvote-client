@@ -43,7 +43,7 @@ function AuthenticatedApp() {
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
       <NavBar />
-      <Grid minH="100vh" p="4em 2em" m="0 auto" maxW="1440px" w="100%">
+      <Grid minH="100vh" p="2em 4em" m="0 auto" maxW="1440px" w="100%">
         <Box as="main" w="100%">
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <AppRoutes />

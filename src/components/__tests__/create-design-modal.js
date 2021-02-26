@@ -1,10 +1,5 @@
 import {ChakraProvider, theme} from '@chakra-ui/react'
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-  within,
-} from '@testing-library/react'
+import {render, screen, within} from '@testing-library/react'
 import * as React from 'react'
 import {Dashboard} from 'screens/dashboard'
 import {BrowserRouter as Router} from 'react-router-dom'
