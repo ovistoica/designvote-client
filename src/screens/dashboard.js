@@ -107,7 +107,7 @@ function DesignCard({designId, name}) {
 
 function Dashboard() {
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const {drafts: designs, isLoading} = useDesigns()
+  const {designs, isLoading} = useDesigns()
   const cardBg = useColorModeValue('white', 'gray.700')
 
   if (isLoading) {
@@ -149,8 +149,8 @@ function Dashboard() {
       >
         {designs.map(design => (
           <DesignCard
-            key={design['design-id']}
-            designId={design['design-id']}
+            key={design.designId}
+            designId={design.designId}
             name={design.name}
           />
         ))}

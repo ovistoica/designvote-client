@@ -16,11 +16,11 @@ export function useDesigns({onSuccess, ...options} = {}) {
 
   const {data: designs, isLoading} = useQuery({
     queryKey: 'designs',
-    queryFn: () => client('v1/designs'),
-
+    // normalize result to camelCase
+    queryFn: () => client('v1/designs').then(result => keysToCamel(result)),
     ...options,
   })
-  return designs ?? {public: [], drafts: [], isLoading}
+  return {designs: designs ?? [], isLoading}
 }
 
 export function useDesign(designId, {onSuccess, ...options} = {}) {

@@ -16,8 +16,8 @@ const TestProvider = props => {
 jest.mock('utils/designs', () => {
   return {
     useDesigns: () => ({
-      drafts: [{name: 'one', 'design-id': 'awdawd'}],
-      public: [],
+      designs: [{name: 'one', designId: 'testID'}],
+      isLoading: false,
     }),
     useCreateDesign: () => ({mutate: jest.fn(), isLoading: false}),
     useDeleteDesign: () => ({mutate: jest.fn(), isLoading: false}),
