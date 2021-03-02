@@ -20,7 +20,8 @@ import {Check, SelectedCheck} from 'assets/icons'
 function VoteScreen() {
   const [opinion, setOpinion] = React.useState('')
   const {designId} = useParams()
-  const {design, isLoading} = useDesign(designId)
+  const {data, isLoading} = useDesign(designId)
+  const {design, versions, pictures} = data
   const {
     mutate: vote,
     isSuccess,
@@ -40,12 +41,6 @@ function VoteScreen() {
     return <FullPageSpinner />
   }
 
-  const versions = design.versions.map(version => ({
-    pic: version?.pictures[0],
-    versionId: version['version-id'],
-    ...version,
-  }))
-
   return (
     <Flex flex="1" align="center" flexDir="column">
       <SimpleGrid
@@ -56,29 +51,42 @@ function VoteScreen() {
         columnGap="2.5em"
         alignContent="center"
       >
-        {versions.map(({pic, versionId, name, description}, index) => {
+        {design.versions.map((versionId, index) => {
           const selected = versionId === selectedVersion
+          const version = versions[versionId]
+          const pictureId = version.pictures[0]
+          const picture = pictures[pictureId]
           return (
             <Flex
-              key={pic['picture-id']}
+              key={pictureId}
               direction="column"
               position="relative"
               flex="0"
-              boxShadow="xl"
+              boxShadow="base"
               role="group"
               transition="0.25s all"
               cursor="pointer"
+              borderRadius="0.5em"
               onClick={() => setSelectedVersion(versionId)}
+              pb="1em"
             >
-              <Flex h="5em" maxW="20em" bg={headerBg} align="center" p="1em">
+              <Flex
+                h="5em"
+                w="100%"
+                bg={headerBg}
+                align="center"
+                p="1em"
+                borderTopRightRadius="0.5em"
+                borderTopLeftRadius="0.5em"
+              >
                 {selected ? <SelectedCheck /> : <Check />}
                 <Box pl="1em">
                   <Text textTransform="uppercase" fontSize="0.95rem">
-                    {name}
+                    {version.name}
                   </Text>
-                  {description ? (
+                  {version.description ? (
                     <Text color="info" fontSize="0.8rem">
-                      {description}
+                      {version.description}
                     </Text>
                   ) : (
                     <Text color="info" fontSize="0.8rem">
@@ -88,10 +96,10 @@ function VoteScreen() {
                 </Box>
               </Flex>
               <Image
-                src={pic.uri}
+                src={picture.uri}
                 objectFit="contain"
                 maxH="28em"
-                maxW="20em"
+                w="100%"
               />
             </Flex>
           )
