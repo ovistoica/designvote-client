@@ -18,7 +18,7 @@ import {FiLink} from 'react-icons/fi'
 import {CreateDesignModal} from 'components/create-design'
 import {useDeleteDesign, useDesigns} from 'utils/designs'
 import {useNavigate} from 'react-router-dom'
-import {DeleteResourceAlert} from 'components/lib'
+import {DeleteResourceAlert, FullPageSpinner} from 'components/lib'
 
 function DesignCard({designId, name}) {
   const navigate = useNavigate()
@@ -107,8 +107,12 @@ function DesignCard({designId, name}) {
 
 function Dashboard() {
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const {drafts: designs} = useDesigns()
+  const {drafts: designs, isLoading} = useDesigns()
   const cardBg = useColorModeValue('white', 'gray.700')
+
+  if (isLoading) {
+    return <FullPageSpinner />
+  }
 
   return (
     <Flex h="100%" w="100%" flexDir="column">

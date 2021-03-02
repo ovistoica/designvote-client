@@ -20,7 +20,7 @@ import {
 import {DeleteResourceAlert, FullPageSpinner, Button} from 'components/lib'
 import {useNavigate, useParams} from 'react-router-dom'
 import {useDeleteDesignVersion} from 'utils/design-version'
-import {useDesign} from 'utils/designs'
+import {useDesign, usePublishDesign} from 'utils/designs'
 import {DeleteIcon, EditIcon, LinkIcon, ArrowUpIcon} from '@chakra-ui/icons'
 import {HiDotsHorizontal} from 'react-icons/hi'
 import {FiLink} from 'react-icons/fi'
@@ -138,9 +138,9 @@ function VersionHeader({totalVotes, votes, designId, versionId, name}) {
       bg={headerBg}
       align="center"
       p="1em"
-      position="relative"
+      borderTopRightRadius="0.5em"
+      borderTopLeftRadius="0.5em"
     >
-      <DesignVersionMenu designId={designId} versionId={versionId} />
       <Check />
       <Flex direction="column" pl="1em" w="100%">
         <Stack direction="row" align="center" justify="space-between">
@@ -170,19 +170,15 @@ function VersionHeader({totalVotes, votes, designId, versionId, name}) {
 
 function Design() {
   const {designId} = useParams()
-  const {design, isLoading} = useDesign(designId)
+  const {data, isLoading} = useDesign(designId)
+  const {design, versions, pictures, opinions} = data
 
   if (isLoading) {
     return <FullPageSpinner />
   }
 
-  const versions = design.versions.map(version => ({
-    pic: version?.pictures[0],
-    versionId: version['version-id'],
-    ...version,
-  }))
-  const totalVotes = design['total-votes'] ?? 0
-  const totalOpinions = design?.opinions?.length ?? 0
+  const totalVotes = design.totalVotes
+  const totalOpinions = design.opinions.length ?? 0
 
   return (
     <Flex flex="1" flexDir="column">
@@ -214,25 +210,29 @@ function Design() {
         alignContent="center"
         maxW="80%"
       >
-        {versions.map(({pic, versionId, name, votes}) => {
+        {design.versions.map(versionId => {
+          const version = versions[versionId]
+          const pictureId = version.pictures[0]
+          const {uri} = pictures[pictureId] ?? 'not found'
           return (
             <Flex
-              key={pic['picture-id']}
+              key={pictureId}
               direction="column"
               role="group"
               transition="0.25s all"
               borderRadius="0.5em"
               boxShadow="base"
               align="center"
-              overflow="hidden"
+              position="relative"
             >
+              <DesignVersionMenu designId={designId} versionId={versionId} />
               <VersionHeader
                 versionId={versionId}
-                name={name}
-                votes={votes}
+                name={version.name}
+                votes={version.votes}
                 totalVotes={totalVotes}
               />
-              <Image src={pic.uri} objectFit="contain" maxH="28em" w="100%" />
+              <Image src={uri} objectFit="contain" maxH="28em" w="100%" />
             </Flex>
           )
         })}
@@ -244,14 +244,16 @@ function Design() {
           </Text>
           Opinions
         </Text>
-        {design?.opinions?.map((opinion, index, array) => {
-          const versionId = opinion['version-id']
-          const version = design?.versions.find(
-            version => version['version-id'] === versionId,
-          )
+        {design.opinions.map((opinionId, index, array) => {
+          const {versionId, opinion} = opinions[opinionId]
+          const version = versions[versionId]
+          const pictureId = version.pictures[0]
+          const {uri} = pictures[pictureId] ?? 'not found'
+
           return (
             <>
               <SimpleGrid
+                key={opinionId}
                 columns={3}
                 gridTemplateColumns="1fr 6fr 1fr"
                 columnGap="1em"
@@ -271,10 +273,10 @@ function Design() {
                   <Text>15</Text>
                 </Stack>
                 <Flex alignItems="center">
-                  <Text>{opinion.opinion}</Text>
+                  <Text>{opinion}</Text>
                 </Flex>
                 <Image
-                  src={version?.pictures[0]?.uri}
+                  src={uri}
                   maxH="6em"
                   maxW="6em"
                   objectFit="contain"

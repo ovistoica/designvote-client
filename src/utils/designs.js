@@ -1,30 +1,48 @@
 import {useClient} from 'context/auth-context'
+import {normalize} from 'normalizr'
 import {useQuery, useMutation, useQueryClient} from 'react-query'
+import {keysToCamel} from './object'
+import * as schemas from './schema'
 
-const loadingDesign = {name: 'Loading design'}
+const loadingDesign = {
+  name: 'Loading design',
+  versions: [],
+  totalVotes: 0,
+  opinions: [],
+}
 
-function useDesigns({onSuccess, ...options} = {}) {
+export function useDesigns({onSuccess, ...options} = {}) {
   const client = useClient()
 
-  const {data: designs} = useQuery({
+  const {data: designs, isLoading} = useQuery({
     queryKey: 'designs',
     queryFn: () => client('v1/designs'),
 
     ...options,
   })
-  return designs ?? {public: [], drafts: []}
+  return designs ?? {public: [], drafts: [], isLoading}
 }
 
-function useDesign(designId, {onSuccess, ...options} = {}) {
+export function useDesign(designId, {onSuccess, ...options} = {}) {
   const client = useClient()
 
-  const {data: design, isLoading} = useQuery({
+  const {data, isLoading} = useQuery({
     queryKey: ['design', {designId}],
-    queryFn: () => client(`v1/designs/${designId}`),
+    queryFn: () =>
+      // Normalize the data from the server for faster lookup
+      client(`v1/designs/${designId}`).then(result => {
+        const {entities} = normalize(keysToCamel(result), schemas.design)
+        return {
+          design: entities.design[designId],
+          pictures: entities.picture,
+          versions: entities.version,
+          opinions: entities.opinion,
+        }
+      }),
 
     ...options,
   })
-  return {design: design ?? loadingDesign, isLoading}
+  return {data: data ?? {design: loadingDesign}, isLoading}
 }
 
 const defaultMutationOptions = {
@@ -32,7 +50,7 @@ const defaultMutationOptions = {
     typeof recover === 'function' ? recover() : null,
 }
 
-function useCreateDesign(options = {}) {
+export function useCreateDesign(options = {}) {
   const qc = useQueryClient()
   const client = useClient()
   return useMutation(
@@ -46,7 +64,7 @@ function useCreateDesign(options = {}) {
   )
 }
 
-function useDeleteDesign(options = {}) {
+export function useDeleteDesign(options = {}) {
   const qc = useQueryClient()
   const client = useClient()
   return useMutation(
@@ -59,4 +77,16 @@ function useDeleteDesign(options = {}) {
   )
 }
 
-export {useDesigns, useDesign, useCreateDesign, useDeleteDesign}
+export function usePublishDesign(designId, options = {}) {
+  const qc = useQueryClient()
+  const client = useClient()
+  return useMutation(
+    () => client(`v1/designs/${designId}/publish`, {method: 'POST'}),
+    {
+      ...defaultMutationOptions,
+      ...options,
+      onSettled: () =>
+        qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]}),
+    },
+  )
+}
