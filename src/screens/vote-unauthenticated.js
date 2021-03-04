@@ -5,11 +5,9 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
-  Heading,
   Image,
   Input,
   SimpleGrid,
-  Stack,
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'

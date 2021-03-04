@@ -40,7 +40,7 @@ function ShareModal({isOpen, onClose, designId}) {
     }
   }, [design.public, publish, isOpen])
 
-  const link = `https://designvote.io/vote/${design.shortUrl}`
+  const link = `http://localhost:3000/vote/${design.shortUrl}`
   const linkBackground = useColorModeValue('gray.100', 'gray.600')
   const toast = useToast()
   const {onCopy} = useClipboard(link)
