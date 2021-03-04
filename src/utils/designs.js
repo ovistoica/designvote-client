@@ -1,8 +1,7 @@
 import {useClient} from 'context/auth-context'
-import {normalize} from 'normalizr'
 import {useQuery, useMutation, useQueryClient} from 'react-query'
+import {normalizeDesign} from './normalize'
 import {keysToCamel} from './object'
-import * as schemas from './schema'
 
 const loadingDesign = {
   name: 'Loading design',
@@ -31,18 +30,20 @@ export function useDesign(designId, {onSuccess, ...options} = {}) {
     queryFn: () =>
       // Normalize the data from the server for faster lookup
       client(`v1/designs/${designId}`).then(result => {
-        const {entities} = normalize(keysToCamel(result), schemas.design)
-        return {
-          design: entities.design[designId],
-          pictures: entities.picture,
-          versions: entities.version,
-          opinions: entities.opinion,
-        }
+        return normalizeDesign(result)
       }),
 
     ...options,
   })
-  return {data: data ?? {design: loadingDesign}, isLoading}
+  return {
+    data: data ?? {
+      design: loadingDesign,
+      pictures: {},
+      versions: {},
+      opinions: {},
+    },
+    isLoading,
+  }
 }
 
 const defaultMutationOptions = {
@@ -89,4 +90,28 @@ export function usePublishDesign(designId, options = {}) {
         qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]}),
     },
   )
+}
+
+export function useUrlDesign(shortUrl, {onSuccess, ...options} = {}) {
+  const client = useClient()
+
+  const {data, isLoading} = useQuery({
+    queryKey: ['design', {shortUrl}],
+    queryFn: () =>
+      // Normalize the data from the server for faster lookup
+      client(`v1/designs/short/${shortUrl}`).then(result => {
+        return normalizeDesign(result)
+      }),
+
+    ...options,
+  })
+  return {
+    data: data ?? {
+      design: loadingDesign,
+      pictures: {},
+      versions: {},
+      opinions: {},
+    },
+    isLoading,
+  }
 }
