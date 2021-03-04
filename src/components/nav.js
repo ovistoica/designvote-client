@@ -184,7 +184,7 @@ const MenuLinks = ({isOpen}) => {
             >
               Login
             </Button>
-            <NavLink to="/signup" isLast>
+            <NavLink to="/signup">
               <Button
                 size="sm"
                 rounded="md"
