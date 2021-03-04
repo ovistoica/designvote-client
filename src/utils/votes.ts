@@ -1,4 +1,4 @@
-export function getVotePercent(totalVotes, versionVotes) {
+export function getVotePercent(totalVotes: number, versionVotes: number) {
   if (typeof totalVotes !== 'number' || typeof versionVotes !== 'number') {
     throw new Error('Invalid arguments provided. Please provide valid numbers')
   }

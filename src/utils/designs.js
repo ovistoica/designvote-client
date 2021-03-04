@@ -34,6 +34,8 @@ export function useDesign(designId, {onSuccess, ...options} = {}) {
       }),
 
     ...options,
+    refetchOnWindowFocus: true,
+    refetchInterval: 1000 * 60 * 3,
   })
   return {
     data: data ?? {

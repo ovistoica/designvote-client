@@ -4,6 +4,7 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import {QueryClient, QueryClientProvider} from 'react-query'
 import {ReactQueryDevtools} from 'react-query/devtools'
 import {AuthProvider, Auth0Provider} from './auth-context'
+import {CookiesProvider} from 'react-cookie'
 import {Fonts} from 'assets/fonts'
 import * as colors from 'styles/colors'
 import {mode} from '@chakra-ui/theme-tools'
@@ -68,7 +69,9 @@ function AppProviders({children}) {
         <Auth0Provider>
           <AuthProvider>
             <QueryClientProvider client={queryClient}>
-              <Router>{children}</Router>
+              <CookiesProvider>
+                <Router>{children}</Router>
+              </CookiesProvider>
               <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
           </AuthProvider>
