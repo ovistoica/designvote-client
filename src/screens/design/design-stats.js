@@ -33,6 +33,10 @@ function ShareModal({isOpen, onClose, designId}) {
   } = useDesign(designId)
   const {mutate: publish} = usePublishDesign(designId)
 
+  // get current website link (for production and development)
+  const end = window.location.href.lastIndexOf(`/design/${designId}`)
+  const websiteLink = window.location.href.slice(0, end)
+
   // When user wants to share the link
   React.useEffect(() => {
     if (isOpen && !design.public) {
@@ -40,7 +44,8 @@ function ShareModal({isOpen, onClose, designId}) {
     }
   }, [design.public, publish, isOpen])
 
-  const link = `http://localhost:3000/vote/${design.shortUrl}`
+  const link = `${websiteLink}/vote/${design.shortUrl}`
+
   const linkBackground = useColorModeValue('gray.100', 'gray.600')
   const toast = useToast()
   const {onCopy} = useClipboard(link)
