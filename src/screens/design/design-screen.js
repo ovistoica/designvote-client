@@ -57,7 +57,13 @@ function Design() {
         maxW="80%"
       >
         {design.versions.map(versionId => {
-          return <DesignVersion versionId={versionId} designId={designId} />
+          return (
+            <DesignVersion
+              key={`version${versionId}`}
+              versionId={versionId}
+              designId={designId}
+            />
+          )
         })}
       </SimpleGrid>
 
@@ -76,9 +82,9 @@ function Design() {
           const {uri} = pictures[pictureId] ?? 'not found'
 
           return (
-            <>
+            <div key={`k${opinionId}`}>
               <SimpleGrid
-                key={opinionId}
+                key={`${opinionId}${index}`}
                 columns={3}
                 gridTemplateColumns="1fr 6fr 1fr"
                 columnGap="1em"
@@ -109,8 +115,10 @@ function Design() {
                   resize="contain"
                 />
               </SimpleGrid>
-              {index !== array.length - 1 ? <Divider /> : null}
-            </>
+              {index !== array.length - 1 ? (
+                <Divider key={`divider${opinion}`} />
+              ) : null}
+            </div>
           )
         })}
       </Stack>
