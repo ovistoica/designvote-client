@@ -1,4 +1,9 @@
-import {ChakraProvider, ColorModeScript, extendTheme} from '@chakra-ui/react'
+import {
+  ChakraProvider,
+  ColorModeScript,
+  extendTheme,
+  theme as defaultTheme,
+} from '@chakra-ui/react'
 import {StrictMode} from 'react'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {QueryClient, QueryClientProvider} from 'react-query'
@@ -25,10 +30,12 @@ const queryClient = new QueryClient({
 
 const theme = extendTheme({
   fonts: {
-    heading: 'IBM Plex Serif',
-    body: 'Lato',
+    ...defaultTheme.fonts,
+    heading: `"IBM Plex Serif", ${defaultTheme.fonts.heading}`,
+    body: `"Lato", ${defaultTheme.fonts.body}`,
   },
   colors: {
+    ...defaultTheme.colors,
     background3: colors.background3,
     info: colors.info,
     surface: colors.surface,
@@ -47,6 +54,7 @@ const theme = extendTheme({
       200: 'rgba(5, 159, 163, 0.5)',
       500: '#059FA3',
     },
+    textSecondary: '#747474',
   },
   styles: {
     global: props => ({

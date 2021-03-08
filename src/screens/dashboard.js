@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {
-  Button,
+  Button as ChakraButton,
   Flex,
   Menu,
   MenuButton,
@@ -14,11 +14,11 @@ import {
 import {AddIcon, DeleteIcon, EditIcon} from '@chakra-ui/icons'
 import {HiDotsHorizontal} from 'react-icons/hi'
 import {FiLink} from 'react-icons/fi'
-
 import {CreateDesignModal} from 'components/create-design'
 import {useDeleteDesign, useDesigns} from 'utils/designs'
 import {useNavigate} from 'react-router-dom'
-import {DeleteResourceAlert, FullPageSpinner} from 'components/lib'
+import {DeleteResourceAlert, FullPageSpinner, Button} from 'components/lib'
+import {Logo} from 'assets/icons'
 
 function DesignCard({designId, name}) {
   const navigate = useNavigate()
@@ -59,7 +59,7 @@ function DesignCard({designId, name}) {
         <Text>{name}</Text>
         <Menu>
           <MenuButton
-            as={Button}
+            as={ChakraButton}
             size="sm"
             w="1.5em"
             h="1.5em"
@@ -105,6 +105,32 @@ function DesignCard({designId, name}) {
   )
 }
 
+function EmptyDashboard({onClick}) {
+  return (
+    <Flex
+      w="60%"
+      bg="surface"
+      alignSelf="center"
+      mt="2em"
+      py="2em"
+      direction="column"
+      align="center"
+      justify="center"
+    >
+      <Logo />
+      <Text fontSize="2rem" fontWeight="500" mt="0.5em">
+        Huh, no designs?
+      </Text>
+      <Text mt="1em" color="textSecondary">
+        C'mon now don't be lazy...
+      </Text>
+      <Button mt="2em" fontWeigh="300" fontSize="sm" onClick={onClick}>
+        Choose your design
+      </Button>
+    </Flex>
+  )
+}
+
 function Dashboard() {
   const {isOpen, onOpen, onClose} = useDisclosure()
   const {designs, isLoading} = useDesigns()
@@ -121,7 +147,7 @@ function Dashboard() {
         <Text fontSize="xl" fontWeight="500">
           Designs
         </Text>
-        <Button
+        <ChakraButton
           aria-label="Add design"
           variant="ghost"
           ml="1em"
@@ -139,22 +165,26 @@ function Dashboard() {
           onClick={onOpen}
         >
           <AddIcon />
-        </Button>
+        </ChakraButton>
       </Flex>
-      <SimpleGrid
-        mt="1em"
-        gridTemplateColumns={{sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)'}}
-        minChildWidth="300px"
-        spacing="1.5em"
-      >
-        {designs.map(design => (
-          <DesignCard
-            key={design.designId}
-            designId={design.designId}
-            name={design.name}
-          />
-        ))}
-      </SimpleGrid>
+      {designs.length ? (
+        <SimpleGrid
+          mt="1em"
+          gridTemplateColumns={{sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)'}}
+          minChildWidth="300px"
+          spacing="1.5em"
+        >
+          {designs.map(design => (
+            <DesignCard
+              key={design.designId}
+              designId={design.designId}
+              name={design.name}
+            />
+          ))}
+        </SimpleGrid>
+      ) : (
+        <EmptyDashboard onClick={onOpen} />
+      )}
     </Flex>
   )
 }
