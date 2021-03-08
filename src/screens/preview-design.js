@@ -9,12 +9,14 @@ import {
   Input,
   SimpleGrid,
   Text,
+  Button,
   useColorModeValue,
 } from '@chakra-ui/react'
-import {Button, FullPageSpinner} from 'components/lib'
-import {useParams} from 'react-router-dom'
+import {FullPageSpinner} from 'components/lib'
+import {useNavigate, useParams} from 'react-router-dom'
 import {useDesign} from 'utils/designs'
 import {Check, SelectedCheck} from 'assets/icons'
+import {ArrowBackIcon} from '@chakra-ui/icons'
 
 function PreviewScreen() {
   const {designId} = useParams()
@@ -23,6 +25,7 @@ function PreviewScreen() {
 
   const [selectedVersion, setSelectedVersion] = React.useState()
   const headerBg = useColorModeValue('white', 'gray.700')
+  const navigate = useNavigate()
 
   if (isLoading) {
     return <FullPageSpinner />
@@ -30,6 +33,18 @@ function PreviewScreen() {
 
   return (
     <Flex flex="1" align="center" flexDir="column">
+      <Button
+        variant="ghost"
+        alignSelf="flex-start"
+        mb="1em"
+        color="info"
+        leftIcon={<ArrowBackIcon />}
+        onClick={() => navigate(-1)}
+        _focus="none"
+        _active="none"
+      >
+        Back
+      </Button>
       <SimpleGrid
         m="1em"
         mt="0em"
