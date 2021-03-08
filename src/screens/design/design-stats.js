@@ -165,7 +165,7 @@ export function DesignStats({totalVotes, totalOpinions, designId}) {
             variant="ghost"
             h="3em"
             leftIcon={<ViewIcon />}
-            onClick={() => navigate(`/vote/${designId}`)}
+            onClick={() => navigate(`/preview/${designId}`)}
             w="100%"
             color="brand.500"
             _hover={{bg: 'brand.200', color: 'white'}}

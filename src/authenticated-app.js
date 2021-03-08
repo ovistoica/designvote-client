@@ -6,8 +6,9 @@ import {Dashboard} from 'screens/dashboard'
 import {Design} from 'screens/design'
 import {NotFoundScreen} from 'screens/not-found'
 import {UploadDesign} from 'screens/upload-design-versions'
-import {VoteScreen} from 'screens/vote-design'
+import {PreviewScreen} from 'screens/preview-design'
 import {NavBar} from 'components/nav'
+import {VoteDesign} from 'screens/vote-unauthenticated'
 
 function AppRoutes() {
   return (
@@ -16,8 +17,9 @@ function AppRoutes() {
         <Navigate to="/dashboard" />
       </Route>
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/vote/:shortUrl" element={<VoteDesign />} />
       <Route path="/design/:designId" element={<Design />} />
-      <Route path="/vote/:designId" element={<VoteScreen />} />
+      <Route path="/preview/:designId" element={<PreviewScreen />} />
       <Route path="/upload-design/:designId" element={<UploadDesign />} />
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>

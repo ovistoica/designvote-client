@@ -12,32 +12,19 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react'
 import {Button, FullPageSpinner} from 'components/lib'
-import {useNavigate, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import {useDesign} from 'utils/designs'
-import {useVoteDesignVersion} from 'utils/design-version'
 import {Check, SelectedCheck} from 'assets/icons'
 
-function VoteScreen() {
-  const [opinion, setOpinion] = React.useState('')
+function PreviewScreen() {
   const {designId} = useParams()
   const {data, isLoading} = useDesign(designId)
   const {design, versions, pictures} = data
-  const {
-    mutate: vote,
-    isSuccess,
-    isLoading: isVoteLoading,
-  } = useVoteDesignVersion(designId)
+
   const [selectedVersion, setSelectedVersion] = React.useState()
   const headerBg = useColorModeValue('white', 'gray.700')
-  const navigate = useNavigate()
 
-  React.useEffect(() => {
-    if (isSuccess) {
-      navigate(`/design/${designId}`)
-    }
-  }, [isSuccess, navigate, designId])
-
-  if (isLoading || isVoteLoading) {
+  if (isLoading) {
     return <FullPageSpinner />
   }
 
@@ -112,7 +99,6 @@ function VoteScreen() {
           as="textarea"
           placeholder="Opinions help the designer to better understand your choice"
           minH="5em"
-          onChange={e => setOpinion(e.target.value)}
         />
         <FormHelperText></FormHelperText>
       </FormControl>
@@ -121,9 +107,6 @@ function VoteScreen() {
         w="12.5em"
         mt="1em"
         disabled={!selectedVersion}
-        onClick={() => {
-          vote({versionId: selectedVersion, opinion})
-        }}
       >
         Choose
       </Button>
@@ -131,4 +114,4 @@ function VoteScreen() {
   )
 }
 
-export {VoteScreen}
+export {PreviewScreen}
