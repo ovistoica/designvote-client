@@ -43,11 +43,17 @@ test('can be opened and closed', async () => {
 
   expect(inModal.getByRole('button', {name: 'Submit'})).toBeInTheDocument()
 
-  expect(
-    inModal.getByRole('textbox', {name: 'New design name'}),
-  ).toBeInTheDocument()
-
   userEvent.click(closeButton)
+
+  expect(
+    inModal.getByRole('textbox', {name: /design name/i}),
+  ).toBeInTheDocument()
+  expect(
+    inModal.getByRole('textbox', {name: /targeted question/i}),
+  ).toBeInTheDocument()
+  expect(
+    inModal.getByRole('textbox', {name: /design description/i}),
+  ).toBeInTheDocument()
 
   //TODO: FIX THIS. RIGHT NOW THIS SHOULD FAIL
   expect(screen.queryByRole('dialog')).toBeInTheDocument()
