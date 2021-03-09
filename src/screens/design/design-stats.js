@@ -118,6 +118,7 @@ export function DesignStats({totalVotes, totalOpinions, designId}) {
         flexDir="column"
         boxShadow="md"
         w="70%"
+        minW="15em"
         bg={statsBg}
         borderRadius="0.5em"
         align="center"

@@ -11,6 +11,8 @@ import {
   Text,
   Button,
   useColorModeValue,
+  Heading,
+  Stack,
 } from '@chakra-ui/react'
 import {FullPageSpinner} from 'components/lib'
 import {useNavigate, useParams} from 'react-router-dom'
@@ -45,6 +47,15 @@ function PreviewScreen() {
       >
         Back
       </Button>
+      <Stack mb="1em" w="100%" p="1em">
+        <Heading>{design.question}</Heading>
+        {design.description ? (
+          <Text fontWeight="300" fontSize="xl">
+            {design.description}
+          </Text>
+        ) : null}
+      </Stack>
+
       <SimpleGrid
         m="1em"
         mt="0em"

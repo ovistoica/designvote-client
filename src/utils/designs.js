@@ -57,8 +57,8 @@ export function useCreateDesign(options = {}) {
   const qc = useQueryClient()
   const client = useClient()
   return useMutation(
-    ({name, description = null, img = null}) =>
-      client(`v1/designs`, {data: {name, description, img}}),
+    ({name, description = null, img = null, question = null}) =>
+      client(`v1/designs`, {data: {name, description, img, question}}),
     {
       ...defaultMutationOptions,
       ...options,

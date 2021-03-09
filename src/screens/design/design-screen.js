@@ -35,12 +35,12 @@ function Design() {
         alignItems="center"
       >
         <Stack maxW="40em" align="flex-start">
-          <Heading fontSize="2rem">{design.name}</Heading>
-          {/*//TODO: change this */}
-          <Text fontWeight="300" fontSize="xl">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </Text>
+          <Heading fontSize="2rem">{design.question}</Heading>
+          {design.description ? (
+            <Text fontWeight="300" fontSize="xl">
+              {design.description}
+            </Text>
+          ) : null}
         </Stack>
         <DesignStats
           totalVotes={totalVotes}
