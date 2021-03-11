@@ -23,7 +23,6 @@ import {useTheme} from '@emotion/react'
 import {useMatch, Link as RouterLink, useNavigate} from 'react-router-dom'
 import {ExternalLinkIcon} from '@chakra-ui/icons'
 import {FaMoon, FaSun} from 'react-icons/fa'
-import {isUser} from 'types/utils'
 
 function NavBar(props: FlexProps) {
   const [isOpen, setIsOpen] = React.useState(false)
