@@ -13,6 +13,8 @@ import {
   MenuItem,
   useColorMode,
   Text,
+  FlexProps,
+  LinkProps,
 } from '@chakra-ui/react'
 
 import Logo from './logo'
@@ -21,12 +23,14 @@ import {useTheme} from '@emotion/react'
 import {useMatch, Link as RouterLink, useNavigate} from 'react-router-dom'
 import {ExternalLinkIcon} from '@chakra-ui/icons'
 import {FaMoon, FaSun} from 'react-icons/fa'
+import {isUser} from 'types/utils'
 
-const NavBar = props => {
+function NavBar(props: FlexProps) {
   const [isOpen, setIsOpen] = React.useState(false)
 
   const toggle = () => setIsOpen(!isOpen)
-  const {colors} = useTheme()
+  const theme = useTheme()
+  const {colors} = theme as any
   const brand = useColorModeValue(colors.primary[500], colors.primary[600])
   const navigate = useNavigate()
   const {isAuthenticated} = useAuth()
@@ -68,7 +72,7 @@ const MenuIcon = () => (
   </svg>
 )
 
-const MenuToggle = ({toggle, isOpen}) => {
+function MenuToggle({toggle, isOpen}: {toggle: () => void; isOpen: boolean}) {
   return (
     <Box display={{base: 'block', md: 'none'}} onClick={toggle}>
       {isOpen ? <CloseIcon /> : <MenuIcon />}
@@ -76,9 +80,13 @@ const MenuToggle = ({toggle, isOpen}) => {
   )
 }
 
-function NavLink(props) {
+interface NavLinkProps extends LinkProps {
+  to: string
+}
+
+function NavLink(props: NavLinkProps) {
   const match = useMatch(props.to)
-  const {colors} = useTheme()
+  const {colors} = useTheme() as any
   const brand = useColorModeValue(colors.primary[500], colors.primary[600])
   return (
     <Link
@@ -106,9 +114,9 @@ function NavLink(props) {
   )
 }
 
-const MenuLinks = ({isOpen}) => {
+function MenuLinks({isOpen}: {isOpen: boolean}) {
   const {isAuthenticated, user, logout, login} = useAuth()
-  const {colors} = useTheme()
+  const {colors} = useTheme() as any
   const brand = useColorModeValue(colors.primary[500], colors.primary[600])
   const SwitchIcon = useColorModeValue(FaMoon, FaSun)
   const {toggleColorMode} = useColorMode()
@@ -126,7 +134,7 @@ const MenuLinks = ({isOpen}) => {
         direction={['column', 'row', 'row', 'row']}
         pt={[4, 4, 0, 0]}
       >
-        {isAuthenticated ? (
+        {isAuthenticated && user ? (
           <>
             <NavLink to="/dashboard">Dashboard</NavLink>
             <NavLink to="/Settings">Settings</NavLink>
@@ -159,7 +167,7 @@ const MenuLinks = ({isOpen}) => {
                 >
                   {colorSwithcerText}
                 </MenuItem>
-                <MenuItem onClick={logout} icon={<ExternalLinkIcon />}>
+                <MenuItem onClick={() => logout()} icon={<ExternalLinkIcon />}>
                   Logout
                 </MenuItem>
               </MenuList>
@@ -209,9 +217,9 @@ const MenuLinks = ({isOpen}) => {
   )
 }
 
-const NavBarContainer = ({children, ...props}) => {
-  const {colors} = useTheme()
-  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
+const NavBarContainer = ({children, ...props}: FlexProps) => {
+  const {colors} = useTheme() as any
+  const brand = useColorModeValue(colors.primary[500], colors.primary[300])
   return (
     <Flex
       as="nav"
@@ -220,7 +228,6 @@ const NavBarContainer = ({children, ...props}) => {
       wrap="wrap"
       w="100%"
       p="1em"
-      px="4em"
       bg={[brand, brand, 'transparent', 'transparent']}
       {...props}
     >

@@ -17,8 +17,8 @@ function getAsyncState(overrides = {}) {
     isError: false,
     isLoading: false,
     isSuccess: false,
-    data: null,
-    error: null,
+    data: undefined,
+    error: undefined,
     status: 'idle',
 
     run: expect.any(Function),
@@ -34,6 +34,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+  // eslint-disable-next-line no-console
   console.error.mockRestore()
 })
 
@@ -167,6 +168,7 @@ test('No state updates happen if the component is unmounted while pending', asyn
     await p
   })
 
+  // eslint-disable-next-line no-console
   expect(console.error).not.toHaveBeenCalled()
 })
 

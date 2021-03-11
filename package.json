@@ -54,10 +54,15 @@
     "lint-staged": "lint-staged",
     "lint": "eslint . --cache-location node_modules/.cache/eslint",
     "format": "prettier --write \"**/*.+(js|json|css|md|mdx|html)\"",
-    "validate": "npm-run-all --parallel lint test:coverage build"
+    "check-types": "tsc",
+    "validate": "npm-run-all --parallel check-types lint test:coverage build",
+    "precommit": "npm-run-all --parallel check-types lint-staged"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules": {
+      "no-console": "warn"
+    }
   },
   "lint-staged": {
     "*.+(js|jsx|ts|tsx)": [

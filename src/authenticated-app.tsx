@@ -5,7 +5,7 @@ import {Routes, Route, Navigate} from 'react-router-dom'
 import {Dashboard} from 'screens/dashboard'
 import {Design} from 'screens/design'
 import {NotFoundScreen} from 'screens/not-found'
-import {UploadDesign} from 'screens/upload-design-versions'
+import {UploadDesign} from 'screens/upload-design'
 import {PreviewScreen} from 'screens/preview-design'
 import {NavBar} from 'components/nav'
 import {VoteDesign} from 'screens/vote-unauthenticated'
@@ -13,7 +13,7 @@ import {VoteDesign} from 'screens/vote-unauthenticated'
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" exact>
+      <Route path="/">
         <Navigate to="/dashboard" />
       </Route>
       <Route path="/dashboard" element={<Dashboard />} />
@@ -26,7 +26,7 @@ function AppRoutes() {
   )
 }
 
-function ErrorFallback({error}) {
+function ErrorFallback({error}: {error: Error}) {
   return (
     <ErrorMessage
       error={error}
@@ -45,7 +45,13 @@ function AuthenticatedApp() {
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
       <NavBar />
-      <Grid minH="100vh" p="2em 4em" m="0 auto" maxW="1440px" w="100%">
+      <Grid
+        minH="100vh"
+        p={['0', '1em 2em', '2em 4em']}
+        m="0 auto"
+        maxW={['512px', '1024px', '1440px']}
+        w="100%"
+      >
         <Box as="main" w="100%">
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <AppRoutes />
