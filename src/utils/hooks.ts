@@ -1,15 +1,32 @@
 import * as React from 'react'
 
-function useSafeDispatch(dispatch) {
+export function useSafeDispatch<Value = unknown>(
+  dispatch: React.Dispatch<Value>,
+) {
   const mounted = React.useRef(false)
   React.useLayoutEffect(() => {
     mounted.current = true
-    return () => (mounted.current = false)
+    return () => {
+      mounted.current = false
+    }
   }, [])
   return React.useCallback(
-    (...args) => (mounted.current ? dispatch(...args) : void 0),
+    (value: Value) => (mounted.current ? dispatch(value) : void 0),
     [dispatch],
   )
+}
+
+export enum ApiStatus {
+  Idle = 'idle',
+  Pending = 'pending',
+  Resolved = 'resolved',
+  Rejected = 'rejected',
+}
+
+interface AsyncState<Data = unknown> {
+  data?: Data
+  error?: string
+  status: ApiStatus
 }
 
 // Example usage:
@@ -17,25 +34,29 @@ function useSafeDispatch(dispatch) {
 // React.useEffect(() => {
 //   run(fetchPokemon(pokemonName))
 // }, [pokemonName, run])
-const defaultInitialState = {status: 'idle', data: null, error: null}
-function useAsync(initialState) {
+function useAsync<Result = unknown>(
+  initialState: AsyncState<Result> = {
+    status: ApiStatus.Idle,
+    data: undefined,
+    error: undefined,
+  },
+) {
   const initialStateRef = React.useRef({
-    ...defaultInitialState,
     ...initialState,
   })
   const [{status, data, error}, setState] = React.useReducer(
-    (s, a) => ({...s, ...a}),
+    (s: AsyncState<Result>, a: AsyncState<Result>) => ({...s, ...a}),
     initialStateRef.current,
   )
 
   const safeSetState = useSafeDispatch(setState)
 
   const setData = React.useCallback(
-    data => safeSetState({data, status: 'resolved'}),
+    (data: Result) => safeSetState({data, status: ApiStatus.Resolved}),
     [safeSetState],
   )
   const setError = React.useCallback(
-    error => safeSetState({error, status: 'rejected'}),
+    error => safeSetState({error, status: ApiStatus.Rejected}),
     [safeSetState],
   )
   const reset = React.useCallback(() => safeSetState(initialStateRef.current), [
@@ -43,19 +64,19 @@ function useAsync(initialState) {
   ])
 
   const run = React.useCallback(
-    promise => {
+    (promise: Promise<Result>) => {
       if (!promise || !promise.then) {
         throw new Error(
           `The argument passed to useAsync().run must be a promise. Maybe a function that's passed isn't returning anything?`,
         )
       }
-      safeSetState({status: 'pending'})
+      safeSetState({status: ApiStatus.Pending})
       return promise.then(
         data => {
           setData(data)
           return data
         },
-        error => {
+        (error: string) => {
           setError(error)
           return Promise.reject(error)
         },
@@ -66,10 +87,10 @@ function useAsync(initialState) {
 
   return {
     // using the same names that react-query uses for convenience
-    isIdle: status === 'idle',
-    isLoading: status === 'pending',
-    isError: status === 'rejected',
-    isSuccess: status === 'resolved',
+    isIdle: status === ApiStatus.Idle,
+    isLoading: status === ApiStatus.Pending,
+    isError: status === ApiStatus.Rejected,
+    isSuccess: status === ApiStatus.Resolved,
 
     setData,
     setError,

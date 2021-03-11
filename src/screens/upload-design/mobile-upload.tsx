@@ -1,96 +1,16 @@
-import * as React from 'react'
-import {
-  Flex,
-  Image,
-  Input,
-  Progress,
-  SimpleGrid,
-  Stack,
-  Text,
-  useColorModeValue,
-} from '@chakra-ui/react'
-import {useNavigate, useParams} from 'react-router-dom'
-import {useDropzone} from 'react-dropzone'
-import {HangedImage} from 'assets/icons'
-import {useUploadImage} from 'utils/file-upload'
+import {Image} from '@chakra-ui/image'
+import {Input} from '@chakra-ui/input'
+import {SimpleGrid, Stack} from '@chakra-ui/layout'
 import {Button} from 'components/lib'
+import * as React from 'react'
+import {useNavigate} from 'react-router'
 import {useUploadDesignVersions} from 'utils/design-version'
+import {ImageDropInput} from './image-input'
 
-function ImageDropInput({onImageUpload}) {
-  const bg = useColorModeValue('surface', 'gray.700')
-  const {
-    uploadImage: onDrop,
-    isLoading,
-    progress,
-    isSuccess,
-    imageUrl,
-  } = useUploadImage()
-  const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
-
-  React.useEffect(() => {
-    if (isSuccess && imageUrl) {
-      onImageUpload(imageUrl)
-    }
-  }, [isSuccess, imageUrl, onImageUpload])
-
-  return (
-    <Stack align="center">
-      <Stack
-        w="18em"
-        h="32em"
-        _focus={{outline: 'none'}}
-        bg={bg}
-        align="center"
-        px="3em"
-        pt="10em"
-        cursor="pointer"
-        aria-label="Upload image"
-        border="dashed"
-        borderWidth="1px"
-        borderColor="info"
-        {...getRootProps()}
-      >
-        <HangedImage />
-        {isDragActive ? (
-          <Text textAlign="center" letterSpacing="0.02em" color="info">
-            Drop the image
-          </Text>
-        ) : (
-          <>
-            <Text
-              textTransform="uppercase"
-              textAlign="center"
-              letterSpacing="0.02em"
-              color="info"
-            >
-              Drag and drop some images here or{' '}
-              <Text as="span" textDecor="underline dashed">
-                browse
-              </Text>
-            </Text>
-            <Text textAlign="center" letterSpacing="0.02em" color="info">
-              (jpg, png, gif, webp ideally oriented for mobile phones)
-            </Text>
-          </>
-        )}
-        <Input
-          type="file"
-          _focus={{outline: 'none'}}
-          _active={{outline: 'none'}}
-          {...getInputProps()}
-        />
-        {isLoading ? (
-          <Progress colorScheme="orange" size="lg" value={progress} hasStripe />
-        ) : null}
-      </Stack>
-    </Stack>
-  )
-}
-
-function useCurrentVersions() {
-  const [image1, setImage1] = React.useState()
-  const [image2, setImage2] = React.useState()
-  const [image3, setImage3] = React.useState()
+function useCurrentMobileVersions() {
+  const [image1, setImage1] = React.useState<string>()
+  const [image2, setImage2] = React.useState<string>()
+  const [image3, setImage3] = React.useState<string>()
 
   const [description1, setDescription1] = React.useState('')
   const [description2, setDescription2] = React.useState('')
@@ -132,9 +52,11 @@ function useCurrentVersions() {
   }
 }
 
-function UploadDesign() {
-  const {designId} = useParams()
-  const navigate = useNavigate()
+interface MobileUploadProps {
+  designId: string
+}
+
+export function MobileUpload({designId}: MobileUploadProps) {
   const {
     versions,
     image1,
@@ -146,23 +68,19 @@ function UploadDesign() {
     setDescription1,
     setDescription2,
     setDescription3,
-  } = useCurrentVersions()
-
+  } = useCurrentMobileVersions()
   const {isLoading, mutate: uploadVersions} = useUploadDesignVersions(designId)
+  const navigate = useNavigate()
 
   return (
-    <Flex flex="1" align="center" flexDir="column">
-      <Text fontSize="2rem" textAlign="center">
-        Upload two or more versions of the same design
-      </Text>
-
+    <>
       <SimpleGrid
         m="1em"
         mt="1.5em"
         column={3}
         gridTemplateColumns="repeat(3, 1fr)"
-        columnGap="2.5em"
-        alignContent="center"
+        columnGap={['0.5em', '1em', '2.5em']}
+        alignItems="center"
       >
         <Stack align="center">
           {image1 ? (
@@ -218,7 +136,6 @@ function UploadDesign() {
         onClick={() => {
           uploadVersions(versions, {
             onSettled: () => {
-              console.log('Called from component')
               navigate(`/design/${designId}`)
             },
           })
@@ -227,8 +144,6 @@ function UploadDesign() {
       >
         Share designs
       </Button>
-    </Flex>
+    </>
   )
 }
-
-export {UploadDesign}
