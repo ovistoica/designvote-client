@@ -1,8 +1,11 @@
 import * as React from 'react'
-import {Box, Grid} from '@chakra-ui/layout'
+import {Box, Circle, Grid} from '@chakra-ui/layout'
 import {ImageDropInput} from './image-input'
 import {Image} from '@chakra-ui/image'
 import {useSafeDispatch} from 'utils/hooks'
+import {Button} from 'components/lib'
+import {DeleteBin} from 'assets/icons'
+import {SmallImageInput} from './small-image-input'
 
 type ImageSrc = string | null
 
@@ -62,33 +65,85 @@ export function WebUpload(props: WebUploadProps) {
           h="25em"
         />
       )}
-      <Grid gridTemplateColumns="repeat(5, 1fr)" columnGap="1em">
+      <Grid
+        gridTemplateColumns="repeat(5, 1fr)"
+        columnGap="1em"
+        transition="0.25s all"
+      >
         {images.map((image, i) => {
+          const selected = selectedIndex === i
           return image ? (
-            <Image
-              borderRadius="6px"
-              key={`uploadImg${i}`}
-              border="dashed"
-              borderWidth="1px"
-              borderColor="info"
-              src={image}
-              maxH="5em"
-              maxW="8em"
-              objectFit="contain"
-              onClick={() => setSelectedIndex(i)}
-            />
+            <Box role="group" position="relative">
+              <Circle
+                position="absolute"
+                right="-2"
+                top="-2"
+                bg="info"
+                size="1.5em"
+                boxShadow="md"
+                opacity={0}
+                transition="0.25s all"
+                onClick={() => setImage(null, i)}
+                _groupHover={{
+                  opacity: 1,
+                }}
+              >
+                <DeleteBin />
+              </Circle>
+              <Image
+                borderRadius="6px"
+                key={`uploadImg${i}`}
+                border={selected ? 'solid' : 'none'}
+                borderWidth={selected ? '4px' : '1px'}
+                borderColor={selected ? 'brand.500' : 'info'}
+                src={image}
+                boxSize="5em"
+                w="8em"
+                objectFit="cover"
+                transition="0.25s all"
+                cursor="pointer"
+                _groupHover={
+                  selected
+                    ? {}
+                    : {
+                        borderColor: 'info',
+                        borderWidth: '1px',
+                        borderStyle: 'solid',
+                      }
+                }
+                onClick={() => setSelectedIndex(i)}
+              />
+            </Box>
           ) : (
-            <Box
-              borderRadius="6px"
+            <SmallImageInput
+              onImageUpload={imageUrl => {
+                setImage(imageUrl, i)
+                setSelectedIndex(i)
+              }}
               key={`uploadImg${i}`}
-              border="dashed"
-              borderWidth="1px"
-              borderColor="info"
-              onClick={() => setSelectedIndex(i)}
+              transition="0.25s all"
+              color="info"
+              boxSize="5em"
+              w="8em"
+              h="5em"
+              _hover={{
+                borderColor: 'brand.500',
+              }}
             />
           )
         })}
       </Grid>
+      <Button
+        w="14em"
+        h="3em"
+        mt="1em"
+        disabled={images.filter(image => image !== null).length < 2}
+        alignSelf="center"
+        mx="auto"
+        // isLoading={isLoading}
+      >
+        Share designs
+      </Button>
     </Grid>
   )
 }

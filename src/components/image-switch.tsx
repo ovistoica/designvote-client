@@ -2,6 +2,7 @@ import {IconButton} from '@chakra-ui/button'
 import {HStack, StackProps} from '@chakra-ui/layout'
 import {RiComputerFill} from 'react-icons/ri'
 import {FaMobile} from 'react-icons/fa'
+import {Tooltip} from '@chakra-ui/tooltip'
 
 export enum Mode {
   Mobile,
@@ -20,18 +21,22 @@ export function ImageSwitch({
 }: SwitchProps) {
   return (
     <HStack {...stackProps}>
-      <IconButton
-        aria-label="mobile-mode"
-        icon={<FaMobile />}
-        colorScheme={mode === Mode.Mobile ? 'brand' : undefined}
-        onClick={() => toggle(Mode.Mobile)}
-      />
-      <IconButton
-        aria-label="web-mode"
-        colorScheme={mode === Mode.Web ? 'brand' : undefined}
-        icon={<RiComputerFill />}
-        onClick={() => toggle(Mode.Web)}
-      />
+      <Tooltip hasArrow label="Mobile designs">
+        <IconButton
+          aria-label="mobile-mode"
+          icon={<FaMobile />}
+          colorScheme={mode === Mode.Mobile ? 'brand' : undefined}
+          onClick={() => toggle(Mode.Mobile)}
+        />
+      </Tooltip>
+      <Tooltip hasArrow label="Web designs">
+        <IconButton
+          aria-label="web-mode"
+          colorScheme={mode === Mode.Web ? 'brand' : undefined}
+          icon={<RiComputerFill />}
+          onClick={() => toggle(Mode.Web)}
+        />
+      </Tooltip>
     </HStack>
   )
 }
