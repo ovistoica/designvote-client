@@ -1,13 +1,16 @@
 import * as React from 'react'
-import {Box, Circle, Grid} from '@chakra-ui/layout'
+import {Box, Circle, Grid, Stack, Text} from '@chakra-ui/layout'
 import {ImageDropInput} from './image-input'
 import {Image} from '@chakra-ui/image'
 import {useSafeDispatch} from 'utils/hooks'
 import {Button} from 'components/lib'
 import {DeleteBin} from 'assets/icons'
 import {SmallImageInput} from './small-image-input'
+import {Input} from '@chakra-ui/input'
+import {useUploadDesignVersions} from 'utils/design-version'
+import {useNavigate} from 'react-router'
 
-type ImageSrc = string | null
+type ImageSrc = {url: string; description?: string} | null
 
 type ImagesArray = [ImageSrc, ImageSrc, ImageSrc, ImageSrc, ImageSrc]
 
@@ -19,18 +22,55 @@ const defaultInitialState: ImageState = {
   images: [null, null, null, null, null],
 }
 
-type Action = {type: 'add'; image: ImageSrc; index: number}
+type Action =
+  | {type: 'add'; image: ImageSrc; index: number}
+  | {type: 'description'; description: string; index: number}
+
+function sortNullLast(a: ImageSrc, b: ImageSrc) {
+  if (a === null) {
+    return 1
+  }
+  if (b === null) {
+    return -1
+  }
+  return 0
+}
 
 function useImageState() {
   const [{images}, setImages] = React.useReducer(
     (state: ImageState, action: Action): ImageState => {
-      if (action.type === 'add') {
-        const {image, index} = action
-        const newImages: ImagesArray = [...state.images]
-        newImages[index] = image
-        return {...state, images: newImages}
+      switch (action.type) {
+        case 'add': {
+          const {image, index} = action
+
+          if (typeof image === 'string' && state.images.includes(image)) {
+            return state
+          }
+
+          let newImages: ImagesArray = [...state.images]
+          newImages[index] = image
+
+          if (image === null) {
+            newImages = newImages.sort(sortNullLast)
+          }
+
+          return {...state, images: newImages}
+        }
+        case 'description': {
+          const {description, index} = action
+          let original = state.images[index]
+          if (!original) {
+            return state
+          }
+          let newImages: ImagesArray = [...state.images]
+          newImages[index] = {...original, description}
+
+          return {...state, images: newImages}
+        }
+        default: {
+          return state
+        }
       }
-      return state
     },
     defaultInitialState,
   )
@@ -42,29 +82,67 @@ function useImageState() {
       safeSetImages({type: 'add', image, index}),
     [safeSetImages],
   )
-  return {images, setImage}
+  const setDescription = React.useCallback(
+    (description: string, index: number) =>
+      safeSetImages({type: 'description', description, index}),
+    [safeSetImages],
+  )
+  return {images, setImage, setDescription}
 }
 
 interface WebUploadProps {
   designId: string
 }
 
-export function WebUpload(props: WebUploadProps) {
-  const {images, setImage} = useImageState()
+export function WebUpload({designId}: WebUploadProps) {
+  const {images, setImage, setDescription} = useImageState()
+  const {isLoading, mutate: uploadVersions} = useUploadDesignVersions(designId)
+  const navigate = useNavigate()
   const [selectedIndex, setSelectedIndex] = React.useState(0)
   const previewImage = images[selectedIndex]
+  let nextIndex = images.indexOf(null)
+
+  const uploadImages = () => {
+    let versions = images
+      .filter(im => im !== null)
+      .map((im, index) => ({
+        name: im?.description ?? `Version ${index + 1}`,
+        pictures: [im?.url],
+      }))
+    uploadVersions(versions, {
+      onSettled: () => {
+        navigate(`/design/${designId}`)
+      },
+    })
+  }
 
   return (
-    <Grid mt="1em" gridTemplateRows="5fr 1fr" rowGap="1em">
+    <Grid mt="1em" gridTemplateRows="5fr 1fr" rowGap="1em" w="40em">
       {previewImage ? (
-        <Image src={previewImage} w="40em" h="25em" objectFit="contain" />
+        <Stack align="center" justify="center">
+          <Image
+            src={previewImage.url}
+            maxW="40em"
+            h="25em"
+            borderRadius="6px"
+            objectFit="cover"
+          />
+          <Input
+            key={`Input${previewImage.url}`}
+            textAlign="center"
+            placeholder="Version description"
+            value={previewImage.description}
+            onChange={e => setDescription(e.target.value, selectedIndex)}
+          />
+        </Stack>
       ) : (
         <ImageDropInput
-          onImageUpload={imageUrl => setImage(imageUrl, selectedIndex)}
+          onImageUpload={imageUrl => setImage({url: imageUrl}, selectedIndex)}
           w="40em"
           h="25em"
         />
       )}
+
       <Grid
         gridTemplateColumns="repeat(5, 1fr)"
         columnGap="1em"
@@ -96,9 +174,10 @@ export function WebUpload(props: WebUploadProps) {
                 border={selected ? 'solid' : 'none'}
                 borderWidth={selected ? '4px' : '1px'}
                 borderColor={selected ? 'brand.500' : 'info'}
-                src={image}
+                src={image.url}
                 boxSize="5em"
                 w="8em"
+                h="5em"
                 objectFit="cover"
                 transition="0.25s all"
                 cursor="pointer"
@@ -113,12 +192,15 @@ export function WebUpload(props: WebUploadProps) {
                 }
                 onClick={() => setSelectedIndex(i)}
               />
+              <Text textAlign="center" fontSize="sm">
+                {image.description}
+              </Text>
             </Box>
           ) : (
             <SmallImageInput
               onImageUpload={imageUrl => {
-                setImage(imageUrl, i)
-                setSelectedIndex(i)
+                setImage({url: imageUrl}, nextIndex)
+                setSelectedIndex(nextIndex)
               }}
               key={`uploadImg${i}`}
               transition="0.25s all"
@@ -140,7 +222,8 @@ export function WebUpload(props: WebUploadProps) {
         disabled={images.filter(image => image !== null).length < 2}
         alignSelf="center"
         mx="auto"
-        // isLoading={isLoading}
+        isLoading={isLoading}
+        onClick={uploadImages}
       >
         Share designs
       </Button>

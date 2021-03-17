@@ -9,7 +9,7 @@ import {useAsync} from 'utils/hooks'
 import {FullPageSpinner, FullPageErrorFallback} from 'components/lib'
 import {client} from 'utils/api-client'
 import {useQueryClient} from 'react-query'
-import {User} from 'types'
+import {ApiConfig, User} from 'types'
 
 function Auth0Provider({children}: {children: React.ReactChildren}) {
   if (
@@ -97,7 +97,7 @@ function useAuth() {
   return context
 }
 
-function useClient() {
+function useClient<Result = unknown, Data = unknown>() {
   const {logout: authLogout, token} = useAuth()
   const qc = useQueryClient()
 
@@ -107,7 +107,8 @@ function useClient() {
   }, [authLogout, qc])
 
   return React.useCallback(
-    (endpoint, config) => client(endpoint, {...config, token, logout}),
+    (endpoint: string, config: ApiConfig<Data>) =>
+      client<Result, Data>(endpoint, {...config, token, logout}),
     [token, logout],
   )
 }

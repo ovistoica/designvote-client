@@ -29,7 +29,8 @@ export function SmallImageInput({
     if (isSuccess && imageUrl) {
       onImageUpload(imageUrl)
     }
-  }, [isSuccess, imageUrl, onImageUpload])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, imageUrl])
 
   const inputProps = (getInputProps() as unknown) as InputProps
 
@@ -54,9 +55,16 @@ export function SmallImageInput({
         type="file"
         _focus={{outline: 'none'}}
         _active={{outline: 'none'}}
+        position="absolute"
         {...inputProps}
       />
-      <Center alignSelf="center" position="absolute" top="auto" bottom="auto">
+      <Center
+        alignSelf="center"
+        position="absolute"
+        top="auto"
+        bottom="auto"
+        mt="0em"
+      >
         <AddIcon />
       </Center>
 
