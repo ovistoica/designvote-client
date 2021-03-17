@@ -1,15 +1,22 @@
+import {ApiConfig} from 'types'
 const apiURL = process.env.REACT_APP_API_URL
 
-async function client(
-  endpoint,
-  {data, token, logout, headers: customHeaders, ...customConfig} = {},
-) {
-  const config = {
+async function client<Result = unknown, Data = unknown>(
+  endpoint: string,
+  {
+    data,
+    token,
+    logout,
+    headers: customHeaders,
+    ...customConfig
+  }: ApiConfig<Data> = {},
+): Promise<Result> {
+  const config: RequestInit = {
     method: data ? 'POST' : 'GET',
     body: data ? JSON.stringify(data) : undefined,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: token ? `Bearer ${token}` : undefined,
+      ...(token ? {Authorization: `Bearer ${token}`} : {}),
       ...customHeaders,
     },
     ...customConfig,
@@ -21,7 +28,7 @@ async function client(
         await logout()
       }
       // refresh the page for them
-      window.location.assign(window.location)
+      window.location.assign(window.location.href)
       return Promise.reject({message: 'Please re-authenticate.'})
     }
     const textData = await response.text()

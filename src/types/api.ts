@@ -1,3 +1,9 @@
+export interface ApiConfig<Data = unknown> extends RequestInit {
+  token?: string
+  data?: Data
+  logout?: () => Promise<unknown>
+}
+
 export interface ApiPicture {
   'picture-id': string
   uri: string
