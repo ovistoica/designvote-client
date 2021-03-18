@@ -30,13 +30,14 @@ export interface Version {
 
 export interface Design {
   designId: string
-  description: string | null
+  description?: string | null
   opinions: string[]
   uid: string
   name: string
   public: boolean
   totalVotes: number
-  shortUrl: string | null
+  shortUrl?: string
   versions: string[]
   img: null
+  question: string
 }

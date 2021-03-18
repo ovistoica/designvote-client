@@ -2,13 +2,7 @@ import {useClient} from 'context/auth-context'
 import {useQuery, useMutation, useQueryClient} from 'react-query'
 import {normalizeDesign} from './normalize'
 import {keysToCamel} from './object'
-
-const loadingDesign = {
-  name: 'Loading design',
-  versions: [],
-  totalVotes: 0,
-  opinions: [],
-}
+import {loadingDesign} from './loading-data'
 
 export function useDesigns({onSuccess, ...options} = {}) {
   const client = useClient()

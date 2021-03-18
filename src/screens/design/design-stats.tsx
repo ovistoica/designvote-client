@@ -26,8 +26,13 @@ import {FaShare} from 'react-icons/fa'
 import {useNavigate} from 'react-router-dom'
 import {useDesign, usePublishDesign} from 'utils/designs'
 import {Button} from 'components/lib'
+interface ModalProps {
+  isOpen: boolean
+  onClose: () => void
+  designId: string
+}
 
-function ShareModal({isOpen, onClose, designId}) {
+function ShareModal({isOpen, onClose, designId}: ModalProps) {
   const {
     data: {design},
   } = useDesign(designId)
@@ -40,7 +45,8 @@ function ShareModal({isOpen, onClose, designId}) {
   // When user wants to share the link
   React.useEffect(() => {
     if (isOpen && !design.public) {
-      publish()
+      //TODO: Type this call
+      publish(null)
     }
   }, [design.public, publish, isOpen])
 
@@ -54,7 +60,7 @@ function ShareModal({isOpen, onClose, designId}) {
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Share design</ModalHeader>
-        <ModalCloseButton _focus="none" />
+        <ModalCloseButton _focus={{}} />
         <ModalBody>
           {design.public ? (
             <FormControl>
@@ -70,8 +76,8 @@ function ShareModal({isOpen, onClose, designId}) {
                 <Text>{link}</Text>
                 <Button
                   borderRadius="10em"
-                  _focus="none"
-                  _active="none"
+                  _focus={{}}
+                  _active={{}}
                   bg="primary.500"
                   color="white"
                   onClick={() => {
@@ -107,7 +113,16 @@ function ShareModal({isOpen, onClose, designId}) {
   )
 }
 
-export function DesignStats({totalVotes, totalOpinions, designId}) {
+interface DesignStatsInterface {
+  totalVotes: number
+  totalOpinions: number
+  designId: string
+}
+export function DesignStats({
+  totalVotes,
+  totalOpinions,
+  designId,
+}: DesignStatsInterface) {
   const statsBg = useColorModeValue('white', 'gray.700')
   const iconColor = useColorModeValue('#1A202C', 'rgba(255, 255, 255, 0.92)')
   const navigate = useNavigate()
@@ -152,8 +167,8 @@ export function DesignStats({totalVotes, totalOpinions, designId}) {
             w="100%"
             color="brand.500"
             _hover={{bg: 'brand.200', color: 'white'}}
-            _focus="none"
-            _active="none"
+            _focus={{}}
+            _active={{}}
           >
             Share
           </ChakraButton>
@@ -170,8 +185,8 @@ export function DesignStats({totalVotes, totalOpinions, designId}) {
             w="100%"
             color="brand.500"
             _hover={{bg: 'brand.200', color: 'white'}}
-            _focus="none"
-            _active="none"
+            _focus={{}}
+            _active={{}}
           >
             Preview
           </ChakraButton>
