@@ -112,7 +112,6 @@ function Design() {
                   maxW="6em"
                   objectFit="contain"
                   borderRadius="0.5em"
-                  resize="contain"
                 />
               </SimpleGrid>
               {index !== array.length - 1 ? (

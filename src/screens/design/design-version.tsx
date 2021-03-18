@@ -23,7 +23,23 @@ import {FiLink} from 'react-icons/fi'
 import {Check} from 'assets/icons'
 import {getVotePercent} from 'utils/votes'
 
-export function DesignVersionMenu({versionId, designId}) {
+interface VersionMenuProps {
+  designId: string
+  versionId: string
+}
+
+interface VersionHeaderProps {
+  totalVotes: number
+  votes: string[]
+  name: string
+}
+
+interface DesignVersionProps {
+  versionId: string
+  designId: string
+}
+
+export function DesignVersionMenu({versionId, designId}: VersionMenuProps) {
   const {mutate: deleteDesignVersion, isLoading} = useDeleteDesignVersion(
     designId,
   )
@@ -55,7 +71,7 @@ export function DesignVersionMenu({versionId, designId}) {
             _groupHover={{opacity: 1}}
             _focus={{border: 'none'}}
             _active={{border: 'none'}}
-            _hover="none"
+            _hover={{}}
           >
             {isLoading ? <Spinner /> : <HiDotsHorizontal fill="white" />}
           </MenuButton>
@@ -83,7 +99,7 @@ export function DesignVersionMenu({versionId, designId}) {
   )
 }
 
-function VersionHeader({totalVotes, votes, designId, versionId, name}) {
+function VersionHeader({totalVotes, votes, name}: VersionHeaderProps) {
   const headerBg = useColorModeValue('white', 'gray.700')
   const votePercent = getVotePercent(totalVotes, votes.length)
   return (
@@ -123,7 +139,7 @@ function VersionHeader({totalVotes, votes, designId, versionId, name}) {
   )
 }
 
-export function DesignVersion({versionId, designId}) {
+export function DesignVersion({versionId, designId}: DesignVersionProps) {
   const {data} = useDesign(designId)
   const {
     versions,
@@ -145,7 +161,6 @@ export function DesignVersion({versionId, designId}) {
     >
       <DesignVersionMenu designId={designId} versionId={versionId} />
       <VersionHeader
-        versionId={versionId}
         name={version.name}
         votes={version.votes}
         totalVotes={totalVotes}
