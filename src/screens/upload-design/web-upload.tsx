@@ -109,11 +109,14 @@ export function WebUpload({designId}: WebUploadProps) {
         name: im?.description ?? `Version ${index + 1}`,
         pictures: [im?.url],
       }))
-    uploadVersions(versions, {
-      onSettled: () => {
-        navigate(`/design/${designId}`)
+    uploadVersions(
+      {versions},
+      {
+        onSettled: () => {
+          navigate(`/design/${designId}`)
+        },
       },
-    })
+    )
   }
 
   return (

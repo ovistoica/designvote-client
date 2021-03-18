@@ -117,3 +117,30 @@ export function useUrlDesign(shortUrl, {onSuccess, ...options} = {}) {
     isLoading,
   }
 }
+
+export function useEditDesign(designId, options = {}) {
+  const qc = useQueryClient()
+  const client = useClient()
+  const editDesignAPI = ({
+    name = null,
+    description = null,
+    img = null,
+    designType = null,
+    publicDesign = null,
+  }) => {
+    let finalData = {
+      name,
+      description,
+      img,
+      'design-type': designType,
+      public: publicDesign,
+    }
+    return client(`v1/designs/${designId}`, {method: 'PUT', data: finalData})
+  }
+  return useMutation(editDesignAPI, {
+    ...defaultMutationOptions,
+    ...options,
+    onSettled: () =>
+      qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]}),
+  })
+}
