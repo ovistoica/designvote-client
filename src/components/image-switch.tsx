@@ -5,8 +5,8 @@ import {FaMobile} from 'react-icons/fa'
 import {Tooltip} from '@chakra-ui/tooltip'
 
 export enum Mode {
-  Mobile,
-  Web,
+  Mobile = 'mobile',
+  Web = 'web',
 }
 
 interface SwitchProps extends StackProps {
