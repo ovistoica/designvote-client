@@ -137,7 +137,9 @@ export function WebUpload({designId}: WebUploadProps) {
         </Stack>
       ) : (
         <ImageDropInput
-          onImageUpload={imageUrl => setImage({url: imageUrl}, selectedIndex)}
+          onImageUpload={imageUrl =>
+            setImage({url: imageUrl, description: ''}, selectedIndex)
+          }
           w="40em"
           h="25em"
         />
@@ -151,7 +153,11 @@ export function WebUpload({designId}: WebUploadProps) {
         {images.map((image, i) => {
           const selected = selectedIndex === i
           return image ? (
-            <Box role="group" position="relative">
+            <Box
+              role="group"
+              position="relative"
+              key={`smallImage${image.url}${i}`}
+            >
               <Circle
                 position="absolute"
                 right="-2"
@@ -199,7 +205,7 @@ export function WebUpload({designId}: WebUploadProps) {
           ) : (
             <SmallImageInput
               onImageUpload={imageUrl => {
-                setImage({url: imageUrl}, nextIndex)
+                setImage({url: imageUrl, description: ''}, nextIndex)
                 setSelectedIndex(nextIndex)
               }}
               key={`uploadImg${i}`}
