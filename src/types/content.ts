@@ -40,4 +40,5 @@ export interface Design {
   versions: string[]
   img: null
   question: string
+  designType: 'web' | 'mobile'
 }

@@ -16,8 +16,13 @@ export function normalizeDesign(design: types.ApiDesign) {
     schemas.design,
   )
   const designId = design['design-id']
+  const normalisedDesign = entities.design[designId]
   return {
-    design: entities.design[designId],
+    design: {
+      ...normalisedDesign,
+      versions: normalisedDesign.versions ?? [],
+      opinions: normalisedDesign.opinions ?? [],
+    },
     pictures: entities.picture,
     versions: entities.version,
     opinions: entities.opinion,

@@ -1,3 +1,4 @@
+import * as React from 'react'
 import {
   Divider,
   Flex,
@@ -8,23 +9,35 @@ import {
   Heading,
 } from '@chakra-ui/react'
 import {FullPageSpinner} from 'components/lib'
-import {useParams} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import {useDesign} from 'utils/designs'
 import {ArrowUpIcon} from '@chakra-ui/icons'
 import {DesignStats} from './design-stats'
-import {DesignVersion} from './design-version'
+import {MobileDesignVersions} from './mobile-versions'
+import {WebVersions} from './web-versions'
 
 function Design() {
   const {designId} = useParams()
-  const {data, isLoading} = useDesign(designId)
+  const {data, isLoading, isSuccess} = useDesign(designId)
   const {design, versions, pictures, opinions} = data
+  const navigate = useNavigate()
+
+  const versionsLength = data.design?.versions?.length ?? 0
+
+  // If no versions were created redirect user
+  // to upload design versions
+  React.useLayoutEffect(() => {
+    if (isSuccess && !versionsLength) {
+      navigate(`/upload-design/${designId}`)
+    }
+  }, [versionsLength, designId, isSuccess, navigate])
 
   if (isLoading) {
     return <FullPageSpinner />
   }
 
   const totalVotes = design.totalVotes
-  const totalOpinions = design.opinions.length ?? 0
+  const totalOpinions = design.opinions?.length ?? 0
 
   return (
     <Flex flex="1" flexDir="column">
@@ -48,24 +61,15 @@ function Design() {
           designId={designId}
         />
       </SimpleGrid>
-      <SimpleGrid
-        m="1em"
-        column={3}
-        gridTemplateColumns="repeat(3, 1fr)"
-        columnGap="2em"
-        alignContent="center"
-        maxW="80%"
-      >
-        {design.versions.map(versionId => {
-          return (
-            <DesignVersion
-              key={`version${versionId}`}
-              versionId={versionId}
-              designId={designId}
-            />
-          )
-        })}
-      </SimpleGrid>
+
+      {design.designType === 'web' ? (
+        <WebVersions designId={designId} versionsById={design.versions ?? []} />
+      ) : (
+        <MobileDesignVersions
+          designId={designId}
+          versionsById={design.versions ?? []}
+        />
+      )}
 
       {/* Opinions part */}
       <Stack maxW="80%" m="1em" p="1em" borderRadius="0.5em" boxShadow="base">
@@ -75,6 +79,7 @@ function Design() {
           </Text>
           Opinions
         </Text>
+
         {design.opinions.map((opinionId, index, array) => {
           const {versionId, opinion} = opinions[opinionId]
           const version = versions[versionId]

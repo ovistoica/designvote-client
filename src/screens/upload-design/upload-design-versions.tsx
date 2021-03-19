@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {Flex, Spinner, Text} from '@chakra-ui/react'
+import {Flex, Text} from '@chakra-ui/react'
 import {useParams} from 'react-router-dom'
 
 import {ImageSwitch, Mode} from 'components/image-switch'

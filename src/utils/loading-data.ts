@@ -11,4 +11,5 @@ export const loadingDesign: Design = {
   versions: [],
   totalVotes: 0,
   opinions: [],
+  designType: 'mobile',
 }
