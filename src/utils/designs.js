@@ -19,7 +19,7 @@ export function useDesigns({onSuccess, ...options} = {}) {
 export function useDesign(designId, {onSuccess, ...options} = {}) {
   const client = useClient()
 
-  const {data, isLoading} = useQuery({
+  const {data, ...restOfRestult} = useQuery({
     queryKey: ['design', {designId}],
     queryFn: () =>
       // Normalize the data from the server for faster lookup
@@ -38,7 +38,7 @@ export function useDesign(designId, {onSuccess, ...options} = {}) {
       versions: {},
       opinions: {},
     },
-    isLoading,
+    ...restOfRestult,
   }
 }
 
