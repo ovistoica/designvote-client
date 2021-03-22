@@ -47,12 +47,12 @@ function AuthenticatedApp() {
       <NavBar />
       <Grid
         minH="100vh"
-        p={['0', '1em 2em', '2em 4em']}
+        p={['4em 1em', '4em 2em', '5em 4em']}
         m="0 auto"
         maxW={['512px', '1024px', '1440px']}
         w="100%"
       >
-        <Box as="main" w="100%">
+        <Box as="main" w="100%" sx={{scrollPaddingTop: '8em'}}>
           <ErrorBoundary FallbackComponent={ErrorFallback}>
             <AppRoutes />
           </ErrorBoundary>

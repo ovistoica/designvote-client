@@ -8,30 +8,19 @@ import {
   MenuItem,
   MenuList,
   Spinner,
-  Stack,
-  Text,
-  useColorModeValue,
   useDisclosure,
-  Progress,
 } from '@chakra-ui/react'
 import {DeleteResourceAlert} from 'components/lib'
 import {useDeleteDesignVersion} from 'utils/design-version'
 import {useDesign} from 'utils/designs'
 import {DeleteIcon, EditIcon} from '@chakra-ui/icons'
 import {HiDotsHorizontal} from 'react-icons/hi'
-import {FiLink} from 'react-icons/fi'
-import {Check} from 'assets/icons'
-import {getVotePercent} from 'utils/votes'
+
+import {VersionHeader} from 'components/version-header'
 
 interface VersionMenuProps {
   designId: string
   versionId: string
-}
-
-interface VersionHeaderProps {
-  totalVotes: number
-  votes: string[]
-  name: string
 }
 
 interface DesignVersionProps {
@@ -77,7 +66,6 @@ export function DesignVersionMenu({versionId, designId}: VersionMenuProps) {
           </MenuButton>
           <MenuList>
             <MenuItem icon={<EditIcon />}>Edit</MenuItem>
-            <MenuItem icon={<FiLink />}>Get link</MenuItem>
             <MenuItem
               icon={<DeleteIcon />}
               onClick={e => {
@@ -96,46 +84,6 @@ export function DesignVersionMenu({versionId, designId}: VersionMenuProps) {
         onDeletePress={() => deleteDesignVersion(versionId)}
       />
     </>
-  )
-}
-
-function VersionHeader({totalVotes, votes, name}: VersionHeaderProps) {
-  const headerBg = useColorModeValue('white', 'gray.700')
-  const votePercent = getVotePercent(totalVotes, votes.length)
-  return (
-    <Flex
-      h="5em"
-      w="100%"
-      bg={headerBg}
-      align="center"
-      p="1em"
-      borderTopRightRadius="0.5em"
-      borderTopLeftRadius="0.5em"
-    >
-      <Check />
-      <Flex direction="column" pl="1em" w="100%">
-        <Stack direction="row" align="center" justify="space-between">
-          <Flex direction="column">
-            <Text textTransform="uppercase" fontSize="0.95rem" mb="0">
-              {name}
-            </Text>
-            <Text color="info" fontSize="0.8rem">
-              {votes.length} votes
-            </Text>
-          </Flex>
-          <Text fontSize="xl" color="brand.500" fontWeight="bold">
-            {votePercent}%
-          </Text>
-        </Stack>
-        <Progress
-          value={votePercent}
-          borderRadius="20em"
-          h="0.3em"
-          background="brand.200"
-          colorScheme="brand"
-        />
-      </Flex>
-    </Flex>
   )
 }
 
