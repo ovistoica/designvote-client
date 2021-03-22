@@ -3,8 +3,8 @@ import * as React from 'react'
 function Check({stroke, ...restProps}: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
-      width={40}
-      height={41}
+      width="3em"
+      height="3em"
       viewBox="0 0 40 41"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

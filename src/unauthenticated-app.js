@@ -50,7 +50,7 @@ function UnauthenticatedApp() {
       <NavBar />
       <Grid
         minH="100vh"
-        p={['0', '1em 2em', '2em 4em']}
+        p={['4em 1em', '4em 2em', '4em 4em']}
         m="0 auto"
         maxW="1440px"
         w="100%"

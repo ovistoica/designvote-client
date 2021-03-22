@@ -3,7 +3,6 @@ import {
   Link,
   Box,
   Flex,
-  Button,
   Stack,
   useColorModeValue,
   Menu,
@@ -20,7 +19,7 @@ import {
 import Logo from './logo'
 import {useAuth} from 'context/auth-context'
 import {useTheme} from '@emotion/react'
-import {useMatch, Link as RouterLink, useNavigate} from 'react-router-dom'
+import {Link as RouterLink, useNavigate} from 'react-router-dom'
 import {ExternalLinkIcon} from '@chakra-ui/icons'
 import {FaMoon, FaSun} from 'react-icons/fa'
 
@@ -30,16 +29,16 @@ function NavBar(props: FlexProps) {
   const toggle = () => setIsOpen(!isOpen)
   const theme = useTheme()
   const {colors} = theme as any
-  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
   const navigate = useNavigate()
   const {isAuthenticated} = useAuth()
   const to = isAuthenticated ? '/dashboard' : '/'
+  const fill = useColorModeValue(colors.primary[500], colors.primary[300])
 
   return (
-    <NavBarContainer {...props}>
+    <NavBarContainer {...props} zIndex={9999}>
       <Logo
         w="100px"
-        color={['white', 'white', brand, brand]}
+        color={fill}
         cursor="pointer"
         onClick={() => navigate(to)}
       />
@@ -49,27 +48,37 @@ function NavBar(props: FlexProps) {
   )
 }
 
-const CloseIcon = () => (
-  <svg width="24" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-    <title>Close</title>
-    <path
-      fill="white"
-      d="M9.00023 7.58599L13.9502 2.63599L15.3642 4.04999L10.4142 8.99999L15.3642 13.95L13.9502 15.364L9.00023 10.414L4.05023 15.364L2.63623 13.95L7.58623 8.99999L2.63623 4.04999L4.05023 2.63599L9.00023 7.58599Z"
-    />
-  </svg>
-)
+const CloseIcon = () => {
+  const {colors} = useTheme() as any
+  const fill = useColorModeValue(colors.primary[500], colors.primary[300])
 
-const MenuIcon = () => (
-  <svg
-    width="24px"
-    viewBox="0 0 20 20"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="white"
-  >
-    <title>Menu</title>
-    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-  </svg>
-)
+  return (
+    <svg width="24" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
+      <title>Close</title>
+      <path
+        fill={fill}
+        d="M9.00023 7.58599L13.9502 2.63599L15.3642 4.04999L10.4142 8.99999L15.3642 13.95L13.9502 15.364L9.00023 10.414L4.05023 15.364L2.63623 13.95L7.58623 8.99999L2.63623 4.04999L4.05023 2.63599L9.00023 7.58599Z"
+      />
+    </svg>
+  )
+}
+
+const MenuIcon = () => {
+  const {colors} = useTheme() as any
+  const fill = useColorModeValue(colors.primary[500], colors.primary[300])
+
+  return (
+    <svg
+      width="24px"
+      viewBox="0 0 20 20"
+      xmlns="http://www.w3.org/2000/svg"
+      fill={fill}
+    >
+      <title>Menu</title>
+      <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+    </svg>
+  )
+}
 
 function MenuToggle({toggle, isOpen}: {toggle: () => void; isOpen: boolean}) {
   return (
@@ -84,13 +93,11 @@ interface NavLinkProps extends LinkProps {
 }
 
 function NavLink(props: NavLinkProps) {
-  const match = useMatch(props.to)
   const {colors} = useTheme() as any
   const brand = useColorModeValue(colors.primary[500], colors.primary[600])
   return (
     <Link
       as={RouterLink}
-      color={['white', 'white', 'current']}
       _hover={{
         color: brand,
         textDecoration: 'none',
@@ -102,12 +109,6 @@ function NavLink(props: NavLinkProps) {
       height="100%"
       borderRadius="2px"
       borderLeft="5px solid transparent"
-      {...(match
-        ? {
-            color: ['white', 'white', brand],
-            // borderLeft: `5px solid ${colors.brand}`,
-          }
-        : null)}
       {...props}
     />
   )
@@ -137,21 +138,9 @@ function MenuLinks({isOpen}: {isOpen: boolean}) {
           <>
             <NavLink to="/dashboard">Dashboard</NavLink>
             <NavLink to="/Settings">Settings</NavLink>
-            <Text
-              color={['white', 'white', 'current']}
-              _focus={{outline: 'none'}}
-              _active={{outline: 'none'}}
-              display="block"
-              width="100%"
-              cursor="default"
-              height="100%"
-              borderRadius="2px"
-              borderLeft="5px solid transparent"
-            >
-              {user.given_name}
-            </Text>
             <Menu>
               <MenuButton
+                alignSelf="flex-start"
                 cursor="pointer"
                 as={Avatar}
                 size="sm"
@@ -174,41 +163,35 @@ function MenuLinks({isOpen}: {isOpen: boolean}) {
           </>
         ) : (
           <>
-            <NavLink to="/demo">Demo</NavLink>
             <NavLink to="/features">Features </NavLink>
             <NavLink to="/pricing">Pricing </NavLink>
-            <Button
-              width="100%"
-              height="100%"
-              bg="transparent"
+            <Text
+              cursor="pointer"
               fontWeight="regular"
               fontSize="xl"
+              textAlign="start"
+              display="block"
+              width="100%"
+              height="100%"
+              borderRadius="2px"
+              borderLeft="5px solid transparent"
               _hover={{
                 color: brand,
               }}
               onClick={login}
-              color={['white', 'white', 'current']}
+              color={brand}
             >
               Login
-            </Button>
-            <NavLink to="/signup">
-              <Button
-                size="sm"
-                rounded="md"
-                color={['primary.500', 'primary.500', 'white', 'white']}
-                bg={['white', 'white', 'primary.500', 'primary.500']}
-                _hover={{
-                  bg: [
-                    'primary.100',
-                    'primary.100',
-                    'primary.600',
-                    'primary.600',
-                  ],
-                }}
-              >
-                Create Account
-              </Button>
-            </NavLink>
+            </Text>
+            <Text
+              cursor="pointer"
+              fontWeight="regular"
+              fontSize="xl"
+              onClick={login}
+              color={brand}
+            >
+              Signup
+            </Text>
           </>
         )}
       </Stack>
@@ -218,7 +201,7 @@ function MenuLinks({isOpen}: {isOpen: boolean}) {
 
 const NavBarContainer = ({children, ...props}: FlexProps) => {
   const {colors} = useTheme() as any
-  const brand = useColorModeValue(colors.primary[500], colors.primary[300])
+  const bgBig = useColorModeValue(colors.whiteAlpha[900], colors.gray[700])
   return (
     <Flex
       as="nav"
@@ -227,7 +210,9 @@ const NavBarContainer = ({children, ...props}: FlexProps) => {
       wrap="wrap"
       w="100%"
       p="1em"
-      bg={[brand, brand, 'transparent', 'transparent']}
+      position="fixed"
+      bg={bgBig}
+      borderBottomWidth="1px"
       {...props}
     >
       {children}
