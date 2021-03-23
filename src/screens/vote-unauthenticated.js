@@ -71,6 +71,7 @@ export function VoteDesign() {
             column={3}
             gridTemplateColumns="repeat(3, 1fr)"
             columnGap="2.5em"
+            rowGap="1em"
             alignContent="center"
           >
             {design.versions.map((versionId, index) => {

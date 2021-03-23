@@ -41,26 +41,14 @@ function Design() {
 
   return (
     <Flex flex="1" flexDir="column">
-      <SimpleGrid
-        column={2}
-        gridTemplateColumns="2fr 1fr"
-        columnGap="2.5em"
-        alignItems="center"
-      >
-        <Stack maxW="40em" align="flex-start">
-          <Heading fontSize="2rem">{design.question}</Heading>
-          {design.description ? (
-            <Text fontWeight="300" fontSize="xl">
-              {design.description}
-            </Text>
-          ) : null}
-        </Stack>
-        <DesignStats
-          totalVotes={totalVotes}
-          totalOpinions={totalOpinions}
-          designId={designId}
-        />
-      </SimpleGrid>
+      <Stack maxW="40em" align="flex-start">
+        <Heading fontSize="2rem">{design.question}</Heading>
+        {design.description ? (
+          <Text fontWeight="300" fontSize="xl">
+            {design.description}
+          </Text>
+        ) : null}
+      </Stack>
 
       {design.designType === 'web' ? (
         <WebVersions designId={designId} versionsById={design.versions ?? []} />
