@@ -133,7 +133,7 @@ export function DesignStats({
         flexDir="column"
         boxShadow="md"
         w="70%"
-        minW="15em"
+        minW="18em"
         bg={statsBg}
         borderRadius="0.5em"
         align="center"
