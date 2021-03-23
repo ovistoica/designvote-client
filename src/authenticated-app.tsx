@@ -8,7 +8,7 @@ import {NotFoundScreen} from 'screens/not-found'
 import {UploadDesign} from 'screens/upload-design'
 import {PreviewScreen} from 'screens/preview-design'
 import {NavBar} from 'components/nav'
-import {VoteDesign} from 'screens/vote-unauthenticated'
+import {VoteDesign} from 'screens/vote'
 
 function AppRoutes() {
   return (
