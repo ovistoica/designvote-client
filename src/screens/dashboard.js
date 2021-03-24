@@ -19,6 +19,7 @@ import {useDeleteDesign, useDesigns} from 'utils/designs'
 import {useNavigate} from 'react-router-dom'
 import {DeleteResourceAlert, FullPageSpinner, Button} from 'components/lib'
 import {Logo} from 'assets/icons'
+import {MetaDecorator} from 'components/meta-decorator'
 
 function DesignCard({designId, name}) {
   const navigate = useNavigate()
@@ -141,51 +142,57 @@ function Dashboard() {
   }
 
   return (
-    <Flex h="100%" w="100%" flexDir="column">
-      <CreateDesignModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
-      <Flex alignItems="center" flex="0">
-        <Text fontSize="xl" fontWeight="500">
-          Designs
-        </Text>
-        <ChakraButton
-          aria-label="Add design"
-          variant="ghost"
-          ml="1em"
-          size="sm"
-          boxShadow="md"
-          align="center"
-          justify="center"
-          borderRadius="100px"
-          p="0.1em"
-          _hover={{
-            color: 'brand',
-          }}
-          _focus={{outline: 'none'}}
-          background={cardBg}
-          onClick={onOpen}
-        >
-          <AddIcon />
-        </ChakraButton>
+    <>
+      <MetaDecorator
+        title="Designvote - Dashboard"
+        description="Dashboard containing all of your designs. Share a design for people to vote."
+      />
+      <Flex h="100%" w="100%" flexDir="column">
+        <CreateDesignModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+        <Flex alignItems="center" flex="0">
+          <Text fontSize="xl" fontWeight="500">
+            Designs
+          </Text>
+          <ChakraButton
+            aria-label="Add design"
+            variant="ghost"
+            ml="1em"
+            size="sm"
+            boxShadow="md"
+            align="center"
+            justify="center"
+            borderRadius="100px"
+            p="0.1em"
+            _hover={{
+              color: 'brand',
+            }}
+            _focus={{outline: 'none'}}
+            background={cardBg}
+            onClick={onOpen}
+          >
+            <AddIcon />
+          </ChakraButton>
+        </Flex>
+        {designs.length ? (
+          <SimpleGrid
+            mt="1em"
+            gridTemplateColumns={{sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)'}}
+            minChildWidth="300px"
+            spacing="1.5em"
+          >
+            {designs.map(design => (
+              <DesignCard
+                key={design.designId}
+                designId={design.designId}
+                name={design.name}
+              />
+            ))}
+          </SimpleGrid>
+        ) : (
+          <EmptyDashboard onClick={onOpen} />
+        )}
       </Flex>
-      {designs.length ? (
-        <SimpleGrid
-          mt="1em"
-          gridTemplateColumns={{sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)'}}
-          minChildWidth="300px"
-          spacing="1.5em"
-        >
-          {designs.map(design => (
-            <DesignCard
-              key={design.designId}
-              designId={design.designId}
-              name={design.name}
-            />
-          ))}
-        </SimpleGrid>
-      ) : (
-        <EmptyDashboard onClick={onOpen} />
-      )}
-    </Flex>
+    </>
   )
 }
 

@@ -144,6 +144,7 @@ function MenuLinks({isOpen}: {isOpen: boolean}) {
                 cursor="pointer"
                 as={Avatar}
                 size="sm"
+                alt="Avatar"
                 onClick={e => e.stopPropagation()}
                 src={user.picture}
               ></MenuButton>

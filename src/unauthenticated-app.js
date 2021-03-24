@@ -7,16 +7,24 @@ import {VoteDesign} from 'screens/vote'
 import {ErrorBoundary} from 'react-error-boundary'
 import {Button, ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {useAuth} from 'context/auth-context'
+import {MetaDecorator} from 'components/meta-decorator'
 
 function WelcomePage() {
   const {login} = useAuth()
   return (
-    <Grid minH="100vh" p={3}>
-      <VStack spacing={8}>
-        <Text>Welcome to Designvote</Text>
-        <Button onClick={login}>Login</Button>
-      </VStack>
-    </Grid>
+    <>
+      <MetaDecorator
+        title="Designvote - Choose your design"
+        description="Prototype and share ux designs. Let people vote on design versions. 
+        Choose design variation. Design the perfect feature. Design principles for ranked choice voting."
+      />
+      <Grid minH="100vh" p={3}>
+        <VStack spacing={8}>
+          <Text>Welcome to Designvote</Text>
+          <Button onClick={login}>Login</Button>
+        </VStack>
+      </Grid>
+    </>
   )
 }
 
