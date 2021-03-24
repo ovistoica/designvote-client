@@ -141,13 +141,13 @@ export function DesignStats({
         overflow="hidden"
       >
         <Flex w="100%" justify="center" p="1em">
-          <Stack p="1em" w="49%" align="center">
+          <Stack p="1em" w="49%" align="center" aria-label="Number of votes">
             <VotesIcon fill={iconColor} />
             <Text fontWeight="bold">{totalVotes}</Text>
             <Text>Votes</Text>
           </Stack>
           <Divider orientation="vertical" />
-          <Stack p="1em" w="49%" align="center">
+          <Stack p="1em" w="49%" align="center" aria-label="Number of opinions">
             <OpinionIcon fill={iconColor} />
             <Text fontWeight="bold">{totalOpinions}</Text>
             <Text>Opinions</Text>

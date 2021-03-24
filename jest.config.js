@@ -10,7 +10,7 @@ require('react-scripts/config/env')
 
 module.exports = {
   roots: ['<rootDir>/src'],
-  testMatch: ['**/__tests__/**/*.js'],
+  testMatch: ['**/__tests__/**/*.(js|ts|tsx)'],
   testEnvironment: resolve.sync('jest-environment-jsdom', {
     basedir: require.resolve('jest'),
   }),
@@ -34,7 +34,7 @@ module.exports = {
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
   resetMocks: true,
   collectCoverageFrom: [
-    'src/**/*.js',
+    'src/**/*.(js|ts|tsx)',
     '!<rootDir>/node_modules/**/*',
     '!<rootDir>/src/test/**/*',
     '!<rootDir>/src/setupProxy*',
