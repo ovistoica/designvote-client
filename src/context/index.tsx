@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react'
 import {StrictMode} from 'react'
 import {BrowserRouter as Router} from 'react-router-dom'
-import {QueryClient, QueryClientProvider} from 'react-query'
+import {DefaultOptions, QueryClient, QueryClientProvider} from 'react-query'
 import {ReactQueryDevtools} from 'react-query/devtools'
 import {AuthProvider, Auth0Provider} from './auth-context'
 import {CookiesProvider} from 'react-cookie'
@@ -14,20 +14,28 @@ import {Fonts} from 'assets/fonts'
 import * as colors from 'styles/colors'
 import {mode} from '@chakra-ui/theme-tools'
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      useErrorBoundary: true,
-      refetchOnWindowFocus: false,
-      retry(failureCount, error) {
-        if (error.status === 404) return false
-        else if (failureCount < 2) return true
-        else return false
-      },
+const defaultOptions: DefaultOptions<{status: number}> = {
+  queries: {
+    useErrorBoundary: true,
+    refetchOnWindowFocus: false,
+    retry(failureCount, error) {
+      if (
+        error.status &&
+        typeof error.status === 'number' &&
+        error.status === 404
+      ) {
+        return false
+      } else if (failureCount < 2) {
+        return true
+      }
+      return false
     },
   },
-})
+}
 
+const queryClient = new QueryClient({
+  defaultOptions: defaultOptions as DefaultOptions,
+})
 const theme = extendTheme({
   fonts: {
     ...defaultTheme.fonts,
@@ -75,7 +83,7 @@ const theme = extendTheme({
   },
 })
 
-function AppProviders({children}) {
+const AppProviders: React.FC = ({children}) => {
   return (
     <StrictMode>
       <ColorModeScript />

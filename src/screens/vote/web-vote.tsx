@@ -18,7 +18,7 @@ function SmallPreview({
   versionName,
 }: SmallPreviewProps) {
   return (
-    <Box role="group" mx="0.5em" onClick={onClick} transition="0.2s all">
+    <Box role="group" mx={['0.5em']} onClick={onClick} transition="0.2s all">
       <Center
         position="relative"
         borderRadius="6px"
@@ -40,8 +40,8 @@ function SmallPreview({
         <Image
           src={pictureUrl}
           boxSize="5em"
-          w="8em"
-          h="5em"
+          w={['5em', '5em', '8em']}
+          h={['3em', '3em', '5em']}
           objectFit="cover"
           transition="0.1s all"
           cursor="pointer"

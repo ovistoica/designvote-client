@@ -1,5 +1,5 @@
 import {ChakraProvider} from '@chakra-ui/react'
-import {render, screen, RenderOptions} from '@testing-library/react'
+import {render, RenderOptions} from '@testing-library/react'
 import {DefaultOptions, QueryClient, QueryClientProvider} from 'react-query'
 import {BrowserRouter} from 'react-router-dom'
 

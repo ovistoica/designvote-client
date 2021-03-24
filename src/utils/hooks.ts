@@ -1,3 +1,4 @@
+import {useBreakpoint} from '@chakra-ui/media-query'
 import * as React from 'react'
 
 export function useSafeDispatch<Value = unknown>(
@@ -34,7 +35,7 @@ interface AsyncState<Data = unknown> {
 // React.useEffect(() => {
 //   run(fetchPokemon(pokemonName))
 // }, [pokemonName, run])
-function useAsync<Result = unknown>(
+export function useAsync<Result = unknown>(
   initialState: AsyncState<Result> = {
     status: ApiStatus.Idle,
     data: undefined,
@@ -102,4 +103,8 @@ function useAsync<Result = unknown>(
   }
 }
 
-export {useAsync}
+export function useIsMobile() {
+  const currentBreak = useBreakpoint()
+
+  return currentBreak === 'base' || currentBreak === 'sm'
+}

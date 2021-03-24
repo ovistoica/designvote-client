@@ -11,7 +11,7 @@ import {client} from 'utils/api-client'
 import {useQueryClient} from 'react-query'
 import {ApiConfig, User} from 'types'
 
-function Auth0Provider({children}: {children: React.ReactChildren}) {
+const Auth0Provider: React.FC = props => {
   if (
     !process.env.REACT_APP_AUTH0_DOMAIN ||
     !process.env.REACT_APP_AUTH0_CLIENT_ID
@@ -27,9 +27,8 @@ function Auth0Provider({children}: {children: React.ReactChildren}) {
       redirectUri={window.location.origin}
       audience={process.env.REACT_APP_AUTH_AUDIENCE}
       scope="read:current_user update:current_user_metadata"
-    >
-      {children}
-    </BaseAuth0Provider>
+      {...props}
+    />
   )
 }
 
@@ -54,7 +53,7 @@ const AuthContext = React.createContext<AuthState | undefined>({
 })
 AuthContext.displayName = 'AuthContext'
 
-function AuthProvider(props: {children: React.ReactChildren}) {
+const AuthProvider: React.FC = props => {
   const {
     getAccessTokenSilently,
     isLoading,

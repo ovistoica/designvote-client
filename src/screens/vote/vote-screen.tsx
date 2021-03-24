@@ -16,6 +16,7 @@ import {useUrlDesign} from 'utils/designs'
 import {useVoteDesignVersion} from 'utils/design-version'
 import {MobileVersions} from './mobile-vote'
 import {WebVote} from './web-vote'
+import {useIsMobile} from 'utils/hooks'
 
 export function VoteDesign() {
   const [opinion, setOpinion] = React.useState('')
@@ -31,6 +32,7 @@ export function VoteDesign() {
     string | undefined
   >()
   const [cookies, setCookie] = useCookies([shortUrl])
+  const deviceIsMobile = useIsMobile()
 
   const {voted} = cookies[shortUrl] ?? {voted: false}
 
@@ -63,7 +65,9 @@ export function VoteDesign() {
                 {design.description}
               </Text>
             ) : null}
-            {design.designType === 'mobile' ? (
+
+            {/* use mobile type of designs only when opening from desktop  */}
+            {design.designType === 'mobile' && !deviceIsMobile ? (
               <MobileVersions
                 selectedVersion={selectedVersion}
                 shortUrl={shortUrl}
