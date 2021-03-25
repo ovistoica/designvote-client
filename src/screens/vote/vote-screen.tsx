@@ -17,6 +17,7 @@ import {useVoteDesignVersion} from 'utils/design-version'
 import {MobileVersions} from './mobile-vote'
 import {WebVote} from './web-vote'
 import {useIsMobile} from 'utils/hooks'
+import {MetaDecorator} from 'components/meta-decorator'
 
 export function VoteDesign() {
   const [opinion, setOpinion] = React.useState('')
@@ -54,6 +55,10 @@ export function VoteDesign() {
       justify="center"
       minH="100vh"
     >
+      <MetaDecorator
+        title="Designvote - Vote on a design"
+        description="This is the public voting page. A designer shared their design link with you for you to vote on their versions"
+      />
       {voted ? (
         <Text fontSize="xl">Thank you for voting!</Text>
       ) : (
