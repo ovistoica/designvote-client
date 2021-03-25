@@ -1,3 +1,4 @@
+import {ApiDesign} from './api'
 import {User} from './auth'
 
 export function isUser(obj: unknown): obj is User {
@@ -13,4 +14,9 @@ export function isUser(obj: unknown): obj is User {
     return true
   }
   return false
+}
+
+export function isApiDesign(obj: unknown): obj is ApiDesign {
+  const designId = (obj as ApiDesign)['design-id']
+  return typeof designId === 'string'
 }
