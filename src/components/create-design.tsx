@@ -12,12 +12,15 @@ import {
   Heading,
   FormLabel,
   FormErrorMessage,
+  As,
 } from '@chakra-ui/react'
 import {Button} from 'components/lib'
 import {useCreateDesign} from 'utils/designs'
 import {useNavigate} from 'react-router-dom'
-import {Formik, Form} from 'formik'
+import {Formik, Form, FormikTouched} from 'formik'
 import * as yup from 'yup'
+import * as React from 'react'
+import {isApiDesign} from 'types'
 
 const initialValues = {
   name: '',
@@ -25,11 +28,7 @@ const initialValues = {
   description: '',
 }
 
-const initialTouched = {
-  name: '',
-  question: '',
-  description: '',
-}
+const initialTouched: FormikTouched<typeof initialValues> = {}
 
 const validationSchema = yup.object().shape({
   name: yup
@@ -40,6 +39,20 @@ const validationSchema = yup.object().shape({
   question: yup.string().required('Required'),
   description: yup.string(),
 })
+
+interface FormRowsProps {
+  id: string
+  value: string
+  onChange: React.ChangeEventHandler<HTMLInputElement>
+  ariaLabel: string
+  onBlur: React.FocusEventHandler<HTMLInputElement>
+  type?: As<any> | undefined
+  placeholder: string
+  isInvalid?: boolean
+  error?: string | null
+  isRequired?: boolean
+  autoFocus?: boolean
+}
 
 function FormRow({
   id,
@@ -53,7 +66,7 @@ function FormRow({
   error = null,
   isRequired = false,
   autoFocus = false,
-}) {
+}: FormRowsProps) {
   return (
     <FormControl
       id={id}
@@ -71,7 +84,7 @@ function FormRow({
         placeholder={placeholder}
         onBlur={onBlur}
         onChange={onChange}
-        minH={type === 'textarea' ? '3em' : null}
+        minH={type === 'textarea' ? '3em' : undefined}
         _focus={{borderColor: 'primary.500'}}
         as={type}
       />
@@ -80,7 +93,12 @@ function FormRow({
   )
 }
 
-function CreateDesignModal({isOpen, onClose}) {
+interface CreateDesignModalProps {
+  isOpen: boolean
+  onClose: () => void
+}
+
+function CreateDesignModal({isOpen, onClose}: CreateDesignModalProps) {
   const {mutate: createDesign, isLoading} = useCreateDesign()
 
   const navigate = useNavigate()
@@ -109,20 +127,15 @@ function CreateDesignModal({isOpen, onClose}) {
             initialTouched={initialTouched}
             onSubmit={values =>
               createDesign(values, {
-                onSettled: data =>
-                  navigate(`/upload-design/${data['design-id']}`),
+                onSettled: data => {
+                  if (isApiDesign(data)) {
+                    navigate(`/upload-design/${data['design-id']}`)
+                  }
+                },
               })
             }
           >
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              touched,
-              setFieldValue,
-            }) => (
+            {({handleChange, handleBlur, values, errors, touched}) => (
               <Form style={{marginTop: '1em'}}>
                 <FormRow
                   id="name"
@@ -131,7 +144,7 @@ function CreateDesignModal({isOpen, onClose}) {
                   onChange={handleChange('name')}
                   onBlur={handleBlur('name')}
                   value={values.name}
-                  isInvalid={touched.name && errors.name}
+                  isInvalid={!!(touched.name && errors.name)}
                   error={errors.name}
                   autoFocus
                   isRequired
@@ -143,7 +156,7 @@ function CreateDesignModal({isOpen, onClose}) {
                   onChange={handleChange('question')}
                   onBlur={handleBlur('question')}
                   value={values.question}
-                  isInvalid={touched.question && errors.question}
+                  isInvalid={!!(touched.question && errors.question)}
                   error={errors.question}
                   type="textarea"
                   isRequired
@@ -156,7 +169,7 @@ function CreateDesignModal({isOpen, onClose}) {
                   onChange={handleChange('description')}
                   onBlur={handleBlur('description')}
                   value={values.description}
-                  isInvalid={touched.description && errors.description}
+                  isInvalid={!!(touched.description && errors.description)}
                   error={errors.description}
                   type="textarea"
                 />

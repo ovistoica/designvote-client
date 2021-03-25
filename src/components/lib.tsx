@@ -14,6 +14,8 @@ import {
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogFooter,
+  IconButtonProps,
+  BoxProps,
 } from '@chakra-ui/react'
 import {FaMoon, FaSun} from 'react-icons/fa'
 import * as colors from 'styles/colors'
@@ -77,23 +79,22 @@ const Button = styled(ChakraButton)(
       boxShadow: 'none',
     },
   },
-  ({variant = 'primary'}) => buttonVariants[variant],
+  ({variant = 'primary'}) => (buttonVariants as any)[variant],
 )
 
 Button.defaultProps = {colorScheme: 'orange'}
 
-const ColorModeSwitcher = props => {
+const ColorModeSwitcher = (props: IconButtonProps) => {
   const {toggleColorMode} = useColorMode()
   const text = useColorModeValue('dark', 'light')
   const SwitchIcon = useColorModeValue(FaMoon, FaSun)
-  const {colors} = useTheme()
+  const {colors} = useTheme() as any
   const brand = useColorModeValue(colors.primary[500], colors.primary[600])
 
   return (
     <IconButton
       size="md"
       fontSize="lg"
-      aria-label={`Switch to ${text} mode`}
       variant="ghost"
       color={['white', 'white', 'current']}
       marginLeft="2"
@@ -106,6 +107,7 @@ const ColorModeSwitcher = props => {
       _focus={{outline: 'none'}}
       _active={{outline: 'none'}}
       {...props}
+      aria-label={`Switch to ${text} mode`}
     />
   )
 }
@@ -129,7 +131,16 @@ const errorMessageVariants = {
   inline: {display: 'inline-block'},
 }
 
-function ErrorMessage({error, variant = 'stacked', ...props}) {
+interface ErrorMessageProps extends BoxProps {
+  error: Error
+  variant?: string
+}
+
+function ErrorMessage({
+  error,
+  variant = 'stacked',
+  ...props
+}: ErrorMessageProps) {
   return (
     <Box
       role="alert"
@@ -147,7 +158,7 @@ function ErrorMessage({error, variant = 'stacked', ...props}) {
         as="pre"
         css={[
           {whiteSpace: 'break-spaces', margin: '0', marginBottom: -5},
-          errorMessageVariants[variant],
+          (errorMessageVariants as any)[variant],
         ]}
       >
         {error.message}
@@ -156,7 +167,11 @@ function ErrorMessage({error, variant = 'stacked', ...props}) {
   )
 }
 
-function FullPageErrorFallback({error}) {
+interface ErrorFallBackProps {
+  error: Error
+}
+
+function FullPageErrorFallback({error}: ErrorFallBackProps) {
   return (
     <Box
       role="alert"
@@ -176,14 +191,22 @@ function FullPageErrorFallback({error}) {
   )
 }
 
+interface DeleteResourceAlertProps {
+  onDeletePress: () => void
+  isOpen: boolean
+  onClose: () => void
+  title?: string
+  body?: string
+}
+
 function DeleteResourceAlert({
   title = 'Delete resource',
   body = "Are you sure? You can't undo this action afterwards.",
   onDeletePress,
   isOpen,
   onClose,
-}) {
-  const cancelRef = React.useRef()
+}: DeleteResourceAlertProps) {
+  const cancelRef = React.createRef<HTMLButtonElement>()
   return (
     <AlertDialog
       isOpen={isOpen}
