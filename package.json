@@ -66,6 +66,12 @@
     "validate": "npm-run-all --parallel check-types lint test:coverage build",
     "precommit": "npm-run-all --parallel check-types lint-staged"
   },
+  "reactSnap": {
+    "puppeteerArgs": [
+      "--no-sandbox",
+      "--disable-setuid-sandbox"
+    ]
+  },
   "eslintConfig": {
     "extends": "react-app",
     "rules": {
