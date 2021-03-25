@@ -184,7 +184,7 @@ function Dashboard() {
             <AddIcon />
           </ChakraButton>
         </Flex>
-        {false ? (
+        {designs.length ? (
           <SimpleGrid
             mt="1em"
             gridTemplateColumns={{sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)'}}

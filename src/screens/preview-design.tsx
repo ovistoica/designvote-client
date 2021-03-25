@@ -25,7 +25,9 @@ function PreviewScreen() {
   const {data, isLoading} = useDesign(designId)
   const {design, versions, pictures} = data
 
-  const [selectedVersion, setSelectedVersion] = React.useState()
+  const [selectedVersion, setSelectedVersion] = React.useState<
+    string | undefined
+  >()
   const headerBg = useColorModeValue('white', 'gray.700')
   const navigate = useNavigate()
 
@@ -42,8 +44,8 @@ function PreviewScreen() {
         color="info"
         leftIcon={<ArrowBackIcon />}
         onClick={() => navigate(-1)}
-        _focus="none"
-        _active="none"
+        _focus={{}}
+        _active={{}}
       >
         Back
       </Button>
