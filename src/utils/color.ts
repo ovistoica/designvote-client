@@ -1,4 +1,4 @@
-function lightenDarkenColor(col, amt) {
+function lightenDarkenColor(col: string, amt: number) {
   let usePound = false
 
   if (col[0] === '#') {

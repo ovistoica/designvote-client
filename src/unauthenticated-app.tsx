@@ -1,4 +1,3 @@
-import React from 'react'
 import {Box, Grid, Text, VStack} from '@chakra-ui/react'
 import {NavBar} from 'components/nav'
 import {Route, Routes} from 'react-router-dom'
@@ -37,7 +36,11 @@ function AppRoutes() {
     </Routes>
   )
 }
-function ErrorFallback({error}) {
+interface ErrorFallBackProps {
+  error: Error
+}
+
+function ErrorFallback({error}: ErrorFallBackProps) {
   return (
     <ErrorMessage
       error={error}
