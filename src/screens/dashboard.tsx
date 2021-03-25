@@ -1,4 +1,3 @@
-import * as React from 'react'
 import {
   Button as ChakraButton,
   Flex,
@@ -20,8 +19,14 @@ import {useNavigate} from 'react-router-dom'
 import {DeleteResourceAlert, FullPageSpinner, Button} from 'components/lib'
 import {Logo} from 'assets/icons'
 import {MetaDecorator} from 'components/meta-decorator'
+import {Design} from 'types'
 
-function DesignCard({designId, name}) {
+interface DesignCardProps {
+  designId: string
+  name: string
+}
+
+function DesignCard({designId, name}: DesignCardProps) {
   const navigate = useNavigate()
   const {mutate: deleteDesign} = useDeleteDesign()
 
@@ -106,23 +111,29 @@ function DesignCard({designId, name}) {
   )
 }
 
-function EmptyDashboard({onClick}) {
+interface EmptyDashboardProps {
+  onClick: () => void
+}
+
+function EmptyDashboard({onClick}: EmptyDashboardProps) {
+  const bg = useColorModeValue('surface', 'gray.700')
+  const textInfoColor = useColorModeValue('textSecondary', 'gray.400')
   return (
     <Flex
-      w="60%"
-      bg="surface"
+      w={['90%', '80%', '60%']}
+      bg={bg}
       alignSelf="center"
       mt="2em"
-      py="2em"
+      py={['3em', '3em', '3em']}
       direction="column"
       align="center"
       justify="center"
     >
       <Logo />
-      <Text fontSize="2rem" fontWeight="500" mt="0.5em">
+      <Text fontSize={['1.5rem', '2rem', '2rem']} fontWeight="500" mt="0.5em">
         Huh, no designs?
       </Text>
-      <Text mt="1em" color="textSecondary">
+      <Text mt="1em" color={textInfoColor}>
         C'mon now don't be lazy...
       </Text>
       <Button mt="2em" fontWeigh="300" fontSize="sm" onClick={onClick}>
@@ -148,7 +159,7 @@ function Dashboard() {
         description="Dashboard containing all of your designs. Share a design for people to vote."
       />
       <Flex h="100%" w="100%" flexDir="column">
-        <CreateDesignModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+        <CreateDesignModal isOpen={isOpen} onClose={onClose} />
         <Flex alignItems="center" flex="0">
           <Text fontSize="xl" fontWeight="500">
             Designs
@@ -173,14 +184,14 @@ function Dashboard() {
             <AddIcon />
           </ChakraButton>
         </Flex>
-        {designs.length ? (
+        {false ? (
           <SimpleGrid
             mt="1em"
             gridTemplateColumns={{sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)'}}
             minChildWidth="300px"
             spacing="1.5em"
           >
-            {designs.map(design => (
+            {designs.map((design: Design) => (
               <DesignCard
                 key={design.designId}
                 designId={design.designId}
