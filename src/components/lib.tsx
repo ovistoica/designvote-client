@@ -21,12 +21,15 @@ import {
   Circle,
   SquareProps,
 } from '@chakra-ui/react'
-import {FaMoon, FaSun} from 'react-icons/fa'
+import {FaMoon, FaSun, FaTwitter} from 'react-icons/fa'
 import * as colors from 'styles/colors'
 import styled from '@emotion/styled/'
 import {lightenDarkenColor} from 'utils/color'
 import {useTheme} from '@emotion/react'
 import {Link as RouterLink} from 'react-router-dom'
+import {GrFacebookOption} from 'react-icons/gr'
+import {IoMdMailOpen} from 'react-icons/io'
+import {LogoIcon} from 'assets/svg/logo-icon'
 
 const buttonVariants = {
   primary: {
@@ -298,6 +301,31 @@ function SocialIcon({icon, ...restProps}: SocialIconProps) {
   )
 }
 
+function Footer() {
+  const textInfoColor = useColorModeValue('textInfoLight', 'gray.400')
+
+  return (
+    <Flex direction="column" align="center" mb="3.6em" as="footer">
+      <LogoIcon width="2em" height="2.5em" style={{marginTop: '2.5em'}} />
+      <Flex mt="2em" color={textInfoColor} w="24em" justify="space-between">
+        <NavLink to="/how-it-works">How it works</NavLink>
+        <NavLink to="/contact">Contact</NavLink>
+        <NavLink to="/login">Login</NavLink>
+        <NavLink to="/try">Try free</NavLink>
+      </Flex>
+      <Flex mt="2em">
+        <SocialIcon icon={<GrFacebookOption />} />
+        <SocialIcon icon={<FaTwitter />} />
+        <SocialIcon icon={<IoMdMailOpen />} />
+      </Flex>
+      <Flex mt="2em" color={textInfoColor} justify="space-between" w="24em">
+        <NavLink to="/terms-and-conditions">Terms and Conditions</NavLink>
+        <NavLink to="/privacy">Privacy</NavLink>
+      </Flex>
+    </Flex>
+  )
+}
+
 export {
   ColorModeSwitcher,
   FullPageSpinner,
@@ -307,4 +335,5 @@ export {
   DeleteResourceAlert,
   NavLink,
   SocialIcon,
+  Footer,
 }
