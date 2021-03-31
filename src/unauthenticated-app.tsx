@@ -1,4 +1,3 @@
-import {Box, Grid} from '@chakra-ui/react'
 import {NavBar} from 'components/nav'
 import {Route, Routes} from 'react-router-dom'
 import {NotFoundScreen} from 'screens/not-found'
