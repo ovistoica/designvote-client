@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  Link,
   Box,
   Flex,
   Stack,
@@ -13,15 +12,16 @@ import {
   useColorMode,
   Text,
   FlexProps,
-  LinkProps,
+  IconButton,
 } from '@chakra-ui/react'
 
 import Logo from './logo'
 import {useAuth} from 'context/auth-context'
 import {useTheme} from '@emotion/react'
-import {Link as RouterLink, useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import {ExternalLinkIcon} from '@chakra-ui/icons'
 import {FaMoon, FaSun} from 'react-icons/fa'
+import {NavLink} from './lib'
 
 function NavBar(props: FlexProps) {
   const [isOpen, setIsOpen] = React.useState(false)
@@ -88,32 +88,6 @@ function MenuToggle({toggle, isOpen}: {toggle: () => void; isOpen: boolean}) {
   )
 }
 
-interface NavLinkProps extends LinkProps {
-  to: string
-}
-
-function NavLink(props: NavLinkProps) {
-  const {colors} = useTheme() as any
-  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
-  return (
-    <Link
-      as={RouterLink}
-      _hover={{
-        color: brand,
-        textDecoration: 'none',
-      }}
-      _focus={{outline: 'none'}}
-      _active={{outline: 'none'}}
-      display="block"
-      width="100%"
-      height="100%"
-      borderRadius="2px"
-      borderLeft="5px solid transparent"
-      {...props}
-    />
-  )
-}
-
 function MenuLinks({isOpen}: {isOpen: boolean}) {
   const {isAuthenticated, user, logout, login} = useAuth()
   const {colors} = useTheme() as any
@@ -164,8 +138,11 @@ function MenuLinks({isOpen}: {isOpen: boolean}) {
           </>
         ) : (
           <>
-            <NavLink to="/features">Features </NavLink>
-            <NavLink to="/pricing">Pricing </NavLink>
+            <IconButton
+              icon={<SwitchIcon />}
+              aria-label={colorSwithcerText}
+              onClick={toggleColorMode}
+            />
             <Text
               cursor="pointer"
               fontWeight="regular"
