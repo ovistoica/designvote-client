@@ -16,12 +16,17 @@ import {
   AlertDialogFooter,
   IconButtonProps,
   BoxProps,
+  Link,
+  LinkProps,
+  Circle,
+  SquareProps,
 } from '@chakra-ui/react'
 import {FaMoon, FaSun} from 'react-icons/fa'
 import * as colors from 'styles/colors'
 import styled from '@emotion/styled/'
 import {lightenDarkenColor} from 'utils/color'
 import {useTheme} from '@emotion/react'
+import {Link as RouterLink} from 'react-router-dom'
 
 const buttonVariants = {
   primary: {
@@ -242,6 +247,57 @@ function DeleteResourceAlert({
   )
 }
 
+interface NavLinkProps extends LinkProps {
+  to: string
+}
+
+function NavLink(props: NavLinkProps) {
+  const {colors} = useTheme() as any
+  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
+  return (
+    <Link
+      as={RouterLink}
+      _hover={{
+        color: brand,
+        textDecoration: 'none',
+      }}
+      _focus={{outline: 'none'}}
+      _active={{outline: 'none'}}
+      px="1em"
+      {...props}
+    />
+  )
+}
+
+interface SocialIconProps extends SquareProps {
+  icon: JSX.Element
+}
+
+function SocialIcon({icon, ...restProps}: SocialIconProps) {
+  const {colors} = useTheme() as any
+  const textInfoColor = useColorModeValue('textInfoLight', 'gray.400')
+  const iconColor = useColorModeValue('white', 'gray.900')
+  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
+
+  return (
+    <Circle
+      cursor="pointer"
+      bg={textInfoColor}
+      w="2.2em"
+      h="2.2em"
+      color={iconColor}
+      mx="0.5em"
+      transition="0.2s all"
+      _hover={{
+        bg: brand,
+      }}
+      {...restProps}
+    >
+      {icon}
+    </Circle>
+  )
+}
+
 export {
   ColorModeSwitcher,
   FullPageSpinner,
@@ -249,4 +305,6 @@ export {
   FullPageErrorFallback,
   Button,
   DeleteResourceAlert,
+  NavLink,
+  SocialIcon,
 }

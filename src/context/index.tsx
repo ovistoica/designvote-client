@@ -70,6 +70,7 @@ const theme = extendTheme({
       900: '#035f62',
     },
     textSecondary: '#747474',
+    textInfoLight: '#ABBFC8',
   },
   styles: {
     global: props => ({
