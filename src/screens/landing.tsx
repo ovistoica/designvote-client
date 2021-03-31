@@ -14,52 +14,89 @@ import {
 } from '@chakra-ui/layout'
 import {ChooseIlustration} from 'assets/svg/choose-ilustration'
 import {FeedbackIlustration} from 'assets/svg/feedback-ilustration'
-import {LogoIcon} from 'assets/svg/logo-icon'
 import {ShareIlustration} from 'assets/svg/share-ilustration'
 import {MetaDecorator} from 'components/meta-decorator'
-import {NavLink, SocialIcon} from 'components/lib'
-import {FaTwitter} from 'react-icons/fa'
-import {GrFacebookOption} from 'react-icons/gr'
-import {IoMdMailOpen} from 'react-icons/io'
+import {Footer} from 'components/lib'
+import {useIsMobile} from 'utils/hooks'
+import {ChooseIlustrationMobile} from 'assets/svg/choose-ilustration-mobile'
 
 function HeroSection() {
   const textInfoColor = useColorModeValue('textSecondary', 'gray.400')
+  const isMobile = useIsMobile()
 
   return (
-    <Box py="4em">
+    <Flex
+      pb={['2em', '2em', '4em']}
+      as="section"
+      maxW={['375px', '1024px', '1440px']}
+      direction="column"
+      alignItems="center"
+      alignSelf="center"
+      px="0.5em"
+    >
       <Grid
-        gridTemplateColumns="1fr 1fr"
+        gridTemplateColumns={['1fr', '1fr', '1fr 1fr']}
         columnGap="1em"
+        rowGap="1em"
         align="center"
-        // p={['4em 1em', '4em 2em', '2em 2em']}
       >
-        <ChooseIlustration />
+        <Box order={[2, 2, 1]} p="auto">
+          {isMobile ? <ChooseIlustrationMobile /> : <ChooseIlustration />}
+        </Box>
 
-        <Flex flexDirection="column" alignItems="center" justify="center">
-          <Heading fontWeight="400" as="h1" fontSize="3.3rem">
+        <Flex
+          flexDirection="column"
+          alignItems="center"
+          justify="center"
+          order={[1, 1, 2]}
+        >
+          <Heading
+            fontWeight="400"
+            as="h1"
+            fontSize={['1.8em', '2.5em', '3.3rem']}
+          >
             Choose your best design.
           </Heading>
           <Text
-            fontSize="1.5rem"
+            fontSize={['1rem', '1rem', '1.5rem']}
             fontWeight="300"
             textAlign="center"
             color={textInfoColor}
+            mt="0.5em"
           >
             A toolbox to help you decide on the right version for your design
           </Text>
+          {isMobile ? null : (
+            <Button
+              colorScheme="brand"
+              mt="2em"
+              fontSize="1rem"
+              fontWeight="400"
+              size="lg"
+            >
+              Choose your design
+            </Button>
+          )}
+        </Flex>
+      </Grid>
+      <Stack spacing="1em" align="center" mt="4em" mb="2em">
+        {isMobile ? (
           <Button
             colorScheme="brand"
-            mt="2em"
             fontSize="1rem"
+            mt="-2em"
             fontWeight="400"
             size="lg"
           >
             Choose your design
           </Button>
-        </Flex>
-      </Grid>
-      <Stack spacing="0.5em" align="center" mt="4em" mb="2em">
-        <Heading as="h2" textAlign="center" fontWeight="400" fontSize="2rem">
+        ) : null}
+        <Heading
+          as="h2"
+          textAlign="center"
+          fontWeight="400"
+          fontSize={['1.5rem', '1.5rem', '2rem']}
+        >
           Let the people who matter vote
         </Heading>
 
@@ -76,7 +113,7 @@ function HeroSection() {
           in order to collect feedback faster
         </Text>
       </Stack>
-    </Box>
+    </Flex>
   )
 }
 
@@ -86,7 +123,7 @@ function ShareSection() {
   const textInfoColor = useColorModeValue('textSecondary', 'gray.400')
 
   return (
-    <Box bg={bg} w="100vw" py="4em">
+    <Flex justify="center" bg={bg} py="4em" as="section">
       <SimpleGrid
         width="60em"
         columns={[1, 2, 2]}
@@ -135,7 +172,7 @@ function ShareSection() {
         </Flex>
         <ShareIlustration />
       </SimpleGrid>
-    </Box>
+    </Flex>
   )
 }
 
@@ -143,7 +180,13 @@ function FeedbackSection() {
   const textInfoColor = useColorModeValue('textSecondary', 'gray.400')
 
   return (
-    <Flex direction="column" align="center" py="4em" alignSelf="center">
+    <Flex
+      direction="column"
+      align="center"
+      py="4em"
+      alignSelf="center"
+      as="section"
+    >
       <Center maxW="48em" flexDirection="column" mb="1.5em">
         <Heading fontSize="2.7rem" fontWeight="400" fontStyle="normal">
           Analyze results and group feedback on tags.
@@ -165,31 +208,6 @@ function FeedbackSection() {
   )
 }
 
-function Footer() {
-  const textInfoColor = useColorModeValue('textInfoLight', 'gray.400')
-
-  return (
-    <Flex direction="column" align="center" mb="3.6em">
-      <LogoIcon width="2em" height="2.5em" style={{marginTop: '2.5em'}} />
-      <Flex mt="2em" color={textInfoColor} w="24em" justify="space-between">
-        <NavLink to="/how-it-works">How it works</NavLink>
-        <NavLink to="/contact">Contact</NavLink>
-        <NavLink to="/login">Login</NavLink>
-        <NavLink to="/try">Try free</NavLink>
-      </Flex>
-      <Flex mt="2em">
-        <SocialIcon icon={<GrFacebookOption />} />
-        <SocialIcon icon={<FaTwitter />} />
-        <SocialIcon icon={<IoMdMailOpen />} />
-      </Flex>
-      <Flex mt="2em" color={textInfoColor} justify="space-between" w="24em">
-        <NavLink to="/terms-and-conditions">Terms and Conditions</NavLink>
-        <NavLink to="/privacy">Privacy</NavLink>
-      </Flex>
-    </Flex>
-  )
-}
-
 function CTASection() {
   const startGradient = useColorModeValue('surface', 'gray.700')
   const endGradient = useColorModeValue('white', 'gray.900')
@@ -199,6 +217,7 @@ function CTASection() {
       direction="column"
       align="center"
       bgGradient={`linear(to-b, ${startGradient},${endGradient})`}
+      as="section"
     >
       <Center flexDirection="column" py="10em">
         <Heading fontSize="2.7rem" fontWeight="400" fontStyle="normal">
@@ -238,12 +257,18 @@ export function LandingPage() {
         description="Prototype and share ux designs. Let people vote on design versions. 
           Choose design variation. Design the perfect feature. Design principles for ranked choice voting."
       />
-      <Grid minH="100vh" pt="6em" align="center" maxW="1440px">
+      <Flex
+        direction="column"
+        minH="100vh"
+        w="100vw"
+        pt={['4.5em', '6em', '6em']}
+        as="main"
+      >
         <HeroSection />
         <ShareSection />
         <FeedbackSection />
         <CTASection />
-      </Grid>
+      </Flex>
     </>
   )
 }
