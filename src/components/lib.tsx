@@ -307,20 +307,46 @@ function Footer() {
   return (
     <Flex direction="column" align="center" mb="3.6em" as="footer">
       <LogoIcon width="2em" height="2.5em" style={{marginTop: '2.5em'}} />
-      <Flex mt="2em" color={textInfoColor} w="24em" justify="space-between">
-        <NavLink to="/how-it-works">How it works</NavLink>
-        <NavLink to="/contact">Contact</NavLink>
-        <NavLink to="/login">Login</NavLink>
-        <NavLink to="/try">Try free</NavLink>
+      <Flex
+        direction={['column', 'column', 'row']}
+        mt="2em"
+        color={textInfoColor}
+        w="24em"
+        align="center"
+        justify="space-between"
+      >
+        <NavLink to="/how-it-works" my={['0.5em', '0.5em', 0]}>
+          How it works
+        </NavLink>
+        <NavLink to="/contact" my={['0.5em', '0.5em', 0]}>
+          Contact
+        </NavLink>
+        <NavLink to="/login" my={['0.5em', '0.5em', 0]}>
+          Login
+        </NavLink>
+        <NavLink to="/try" my={['0.5em', '0.5em', 0]}>
+          Try free
+        </NavLink>
       </Flex>
       <Flex mt="2em">
         <SocialIcon icon={<GrFacebookOption />} />
         <SocialIcon icon={<FaTwitter />} />
         <SocialIcon icon={<IoMdMailOpen />} />
       </Flex>
-      <Flex mt="2em" color={textInfoColor} justify="space-between" w="24em">
-        <NavLink to="/terms-and-conditions">Terms and Conditions</NavLink>
-        <NavLink to="/privacy">Privacy</NavLink>
+      <Flex
+        direction={['column', 'column', 'row']}
+        align="center"
+        mt="2em"
+        color={textInfoColor}
+        justify="space-between"
+        w="24em"
+      >
+        <NavLink to="/terms-and-conditions" my={['0.5em', '0.5em', 0]}>
+          Terms and Conditions
+        </NavLink>
+        <NavLink to="/privacy" my={['0.5em', '0.5em', 0]}>
+          Privacy
+        </NavLink>
       </Flex>
     </Flex>
   )

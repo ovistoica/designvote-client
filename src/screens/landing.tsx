@@ -8,17 +8,18 @@ import {
   Flex,
   Grid,
   Heading,
-  SimpleGrid,
   Stack,
   Text,
 } from '@chakra-ui/layout'
 import {ChooseIlustration} from 'assets/svg/choose-ilustration'
 import {FeedbackIlustration} from 'assets/svg/feedback-ilustration'
 import {ShareIlustration} from 'assets/svg/share-ilustration'
+import {ShareIlustrationMobile} from 'assets/svg/share-ilustration-mobile'
 import {MetaDecorator} from 'components/meta-decorator'
 import {Footer} from 'components/lib'
 import {useIsMobile} from 'utils/hooks'
 import {ChooseIlustrationMobile} from 'assets/svg/choose-ilustration-mobile'
+import {FeedbackIlustrationMobile} from 'assets/svg/feedback-ilustration-mobile'
 
 function HeroSection() {
   const textInfoColor = useColorModeValue('textSecondary', 'gray.400')
@@ -121,21 +122,28 @@ function ShareSection() {
   const bg = useColorModeValue('surface', 'gray.700')
 
   const textInfoColor = useColorModeValue('textSecondary', 'gray.400')
+  const isMobile = useIsMobile()
 
   return (
-    <Flex justify="center" bg={bg} py="4em" as="section">
-      <SimpleGrid
-        width="60em"
-        columns={[1, 2, 2]}
+    <Flex justify="center" bg={bg} py={['2em', '2em', '4em']} as="section">
+      <Grid
+        gridTemplateColumns={['1fr', '1fr', '1fr 1fr']}
         columnGap="1em"
-        alignItems="center"
+        rowGap="1em"
+        align="center"
+        maxW={['375px', '1024px', '1440px']}
       >
-        <Flex direction="column" maxW="30em">
-          <Heading as="h3" fontWeight="300" fontSize="2.4rem">
+        <Flex
+          direction="column"
+          maxW={['30em', '30em', '30em']}
+          order={[2, 2, 1]}
+          justify="center"
+        >
+          <Heading as="h3" fontWeight="300" fontSize={['2em', '2em', '2.4rem']}>
             Share fast and easy.
           </Heading>
           <Text
-            fontSize="1.4rem"
+            fontSize={['1em', '1.2em', '1.4rem']}
             mt="1em"
             color={textInfoColor}
             fontWeight="300"
@@ -143,18 +151,19 @@ function ShareSection() {
             Distribute designs with a private or public link and collect all the
             feedback in one place
           </Text>
-          <Divider my="1em" />
-          <Flex direction="row" alignItems="center">
+          <Divider my="2em" />
+          <Flex direction={['column', 'column', 'row']} alignItems="center">
             <Avatar
-              mr="1em"
+              mr={[0, 0, '1em']}
+              mb={['1em', 0, 0]}
               src="https://designvote-storage.fra1.digitaloceanspaces.com/0.jpeg"
             />
             <Stack>
               <Heading
                 as="p"
-                fontSize="1.4rem"
+                fontSize={['1rem', '1.2rem', '1.4rem']}
                 fontWeight="400"
-                textAlign="start"
+                textAlign={['center', 'center', 'start']}
               >
                 A great tool to decide on the most fitting version of your
                 design
@@ -163,36 +172,47 @@ function ShareSection() {
                 fontSize="1.1rem"
                 fontWeight="400"
                 color={textInfoColor}
-                textAlign="start"
+                textAlign={['center', 'center', 'start']}
               >
-                Robert Preoteasa, Framey
+                Robert Preoteasa,{' '}
+                <Text color="brand.500" as="span">
+                  Framey
+                </Text>
               </Text>
             </Stack>
           </Flex>
         </Flex>
-        <ShareIlustration />
-      </SimpleGrid>
+        <Flex justify="center" align="center" order={[1, 1, 2]}>
+          {isMobile ? <ShareIlustrationMobile /> : <ShareIlustration />}
+        </Flex>
+      </Grid>
     </Flex>
   )
 }
 
 function FeedbackSection() {
   const textInfoColor = useColorModeValue('textSecondary', 'gray.400')
+  const isMobile = useIsMobile()
 
   return (
     <Flex
       direction="column"
       align="center"
-      py="4em"
+      py={['2em', '2em', '4em']}
       alignSelf="center"
       as="section"
     >
       <Center maxW="48em" flexDirection="column" mb="1.5em">
-        <Heading fontSize="2.7rem" fontWeight="400" fontStyle="normal">
+        <Heading
+          fontSize={['1.8rem', '2rem', '2.7rem']}
+          fontWeight="400"
+          fontStyle="normal"
+          textAlign="center"
+        >
           Analyze results and group feedback on tags.
         </Heading>
         <Text
-          fontSize="1.5rem"
+          fontSize={['1.1rem', '1.2rem', '1.5rem']}
           fontWeight="300"
           color={textInfoColor}
           textAlign="center"
@@ -203,7 +223,7 @@ function FeedbackSection() {
         </Text>
       </Center>
 
-      <FeedbackIlustration />
+      {isMobile ? <FeedbackIlustrationMobile /> : <FeedbackIlustration />}
     </Flex>
   )
 }
@@ -219,12 +239,17 @@ function CTASection() {
       bgGradient={`linear(to-b, ${startGradient},${endGradient})`}
       as="section"
     >
-      <Center flexDirection="column" py="10em">
-        <Heading fontSize="2.7rem" fontWeight="400" fontStyle="normal">
+      <Center flexDirection="column" py={['6em', '6em', '10em']}>
+        <Heading
+          fontSize={['1.6rem', '2rem', '2.8rem']}
+          fontWeight="400"
+          fontStyle="normal"
+          textAlign="center"
+        >
           Don’t let your best version wait.
         </Heading>
         <Text
-          fontSize="2.5rem"
+          fontSize={['1.4rem', '2rem', '2.4rem']}
           lineHeight="2em"
           textAlign="center"
           fontWeight="300"
@@ -237,7 +262,7 @@ function CTASection() {
           fontSize="1rem"
           fontWeight="400"
           size="lg"
-          w="20em"
+          w={['16em', '18em', '20em']}
           h="3em"
         >
           Choose your design
