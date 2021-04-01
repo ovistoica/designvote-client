@@ -1,4 +1,3 @@
-import {Box, Grid} from '@chakra-ui/react'
 import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {ErrorBoundary} from 'react-error-boundary'
 import {Routes, Route, Navigate} from 'react-router-dom'
@@ -45,19 +44,10 @@ function AuthenticatedApp() {
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
       <NavBar />
-      <Grid
-        minH="100vh"
-        p={['4em 1em', '4em 2em', '5em 4em']}
-        m="0 auto"
-        maxW={['512px', '1024px', '1440px']}
-        w="100%"
-      >
-        <Box as="main" w="100%" sx={{scrollPaddingTop: '8em'}}>
-          <ErrorBoundary FallbackComponent={ErrorFallback}>
-            <AppRoutes />
-          </ErrorBoundary>
-        </Box>
-      </Grid>
+
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <AppRoutes />
+      </ErrorBoundary>
     </ErrorBoundary>
   )
 }

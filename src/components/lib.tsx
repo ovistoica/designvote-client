@@ -20,6 +20,7 @@ import {
   LinkProps,
   Circle,
   SquareProps,
+  Grid,
 } from '@chakra-ui/react'
 import {FaMoon, FaSun, FaTwitter} from 'react-icons/fa'
 import * as colors from 'styles/colors'
@@ -368,6 +369,22 @@ function Footer() {
   )
 }
 
+const Container: React.FC = ({children}) => {
+  return (
+    <Grid
+      minH="100vh"
+      p={['5em 1em', '5em 2em', '5em 4em']}
+      m="0 auto"
+      maxW={['512px', '1024px', '1440px']}
+      w="100%"
+    >
+      <Box as="main" w="100%" sx={{scrollPaddingTop: '8em'}}>
+        {children}
+      </Box>
+    </Grid>
+  )
+}
+
 export {
   ColorModeSwitcher,
   FullPageSpinner,
@@ -378,4 +395,5 @@ export {
   NavLink,
   SocialIcon,
   Footer,
+  Container,
 }
