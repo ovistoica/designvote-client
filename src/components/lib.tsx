@@ -30,6 +30,7 @@ import {Link as RouterLink} from 'react-router-dom'
 import {GrFacebookOption} from 'react-icons/gr'
 import {IoMdMailOpen} from 'react-icons/io'
 import {LogoIcon} from 'assets/svg/logo-icon'
+import {useAuth} from 'context/auth-context'
 
 const buttonVariants = {
   primary: {
@@ -303,6 +304,7 @@ function SocialIcon({icon, ...restProps}: SocialIconProps) {
 
 function Footer() {
   const textInfoColor = useColorModeValue('textInfoLight', 'gray.400')
+  const {login} = useAuth()
 
   return (
     <Flex direction="column" align="center" mb="3.6em" as="footer">
@@ -321,12 +323,26 @@ function Footer() {
         <NavLink to="/contact" my={['0.5em', '0.5em', 0]}>
           Contact
         </NavLink>
-        <NavLink to="/login" my={['0.5em', '0.5em', 0]}>
+        <ChakraButton
+          my={['0.5em', '0.5em', 0]}
+          mx={'0.5em'}
+          onClick={login}
+          variant="link"
+          h="2em"
+        >
           Login
-        </NavLink>
-        <NavLink to="/try" my={['0.5em', '0.5em', 0]}>
-          Try free
-        </NavLink>
+        </ChakraButton>
+
+        <ChakraButton
+          my={['0.5em', '0.5em', 0]}
+          mx={'0.5em'}
+          onClick={login}
+          colorScheme="brand"
+          variant="link"
+          h="2em"
+        >
+          Signup
+        </ChakraButton>
       </Flex>
       <Flex mt="2em">
         <SocialIcon icon={<GrFacebookOption />} />

@@ -20,10 +20,12 @@ import {Footer} from 'components/lib'
 import {useIsMobile} from 'utils/hooks'
 import {ChooseIlustrationMobile} from 'assets/svg/choose-ilustration-mobile'
 import {FeedbackIlustrationMobile} from 'assets/svg/feedback-ilustration-mobile'
+import {useAuth} from 'context/auth-context'
 
 function HeroSection() {
   const textInfoColor = useColorModeValue('textSecondary', 'gray.400')
   const isMobile = useIsMobile()
+  const {login} = useAuth()
 
   return (
     <Flex
@@ -74,6 +76,7 @@ function HeroSection() {
               fontSize="1rem"
               fontWeight="400"
               size="lg"
+              onClick={login}
             >
               Choose your design
             </Button>
@@ -88,6 +91,7 @@ function HeroSection() {
             mt="-2em"
             fontWeight="400"
             size="lg"
+            onClick={login}
           >
             Choose your design
           </Button>
@@ -231,6 +235,7 @@ function FeedbackSection() {
 function CTASection() {
   const startGradient = useColorModeValue('surface', 'gray.700')
   const endGradient = useColorModeValue('white', 'gray.900')
+  const {login} = useAuth()
 
   return (
     <Flex
@@ -264,6 +269,7 @@ function CTASection() {
           size="lg"
           w={['16em', '18em', '20em']}
           h="3em"
+          onClick={login}
         >
           Choose your design
         </Button>
