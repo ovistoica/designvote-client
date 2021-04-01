@@ -10,6 +10,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
     colors.gray[400],
   )
   const textColor = useColorModeValue('#333333', colors.gray[100])
+  const rectangle = useColorModeValue('white', colors.gray[600])
 
   return (
     <svg
@@ -69,7 +70,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
               y={91.5929}
               width={135.841}
               height={17.6991}
-              fill={bg ?? '#FCFDFD'}
+              fill={rectangle ?? '#FCFDFD'}
             />
           </g>
           <rect
@@ -96,7 +97,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
               y={118.142}
               width={135.841}
               height={17.6991}
-              fill={bg ?? '#FCFDFD'}
+              fill={rectangle ?? '#FCFDFD'}
             />
           </g>
           <rect
@@ -123,7 +124,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
               y={144.69}
               width={135.841}
               height={17.6991}
-              fill={bg ?? '#FCFDFD'}
+              fill={rectangle ?? '#FCFDFD'}
             />
           </g>
           <rect
@@ -150,7 +151,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
               y={65.0443}
               width={135.841}
               height={17.6991}
-              fill={bg ?? '#FCFDFD'}
+              fill={rectangle ?? '#FCFDFD'}
             />
           </g>
           <rect

@@ -1,6 +1,18 @@
+import {useColorModeValue} from '@chakra-ui/color-mode'
+import {useTheme} from '@chakra-ui/system'
 import * as React from 'react'
 
 function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
+  const {colors} = useTheme() as any
+  const surface = useColorModeValue(colors.surface, colors.gray[700])
+  const bg = useColorModeValue('white', colors.gray[900])
+  const textInfoColor = useColorModeValue(
+    colors.textSecondary,
+    colors.gray[400],
+  )
+  const textColor = useColorModeValue('#333333', colors.gray[100])
+  const rectangle = useColorModeValue('white', colors.gray[600])
+
   return (
     <svg
       width={700}
@@ -10,13 +22,13 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <path fill="#EEF3F4" d="M0 0h466.667v468.732H0z" />
+      <path fill={surface ?? '#EEF3F4'} d="M0 0h466.667v468.732H0z" />
       <path
         d="M90.856 67.11c0 7.982-6.472 14.454-14.455 14.454s-14.454-6.472-14.454-14.455S68.418 52.655 76.4 52.655c7.983 0 14.455 6.471 14.455 14.454z"
         fill="#F07320"
       />
       <text
-        fill="#212528"
+        fill={textColor ?? '#212528'}
         style={{
           whiteSpace: 'pre',
         }}
@@ -30,7 +42,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
         </tspan>
       </text>
       <text
-        fill="#686868"
+        fill={textColor ?? '#686868'}
         style={{
           whiteSpace: 'pre',
         }}
@@ -43,37 +55,49 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           {'Feedback'}
         </tspan>
       </text>
-      <g filter="url(#prefix__filter0_d)">
-        <path fill="#FCFDFD" d="M68.142 213.717h316.962v41.298H68.142z" />
+      <g id="Rectangle" filter="url(#prefix__filter0_d)">
+        <path
+          fill={rectangle ?? '#FCFDFD'}
+          d="M68.142 213.717h316.962v41.298H68.142z"
+        />
       </g>
       <path
-        fill="#EEF3F4"
+        fill={surface ?? '#EEF3F4'}
         d="M74.336 221.976h291.15v8.26H74.336zM74.336 234.366h131.121v8.26H74.336z"
       />
       <g filter="url(#prefix__filter1_d)">
-        <path fill="#FCFDFD" d="M68.142 275.664h316.962v41.298H68.142z" />
+        <path
+          fill={rectangle ?? '#FCFDFD'}
+          d="M68.142 275.664h316.962v41.298H68.142z"
+        />
       </g>
       <path
-        fill="#EEF3F4"
+        fill={surface ?? '#EEF3F4'}
         d="M74.336 283.923h291.15v8.26H74.336zM74.336 296.313h131.121v8.26H74.336z"
       />
       <g filter="url(#prefix__filter2_d)">
-        <path fill="#FCFDFD" d="M68.142 337.611h316.962v41.298H68.142z" />
+        <path
+          fill={rectangle ?? '#FCFDFD'}
+          d="M68.142 337.611h316.962v41.298H68.142z"
+        />
       </g>
       <path
-        fill="#EEF3F4"
+        fill={surface ?? '#EEF3F4'}
         d="M74.336 345.87h291.15v8.26H74.336zM74.336 358.26h131.121v8.26H74.336z"
       />
       <g filter="url(#prefix__filter3_d)">
-        <path fill="#FCFDFD" d="M68.142 151.77h316.962v41.298H68.142z" />
+        <path
+          fill={rectangle ?? '#FCFDFD'}
+          d="M68.142 151.77h316.962v41.298H68.142z"
+        />
       </g>
       <path
-        fill="#EEF3F4"
+        fill={surface ?? '#EEF3F4'}
         d="M74.336 160.03h291.15v8.26H74.336zM74.336 172.419h131.121v8.26H74.336z"
       />
-      <path fill="#FCFDFD" d="M233.333 120.797H700v468.732H233.333z" />
+      <path fill={bg ?? '#FCFDFD'} d="M233.333 120.797H700v468.732H233.333z" />
       <text
-        fill="#212528"
+        fill={textColor ?? '#212528'}
         style={{
           whiteSpace: 'pre',
         }}
@@ -92,7 +116,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           fill="#F07320"
         />
         <text
-          fill="#333"
+          fill={textColor ?? '#333'}
           style={{
             whiteSpace: 'pre',
           }}
@@ -104,9 +128,9 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             {'signup'}
           </tspan>
         </text>
-        <path stroke="#EEF3F4" d="M290.121 268.969l383.038 2" />
+        <path stroke={surface ?? '#EEF3F4'} d="M290.121 268.969l383.038 2" />
         <text
-          fill="#747474"
+          fill={textInfoColor ?? '#747474'}
           style={{
             whiteSpace: 'pre',
           }}
@@ -125,7 +149,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           fill="#1B4962"
         />
         <text
-          fill="#333"
+          fill={textColor ?? '#333'}
           style={{
             whiteSpace: 'pre',
           }}
@@ -137,9 +161,9 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             {'recommandations'}
           </tspan>
         </text>
-        <path stroke="#EEF3F4" d="M290.121 321.624l383.038 2" />
+        <path stroke={surface ?? '#EEF3F4'} d="M290.121 321.624l383.038 2" />
         <text
-          fill="#747474"
+          fill={textInfoColor ?? '#747474'}
           style={{
             whiteSpace: 'pre',
           }}
@@ -158,7 +182,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           fill="#9F57AE"
         />
         <text
-          fill="#333"
+          fill={textColor ?? '#333'}
           style={{
             whiteSpace: 'pre',
           }}
@@ -170,9 +194,9 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             {'onboarding'}
           </tspan>
         </text>
-        <path stroke="#EEF3F4" d="M290.121 374.279l383.038 2" />
+        <path stroke={surface ?? '#EEF3F4'} d="M290.121 374.279l383.038 2" />
         <text
-          fill="#747474"
+          fill={textInfoColor ?? '#747474'}
           style={{
             whiteSpace: 'pre',
           }}
@@ -190,9 +214,9 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           d="M305.605 408.333a7.744 7.744 0 11-15.488 0 7.744 7.744 0 0115.488 0z"
           fill="#F3CE9A"
         />
-        <path stroke="#EEF3F4" d="M290.121 426.934l383.038 2" />
+        <path stroke={surface ?? '#EEF3F4'} d="M290.121 426.934l383.038 2" />
         <text
-          fill="#747474"
+          fill={textInfoColor ?? '#747474'}
           style={{
             whiteSpace: 'pre',
           }}
@@ -205,7 +229,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           </tspan>
         </text>
         <text
-          fill="#333"
+          fill={textColor ?? '#333'}
           style={{
             whiteSpace: 'pre',
           }}
@@ -224,7 +248,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           fill="#192261"
         />
         <text
-          fill="#333"
+          fill={textColor ?? '#333'}
           style={{
             whiteSpace: 'pre',
           }}
@@ -236,9 +260,12 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             {'logo variation'}
           </tspan>
         </text>
-        <path stroke="#EEF3F4" d="M290.121 479.588l383.038 2.001" />
+        <path
+          stroke={surface ?? '#EEF3F4'}
+          d="M290.121 479.588l383.038 2.001"
+        />
         <text
-          fill="#747474"
+          fill={textInfoColor ?? '#747474'}
           style={{
             whiteSpace: 'pre',
           }}
