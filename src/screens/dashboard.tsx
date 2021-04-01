@@ -16,7 +16,12 @@ import {FiLink} from 'react-icons/fi'
 import {CreateDesignModal} from 'components/create-design'
 import {useDeleteDesign, useDesigns} from 'utils/designs'
 import {useNavigate} from 'react-router-dom'
-import {DeleteResourceAlert, FullPageSpinner, Button} from 'components/lib'
+import {
+  DeleteResourceAlert,
+  FullPageSpinner,
+  Button,
+  Container,
+} from 'components/lib'
 import {Logo} from 'assets/icons'
 import {MetaDecorator} from 'components/meta-decorator'
 import {Design} from 'types'
@@ -153,7 +158,7 @@ function Dashboard() {
   }
 
   return (
-    <>
+    <Container>
       <MetaDecorator
         title="Designvote - Dashboard"
         description="Dashboard containing all of your designs. Share a design for people to vote."
@@ -203,7 +208,7 @@ function Dashboard() {
           <EmptyDashboard onClick={onOpen} />
         )}
       </Flex>
-    </>
+    </Container>
   )
 }
 

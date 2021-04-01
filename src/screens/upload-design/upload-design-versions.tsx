@@ -6,7 +6,7 @@ import {ImageSwitch, Mode} from 'components/image-switch'
 import {MobileUpload} from './mobile-upload'
 import {WebUpload} from './web-upload'
 import {useEditDesign} from 'utils/designs'
-import {FullPageSpinner} from 'components/lib'
+import {Container, FullPageSpinner} from 'components/lib'
 
 function UploadDesign() {
   const {designId} = useParams()
@@ -28,13 +28,15 @@ function UploadDesign() {
     )
 
   return (
-    <Flex flex="1" align="center" flexDir="column">
-      <Text fontSize="1.5rem" textAlign="center">
-        Upload two or more versions of the same design
-      </Text>
-      <ImageSwitch mode={currentMode} toggle={toggle} mt="1em" />
-      {isLoading ? <FullPageSpinner /> : renderContent()}
-    </Flex>
+    <Container>
+      <Flex flex="1" align="center" flexDir="column">
+        <Text fontSize="1.5rem" textAlign="center">
+          Upload two or more versions of the same design
+        </Text>
+        <ImageSwitch mode={currentMode} toggle={toggle} mt="1em" />
+        {isLoading ? <FullPageSpinner /> : renderContent()}
+      </Flex>
+    </Container>
   )
 }
 
