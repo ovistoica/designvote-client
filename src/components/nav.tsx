@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  Link,
   Box,
   Flex,
   Stack,
@@ -11,17 +10,57 @@ import {
   MenuList,
   MenuItem,
   useColorMode,
-  Text,
   FlexProps,
-  LinkProps,
+  IconButton,
+  Button,
 } from '@chakra-ui/react'
 
 import Logo from './logo'
 import {useAuth} from 'context/auth-context'
 import {useTheme} from '@emotion/react'
-import {Link as RouterLink, useNavigate} from 'react-router-dom'
-import {ExternalLinkIcon} from '@chakra-ui/icons'
+import {useNavigate} from 'react-router-dom'
+import {ExternalLinkIcon, SettingsIcon} from '@chakra-ui/icons'
 import {FaMoon, FaSun} from 'react-icons/fa'
+import {NavLink} from './lib'
+import {Link as BrowserLink} from 'react-router-dom'
+import {useIsMobile} from 'utils/hooks'
+
+function AuthenticatedMenu() {
+  const {isAuthenticated, user, logout} = useAuth()
+  const SwitchIcon = useColorModeValue(FaMoon, FaSun)
+  const {toggleColorMode} = useColorMode()
+  const text = useColorModeValue('dark', 'light')
+  const colorSwithcerText = `Switch to ${text} mode`
+
+  return isAuthenticated && user ? (
+    <Menu>
+      <MenuButton
+        alignSelf={['center', 'flex-start']}
+        cursor="pointer"
+        as={Avatar}
+        size="sm"
+        alt="Avatar"
+        onClick={e => e.stopPropagation()}
+        src={user.picture}
+      ></MenuButton>
+      <MenuList>
+        <MenuItem
+          icon={<SwitchIcon />}
+          onClick={toggleColorMode}
+          aria-label={colorSwithcerText}
+        >
+          {colorSwithcerText}
+        </MenuItem>
+        <MenuItem as={BrowserLink} to="/settings" icon={<SettingsIcon />}>
+          Settings
+        </MenuItem>
+        <MenuItem onClick={() => logout()} icon={<ExternalLinkIcon />}>
+          Logout
+        </MenuItem>
+      </MenuList>
+    </Menu>
+  ) : null
+}
 
 function NavBar(props: FlexProps) {
   const [isOpen, setIsOpen] = React.useState(false)
@@ -42,8 +81,10 @@ function NavBar(props: FlexProps) {
         cursor="pointer"
         onClick={() => navigate(to)}
       />
+
       <MenuToggle toggle={toggle} isOpen={isOpen} />
-      <MenuLinks isOpen={isOpen} />
+      <UnauthenticatedMenuLinks isOpen={isOpen} />
+      <AuthenticatedMenu />
     </NavBarContainer>
   )
 }
@@ -81,47 +122,25 @@ const MenuIcon = () => {
 }
 
 function MenuToggle({toggle, isOpen}: {toggle: () => void; isOpen: boolean}) {
+  const {isAuthenticated} = useAuth()
+
   return (
-    <Box display={{base: 'block', md: 'none'}} onClick={toggle}>
+    <Box
+      display={{base: isAuthenticated ? 'none' : 'block', md: 'none'}}
+      onClick={toggle}
+    >
       {isOpen ? <CloseIcon /> : <MenuIcon />}
     </Box>
   )
 }
 
-interface NavLinkProps extends LinkProps {
-  to: string
-}
-
-function NavLink(props: NavLinkProps) {
-  const {colors} = useTheme() as any
-  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
-  return (
-    <Link
-      as={RouterLink}
-      _hover={{
-        color: brand,
-        textDecoration: 'none',
-      }}
-      _focus={{outline: 'none'}}
-      _active={{outline: 'none'}}
-      display="block"
-      width="100%"
-      height="100%"
-      borderRadius="2px"
-      borderLeft="5px solid transparent"
-      {...props}
-    />
-  )
-}
-
-function MenuLinks({isOpen}: {isOpen: boolean}) {
-  const {isAuthenticated, user, logout, login} = useAuth()
-  const {colors} = useTheme() as any
-  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
+function UnauthenticatedMenuLinks({isOpen}: {isOpen: boolean}) {
+  const {isAuthenticated, login} = useAuth()
   const SwitchIcon = useColorModeValue(FaMoon, FaSun)
   const {toggleColorMode} = useColorMode()
   const text = useColorModeValue('dark', 'light')
   const colorSwithcerText = `Switch to ${text} mode`
+  const isMobile = useIsMobile()
   return (
     <Box
       display={{base: isOpen ? 'block' : 'none', md: 'block'}}
@@ -130,71 +149,52 @@ function MenuLinks({isOpen}: {isOpen: boolean}) {
       <Stack
         spacing={8}
         align="center"
-        justify={['center', 'space-between', 'flex-end', 'flex-end']}
+        justify={['center', 'center', 'flex-end', 'flex-end']}
         direction={['column', 'row', 'row', 'row']}
         pt={[4, 4, 0, 0]}
       >
-        {isAuthenticated && user ? (
-          <>
-            <NavLink to="/dashboard">Dashboard</NavLink>
-            <NavLink to="/Settings">Settings</NavLink>
-            <Menu>
-              <MenuButton
-                alignSelf="flex-start"
-                cursor="pointer"
-                as={Avatar}
-                size="sm"
-                alt="Avatar"
-                onClick={e => e.stopPropagation()}
-                src={user.picture}
-              ></MenuButton>
-              <MenuList>
-                <MenuItem
-                  icon={<SwitchIcon />}
-                  onClick={toggleColorMode}
-                  aria-label={colorSwithcerText}
-                >
-                  {colorSwithcerText}
-                </MenuItem>
-                <MenuItem onClick={() => logout()} icon={<ExternalLinkIcon />}>
-                  Logout
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          </>
-        ) : (
-          <>
-            <NavLink to="/features">Features </NavLink>
-            <NavLink to="/pricing">Pricing </NavLink>
-            <Text
-              cursor="pointer"
-              fontWeight="regular"
-              fontSize="xl"
-              textAlign="start"
-              display="block"
-              width="100%"
-              height="100%"
-              borderRadius="2px"
-              borderLeft="5px solid transparent"
-              _hover={{
-                color: brand,
-              }}
+        {!isAuthenticated ? (
+          <Flex
+            direction={['column', 'row', 'row']}
+            align="center"
+            justify="center"
+          >
+            <IconButton
+              my={['0.5em', '0.5em', 0]}
+              mx={'0.5em'}
+              variant="ghost"
+              icon={<SwitchIcon />}
+              aria-label={colorSwithcerText}
+              onClick={toggleColorMode}
+            />
+            <NavLink to="/how-it-works" my={['0.5em', '0.5em', 0]}>
+              How it works
+            </NavLink>
+            <NavLink to="/contact" my={['0.5em', '0.5em', 0]}>
+              Contact
+            </NavLink>
+            <Button
+              my={['0.5em', '0.5em', 0]}
+              mx={'0.5em'}
               onClick={login}
-              color={brand}
+              variant={isMobile ? 'link' : 'outline'}
+              h="2em"
             >
               Login
-            </Text>
-            <Text
-              cursor="pointer"
-              fontWeight="regular"
-              fontSize="xl"
+            </Button>
+
+            <Button
+              my={['0.5em', '0.5em', 0]}
+              mx={'0.5em'}
               onClick={login}
-              color={brand}
+              colorScheme="brand"
+              variant={isMobile ? 'link' : 'solid'}
+              h="2em"
             >
               Signup
-            </Text>
-          </>
-        )}
+            </Button>
+          </Flex>
+        ) : null}
       </Stack>
     </Box>
   )

@@ -16,12 +16,22 @@ import {
   AlertDialogFooter,
   IconButtonProps,
   BoxProps,
+  Link,
+  LinkProps,
+  Circle,
+  SquareProps,
+  Grid,
 } from '@chakra-ui/react'
-import {FaMoon, FaSun} from 'react-icons/fa'
+import {FaMoon, FaSun, FaTwitter} from 'react-icons/fa'
 import * as colors from 'styles/colors'
 import styled from '@emotion/styled/'
 import {lightenDarkenColor} from 'utils/color'
 import {useTheme} from '@emotion/react'
+import {Link as RouterLink} from 'react-router-dom'
+import {GrFacebookOption} from 'react-icons/gr'
+import {IoMdMailOpen} from 'react-icons/io'
+import {LogoIcon} from 'assets/svg/logo-icon'
+import {useAuth} from 'context/auth-context'
 
 const buttonVariants = {
   primary: {
@@ -242,6 +252,139 @@ function DeleteResourceAlert({
   )
 }
 
+interface NavLinkProps extends LinkProps {
+  to: string
+}
+
+function NavLink(props: NavLinkProps) {
+  const {colors} = useTheme() as any
+  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
+  return (
+    <Link
+      as={RouterLink}
+      _hover={{
+        color: brand,
+        textDecoration: 'none',
+      }}
+      _focus={{outline: 'none'}}
+      _active={{outline: 'none'}}
+      px="1em"
+      {...props}
+    />
+  )
+}
+
+interface SocialIconProps extends SquareProps {
+  icon: JSX.Element
+}
+
+function SocialIcon({icon, ...restProps}: SocialIconProps) {
+  const {colors} = useTheme() as any
+  const textInfoColor = useColorModeValue('textInfoLight', 'gray.400')
+  const iconColor = useColorModeValue('white', 'gray.900')
+  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
+
+  return (
+    <Circle
+      cursor="pointer"
+      bg={textInfoColor}
+      w="2.2em"
+      h="2.2em"
+      color={iconColor}
+      mx="0.5em"
+      transition="0.2s all"
+      _hover={{
+        bg: brand,
+      }}
+      {...restProps}
+    >
+      {icon}
+    </Circle>
+  )
+}
+
+function Footer() {
+  const textInfoColor = useColorModeValue('textInfoLight', 'gray.400')
+  const {login} = useAuth()
+
+  return (
+    <Flex direction="column" align="center" mb="3.6em" as="footer">
+      <LogoIcon width="2em" height="2.5em" style={{marginTop: '2.5em'}} />
+      <Flex
+        direction={['column', 'column', 'row']}
+        mt="2em"
+        color={textInfoColor}
+        w="24em"
+        align="center"
+        justify="space-between"
+      >
+        <NavLink to="/how-it-works" my={['0.5em', '0.5em', 0]}>
+          How it works
+        </NavLink>
+        <NavLink to="/contact" my={['0.5em', '0.5em', 0]}>
+          Contact
+        </NavLink>
+        <ChakraButton
+          my={['0.5em', '0.5em', 0]}
+          mx={'0.5em'}
+          onClick={login}
+          variant="link"
+          h="2em"
+        >
+          Login
+        </ChakraButton>
+
+        <ChakraButton
+          my={['0.5em', '0.5em', 0]}
+          mx={'0.5em'}
+          onClick={login}
+          colorScheme="brand"
+          variant="link"
+          h="2em"
+        >
+          Signup
+        </ChakraButton>
+      </Flex>
+      <Flex mt="2em">
+        <SocialIcon icon={<GrFacebookOption />} />
+        <SocialIcon icon={<FaTwitter />} />
+        <SocialIcon icon={<IoMdMailOpen />} />
+      </Flex>
+      <Flex
+        direction={['column', 'column', 'row']}
+        align="center"
+        mt="2em"
+        color={textInfoColor}
+        justify="space-between"
+        w="24em"
+      >
+        <NavLink to="/terms-and-conditions" my={['0.5em', '0.5em', 0]}>
+          Terms and Conditions
+        </NavLink>
+        <NavLink to="/privacy" my={['0.5em', '0.5em', 0]}>
+          Privacy
+        </NavLink>
+      </Flex>
+    </Flex>
+  )
+}
+
+const Container: React.FC = ({children}) => {
+  return (
+    <Grid
+      minH="100vh"
+      p={['5em 1em', '5em 2em', '5em 4em']}
+      m="0 auto"
+      maxW={['512px', '1024px', '1440px']}
+      w="100%"
+    >
+      <Box as="main" w="100%" sx={{scrollPaddingTop: '8em'}}>
+        {children}
+      </Box>
+    </Grid>
+  )
+}
+
 export {
   ColorModeSwitcher,
   FullPageSpinner,
@@ -249,4 +392,8 @@ export {
   FullPageErrorFallback,
   Button,
   DeleteResourceAlert,
+  NavLink,
+  SocialIcon,
+  Footer,
+  Container,
 }
