@@ -18,6 +18,7 @@
     "history": "^5.0.0",
     "install": "^0.13.0",
     "kill-port-process": "^2.3.0",
+    "logrocket": "^1.0.14",
     "normalizr": "^3.6.1",
     "npm": "^7.7.0",
     "react": "^17.0.1",
