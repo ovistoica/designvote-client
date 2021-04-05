@@ -3,19 +3,15 @@ import {HStack, StackProps} from '@chakra-ui/layout'
 import {RiComputerFill} from 'react-icons/ri'
 import {FaMobile} from 'react-icons/fa'
 import {Tooltip} from '@chakra-ui/tooltip'
-
-export enum Mode {
-  Mobile = 'mobile',
-  Web = 'web',
-}
+import {DesignType} from 'types'
 
 interface SwitchProps extends StackProps {
-  mode: Mode
-  toggle: (mode: Mode) => void
+  mode: DesignType
+  toggle: (mode: DesignType) => void
 }
 
 export function ImageSwitch({
-  mode = Mode.Mobile,
+  mode = DesignType.Mobile,
   toggle,
   ...stackProps
 }: SwitchProps) {
@@ -25,16 +21,16 @@ export function ImageSwitch({
         <IconButton
           aria-label="mobile-mode"
           icon={<FaMobile />}
-          colorScheme={mode === Mode.Mobile ? 'brand' : undefined}
-          onClick={() => toggle(Mode.Mobile)}
+          colorScheme={mode === DesignType.Mobile ? 'brand' : undefined}
+          onClick={() => toggle(DesignType.Mobile)}
         />
       </Tooltip>
       <Tooltip hasArrow label="Web designs">
         <IconButton
           aria-label="web-mode"
-          colorScheme={mode === Mode.Web ? 'brand' : undefined}
+          colorScheme={mode === DesignType.Web ? 'brand' : undefined}
           icon={<RiComputerFill />}
-          onClick={() => toggle(Mode.Web)}
+          onClick={() => toggle(DesignType.Web)}
         />
       </Tooltip>
     </HStack>

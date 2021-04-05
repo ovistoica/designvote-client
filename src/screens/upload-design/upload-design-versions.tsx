@@ -2,18 +2,19 @@ import * as React from 'react'
 import {Flex, Text} from '@chakra-ui/react'
 import {useParams} from 'react-router-dom'
 
-import {ImageSwitch, Mode} from 'components/image-switch'
+import {ImageSwitch} from 'components/image-switch'
 import {MobileUpload} from './mobile-upload'
 import {WebUpload} from './web-upload'
 import {useEditDesign} from 'utils/designs'
 import {Container, FullPageSpinner} from 'components/lib'
+import {DesignType} from 'types'
 
 function UploadDesign() {
   const {designId} = useParams()
   const {mutate: editDesign, isLoading} = useEditDesign(designId)
-  const [currentMode, setMode] = React.useState(Mode.Mobile)
+  const [currentMode, setMode] = React.useState(DesignType.Mobile)
 
-  const toggle = (mode: Mode) => {
+  const toggle = (mode: DesignType) => {
     if (mode !== currentMode) {
       editDesign({designType: mode})
     }
@@ -21,7 +22,7 @@ function UploadDesign() {
   }
 
   const renderContent = () =>
-    currentMode === Mode.Mobile ? (
+    currentMode === DesignType.Mobile ? (
       <MobileUpload designId={designId} />
     ) : (
       <WebUpload designId={designId} />
