@@ -5,7 +5,7 @@ export type VersionInfo = {url: string; description?: string}
 
 export type State = {
   step: DesignStep
-  imagesByUrl: Set<string>
+  imagesByUrl: string[]
   images: Record<string, VersionInfo>
   name?: string
   description?: string
@@ -13,6 +13,8 @@ export type State = {
   type: DesignType
   setStep: (step: DesignStep) => void
   saveDesignInfo: (values: Values) => void
+  addVersion: (version: VersionInfo) => void
+  deleteVersion: (url: string) => void
 }
 
 interface Values {
@@ -24,7 +26,7 @@ interface Values {
 
 export const useCreateDesignStore = create<State>((set, get) => ({
   step: DesignStep.Create,
-  imagesByUrl: new Set(),
+  imagesByUrl: [],
   images: {},
   type: DesignType.Web,
   setStep: (step: DesignStep) => set({step}),
@@ -32,16 +34,18 @@ export const useCreateDesignStore = create<State>((set, get) => ({
   addVersion: (version: VersionInfo) =>
     set(state => {
       const {imagesByUrl, images} = get()
-      imagesByUrl.add(version.url)
-      images[version.url] = version
-      return {imagesByUrl, images}
+      const newimagesByUrl = [...new Set([...imagesByUrl, version.url])]
+      images[version.url] = {...version}
+      return {imagesByUrl: newimagesByUrl, images}
     }),
-  deleteVersion: (url: string) =>
+  deleteVersion: (imageUrl: string) =>
     set(() => {
       const {imagesByUrl, images} = get()
-      imagesByUrl.delete(url)
-      const {[url]: omitted, ...rest} = images
-      return {imagesByUrl, images: rest}
+      const newimagesByUrl = [...imagesByUrl.filter(url => url !== imageUrl)]
+      delete images[imageUrl]
+      // console.log({imagesByUrl: newimagesByUrl, images: {...images}})
+
+      return {imagesByUrl: newimagesByUrl, images: {...images}}
     }),
 
   saveDesignInfo: (values: Values) => set(() => ({...values})),

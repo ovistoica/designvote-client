@@ -41,14 +41,13 @@ export function ImageDropInput({
         _focus={{outline: 'none'}}
         bg={bg}
         align="center"
-        px="3em"
-        pt="10em"
         cursor="pointer"
         aria-label="Upload image"
         border="dashed"
         borderWidth="1px"
         borderColor="info"
         borderRadius="6px"
+        p="1em"
         {...getRootProps()}
         {...stackProps}
       >
@@ -71,7 +70,7 @@ export function ImageDropInput({
               </Text>
             </Text>
             <Text textAlign="center" letterSpacing="0.02em" color="info">
-              (jpg, png, gif, webp ideally oriented for mobile phones)
+              (jpg, png, gif, webp)
             </Text>
           </>
         )}
