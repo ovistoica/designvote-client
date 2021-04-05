@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {Box, Circle, Grid, Stack, Text} from '@chakra-ui/layout'
-import {ImageDropInput} from './image-input'
+import {ImageDropInput} from 'components/image-input'
 import {Image} from '@chakra-ui/image'
 import {useSafeDispatch} from 'utils/hooks'
 import {Button} from 'components/lib'

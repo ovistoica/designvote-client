@@ -5,7 +5,7 @@ import {Button} from 'components/lib'
 import * as React from 'react'
 import {useNavigate} from 'react-router'
 import {useUploadDesignVersions} from 'utils/design-version'
-import {ImageDropInput} from './image-input'
+import {ImageDropInput} from 'components/image-input'
 
 function useCurrentMobileVersions() {
   const [image1, setImage1] = React.useState<string>()
