@@ -369,7 +369,7 @@ function Footer() {
   )
 }
 
-const Container: React.FC = ({children}) => {
+const Container: React.FC<BoxProps> = ({children, ...rest}) => {
   return (
     <Grid
       minH="100vh"
@@ -378,7 +378,7 @@ const Container: React.FC = ({children}) => {
       maxW={['512px', '1024px', '1440px']}
       w="100%"
     >
-      <Box as="main" w="100%" sx={{scrollPaddingTop: '8em'}}>
+      <Box as="main" w="100%" sx={{scrollPaddingTop: '8em'}} {...rest}>
         {children}
       </Box>
     </Grid>

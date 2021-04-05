@@ -3,7 +3,9 @@ import {FullPageSpinner} from 'components/lib'
 import {useAuth} from 'context/auth-context'
 import LogRocket from 'logrocket'
 
-LogRocket.init('zbpdjy/designvote')
+if (process.env.NODE_ENV === 'production') {
+  LogRocket.init('zbpdjy/designvote')
+}
 
 const AuthenticatedApp = React.lazy(() => import('./authenticated-app'))
 const UnauthenticatedApp = React.lazy(
