@@ -12,3 +12,8 @@ export enum DesignStep {
   Preview,
   Share,
 }
+
+export enum VoteStyle {
+  Choose = 'choose',
+  FiveStar = 'five-star',
+}

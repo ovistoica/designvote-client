@@ -5,7 +5,7 @@ import {Divider, Flex, Heading, Stack, Text} from '@chakra-ui/layout'
 import {useCreateDesignStore} from 'store'
 import {DesignStep} from 'types'
 
-import {DesignInfoForm} from './design-form'
+import {DesignInfoForm} from './design-info-step'
 import {UploadStep} from './upload-step'
 
 const linkStyle: ButtonProps = {
