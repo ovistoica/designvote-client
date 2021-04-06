@@ -6,6 +6,7 @@ import {useCreateDesignStore} from 'store'
 import {DesignStep} from 'types'
 
 import {DesignInfoForm} from './design-info-step'
+import {PreviewStep} from './preview-step'
 import {UploadStep} from './upload-step'
 
 const linkStyle: ButtonProps = {
@@ -55,11 +56,7 @@ export function CurrentScreen() {
       )
     }
     case DesignStep.Preview: {
-      return (
-        <>
-          <Text>Preview </Text>
-        </>
-      )
+      return <PreviewStep />
     }
     case DesignStep.Share: {
       return (
