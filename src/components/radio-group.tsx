@@ -34,7 +34,7 @@ const RadioCard: React.FC<UseRadioProps> = props => {
 }
 
 interface RadioGroupProps {
-  options: string[]
+  options: {value: string; label: string}[]
   name: string
   onChange: (val: string | number) => void
 }
@@ -42,7 +42,7 @@ interface RadioGroupProps {
 export function RadioGroup({options, name, onChange}: RadioGroupProps) {
   const {getRootProps, getRadioProps} = useRadioGroup({
     name,
-    defaultValue: options[0],
+    defaultValue: options[0].value,
     onChange,
   })
 
@@ -50,11 +50,11 @@ export function RadioGroup({options, name, onChange}: RadioGroupProps) {
 
   return (
     <HStack {...group}>
-      {options.map(value => {
-        const radio = getRadioProps({value})
+      {options.map(option => {
+        const radio = getRadioProps({value: option.value})
         return (
-          <RadioCard key={value} {...radio}>
-            {value}
+          <RadioCard key={option.value} {...radio}>
+            {option.label}
           </RadioCard>
         )
       })}

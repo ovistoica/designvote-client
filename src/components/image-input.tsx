@@ -9,10 +9,14 @@ import {Progress} from '@chakra-ui/progress'
 
 interface ImageDropInputProps extends StackProps {
   onImageUpload: (imageUrl: string) => void
+  description?: string
+  icon?: JSX.Element
 }
 
 export function ImageDropInput({
   onImageUpload,
+  description,
+  icon,
   ...stackProps
 }: ImageDropInputProps) {
   const bg = useColorModeValue('surface', 'gray.700')
@@ -51,26 +55,22 @@ export function ImageDropInput({
         {...getRootProps()}
         {...stackProps}
       >
-        <HangedImage />
         {isDragActive ? (
-          <Text textAlign="center" letterSpacing="0.02em" color="info">
-            Drop the image
-          </Text>
+          <>
+            {icon ?? <HangedImage />}
+
+            <Text textAlign="center" letterSpacing="0.02em" color="info">
+              Drop the image
+            </Text>
+          </>
         ) : (
           <>
-            <Text
-              textTransform="uppercase"
-              textAlign="center"
-              letterSpacing="0.02em"
-              color="info"
-            >
-              Drag and drop some images here or{' '}
-              <Text as="span" textDecor="underline dashed">
-                browse
-              </Text>
-            </Text>
             <Text textAlign="center" letterSpacing="0.02em" color="info">
-              (jpg, png, gif, webp)
+              jpg, png, gif, webp
+            </Text>
+            {icon ?? <HangedImage />}
+            <Text textAlign="center" color="info" fontWeight="semibold">
+              {description ?? 'Drag and drop some images here or browse'}
             </Text>
           </>
         )}

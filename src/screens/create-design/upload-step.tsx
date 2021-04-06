@@ -5,6 +5,10 @@ import {Image, ImageProps} from '@chakra-ui/image'
 import {DeleteBin} from 'assets/icons'
 import shallow from 'zustand/shallow'
 import {useCallback} from 'react'
+import {Input} from '@chakra-ui/input'
+import {AddIcon} from '@chakra-ui/icons'
+import {Button} from '@chakra-ui/button'
+import {DesignStep} from 'types'
 
 interface UploadedImageProps extends ImageProps {
   selected?: boolean
@@ -18,7 +22,18 @@ function UploadedImage({
   description,
   ...rest
 }: UploadedImageProps) {
-  const onDeletePress = useCreateDesignStore(state => state.deleteVersion)
+  const onDeletePress = useCreateDesignStore(
+    useCallback(state => state.deleteVersion, []),
+  )
+  const setDescription = useCreateDesignStore(
+    useCallback(state => state.setVersionDescrption, []),
+  )
+
+  const currentValue = useCreateDesignStore(
+    useCallback(state => state.images[imageUrl].description, [imageUrl]),
+  )
+
+  const onInputChange = (value: string) => setDescription(imageUrl, value)
 
   return (
     <Box role="group" position="relative">
@@ -59,9 +74,13 @@ function UploadedImage({
         }
         {...rest}
       />
-      <Text textAlign="center" fontSize="sm">
-        {description}
-      </Text>
+      <Input
+        mt="0.2em"
+        textAlign="center"
+        placeholder="Version description"
+        onChange={e => onInputChange(e.target.value)}
+        value={currentValue}
+      />
     </Box>
   )
 }
@@ -74,22 +93,52 @@ export function UploadStep() {
     useCallback(state => state.imagesByUrl, []),
     shallow,
   )
+  const setStep = useCreateDesignStore(useCallback(state => state.setStep, []))
 
   const onImageUpload = useCallback(
     (imageUrl: string) => addVersion({url: imageUrl}),
     [addVersion],
   )
   return (
-    <Grid
-      mt="1em"
-      gridTemplateColumns="repeat(3, 1fr)"
-      columnGap="1em"
-      rowGap="1em"
-    >
-      {imagesByUrl.map(url => {
-        return <UploadedImage imageUrl={url} w="15em" h="15em" />
-      })}
-      <ImageDropInput onImageUpload={onImageUpload} h="15em" w="15em" />
-    </Grid>
+    <>
+      <Text mt="1em" fontSize="xl">
+        Upload two or more versions of your design
+      </Text>
+
+      <Grid
+        mt="1em"
+        gridTemplateColumns="repeat(3, 1fr)"
+        columnGap="1em"
+        rowGap="1em"
+      >
+        {imagesByUrl.map(url => {
+          return (
+            <UploadedImage
+              imageUrl={url}
+              w="15em"
+              h="15em"
+              key={`imageUpload${url}`}
+            />
+          )
+        })}
+        <ImageDropInput
+          onImageUpload={onImageUpload}
+          h="15em"
+          w="15em"
+          description="Upload 2 or more versions of your design"
+          justifyContent="space-between"
+          icon={<AddIcon w="3em" h="3em" color="info" />}
+        />
+      </Grid>
+      <Button
+        colorScheme="brand"
+        size="lg"
+        mt="1em"
+        disabled={imagesByUrl.length < 2}
+        onClick={() => setStep(DesignStep.Preview)}
+      >
+        Next
+      </Button>
+    </>
   )
 }

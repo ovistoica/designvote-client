@@ -15,6 +15,7 @@ import {
   PopoverTrigger,
   Code,
   Button,
+  Text,
 } from '@chakra-ui/react'
 import {Formik, Form, FormikTouched} from 'formik'
 import {Persist} from 'formik-persist'
@@ -23,7 +24,7 @@ import * as yup from 'yup'
 import * as React from 'react'
 import {QuestionIcon} from '@chakra-ui/icons'
 import {RadioGroup} from 'components/radio-group'
-import {DesignStep, DesignType} from 'types'
+import {DesignStep, DesignType, VoteStyle} from 'types'
 import {useCreateDesignStore} from 'store'
 
 interface Values {
@@ -31,6 +32,7 @@ interface Values {
   question: string
   description: string
   type: DesignType
+  voteStyle: VoteStyle
 }
 
 const initialTouched: FormikTouched<Values> = {}
@@ -52,6 +54,7 @@ const validationSchema = yup.object().shape({
       DesignType.Logo,
       DesignType.Other,
     ]),
+  voteStyle: yup.string().oneOf([VoteStyle.Choose, VoteStyle.FiveStar]),
 })
 
 interface FormRowsProps {
@@ -109,6 +112,30 @@ function ModePopover() {
   )
 }
 
+function VoteStylePopover() {
+  return (
+    <Popover trigger="hover">
+      <PopoverTrigger>
+        <QuestionIcon width="1em" height="1em" mb="0.5rem" cursor="help" />
+      </PopoverTrigger>
+      <PopoverContent>
+        <PopoverHeader fontWeight="semibold">Voting style</PopoverHeader>
+        <PopoverArrow />
+        <PopoverCloseButton />
+        <PopoverBody>
+          Wether your voters should choose the version they like the best or
+          vote on each version with a 1-5 star rating.{' '}
+          <Text as="span" fontWeight="semibold">
+            Mention:
+          </Text>{' '}
+          Voters can give comments and feedback on all of the versions
+          independently
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
 function FormRow({
   id,
   value,
@@ -154,14 +181,24 @@ function FormRow({
 }
 
 function DesignInfoForm() {
-  const saveDesign = useCreateDesignStore(state => state.saveDesignInfo)
-  const setStep = useCreateDesignStore(state => state.setStep)
-  const initialValues = useCreateDesignStore(state => ({
-    name: state.name ?? '',
-    description: state.description ?? '',
-    type: state.type,
-    question: state.question ?? '',
-  }))
+  const saveDesign = useCreateDesignStore(
+    React.useCallback(state => state.saveDesignInfo, []),
+  )
+  const setStep = useCreateDesignStore(
+    React.useCallback(state => state.setStep, []),
+  )
+  const initialValues = useCreateDesignStore(
+    React.useCallback(
+      state => ({
+        name: state.name ?? '',
+        description: state.description ?? '',
+        type: state.type,
+        question: state.question ?? '',
+        voteStyle: state.voteStyle,
+      }),
+      [],
+    ),
+  )
   return (
     <Stack pb={6}>
       <Formik
@@ -220,14 +257,35 @@ function DesignInfoForm() {
 
               <RadioGroup
                 options={[
-                  DesignType.Mobile,
-                  DesignType.Web,
-                  DesignType.Illustration,
-                  DesignType.Logo,
-                  DesignType.Other,
+                  {label: DesignType.Mobile, value: DesignType.Mobile},
+                  {label: DesignType.Web, value: DesignType.Web},
+                  {
+                    label: DesignType.Illustration,
+                    value: DesignType.Illustration,
+                  },
+                  {label: DesignType.Logo, value: DesignType.Logo},
+                  {label: DesignType.Other, value: DesignType.Other},
                 ]}
                 name="type"
                 onChange={handleChange('type') as (e: string | number) => void}
+              />
+            </FormControl>
+
+            <FormControl id="voteStyle" py="0.5em" minW="40em">
+              <Flex alignItems="center">
+                <FormLabel marginInlineEnd="0.2rem">Voting style</FormLabel>
+                <VoteStylePopover />
+              </Flex>
+
+              <RadioGroup
+                options={[
+                  {label: 'Choose the best', value: VoteStyle.Choose},
+                  {label: 'Rate with stars', value: VoteStyle.FiveStar},
+                ]}
+                name="voteStyle"
+                onChange={
+                  handleChange('voteStyle') as (e: string | number) => void
+                }
               />
             </FormControl>
 
@@ -237,7 +295,7 @@ function DesignInfoForm() {
               textTransform="uppercase"
               type="submit"
             >
-              Save
+              Next
             </Button>
             <Persist name="design-info" />
           </Form>
