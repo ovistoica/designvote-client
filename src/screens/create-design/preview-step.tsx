@@ -100,29 +100,17 @@ export function PreviewStep() {
               boxShadow="base"
               role="group"
               transition="0.25s all"
-              cursor="pointer"
-              borderRadius="0.5em"
-              maxW="512px"
+              cursor="zoom-in"
+              boxSize="15em"
               //   onClick={() => setSelectedVersion(versionId)}
               pb="1em"
             >
-              <Flex
-                h="5em"
-                w="100%"
-                bg={headerBg}
-                align="center"
-                p="1em"
-                borderTopRightRadius="0.5em"
-                borderTopLeftRadius="0.5em"
-              >
-                <Check />
-                <Box pl="1em">
-                  <Text textTransform="uppercase" fontSize="0.95rem">
-                    {design.images[imageUrl].description}
-                  </Text>
-                </Box>
-              </Flex>
-              <Image src={imageUrl} objectFit="contain" maxH="28em" w="100%" />
+              <Image
+                src={imageUrl}
+                objectFit="cover"
+                boxSize="15em"
+                align="top"
+              />
             </Flex>
           )
         })}
