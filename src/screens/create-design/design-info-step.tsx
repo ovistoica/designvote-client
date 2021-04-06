@@ -295,7 +295,7 @@ function DesignInfoForm() {
               textTransform="uppercase"
               type="submit"
             >
-              Next
+              Save
             </Button>
             <Persist name="design-info" />
           </Form>
