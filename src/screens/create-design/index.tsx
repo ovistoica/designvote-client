@@ -61,7 +61,7 @@ export function CurrentScreen() {
     case DesignStep.Share: {
       return (
         <>
-          <Text>Share </Text>
+          <Text>Share step</Text>
         </>
       )
     }

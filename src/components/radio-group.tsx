@@ -37,12 +37,18 @@ interface RadioGroupProps {
   options: {value: string; label: string}[]
   name: string
   onChange: (val: string | number) => void
+  defaultValue?: string | number
 }
 
-export function RadioGroup({options, name, onChange}: RadioGroupProps) {
+export function RadioGroup({
+  options,
+  name,
+  onChange,
+  defaultValue,
+}: RadioGroupProps) {
   const {getRootProps, getRadioProps} = useRadioGroup({
     name,
-    defaultValue: options[0].value,
+    defaultValue: defaultValue ?? options[0].value,
     onChange,
   })
 

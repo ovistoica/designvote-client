@@ -256,6 +256,7 @@ function DesignInfoForm() {
               </Flex>
 
               <RadioGroup
+                defaultValue={values.type}
                 options={[
                   {label: DesignType.Mobile, value: DesignType.Mobile},
                   {label: DesignType.Web, value: DesignType.Web},
@@ -278,6 +279,7 @@ function DesignInfoForm() {
               </Flex>
 
               <RadioGroup
+                defaultValue={values.voteStyle}
                 options={[
                   {label: 'Choose the best', value: VoteStyle.Choose},
                   {label: 'Rate with stars', value: VoteStyle.FiveStar},
