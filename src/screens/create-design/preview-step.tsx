@@ -1,13 +1,59 @@
 import {Button} from '@chakra-ui/button'
-import {useColorModeValue} from '@chakra-ui/color-mode'
-import {FormControl, FormLabel} from '@chakra-ui/form-control'
+import {useDisclosure} from '@chakra-ui/hooks'
 import {Image} from '@chakra-ui/image'
-import {Input} from '@chakra-ui/input'
-import {Box, Flex, Grid, Heading, Stack, Text} from '@chakra-ui/layout'
-import {Check} from 'assets/icons'
+import {Flex, Grid, Heading, Stack, Text} from '@chakra-ui/layout'
+import Rating from '@material-ui/lab/Rating'
+import {PreviewDesignFullImageModal} from 'components/full-image-modal'
 import {useCallback} from 'react'
 import {useCreateDesignStore} from 'store'
-import {DesignStep} from 'types'
+import {DesignStep, VoteStyle} from 'types'
+
+interface DesignVersionProps {
+  imageUrl: string
+  showRating?: boolean
+}
+
+function DesignVersion({imageUrl, showRating = false}: DesignVersionProps) {
+  const {isOpen, onOpen, onClose} = useDisclosure()
+  return (
+    <Stack align="center">
+      <Flex
+        key={imageUrl}
+        direction="column"
+        position="relative"
+        flex="0"
+        boxShadow="md"
+        role="group"
+        transition="0.25s all"
+        cursor="zoom-in"
+        _hover={{
+          boxShadow: '2xl',
+        }}
+        onClick={onOpen}
+        pb="1em"
+        alignItems="center"
+      >
+        <Image
+          src={imageUrl}
+          objectFit="contain"
+          boxSize="15em"
+          align="center"
+        />
+        <PreviewDesignFullImageModal
+          initialImage={imageUrl}
+          onClose={onClose}
+          isOpen={isOpen}
+        />
+      </Flex>
+      <Rating
+        name={`rating for ${imageUrl}`}
+        precision={0.5}
+        defaultValue={0}
+        size="large"
+      />
+    </Stack>
+  )
+}
 
 // TODO: Different design for choosing system
 // TODO: Choose/vote inside modal
@@ -26,7 +72,6 @@ export function PreviewStep() {
     ),
   )
   const setStep = useCreateDesignStore(useCallback(state => state.setStep, []))
-  const headerBg = useColorModeValue('white', 'gray.700')
 
   const numOfColumns = design.imagesByUrl.length === 2 ? 2 : 3
 
@@ -86,51 +131,21 @@ export function PreviewStep() {
         mt="0em"
         column={numOfColumns}
         gridTemplateColumns={`repeat(${numOfColumns}, 1fr)`}
-        rowGap="1em"
+        rowGap="1.5em"
         columnGap="1.5em"
         alignContent="center"
       >
         {design.imagesByUrl.map((imageUrl, index) => {
           return (
-            <Flex
-              key={imageUrl}
-              direction="column"
-              position="relative"
-              flex="0"
-              boxShadow="base"
-              role="group"
-              transition="0.25s all"
-              cursor="zoom-in"
-              boxSize="15em"
-              //   onClick={() => setSelectedVersion(versionId)}
-              pb="1em"
-            >
-              <Image
-                src={imageUrl}
-                objectFit="cover"
-                boxSize="15em"
-                align="top"
-              />
-            </Flex>
+            <DesignVersion
+              imageUrl={imageUrl}
+              showRating={design.voteStyle === VoteStyle.FiveStar}
+            />
           )
         })}
       </Grid>
-      <FormControl id="opinion" maxW="40em" mt="1em">
-        <FormLabel fontSize="sm">Leave opinion (optional)</FormLabel>
-        <Input
-          type="text"
-          as="textarea"
-          placeholder="Opinions help the designer to better understand your choice"
-          minH="5em"
-        />
-      </FormControl>
-      <Button
-        w="12.5em"
-        mt="1em"
-        colorScheme="brand"
-        // disabled={!selectedVersion}
-      >
-        Choose
+      <Button colorScheme="brand" size="lg" mt=".5em">
+        Finish vote
       </Button>
     </Flex>
   )

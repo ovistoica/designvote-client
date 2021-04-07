@@ -60,18 +60,12 @@ function UploadedImage({
         borderWidth={selected ? '4px' : '1px'}
         borderColor={selected ? 'brand.500' : 'info'}
         src={imageUrl}
-        objectFit="cover"
+        objectFit="contain"
         transition="0.25s all"
-        cursor="pointer"
-        _groupHover={
-          selected
-            ? {}
-            : {
-                borderColor: 'info',
-                borderWidth: '1px',
-                borderStyle: 'solid',
-              }
-        }
+        boxShadow="md"
+        _groupHover={{
+          boxShadow: '2xl',
+        }}
         {...rest}
       />
       <Input
