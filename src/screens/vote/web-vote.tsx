@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {Box, Center, Flex, Grid, Stack, Text} from '@chakra-ui/layout'
-import {useUrlDesign} from 'utils/designs'
+import {useUrlDesign} from 'utils/design-query'
 import {Image} from '@chakra-ui/image'
 import {SelectedCheck} from 'assets/icons'
 

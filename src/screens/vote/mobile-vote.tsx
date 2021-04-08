@@ -2,7 +2,7 @@ import {useColorModeValue} from '@chakra-ui/color-mode'
 import {Image} from '@chakra-ui/image'
 import {Box, Flex, SimpleGrid, Text} from '@chakra-ui/layout'
 import {Check, SelectedCheck} from 'assets/icons'
-import {useUrlDesign} from 'utils/designs'
+import {useUrlDesign} from 'utils/design-query'
 
 interface MobileVersionsProps {
   onVersionClick: (versionId: string) => void

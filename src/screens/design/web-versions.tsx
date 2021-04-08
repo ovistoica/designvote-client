@@ -1,9 +1,10 @@
 import * as React from 'react'
 import {Box, Center, Flex, Grid, Image, Stack, Text} from '@chakra-ui/react'
-import {useDesign} from 'utils/designs'
+import {useDesign} from 'utils/design-query'
 import {getVotePercent} from 'utils/votes'
 import {generateRandomColors} from 'utils/colors'
 import {DesignStats} from './design-stats'
+import {loadingDesign} from 'utils/loading-data'
 
 interface SmallPreviewProps {
   onClick: () => void
@@ -100,13 +101,12 @@ interface WebVersionsProps {
 }
 export function WebVersions({designId, versionsById}: WebVersionsProps) {
   const [selectedIndex, setSelectedIndex] = React.useState(0)
+  const {data} = useDesign(designId)
   const {
-    data: {
-      versions,
-      pictures,
-      design: {totalVotes, opinions},
-    },
-  } = useDesign(designId)
+    versions,
+    pictures,
+    design: {totalVotes, opinions},
+  } = data ?? loadingDesign
   const selectedId = versionsById[selectedIndex]
   const version = versions[selectedId]
   const previewPicId = version.pictures[0]

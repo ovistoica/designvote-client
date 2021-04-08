@@ -10,9 +10,11 @@ interface DesignEntities {
   opinion: Record<string, types.Opinion>
 }
 
-export function normalizeDesign(design: types.ApiDesign) {
+export function normalizeDesign(
+  design: types.ApiDesign,
+): types.NormalizedDesign {
   const {entities} = normalize<types.Design, DesignEntities>(
-    keysToCamel(design),
+    keysToCamel<types.ApiDesign, types.Design>(design),
     schemas.design,
   )
   const designId = design['design-id']

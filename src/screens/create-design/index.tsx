@@ -1,12 +1,13 @@
 import {Button, ButtonProps} from '@chakra-ui/button'
 import {useColorModeValue} from '@chakra-ui/color-mode'
 import {ArrowForwardIcon} from '@chakra-ui/icons'
-import {Divider, Flex, Heading, Stack, Text} from '@chakra-ui/layout'
+import {Divider, Flex, Heading, Stack} from '@chakra-ui/layout'
 import {useCreateDesignStore} from 'store'
 import {DesignStep} from 'types'
 
 import {DesignInfoForm} from './design-info-step'
 import {PreviewStep} from './preview-step'
+import {ShareStep} from './share-step'
 import {UploadStep} from './upload-step'
 
 const linkStyle: ButtonProps = {
@@ -49,21 +50,13 @@ export function CurrentScreen() {
       return <DesignInfoForm />
     }
     case DesignStep.Upload: {
-      return (
-        <>
-          <UploadStep />
-        </>
-      )
+      return <UploadStep />
     }
     case DesignStep.Preview: {
       return <PreviewStep />
     }
     case DesignStep.Share: {
-      return (
-        <>
-          <Text>Share step</Text>
-        </>
-      )
+      return <ShareStep />
     }
   }
 }

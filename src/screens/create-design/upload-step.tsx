@@ -1,4 +1,4 @@
-import {Box, Circle, Grid, Text} from '@chakra-ui/layout'
+import {Box, Circle, Grid, Heading, Stack, Text} from '@chakra-ui/layout'
 import {ImageDropInput} from 'components/image-input'
 import {useCreateDesignStore} from 'store'
 import {Image, ImageProps} from '@chakra-ui/image'
@@ -80,6 +80,16 @@ function UploadedImage({
 }
 
 export function UploadStep() {
+  const design = useCreateDesignStore(
+    useCallback(
+      state => ({
+        question: state.question,
+        name: state.name,
+      }),
+      [],
+    ),
+  )
+
   const addVersion = useCreateDesignStore(
     useCallback(state => state.addVersion, []),
   )
@@ -93,6 +103,25 @@ export function UploadStep() {
     (imageUrl: string) => addVersion({url: imageUrl}),
     [addVersion],
   )
+
+  if (!design.name || !design.question) {
+    return (
+      <Stack spacing="1em" mt="1em" align="center">
+        <Heading fontWeight="400" fontSize="xl">
+          You are missing the name or the targeted question for this design
+        </Heading>
+        <Button
+          mt="1em"
+          size="lg"
+          onClick={() => setStep(DesignStep.Create)}
+          colorScheme="brand"
+        >
+          Go back and complete
+        </Button>
+      </Stack>
+    )
+  }
+
   return (
     <>
       <Text mt="1em" fontSize="xl">

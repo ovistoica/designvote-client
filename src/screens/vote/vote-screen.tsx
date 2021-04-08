@@ -12,7 +12,7 @@ import {
 import {Button, Container, FullPageSpinner} from 'components/lib'
 import {useParams} from 'react-router-dom'
 import {useCookies} from 'react-cookie'
-import {useUrlDesign} from 'utils/designs'
+import {useUrlDesign} from 'utils/design-query'
 import {useVoteDesignVersion} from 'utils/design-version'
 import {MobileVersions} from './mobile-vote'
 import {WebVote} from './web-vote'

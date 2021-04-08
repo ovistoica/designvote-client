@@ -10,6 +10,7 @@ import {FullPageSpinner, FullPageErrorFallback} from 'components/lib'
 import {client} from 'utils/api-client'
 import {useQueryClient} from 'react-query'
 import {ApiConfig, User} from 'types'
+import {apiClient} from 'utils/axios-client'
 
 const Auth0Provider: React.FC = props => {
   if (
@@ -64,13 +65,23 @@ const AuthProvider: React.FC = props => {
     isAuthenticated,
   } = useAuth0()
 
-  const {run, data: token} = useAsync<string>()
+  const {run, data: token, isSuccess: isTokenSuccess} = useAsync<string>()
 
   React.useEffect(() => {
     if (isAuthenticated) {
       run(getAccessTokenSilently())
     }
   }, [run, getAccessTokenSilently, isAuthenticated])
+
+  /**
+   * Authenticate the api client
+   */
+  React.useEffect(() => {
+    if (isTokenSuccess) {
+      apiClient.defaults.headers.common.Authorization = 'Bearer ' + token
+      ;(apiClient as any).logout = logout
+    }
+  }, [isTokenSuccess, logout, token])
 
   const value: AuthState = React.useMemo(
     () => ({token, logout, user, login: loginWithRedirect, isAuthenticated}),

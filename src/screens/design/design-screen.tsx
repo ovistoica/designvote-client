@@ -10,19 +10,20 @@ import {
 } from '@chakra-ui/react'
 import {Container, FullPageSpinner} from 'components/lib'
 import {useNavigate, useParams} from 'react-router-dom'
-import {useDesign} from 'utils/designs'
+import {useDesign} from 'utils/design-query'
 import {ArrowUpIcon} from '@chakra-ui/icons'
 import {DesignStats} from './design-stats'
 import {MobileDesignVersions} from './mobile-versions'
 import {WebVersions} from './web-versions'
+import {loadingDesign} from 'utils/loading-data'
 
 function Design() {
   const {designId} = useParams()
   const {data, isLoading, isSuccess} = useDesign(designId)
-  const {design, versions, pictures, opinions} = data
   const navigate = useNavigate()
 
-  const versionsLength = data.design?.versions?.length ?? 0
+  const versionsLength = data?.design?.versions?.length ?? 0
+  const {design, versions, pictures, opinions} = data ?? loadingDesign
 
   // If no versions were created redirect user
   // to upload design versions

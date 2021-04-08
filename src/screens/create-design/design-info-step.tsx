@@ -199,6 +199,18 @@ function DesignInfoForm() {
       [],
     ),
   )
+  const set = useCreateDesignStore(
+    React.useCallback(
+      state => ({
+        name: state.setName,
+        description: state.setDescription,
+        question: state.setQuestion,
+        type: state.setType,
+        voteStyle: state.setVoteStyle,
+      }),
+      [],
+    ),
+  )
   return (
     <Stack pb={6}>
       <Formik
@@ -216,7 +228,10 @@ function DesignInfoForm() {
               id="name"
               ariaLabel="Design name"
               placeholder="my-cool-new-design"
-              onChange={handleChange('name')}
+              onChange={e => {
+                handleChange('name')(e)
+                set.name(e.target.value)
+              }}
               onBlur={handleBlur('name')}
               value={values.name}
               isInvalid={!!(touched.name && errors.name)}
@@ -228,7 +243,10 @@ function DesignInfoForm() {
               id="question"
               ariaLabel="Targeted question"
               placeholder="Ex: Which button fits better for sign up screen?"
-              onChange={handleChange('question')}
+              onChange={e => {
+                handleChange('question')(e)
+                set.question(e.target.value)
+              }}
               onBlur={handleBlur('question')}
               value={values.question}
               isInvalid={!!(touched.question && errors.question)}
@@ -241,7 +259,10 @@ function DesignInfoForm() {
               id="description"
               ariaLabel="Design description"
               placeholder="Ex: This sign-up screen is for a travel app"
-              onChange={handleChange('description')}
+              onChange={e => {
+                handleChange('description')(e)
+                set.description(e.target.value)
+              }}
               onBlur={handleBlur('description')}
               value={values.description}
               isInvalid={!!(touched.description && errors.description)}
@@ -258,17 +279,23 @@ function DesignInfoForm() {
               <RadioGroup
                 defaultValue={values.type}
                 options={[
-                  {label: DesignType.Mobile, value: DesignType.Mobile},
-                  {label: DesignType.Web, value: DesignType.Web},
+                  {label: 'Mobile', value: DesignType.Mobile},
+                  {label: 'Web', value: DesignType.Web},
                   {
-                    label: DesignType.Illustration,
+                    label: 'Illustration',
                     value: DesignType.Illustration,
                   },
-                  {label: DesignType.Logo, value: DesignType.Logo},
-                  {label: DesignType.Other, value: DesignType.Other},
+                  {label: 'Logo', value: DesignType.Logo},
+                  {label: 'Other', value: DesignType.Other},
                 ]}
                 name="type"
-                onChange={handleChange('type') as (e: string | number) => void}
+                onChange={e => {
+                  const formikHandler = handleChange('type') as (
+                    e: string | number,
+                  ) => void
+                  formikHandler(e)
+                  set.type(e as DesignType)
+                }}
               />
             </FormControl>
 
@@ -285,9 +312,13 @@ function DesignInfoForm() {
                   {label: 'Rate with stars', value: VoteStyle.FiveStar},
                 ]}
                 name="voteStyle"
-                onChange={
-                  handleChange('voteStyle') as (e: string | number) => void
-                }
+                onChange={e => {
+                  const formikHandler = handleChange('voteStyle') as (
+                    e: string | number,
+                  ) => void
+                  formikHandler(e)
+                  set.voteStyle(e as VoteStyle)
+                }}
               />
             </FormControl>
 

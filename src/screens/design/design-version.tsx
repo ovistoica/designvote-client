@@ -12,11 +12,12 @@ import {
 } from '@chakra-ui/react'
 import {DeleteResourceAlert} from 'components/lib'
 import {useDeleteDesignVersion} from 'utils/design-version'
-import {useDesign} from 'utils/designs'
+import {useDesign} from 'utils/design-query'
 import {DeleteIcon, EditIcon} from '@chakra-ui/icons'
 import {HiDotsHorizontal} from 'react-icons/hi'
 
 import {VersionHeader} from 'components/version-header'
+import {loadingDesign} from 'utils/loading-data'
 
 interface VersionMenuProps {
   designId: string
@@ -93,7 +94,7 @@ export function DesignVersion({versionId, designId}: DesignVersionProps) {
     versions,
     pictures,
     design: {totalVotes},
-  } = data
+  } = data ?? loadingDesign
   const version = versions[versionId]
   const pictureId = version.pictures[0]
   const {uri} = pictures[pictureId] ?? 'not found'
