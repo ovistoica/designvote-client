@@ -1,9 +1,9 @@
 export enum DesignType {
-  Mobile = 'Mobile',
-  Web = 'Web',
-  Logo = 'Logo',
-  Illustration = 'Illustration',
-  Other = 'Other',
+  Mobile = 'mobile',
+  Web = 'web',
+  Logo = 'logo',
+  Illustration = 'illustration',
+  Other = 'other',
 }
 
 export enum DesignStep {

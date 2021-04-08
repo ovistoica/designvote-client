@@ -13,11 +13,17 @@ export type State = {
   question?: string
   type: DesignType
   voteStyle: VoteStyle
+  setName: (name: string) => void
+  setDescription: (name: string) => void
+  setQuestion: (name: string) => void
+  setType: (type: DesignType) => void
+  setVoteStyle: (style: VoteStyle) => void
   setStep: (step: DesignStep) => void
   setVersionDescrption: (imageUrl: string, descripton: string) => void
   saveDesignInfo: (values: Values) => void
   addVersion: (version: VersionInfo) => void
   deleteVersion: (url: string) => void
+  clearState: () => void
 }
 
 interface Values {
@@ -25,6 +31,28 @@ interface Values {
   question: string
   description: string
   type: DesignType
+}
+
+type InitialState = {
+  step: DesignStep
+  imagesByUrl: string[]
+  images: Record<string, VersionInfo>
+  name?: string
+  description?: string
+  question?: string
+  type: DesignType
+  voteStyle: VoteStyle
+}
+
+const initialState: InitialState = {
+  step: DesignStep.Create,
+  imagesByUrl: [],
+  images: {},
+  type: DesignType.Web,
+  voteStyle: VoteStyle.Choose,
+  question: undefined,
+  name: undefined,
+  description: undefined,
 }
 
 export const useCreateDesignStore = create<State>(
@@ -35,10 +63,14 @@ export const useCreateDesignStore = create<State>(
       images: {},
       type: DesignType.Web,
       voteStyle: VoteStyle.Choose,
+      setName: (name: string) => set({name}),
+      setDescription: (description: string) => set({description}),
+      setQuestion: (question: string) => set({question}),
+      setType: (type: DesignType) => set({type}),
+      setVoteStyle: (voteStyle: VoteStyle) => set({voteStyle}),
       setStep: (step: DesignStep) => set({step}),
-
       addVersion: (version: VersionInfo) =>
-        set(state => {
+        set(() => {
           const {imagesByUrl, images} = get()
           const newimagesByUrl = [...new Set([...imagesByUrl, version.url])]
           images[version.url] = {...version}
@@ -53,7 +85,6 @@ export const useCreateDesignStore = create<State>(
           delete images[imageUrl]
           return {imagesByUrl: newimagesByUrl, images: {...images}}
         }),
-
       saveDesignInfo: (values: Values) => set(() => ({...values})),
       setVersionDescrption: (imageUrl: string, description: string) =>
         set(() => {
@@ -64,6 +95,10 @@ export const useCreateDesignStore = create<State>(
             images: {...images, [imageUrl]: {...currentValue, description}},
           }
         }),
+      clearState: () => {
+        set({...initialState})
+        window.localStorage.removeItem('design-draft')
+      },
     }),
     {
       name: 'design-draft', // persist store to local storage

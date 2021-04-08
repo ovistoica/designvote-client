@@ -1,17 +1,6 @@
-import {ChakraProvider, theme} from '@chakra-ui/react'
-import {render, screen, within} from '@testing-library/react'
-import * as React from 'react'
+import {render, screen, within} from 'test/test-utils'
 import {Dashboard} from 'screens/dashboard'
-import {BrowserRouter as Router} from 'react-router-dom'
 import userEvent from '@testing-library/user-event'
-
-const TestProvider = props => {
-  return (
-    <Router>
-      <ChakraProvider theme={theme} {...props} />
-    </Router>
-  )
-}
 
 jest.mock('utils/designs', () => {
   return {
@@ -24,8 +13,17 @@ jest.mock('utils/designs', () => {
   }
 })
 
+jest.mock('utils/design-query', () => {
+  return {
+    useDesigns: () => ({
+      data: [{name: 'one', designId: 'testID'}],
+      isLoading: false,
+    }),
+  }
+})
+
 test('can be opened and closed', async () => {
-  render(<Dashboard />, {wrapper: TestProvider})
+  render(<Dashboard />)
 
   const addDesignButton = screen.getByRole('button', {name: 'Add design'})
   userEvent.click(addDesignButton)

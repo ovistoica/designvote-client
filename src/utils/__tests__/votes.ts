@@ -19,7 +19,9 @@ describe("'getVotePercent' utility", () => {
   )
 
   test('calling with non-number parameters results in error', () => {
-    expect(() => getVotePercent('a', 'b')).toThrowErrorMatchingInlineSnapshot(
+    expect(() =>
+      getVotePercent(('a' as unknown) as number, ('b' as unknown) as number),
+    ).toThrowErrorMatchingInlineSnapshot(
       `"Invalid arguments provided. Please provide valid numbers"`,
     )
   })

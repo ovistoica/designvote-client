@@ -42,3 +42,10 @@ export interface Design {
   question: string
   designType: 'web' | 'mobile'
 }
+
+export interface NormalizedDesign {
+  design: Design
+  versions: Record<string, Version>
+  pictures: Record<string, Picture>
+  opinions: Record<string, Opinion>
+}

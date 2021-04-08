@@ -24,8 +24,10 @@ import {
 import {OpinionIcon, VotesIcon} from 'assets/icons'
 import {FaShare} from 'react-icons/fa'
 import {useNavigate} from 'react-router-dom'
-import {useDesign, usePublishDesign} from 'utils/designs'
+import {useDesign} from 'utils/design-query'
+import {usePublishDesign} from 'utils/designs'
 import {Button} from 'components/lib'
+import {loadingDesign} from 'utils/loading-data'
 interface ModalProps {
   isOpen: boolean
   onClose: () => void
@@ -33,10 +35,9 @@ interface ModalProps {
 }
 
 function ShareModal({isOpen, onClose, designId}: ModalProps) {
-  const {
-    data: {design},
-  } = useDesign(designId)
+  const {data, isSuccess: designLoaded} = useDesign(designId)
   const {mutate: publish} = usePublishDesign(designId)
+  const {design} = data ?? loadingDesign
 
   // get current website link (for production and development)
   const end = window.location.href.lastIndexOf(`/design/${designId}`)
@@ -44,11 +45,11 @@ function ShareModal({isOpen, onClose, designId}: ModalProps) {
 
   // When user wants to share the link
   React.useEffect(() => {
-    if (isOpen && !design.public) {
+    if (isOpen && designLoaded && !design.public) {
       //TODO: Type this call
       publish(null)
     }
-  }, [design.public, publish, isOpen])
+  }, [design.public, publish, isOpen, designLoaded])
 
   const link = `${websiteLink}/vote/${design.shortUrl}`
 

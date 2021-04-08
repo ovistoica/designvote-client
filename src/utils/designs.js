@@ -1,46 +1,5 @@
 import {useClient} from 'context/auth-context'
-import {useQuery, useMutation, useQueryClient} from 'react-query'
-import {normalizeDesign} from './normalize'
-import {keysToCamel} from './object'
-import {loadingDesign} from './loading-data'
-
-export function useDesigns({onSuccess, ...options} = {}) {
-  const client = useClient()
-
-  const {data: designs, isLoading} = useQuery({
-    queryKey: 'designs',
-    // normalize result to camelCase
-    queryFn: () => client('v1/designs').then(result => keysToCamel(result)),
-    ...options,
-  })
-  return {designs: designs ?? [], isLoading}
-}
-
-export function useDesign(designId, {onSuccess, ...options} = {}) {
-  const client = useClient()
-
-  const {data, ...restOfRestult} = useQuery({
-    queryKey: ['design', {designId}],
-    queryFn: () =>
-      // Normalize the data from the server for faster lookup
-      client(`v1/designs/${designId}`).then(result => {
-        return normalizeDesign(result)
-      }),
-
-    ...options,
-    refetchOnWindowFocus: true,
-    refetchInterval: 1000 * 60 * 3,
-  })
-  return {
-    data: data ?? {
-      design: loadingDesign,
-      pictures: {},
-      versions: {},
-      opinions: {},
-    },
-    ...restOfRestult,
-  }
-}
+import {useMutation, useQueryClient} from 'react-query'
 
 const defaultMutationOptions = {
   onError: (err, variables, recover) =>
@@ -86,30 +45,6 @@ export function usePublishDesign(designId, options = {}) {
         qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]}),
     },
   )
-}
-
-export function useUrlDesign(shortUrl, {onSuccess, ...options} = {}) {
-  const client = useClient()
-
-  const {data, isLoading} = useQuery({
-    queryKey: ['design', {shortUrl}],
-    queryFn: () =>
-      // Normalize the data from the server for faster lookup
-      client(`v1/designs/short/${shortUrl}`).then(result => {
-        return normalizeDesign(result)
-      }),
-
-    ...options,
-  })
-  return {
-    data: data ?? {
-      design: loadingDesign,
-      pictures: {},
-      versions: {},
-      opinions: {},
-    },
-    isLoading,
-  }
 }
 
 export function useEditDesign(designId, options = {}) {

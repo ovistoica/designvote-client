@@ -16,14 +16,15 @@ import {
 } from '@chakra-ui/react'
 import {Container, FullPageSpinner} from 'components/lib'
 import {useNavigate, useParams} from 'react-router-dom'
-import {useDesign} from 'utils/designs'
+import {useDesign} from 'utils/design-query'
 import {Check, SelectedCheck} from 'assets/icons'
 import {ArrowBackIcon} from '@chakra-ui/icons'
+import {loadingDesign} from 'utils/loading-data'
 
 function PreviewScreen() {
   const {designId} = useParams()
   const {data, isLoading} = useDesign(designId)
-  const {design, versions, pictures} = data
+  const {design, versions, pictures} = data ?? loadingDesign
 
   const [selectedVersion, setSelectedVersion] = React.useState<
     string | undefined

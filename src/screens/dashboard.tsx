@@ -14,7 +14,8 @@ import {AddIcon, DeleteIcon, EditIcon} from '@chakra-ui/icons'
 import {HiDotsHorizontal} from 'react-icons/hi'
 import {FiLink} from 'react-icons/fi'
 import {CreateDesignModal} from 'components/create-design'
-import {useDeleteDesign, useDesigns} from 'utils/designs'
+import {useDeleteDesign} from 'utils/designs'
+import {useDesigns} from 'utils/design-query'
 import {useNavigate} from 'react-router-dom'
 import {
   DeleteResourceAlert,
@@ -150,7 +151,7 @@ function EmptyDashboard({onClick}: EmptyDashboardProps) {
 
 function Dashboard() {
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const {designs, isLoading} = useDesigns()
+  const {data: designs, isLoading} = useDesigns()
   const cardBg = useColorModeValue('white', 'gray.700')
 
   if (isLoading) {

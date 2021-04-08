@@ -1,10 +1,7 @@
-import {ChakraProvider, theme, useDisclosure} from '@chakra-ui/react'
-import {render, screen} from '@testing-library/react'
+import {useDisclosure} from '@chakra-ui/react'
+import {render, screen} from 'test/test-utils'
 import {renderHook} from '@testing-library/react-hooks'
 import {DeleteResourceAlert} from '../lib'
-const TestProvider = props => {
-  return <ChakraProvider theme={theme} {...props} />
-}
 
 test('renders correctly', async () => {
   const {result} = renderHook(() => useDisclosure({isOpen: true}))
@@ -20,9 +17,6 @@ test('renders correctly', async () => {
       onClose={onClose}
       onDeletePress={onDeletePress}
     />,
-    {
-      wrapper: TestProvider,
-    },
   )
 
   expect(
@@ -52,9 +46,6 @@ test('shows custom title and body', async () => {
       title={customTitle}
       body={customBody}
     />,
-    {
-      wrapper: TestProvider,
-    },
   )
 
   expect(

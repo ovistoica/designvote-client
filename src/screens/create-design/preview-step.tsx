@@ -45,12 +45,14 @@ function DesignVersion({imageUrl, showRating = false}: DesignVersionProps) {
           isOpen={isOpen}
         />
       </Flex>
-      <Rating
-        name={`rating for ${imageUrl}`}
-        precision={0.5}
-        defaultValue={0}
-        size="large"
-      />
+      {showRating ? (
+        <Rating
+          name={`rating for ${imageUrl}`}
+          precision={0.5}
+          defaultValue={0}
+          size="large"
+        />
+      ) : null}
     </Stack>
   )
 }
@@ -144,8 +146,13 @@ export function PreviewStep() {
           )
         })}
       </Grid>
-      <Button colorScheme="brand" size="lg" mt=".5em">
-        Finish vote
+      <Button
+        colorScheme="brand"
+        size="lg"
+        mt=".5em"
+        onClick={() => setStep(DesignStep.Share)}
+      >
+        Publish design
       </Button>
     </Flex>
   )
