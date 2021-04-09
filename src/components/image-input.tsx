@@ -6,6 +6,7 @@ import {Stack, StackProps, Text} from '@chakra-ui/layout'
 import {Input, InputProps} from '@chakra-ui/input'
 import {HangedImage} from 'assets/icons'
 import {Progress} from '@chakra-ui/progress'
+import {Spinner} from '@chakra-ui/spinner'
 
 interface ImageDropInputProps extends StackProps {
   onImageUpload: (imageUrl: string) => void
@@ -33,9 +34,12 @@ export function ImageDropInput({
     if (isSuccess && imageUrl) {
       onImageUpload(imageUrl)
     }
-  }, [isSuccess, imageUrl, onImageUpload])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, imageUrl])
 
   const inputProps = (getInputProps() as unknown) as InputProps
+
+  const inputIcon = isLoading ? <Spinner /> : icon ?? <HangedImage />
 
   return (
     <Stack align="center">
@@ -57,7 +61,7 @@ export function ImageDropInput({
       >
         {isDragActive ? (
           <>
-            {icon ?? <HangedImage />}
+            {inputIcon}
 
             <Text textAlign="center" letterSpacing="0.02em" color="info">
               Drop the image

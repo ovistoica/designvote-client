@@ -24,7 +24,7 @@ import * as yup from 'yup'
 import * as React from 'react'
 import {QuestionIcon} from '@chakra-ui/icons'
 import {RadioGroup} from 'components/radio-group'
-import {DesignStep, DesignType, VoteStyle} from 'types'
+import {CreateDesignStep, DesignType, VoteStyle} from 'types'
 import {useCreateDesignStore} from 'store'
 
 interface Values {
@@ -172,7 +172,7 @@ function FormRow({
         onBlur={onBlur}
         onChange={onChange}
         minH={type === 'textarea' ? '3em' : undefined}
-        _focus={{borderColor: 'primary.500'}}
+        _focus={{borderColor: 'brand.500'}}
         as={type}
       />
       <FormErrorMessage>{error}</FormErrorMessage>
@@ -180,10 +180,8 @@ function FormRow({
   )
 }
 
-function DesignInfoForm() {
-  const saveDesign = useCreateDesignStore(
-    React.useCallback(state => state.saveDesignInfo, []),
-  )
+function CreateStep() {
+  const saveDesign = useCreateDesignStore(state => state.saveDesignInfo)
   const setStep = useCreateDesignStore(
     React.useCallback(state => state.setStep, []),
   )
@@ -219,7 +217,7 @@ function DesignInfoForm() {
         initialTouched={initialTouched}
         onSubmit={values => {
           saveDesign(values)
-          setStep(DesignStep.Upload)
+          setStep(CreateDesignStep.Upload)
         }}
       >
         {({handleChange, handleBlur, values, errors, touched}) => (
@@ -338,4 +336,4 @@ function DesignInfoForm() {
   )
 }
 
-export {DesignInfoForm}
+export {CreateStep}

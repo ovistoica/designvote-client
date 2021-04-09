@@ -6,11 +6,19 @@ export enum DesignType {
   Other = 'other',
 }
 
-export enum DesignStep {
+export enum CreateDesignStep {
   Create,
   Upload,
   Preview,
   Share,
+}
+
+export enum DesignTab {
+  Info,
+  Versions,
+  Preview,
+  Share,
+  Analyse,
 }
 
 export enum VoteStyle {

@@ -6,7 +6,7 @@ import Rating from '@material-ui/lab/Rating'
 import {PreviewDesignFullImageModal} from 'components/full-image-modal'
 import {useCallback} from 'react'
 import {useCreateDesignStore} from 'store'
-import {DesignStep, VoteStyle} from 'types'
+import {CreateDesignStep, VoteStyle} from 'types'
 
 interface DesignVersionProps {
   imageUrl: string
@@ -86,7 +86,7 @@ export function PreviewStep() {
         <Button
           mt="1em"
           size="lg"
-          onClick={() => setStep(DesignStep.Create)}
+          onClick={() => setStep(CreateDesignStep.Create)}
           colorScheme="brand"
         >
           Go back and complete
@@ -104,7 +104,7 @@ export function PreviewStep() {
         <Button
           mt="1em"
           size="lg"
-          onClick={() => setStep(DesignStep.Upload)}
+          onClick={() => setStep(CreateDesignStep.Upload)}
           colorScheme="brand"
         >
           Go back and upload
@@ -150,7 +150,7 @@ export function PreviewStep() {
         colorScheme="brand"
         size="lg"
         mt=".5em"
-        onClick={() => setStep(DesignStep.Share)}
+        onClick={() => setStep(CreateDesignStep.Share)}
       >
         Publish design
       </Button>

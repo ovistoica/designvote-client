@@ -26,6 +26,10 @@ interface CreateDesignResponse {
   'design-id': string
 }
 
+interface CreateDesignVersionResponse {
+  'version-id': string
+}
+
 interface ApiVersion {
   name: string
   pictures: string[]
@@ -73,6 +77,13 @@ async function getDesigns() {
   )
 }
 
+function createDesignVersion(designId: string, version: ApiVersion) {
+  return postRequest<CreateDesignVersionResponse, ApiVersion>(
+    `v1/designs/${designId}/versions`,
+    version,
+  )
+}
+
 export function useCreateFromDraft() {
   const qc = useQueryClient()
 
@@ -112,8 +123,9 @@ export function useCreateFromDraft() {
       onSettled: () => {
         // clear out draft from localstorage and zustand
         // refetch designs to include the new one
-        window.localStorage.removeItem('design-info')
-        clearDraftState()
+        // TODO: Put this back
+        // window.localStorage.removeItem('design-info')
+        // clearDraftState()
         qc.invalidateQueries({queryKey: 'designs'})
       },
     },
@@ -158,4 +170,18 @@ export function useDesigns(options: QueryOptions<Design[], AxiosError> = {}) {
   })
 
   return {data: data ?? [], ...rest}
+}
+
+export function useCreateDesignVersion(
+  designId: string,
+  options: QueryOptions<CreateDesignVersionResponse, AxiosError> = {},
+) {
+  const qc = useQueryClient()
+  return useMutation(
+    (version: ApiVersion) => createDesignVersion(designId, version),
+    {
+      ...options,
+      onSettled: () => qc.invalidateQueries({queryKey: ['design', {designId}]}),
+    },
+  )
 }

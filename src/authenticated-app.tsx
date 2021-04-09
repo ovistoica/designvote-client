@@ -9,6 +9,7 @@ import {PreviewScreen} from 'screens/preview-design'
 import {NavBar} from 'components/nav'
 import {VoteDesign} from 'screens/vote'
 import {CreateDesign} from 'screens/create-design'
+import {ManageDesign} from 'screens/manage-design'
 
 function AppRoutes() {
   return (
@@ -21,6 +22,7 @@ function AppRoutes() {
       <Route path="/design/:designId" element={<Design />} />
       <Route path="/preview/:designId" element={<PreviewScreen />} />
       <Route path="/upload-design/:designId" element={<UploadDesign />} />
+      <Route path="/manage-design/:designId" element={<ManageDesign />} />
       <Route path="/create" element={<CreateDesign />} />
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
