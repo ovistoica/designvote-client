@@ -8,7 +8,7 @@ import {useCallback} from 'react'
 import {Input} from '@chakra-ui/input'
 import {AddIcon} from '@chakra-ui/icons'
 import {Button} from '@chakra-ui/button'
-import {DesignStep} from 'types'
+import {CreateDesignStep} from 'types'
 
 interface UploadedImageProps extends ImageProps {
   selected?: boolean
@@ -113,7 +113,7 @@ export function UploadStep() {
         <Button
           mt="1em"
           size="lg"
-          onClick={() => setStep(DesignStep.Create)}
+          onClick={() => setStep(CreateDesignStep.Create)}
           colorScheme="brand"
         >
           Go back and complete
@@ -158,7 +158,7 @@ export function UploadStep() {
         size="lg"
         mt="1em"
         disabled={imagesByUrl.length < 2}
-        onClick={() => setStep(DesignStep.Preview)}
+        onClick={() => setStep(CreateDesignStep.Preview)}
       >
         Next
       </Button>

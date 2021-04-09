@@ -6,22 +6,6 @@ const defaultMutationOptions = {
     typeof recover === 'function' ? recover() : null,
 }
 
-function useCreateDesignVersion(designId, options = {}) {
-  const qc = useQueryClient()
-  const client = useClient()
-  return useMutation(
-    ({name, pictures = [], description = ''}) =>
-      client(`v1/designs/${designId}/versions`, {
-        data: {name, pictures, description},
-      }),
-    {
-      ...defaultMutationOptions,
-      ...options,
-      onSettled: () => qc.invalidateQueries({queryKey: ['design', {designId}]}),
-    },
-  )
-}
-
 // upload multiple design versisons at once
 // USAGE:
 // const {mutate} = useUploadDesignVersions(designIid);
@@ -91,9 +75,4 @@ function useVoteDesignVersion(designId, options = {}) {
   )
 }
 
-export {
-  useCreateDesignVersion,
-  useUploadDesignVersions,
-  useDeleteDesignVersion,
-  useVoteDesignVersion,
-}
+export {useUploadDesignVersions, useDeleteDesignVersion, useVoteDesignVersion}

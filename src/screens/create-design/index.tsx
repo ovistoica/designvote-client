@@ -3,9 +3,9 @@ import {useColorModeValue} from '@chakra-ui/color-mode'
 import {ArrowForwardIcon} from '@chakra-ui/icons'
 import {Divider, Flex, Heading, Stack} from '@chakra-ui/layout'
 import {useCreateDesignStore} from 'store'
-import {DesignStep} from 'types'
+import {CreateDesignStep} from 'types'
 
-import {DesignInfoForm} from './design-info-step'
+import {CreateStep} from './create-step'
 import {PreviewStep} from './preview-step'
 import {ShareStep} from './share-step'
 import {UploadStep} from './upload-step'
@@ -46,16 +46,16 @@ export function CurrentScreen() {
   const step = useCreateDesignStore(state => state.step)
 
   switch (step) {
-    case DesignStep.Create: {
-      return <DesignInfoForm />
+    case CreateDesignStep.Create: {
+      return <CreateStep />
     }
-    case DesignStep.Upload: {
+    case CreateDesignStep.Upload: {
       return <UploadStep />
     }
-    case DesignStep.Preview: {
+    case CreateDesignStep.Preview: {
       return <PreviewStep />
     }
-    case DesignStep.Share: {
+    case CreateDesignStep.Share: {
       return <ShareStep />
     }
   }
@@ -81,27 +81,27 @@ export function CreateDesign() {
         <Flex>
           <StepLink
             ml="0em"
-            aria-selected={step === DesignStep.Create}
-            onClick={() => setStep(DesignStep.Create)}
+            aria-selected={step === CreateDesignStep.Create}
+            onClick={() => setStep(CreateDesignStep.Create)}
           >
-            Design info
+            Create design
           </StepLink>
           <StepLink
-            aria-selected={step === DesignStep.Upload}
-            onClick={() => setStep(DesignStep.Upload)}
+            aria-selected={step === CreateDesignStep.Upload}
+            onClick={() => setStep(CreateDesignStep.Upload)}
           >
             Upload versions
           </StepLink>
           <StepLink
-            aria-selected={step === DesignStep.Preview}
-            onClick={() => setStep(DesignStep.Preview)}
+            aria-selected={step === CreateDesignStep.Preview}
+            onClick={() => setStep(CreateDesignStep.Preview)}
           >
             Preview
           </StepLink>
           <StepLink
             rightIcon={undefined}
-            aria-selected={step === DesignStep.Share}
-            onClick={() => setStep(DesignStep.Share)}
+            aria-selected={step === CreateDesignStep.Share}
+            onClick={() => setStep(CreateDesignStep.Share)}
           >
             Share
           </StepLink>
