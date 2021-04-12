@@ -13,6 +13,7 @@ export type State = {
   question?: string
   type: DesignType
   voteStyle: VoteStyle
+  shownPreviewTooltip: boolean
   setName: (name: string) => void
   setDescription: (name: string) => void
   setQuestion: (name: string) => void
@@ -20,6 +21,7 @@ export type State = {
   setVoteStyle: (style: VoteStyle) => void
   setStep: (step: CreateDesignStep) => void
   setVersionDescrption: (imageUrl: string, descripton: string) => void
+  setShownTooltip: (val: boolean) => void
   saveDesignInfo: (values: Values) => void
   addVersion: (version: VersionInfo) => void
   deleteVersion: (url: string) => void
@@ -42,6 +44,7 @@ type InitialState = {
   question?: string
   type: DesignType
   voteStyle: VoteStyle
+  shownPreviewTooltip: boolean
 }
 
 const initialState: InitialState = {
@@ -53,6 +56,7 @@ const initialState: InitialState = {
   question: undefined,
   name: undefined,
   description: undefined,
+  shownPreviewTooltip: false,
 }
 
 export const useCreateDesignStore = create<State>(
@@ -63,12 +67,14 @@ export const useCreateDesignStore = create<State>(
       images: {},
       type: DesignType.Web,
       voteStyle: VoteStyle.Choose,
+      shownPreviewTooltip: false,
       setName: (name: string) => set({name}),
       setDescription: (description: string) => set({description}),
       setQuestion: (question: string) => set({question}),
       setType: (type: DesignType) => set({type}),
       setVoteStyle: (voteStyle: VoteStyle) => set({voteStyle}),
       setStep: (step: CreateDesignStep) => set({step}),
+      setShownTooltip: (val: boolean) => set({shownPreviewTooltip: val}),
       addVersion: (version: VersionInfo) =>
         set(() => {
           const {imagesByUrl, images} = get()

@@ -10,7 +10,6 @@ import {useToast} from '@chakra-ui/toast'
 import {Alert, AlertDescription, AlertIcon, AlertTitle} from '@chakra-ui/alert'
 import {useCreateFromDraft} from 'utils/design-query'
 import {useDesign} from 'utils/design-query'
-import {useNavigate} from 'react-router'
 import {useCreateDesignStore} from 'store'
 import {CreateDesignStep} from 'types'
 
@@ -103,14 +102,6 @@ export function ShareStep() {
   const link = isLoading
     ? 'Loading ...'
     : `${websiteLink}/vote/${design.shortUrl}`
-
-  const navigate = useNavigate()
-
-  React.useEffect(() => {
-    if (designLoaded) {
-      navigate(`/manage-design/${design.designId}`)
-    }
-  }, [design.designId, designLoaded, navigate])
 
   if (!designDraft.name || !designDraft.question) {
     return (

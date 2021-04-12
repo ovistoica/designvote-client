@@ -137,10 +137,16 @@ function VoteStylePopover() {
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverBody>
-          The individual rating system is based on a 1-5 star rating.
+          Mode in which your design versions should be rated.{' '}
           <Text mt={5}>
             <Text as="span" fontWeight="semibold">
-              Mention:
+              Mention 1:
+            </Text>{' '}
+            The individual rating system is based on a 1-5 star rating.
+          </Text>
+          <Text mt={5}>
+            <Text as="span" fontWeight="semibold">
+              Mention 2:
             </Text>{' '}
             Voters can leave comments on each design regardless of voting style
           </Text>
@@ -292,14 +298,13 @@ function CreateStep() {
               type="textarea"
             />
 
-            <FormControl id="type" py="0.5em" minW="40em">
+            <FormControl id="type" py="0.5em" minW="40em" isRequired>
               <Flex alignItems="center">
                 <FormLabel marginInlineEnd="0.2rem">Design type</FormLabel>
                 <ModePopover />
               </Flex>
 
               <RadioGroup
-                defaultValue={values.type}
                 options={[
                   {label: 'Mobile', value: DesignType.Mobile},
                   {label: 'Web', value: DesignType.Web},
@@ -321,14 +326,14 @@ function CreateStep() {
               />
             </FormControl>
 
-            <FormControl id="voteStyle" py="0.5em" minW="40em">
+            <FormControl id="voteStyle" py="0.5em" minW="40em" isRequired>
               <Flex alignItems="center">
                 <FormLabel marginInlineEnd="0.2rem">Voting style</FormLabel>
                 <VoteStylePopover />
               </Flex>
 
               <RadioGroup
-                defaultValue={values.voteStyle}
+                // defaultValue={values.voteStyle}
                 options={[
                   {label: 'Choose the best', value: VoteStyle.Choose},
                   {label: 'Rate individually', value: VoteStyle.FiveStar},

@@ -222,6 +222,7 @@ function DeleteResourceAlert({
       isOpen={isOpen}
       leastDestructiveRef={cancelRef}
       onClose={onClose}
+      isCentered
     >
       <AlertDialogOverlay>
         <AlertDialogContent>

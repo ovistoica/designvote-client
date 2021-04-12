@@ -2,9 +2,7 @@ import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {ErrorBoundary} from 'react-error-boundary'
 import {Routes, Route, Navigate} from 'react-router-dom'
 import {Dashboard} from 'screens/dashboard'
-import {Design} from 'screens/design'
 import {NotFoundScreen} from 'screens/not-found'
-import {UploadDesign} from 'screens/upload-design'
 import {PreviewScreen} from 'screens/preview-design'
 import {NavBar} from 'components/nav'
 import {VoteDesign} from 'screens/vote'
@@ -19,10 +17,8 @@ function AppRoutes() {
       </Route>
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/vote/:shortUrl" element={<VoteDesign />} />
-      <Route path="/design/:designId" element={<Design />} />
+      <Route path="/design/:designId" element={<ManageDesign />} />
       <Route path="/preview/:designId" element={<PreviewScreen />} />
-      <Route path="/upload-design/:designId" element={<UploadDesign />} />
-      <Route path="/manage-design/:designId" element={<ManageDesign />} />
       <Route path="/create" element={<CreateDesign />} />
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
