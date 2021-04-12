@@ -4,7 +4,7 @@ import {useAsync} from './hooks'
 
 function useUploadImage() {
   const [progress, setProgress] = React.useState(0)
-  const [imageUrl, setimageUrl] = React.useState()
+  const [imageUrl, setimageUrl] = React.useState<string>()
   const {
     run,
     setError,
@@ -13,6 +13,7 @@ function useUploadImage() {
     isLoading,
     isIdle,
     error,
+    reset,
   } = useAsync()
 
   const uploadImage = React.useCallback(
@@ -70,7 +71,9 @@ function useUploadImage() {
     progress,
 
     // imageUrl if upload was succesfull
-    imageUrl: isSuccess ? imageUrl : null,
+    imageUrl: isSuccess ? imageUrl : undefined,
+
+    reset,
   }
 }
 

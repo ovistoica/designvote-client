@@ -11,7 +11,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import {DeleteResourceAlert} from 'components/lib'
-import {useDeleteDesignVersion} from 'utils/design-version'
+import {useDeleteDesignVersion} from 'utils/design-query'
 import {useDesign} from 'utils/design-query'
 import {DeleteIcon, EditIcon} from '@chakra-ui/icons'
 import {HiDotsHorizontal} from 'react-icons/hi'

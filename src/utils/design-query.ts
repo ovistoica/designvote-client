@@ -8,7 +8,12 @@ import {
 } from 'react-query'
 import {useCreateDesignStore} from 'store'
 import {ApiDesign, Design, DesignType, NormalizedDesign, VoteStyle} from 'types'
-import {getRequest, postRequest} from './axios-client'
+import {
+  deleteRequest,
+  getRequest,
+  postRequest,
+  putRequest,
+} from './axios-client'
 import {loadingDesign} from './loading-data'
 import {normalizeDesign} from './normalize'
 import {keysToCamel} from './object'
@@ -36,6 +41,15 @@ interface ApiVersion {
   description: null
 }
 
+interface EditDesignBody {
+  name: string | null
+  description: string | null
+  question: string | null
+  img: string | null
+  'design-type': DesignType | null
+  public: boolean | null
+}
+
 type QueryOptions<Data, Error> = Omit<
   UseQueryOptions<Data, Error>,
   'queryKey' | 'queryFn'
@@ -56,7 +70,7 @@ function createDesignVersions(designId: string, versions: ApiVersion[]) {
 }
 
 function publishDesign(designId: string) {
-  return postRequest(`v1/designs/${designId}/publish`)
+  return postRequest<Design>(`v1/designs/${designId}/publish`)
 }
 
 async function getDesign(designId: string) {
@@ -82,6 +96,16 @@ function createDesignVersion(designId: string, version: ApiVersion) {
     `v1/designs/${designId}/versions`,
     version,
   )
+}
+
+function deleteDesignVersion(designId: string, versionId: string) {
+  return deleteRequest<null>(`v1/designs/${designId}/versions`, {
+    data: {'version-id': versionId},
+  })
+}
+
+function editDesign(designId: string, body: EditDesignBody) {
+  return putRequest<Design, EditDesignBody>(`v1/designs/${designId}`, body)
 }
 
 export function useCreateFromDraft() {
@@ -184,4 +208,73 @@ export function useCreateDesignVersion(
       onSettled: () => qc.invalidateQueries({queryKey: ['design', {designId}]}),
     },
   )
+}
+
+export function useDeleteDesignVersion(
+  designId: string,
+  options: QueryOptions<null, AxiosError> = {},
+) {
+  const qc = useQueryClient()
+  return useMutation(
+    (versionId: string) => deleteDesignVersion(designId, versionId),
+    {
+      ...options,
+      onSettled: () => {
+        qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]})
+      },
+    },
+  )
+}
+
+interface EditDesign {
+  name: string | null
+  description: string | null
+  question: string | null
+  img: string | null
+  publicDesign: boolean | null
+  designType: DesignType | null
+}
+
+export function useEditDesign(
+  designId: string,
+  options: QueryOptions<Design, AxiosError> = {},
+) {
+  const qc = useQueryClient()
+  const queryFn = ({
+    name = null,
+    description = null,
+    img = null,
+    designType = null,
+    publicDesign = null,
+    question = null,
+  }: Partial<EditDesign>) => {
+    let finalData: EditDesignBody = {
+      name,
+      description,
+      img,
+      'design-type': designType,
+      public: publicDesign,
+      question,
+    }
+    return editDesign(designId, finalData)
+  }
+  return useMutation(queryFn, {
+    ...options,
+    onSettled: () => {
+      qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]})
+      qc.invalidateQueries({exact: true, queryKey: ['designs', {designId}]})
+    },
+  })
+}
+
+export function usePublishDesign(
+  designId: string,
+  options: QueryOptions<Design, AxiosError> = {},
+) {
+  const qc = useQueryClient()
+  return useMutation(() => publishDesign(designId), {
+    ...options,
+    onSettled: () =>
+      qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]}),
+  })
 }

@@ -5,41 +5,71 @@ import {useUploadImage} from 'utils/file-upload'
 import {Stack, StackProps, Text} from '@chakra-ui/layout'
 import {Input, InputProps} from '@chakra-ui/input'
 import {HangedImage} from 'assets/icons'
-import {Progress} from '@chakra-ui/progress'
 import {Spinner} from '@chakra-ui/spinner'
 
 interface ImageDropInputProps extends StackProps {
   onImageUpload: (imageUrl: string) => void
   description?: string
   icon?: JSX.Element
+  isLoading?: boolean
 }
 
 export function ImageDropInput({
   onImageUpload,
   description,
   icon,
+  isLoading = false,
   ...stackProps
 }: ImageDropInputProps) {
   const bg = useColorModeValue('surface', 'gray.700')
+  const text = useColorModeValue('gray.500', 'gray.300')
   const {
     uploadImage: onDrop,
-    isLoading,
-    progress,
+    isLoading: isUploadLoading,
     isSuccess,
     imageUrl,
+    reset,
   } = useUploadImage()
   const {getRootProps, getInputProps, isDragActive} = useDropzone({onDrop})
+  const loading = isLoading || isUploadLoading
 
   React.useEffect(() => {
     if (isSuccess && imageUrl) {
       onImageUpload(imageUrl)
+      reset()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuccess, imageUrl])
 
   const inputProps = (getInputProps() as unknown) as InputProps
 
-  const inputIcon = isLoading ? <Spinner /> : icon ?? <HangedImage />
+  const inputIcon = icon ?? <HangedImage />
+
+  const renderContent = () =>
+    loading ? (
+      <Stack
+        spacing={5}
+        flexDirection="column"
+        align="center"
+        justify="center"
+        h="100%"
+      >
+        <Text textAlign="center" color={text} fontWeight="semibold">
+          Loading...
+        </Text>
+        <Spinner color={text} />
+      </Stack>
+    ) : (
+      <Stack spacing={5} align="center">
+        <Text textAlign="center" letterSpacing="0.02em" color={text}>
+          jpg, png, gif, webp
+        </Text>
+        {icon ?? <HangedImage />}
+        <Text textAlign="center" color={text} fontWeight="semibold">
+          {description ?? 'Drag and drop some images here or browse'}
+        </Text>
+      </Stack>
+    )
 
   return (
     <Stack align="center">
@@ -49,12 +79,13 @@ export function ImageDropInput({
         _focus={{outline: 'none'}}
         bg={bg}
         align="center"
-        cursor="pointer"
+        cursor={loading ? 'not-allowed' : 'pointer'}
         aria-label="Upload image"
         border="dashed"
         borderWidth="1px"
-        borderColor="info"
+        borderColor={text}
         borderRadius="6px"
+        justifyContent="center"
         p="1em"
         {...getRootProps()}
         {...stackProps}
@@ -63,31 +94,21 @@ export function ImageDropInput({
           <>
             {inputIcon}
 
-            <Text textAlign="center" letterSpacing="0.02em" color="info">
+            <Text textAlign="center" letterSpacing="0.02em" color={text}>
               Drop the image
             </Text>
           </>
         ) : (
-          <>
-            <Text textAlign="center" letterSpacing="0.02em" color="info">
-              jpg, png, gif, webp
-            </Text>
-            {icon ?? <HangedImage />}
-            <Text textAlign="center" color="info" fontWeight="semibold">
-              {description ?? 'Drag and drop some images here or browse'}
-            </Text>
-          </>
+          renderContent()
         )}
 
         <Input
+          disabled={isLoading}
           type="file"
           _focus={{outline: 'none'}}
           _active={{outline: 'none'}}
           {...inputProps}
         />
-        {isLoading ? (
-          <Progress colorScheme="orange" size="lg" value={progress} hasStripe />
-        ) : null}
       </Stack>
     </Stack>
   )
