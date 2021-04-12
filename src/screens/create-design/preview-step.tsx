@@ -82,7 +82,7 @@ function useInitiallyShowPreviewTooltip() {
   const toast = useToast()
 
   const canShowTooltip =
-    name && question && imagesByUrl.length < 2 && !shownTooltip
+    name && question && imagesByUrl.length >= 2 && !shownTooltip
 
   React.useEffect(() => {
     if (canShowTooltip) {
