@@ -1,7 +1,9 @@
+import * as React from 'react'
 import {Button} from '@chakra-ui/button'
 import {useDisclosure} from '@chakra-ui/hooks'
 import {Image} from '@chakra-ui/image'
 import {Flex, Grid, Heading, Stack, Text} from '@chakra-ui/layout'
+import {useToast} from '@chakra-ui/toast'
 import Rating from '@material-ui/lab/Rating'
 import {PreviewDesignFullImageModal} from 'components/full-image-modal'
 import {useCallback} from 'react'
@@ -57,8 +59,48 @@ function DesignVersion({imageUrl, showRating = false}: DesignVersionProps) {
   )
 }
 
+function useInitiallyShowPreviewTooltip() {
+  const {
+    name,
+    question,
+    imagesByUrl,
+    shownTooltip,
+    setShownTooltip,
+  } = useCreateDesignStore(
+    useCallback(
+      state => ({
+        question: state.question,
+        name: state.name,
+        imagesByUrl: state.imagesByUrl,
+
+        shownTooltip: state.shownPreviewTooltip,
+        setShownTooltip: state.setShownTooltip,
+      }),
+      [],
+    ),
+  )
+  const toast = useToast()
+
+  const canShowTooltip =
+    name && question && imagesByUrl.length < 2 && !shownTooltip
+
+  React.useEffect(() => {
+    if (canShowTooltip) {
+      toast({
+        title: 'Preview your design',
+        description:
+          'This is how your design will look to voters. If everything looks good, press publish to continue',
+        position: 'bottom',
+        duration: null,
+        isClosable: true,
+        variant: 'subtle',
+      })
+      setShownTooltip(true)
+    }
+  }, [canShowTooltip, setShownTooltip, toast])
+}
+
 // TODO: Different design for choosing system
-// TODO: Choose/vote inside modal
 export function PreviewStep() {
   const design = useCreateDesignStore(
     useCallback(
@@ -73,11 +115,16 @@ export function PreviewStep() {
       [],
     ),
   )
+  useInitiallyShowPreviewTooltip()
+
+  const isDesignInvalid = !design.name || !design.question
+  const notEnoughVersions = design.imagesByUrl.length < 2
+
   const setStep = useCreateDesignStore(useCallback(state => state.setStep, []))
 
   const numOfColumns = design.imagesByUrl.length === 2 ? 2 : 3
 
-  if (!design.name || !design.question) {
+  if (isDesignInvalid) {
     return (
       <Stack spacing="1em" mt="1em" align="center">
         <Heading fontWeight="400" fontSize="xl">
@@ -95,7 +142,7 @@ export function PreviewStep() {
     )
   }
 
-  if (design.imagesByUrl.length < 2) {
+  if (notEnoughVersions) {
     return (
       <Stack spacing="1em" mt="1em" align="center">
         <Heading fontWeight="400" fontSize="xl">

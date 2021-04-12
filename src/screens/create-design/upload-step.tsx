@@ -153,6 +153,7 @@ export function UploadStep() {
           icon={<AddIcon w="3em" h="3em" color="info" />}
         />
       </Grid>
+      {/* TODO: Put description when design is disabled */}
       <Button
         colorScheme="brand"
         size="lg"

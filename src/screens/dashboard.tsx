@@ -13,7 +13,6 @@ import {
 import {AddIcon, DeleteIcon, EditIcon} from '@chakra-ui/icons'
 import {HiDotsHorizontal} from 'react-icons/hi'
 import {FiLink} from 'react-icons/fi'
-import {CreateDesignModal} from 'components/create-design'
 import {useDeleteDesign} from 'utils/designs'
 import {useDesigns} from 'utils/design-query'
 import {useNavigate} from 'react-router-dom'
@@ -150,7 +149,7 @@ function EmptyDashboard({onClick}: EmptyDashboardProps) {
 }
 
 function Dashboard() {
-  const {isOpen, onOpen, onClose} = useDisclosure()
+  const navigate = useNavigate()
   const {data: designs, isLoading} = useDesigns()
   const cardBg = useColorModeValue('white', 'gray.700')
 
@@ -165,7 +164,6 @@ function Dashboard() {
         description="Dashboard containing all of your designs. Share a design for people to vote."
       />
       <Flex h="100%" w="100%" flexDir="column">
-        <CreateDesignModal isOpen={isOpen} onClose={onClose} />
         <Flex alignItems="center" flex="0">
           <Text fontSize="xl" fontWeight="500">
             Designs
@@ -185,7 +183,7 @@ function Dashboard() {
             }}
             _focus={{outline: 'none'}}
             background={cardBg}
-            onClick={onOpen}
+            onClick={() => navigate('/create')}
           >
             <AddIcon />
           </ChakraButton>
@@ -206,7 +204,7 @@ function Dashboard() {
             ))}
           </SimpleGrid>
         ) : (
-          <EmptyDashboard onClick={onOpen} />
+          <EmptyDashboard onClick={() => navigate('/create')} />
         )}
       </Flex>
     </Container>

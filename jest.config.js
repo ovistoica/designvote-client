@@ -40,6 +40,7 @@ module.exports = {
     '!<rootDir>/src/setupProxy*',
     '!<rootDir>/src/setupTests*',
     '!<rootDir>/src/dev-tools/**/*',
+    '!<rootDir>/src/types/**/*',
   ],
   watchPlugins: [
     'jest-watch-typeahead/filename',

@@ -89,7 +89,7 @@ export function ShareTab({designId}: ShareTabProps) {
   }, [design.public, publish, designLoaded])
 
   // get current website link (for production and development)
-  const end = window.location.href.lastIndexOf(`/manage-design`)
+  const end = window.location.href.lastIndexOf(`/design`)
   const websiteLink = window.location.href.slice(0, end)
   const link = isLoading
     ? 'Loading ...'
@@ -127,7 +127,7 @@ export function ShareTab({designId}: ShareTabProps) {
       >
         <AlertIcon boxSize="40px" mr={0} />
         <AlertTitle mt={4} mb={1} fontSize="lg">
-          Design created!
+          Design ready!
         </AlertTitle>
         <AlertDescription maxWidth="sm">
           Go ahead and share it with the people who matter!

@@ -48,7 +48,7 @@ export function RadioGroup({
 }: RadioGroupProps) {
   const {getRootProps, getRadioProps} = useRadioGroup({
     name,
-    defaultValue: defaultValue ?? options[0].value,
+    defaultValue: defaultValue ?? undefined,
     onChange,
   })
 
