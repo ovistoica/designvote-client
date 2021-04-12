@@ -6,6 +6,10 @@ import {DesignTab} from 'types'
 import {useDesign} from 'utils/design-query'
 import {useParams} from 'react-router'
 import {VersionsTab} from './versions-tab'
+import {DesignInfoTab} from './design-info-tab'
+import {PreviewTab} from './preview-tab'
+import {ShareTab} from './share-tab'
+import {useManageDesign} from 'store'
 
 const linkStyle: ButtonProps = {
   textTransform: 'uppercase',
@@ -38,22 +42,24 @@ function Tab(props: StepLinkProps) {
 
 interface CurrentScreenProps {
   designId: string
-  step: DesignTab
 }
 
-export function CurrentScreen({step, designId}: CurrentScreenProps) {
-  switch (step) {
+export function CurrentScreen({designId}: CurrentScreenProps) {
+  const {tab} = useManageDesign(
+    React.useCallback(state => ({tab: state.tab, setTab: state.setTab}), []),
+  )
+  switch (tab) {
     case DesignTab.Info: {
-      return <Text>Design info</Text>
+      return <DesignInfoTab designId={designId} />
     }
     case DesignTab.Versions: {
       return <VersionsTab designId={designId} />
     }
     case DesignTab.Preview: {
-      return <Text>Preview</Text>
+      return <PreviewTab designId={designId} />
     }
     case DesignTab.Share: {
-      return <Text>Share</Text>
+      return <ShareTab designId={designId} />
     }
     case DesignTab.Analyse: {
       return <Text>Analyse results</Text>
@@ -62,12 +68,14 @@ export function CurrentScreen({step, designId}: CurrentScreenProps) {
 }
 
 export function ManageDesign() {
-  const [step, setStep] = React.useState(DesignTab.Share)
   const {designId} = useParams()
   const {
     data: {design},
   } = useDesign(designId)
   const bg = useColorModeValue('whiteAlpha.900', 'gray.700')
+  const {tab, setTab} = useManageDesign(
+    React.useCallback(state => ({tab: state.tab, setTab: state.setTab}), []),
+  )
 
   return (
     <Flex
@@ -85,40 +93,40 @@ export function ManageDesign() {
         <Flex w="100%" justify="center">
           <Tab
             ml="0em"
-            aria-selected={step === DesignTab.Info}
-            onClick={() => setStep(DesignTab.Info)}
+            aria-selected={tab === DesignTab.Info}
+            onClick={() => setTab(DesignTab.Info)}
           >
             Design info
           </Tab>
           <Tab
-            aria-selected={step === DesignTab.Versions}
-            onClick={() => setStep(DesignTab.Versions)}
+            aria-selected={tab === DesignTab.Versions}
+            onClick={() => setTab(DesignTab.Versions)}
           >
             Manage versions
           </Tab>
           <Tab
-            aria-selected={step === DesignTab.Preview}
-            onClick={() => setStep(DesignTab.Preview)}
+            aria-selected={tab === DesignTab.Preview}
+            onClick={() => setTab(DesignTab.Preview)}
           >
             Preview
           </Tab>
           <Tab
-            aria-selected={step === DesignTab.Share}
-            onClick={() => setStep(DesignTab.Share)}
+            aria-selected={tab === DesignTab.Share}
+            onClick={() => setTab(DesignTab.Share)}
           >
             Share
           </Tab>
           <Tab
             rightIcon={undefined}
-            aria-selected={step === DesignTab.Analyse}
-            onClick={() => setStep(DesignTab.Analyse)}
+            aria-selected={tab === DesignTab.Analyse}
+            onClick={() => setTab(DesignTab.Analyse)}
           >
             Analyse results
           </Tab>
         </Flex>
       </Stack>
 
-      <CurrentScreen step={step} designId={designId} />
+      <CurrentScreen designId={designId} />
     </Flex>
   )
 }

@@ -37,25 +37,6 @@ function useUploadDesignVersions(designId, options = {}) {
   )
 }
 
-function useDeleteDesignVersion(designId, options = {}) {
-  const qc = useQueryClient()
-  const client = useClient()
-  return useMutation(
-    versionId =>
-      client(`v1/designs/${designId}/versions`, {
-        method: 'DELETE',
-        data: {'version-id': versionId},
-      }),
-    {
-      ...defaultMutationOptions,
-      ...options,
-      onSettled: () => {
-        qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]})
-      },
-    },
-  )
-}
-
 function useVoteDesignVersion(designId, options = {}) {
   const qc = useQueryClient()
   const client = useClient()
@@ -75,4 +56,4 @@ function useVoteDesignVersion(designId, options = {}) {
   )
 }
 
-export {useUploadDesignVersions, useDeleteDesignVersion, useVoteDesignVersion}
+export {useUploadDesignVersions, useVoteDesignVersion}

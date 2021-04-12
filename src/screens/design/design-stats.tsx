@@ -25,7 +25,7 @@ import {OpinionIcon, VotesIcon} from 'assets/icons'
 import {FaShare} from 'react-icons/fa'
 import {useNavigate} from 'react-router-dom'
 import {useDesign} from 'utils/design-query'
-import {usePublishDesign} from 'utils/designs'
+import {usePublishDesign} from 'utils/design-query'
 import {Button} from 'components/lib'
 import {loadingDesign} from 'utils/loading-data'
 interface ModalProps {
@@ -47,7 +47,7 @@ function ShareModal({isOpen, onClose, designId}: ModalProps) {
   React.useEffect(() => {
     if (isOpen && designLoaded && !design.public) {
       //TODO: Type this call
-      publish(null)
+      publish()
     }
   }, [design.public, publish, isOpen, designLoaded])
 

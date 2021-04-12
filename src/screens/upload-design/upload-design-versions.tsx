@@ -5,7 +5,7 @@ import {useParams} from 'react-router-dom'
 import {ImageSwitch} from 'components/image-switch'
 import {MobileUpload} from './mobile-upload'
 import {WebUpload} from './web-upload'
-import {useEditDesign} from 'utils/designs'
+import {useEditDesign} from 'utils/design-query'
 import {Container, FullPageSpinner} from 'components/lib'
 import {DesignType} from 'types'
 

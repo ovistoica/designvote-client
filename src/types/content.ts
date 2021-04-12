@@ -1,3 +1,5 @@
+import {VoteStyle} from './enums'
+
 export interface Vote {
   voteId: string
   versionId: string
@@ -41,6 +43,7 @@ export interface Design {
   img: null
   question: string
   designType: 'web' | 'mobile'
+  voteStyle: VoteStyle
 }
 
 export interface NormalizedDesign {

@@ -16,6 +16,9 @@ import {
   Code,
   Button,
   Text,
+  Alert,
+  AlertIcon,
+  FormHelperText,
 } from '@chakra-ui/react'
 import {Formik, Form, FormikTouched} from 'formik'
 import {Persist} from 'formik-persist'
@@ -83,10 +86,15 @@ function QuestionPopover() {
         <PopoverCloseButton />
         <PopoverBody>
           The question your voters will see when asked to choose/rate from your
-          versions of the design. Ex:{' '}
-          <Code>
-            Which version do you think will convert users to paying costumers?
-          </Code>
+          versions of the design.
+          <Text mt={5} fontStyle="italic">
+            <Text as="span" fontWeight="semibold" fontStyle="normal">
+              Example:
+            </Text>{' '}
+            Which version do you think will increase conversion to paying
+            costumers?
+          </Text>
+          <Code></Code>
         </PopoverBody>
       </PopoverContent>
     </Popover>
@@ -104,8 +112,14 @@ function ModePopover() {
         <PopoverCloseButton />
         <PopoverBody>
           Choosing the purpose of your design helps us provide a better layout
-          for your versions. For example, for mobile designs they will be
-          presented as they would be viewed on mobile phones
+          for your versions.
+          <Text mt={5}>
+            <Text as="span" fontWeight="semibold">
+              Example:
+            </Text>{' '}
+            Designs for a mobile app will be displayed in the size of a mobile
+            phone (where possible)
+          </Text>
         </PopoverBody>
       </PopoverContent>
     </Popover>
@@ -123,13 +137,23 @@ function VoteStylePopover() {
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverBody>
-          Wether your voters should choose the version they like the best or
-          vote on each version with a 1-5 star rating.{' '}
-          <Text as="span" fontWeight="semibold">
-            Mention:
-          </Text>{' '}
-          Voters can give comments and feedback on all of the versions
-          independently
+          The individual rating system is based on a 1-5 star rating.
+          <Text mt={5}>
+            <Text as="span" fontWeight="semibold">
+              Mention:
+            </Text>{' '}
+            Voters can leave comments on each design regardless of voting style
+          </Text>
+          <Alert status="info" w="96%" mt={5} borderRadius=".5em">
+            <AlertIcon />
+            <Text>
+              Voting style{' '}
+              <Text as="span" fontWeight="semibold">
+                CANNOT
+              </Text>{' '}
+              changed after design is created
+            </Text>
+          </Alert>
         </PopoverBody>
       </PopoverContent>
     </Popover>
@@ -307,7 +331,7 @@ function CreateStep() {
                 defaultValue={values.voteStyle}
                 options={[
                   {label: 'Choose the best', value: VoteStyle.Choose},
-                  {label: 'Rate with stars', value: VoteStyle.FiveStar},
+                  {label: 'Rate individually', value: VoteStyle.FiveStar},
                 ]}
                 name="voteStyle"
                 onChange={e => {
@@ -318,6 +342,10 @@ function CreateStep() {
                   set.voteStyle(e as VoteStyle)
                 }}
               />
+              <FormHelperText>
+                Wether voters should choose the best of all or rate each one
+                individually
+              </FormHelperText>
             </FormControl>
 
             <Button
