@@ -151,6 +151,15 @@ export function UploadStep() {
             )
           })}
         </SimpleGrid>
+        <Button
+          colorScheme="brand"
+          size="lg"
+          my="8"
+          onClick={() => setStep(CreateDesignStep.Preview)}
+          disabled={imagesByUrl.length < 2}
+        >
+          Next
+        </Button>
       </Flex>
     </Box>
   )

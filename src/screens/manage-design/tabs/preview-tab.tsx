@@ -9,6 +9,7 @@ import {useManageDesign} from 'store'
 import {DesignTab, VoteStyle} from 'types'
 import {useDesign} from 'utils/design-query'
 import {ImageCarouselModal} from '../components/image-carousel-modal'
+import {FullPageSpinner} from 'components/lib'
 
 interface DesignVersionProps {
   versionId: string
@@ -76,11 +77,15 @@ interface PreviewTabProps {
 }
 
 export function PreviewTab({designId}: PreviewTabProps) {
-  const {data} = useDesign(designId)
+  const {data, isLoading} = useDesign(designId)
   const {design} = data
   const {setTab} = useManageDesign(
     React.useCallback(state => ({setTab: state.setTab}), []),
   )
+
+  if (isLoading) {
+    return <FullPageSpinner h="100%" />
+  }
 
   if (!design.name || !design.question) {
     return (

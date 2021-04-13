@@ -122,7 +122,7 @@ const ColorModeSwitcher = (props: IconButtonProps) => {
   )
 }
 
-function FullPageSpinner() {
+function FullPageSpinner(props: BoxProps) {
   return (
     <Flex
       direction="column"
@@ -130,6 +130,7 @@ function FullPageSpinner() {
       align="center"
       justify="center"
       fontSize="4em"
+      {...props}
     >
       <Spinner />
     </Flex>
