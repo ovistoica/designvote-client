@@ -1,6 +1,6 @@
 import {useCreateDesignStore} from 'store'
 import {CreateDesignStep} from 'types'
-import {Box, HStack} from '@chakra-ui/react'
+import {Box, Flex, HStack, useColorModeValue as mode} from '@chakra-ui/react'
 import {Step} from 'components/step-with-arrow'
 
 import {CreateStep} from './create-step'
@@ -31,42 +31,52 @@ export function CreateDesign() {
   const {step, setStep} = useCreateDesignStore()
 
   return (
-    <Box
-      p={0}
-      mx="auto"
-      maxW="3xl"
-      px={{base: '6', md: '8'}}
-      py={{base: '5em', md: '5em'}}
+    <Flex
+      direction="column"
+      align="stretch"
+      minH="100vh"
+      bg={mode('gray.50', 'gray.800')}
+      pt={{base: '5em', md: '5em'}}
     >
-      <nav aria-label="Progress steps">
-        <HStack as="ol" listStyleType="none" spacing="0">
-          <Step
-            isCurrent={step === CreateDesignStep.Create}
-            onClick={() => setStep(CreateDesignStep.Create)}
-          >
-            Create Design
-          </Step>
-          <Step
-            isCurrent={step === CreateDesignStep.Upload}
-            onClick={() => setStep(CreateDesignStep.Upload)}
-          >
-            Upload Versions
-          </Step>
-          <Step
-            isCurrent={step === CreateDesignStep.Preview}
-            onClick={() => setStep(CreateDesignStep.Preview)}
-          >
-            Review
-          </Step>
-          <Step
-            isCurrent={step === CreateDesignStep.Share}
-            onClick={() => setStep(CreateDesignStep.Share)}
-          >
-            Publish
-          </Step>
-        </HStack>
-      </nav>
-      <CurrentScreen />
-    </Box>
+      <Box maxW="7xl" mx="auto">
+        <Box
+          p={0}
+          mx="auto"
+          maxW="3xl"
+          minW={{base: 'sm', md: '3xl'}}
+          px={{base: '6', md: '8'}}
+        >
+          <nav aria-label="Progress steps">
+            <HStack as="ol" listStyleType="none" spacing="0">
+              <Step
+                isCurrent={step === CreateDesignStep.Create}
+                onClick={() => setStep(CreateDesignStep.Create)}
+              >
+                Create Design
+              </Step>
+              <Step
+                isCurrent={step === CreateDesignStep.Upload}
+                onClick={() => setStep(CreateDesignStep.Upload)}
+              >
+                Upload Versions
+              </Step>
+              <Step
+                isCurrent={step === CreateDesignStep.Preview}
+                onClick={() => setStep(CreateDesignStep.Preview)}
+              >
+                Review
+              </Step>
+              <Step
+                isCurrent={step === CreateDesignStep.Share}
+                onClick={() => setStep(CreateDesignStep.Share)}
+              >
+                Publish
+              </Step>
+            </HStack>
+          </nav>
+        </Box>
+        <CurrentScreen />
+      </Box>
+    </Flex>
   )
 }

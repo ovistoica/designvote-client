@@ -1,7 +1,7 @@
 import {useColorModeValue as mode} from '@chakra-ui/color-mode'
 import {AddIcon} from '@chakra-ui/icons'
 import {Image, ImageProps} from '@chakra-ui/image'
-import {Box, Circle, SimpleGrid} from '@chakra-ui/layout'
+import {Box, Circle, Flex, SimpleGrid} from '@chakra-ui/layout'
 import {DeleteBin} from 'assets/icons'
 import {ImageDropInput} from 'components/image-input'
 import {useCallback} from 'react'
@@ -96,11 +96,26 @@ export function VersionsTab({designId}: VersionsTabProps) {
 
   return (
     <Box as="section" bg={mode('gray.50', 'gray.800')} p="8">
-      <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '3', md: '8'}}>
+      <Flex
+        direction="column"
+        align="center"
+        maxW={{base: 'xl', md: '7xl'}}
+        mx="auto"
+        px={{base: '3', md: '8'}}
+      >
         <SimpleGrid
           columns={{base: 1, md: 3}}
-          spacing={{base: '2', md: '4', lg: '8'}}
+          spacing={{base: '4', md: '4', lg: '8'}}
+          maxW={{base: 'inherit', md: '3xl'}}
         >
+          <ImageDropInput
+            onImageUpload={onImageUpload}
+            h="15em"
+            w="15em"
+            description="Upload 2 or more versions of your design"
+            icon={<AddIcon w="3em" h="3em" color={iconColor} />}
+            isLoading={isLoading}
+          />
           {versionsById.map(vId => {
             const {
               pictures: [picId],
@@ -116,16 +131,8 @@ export function VersionsTab({designId}: VersionsTabProps) {
               />
             )
           })}
-          <ImageDropInput
-            onImageUpload={onImageUpload}
-            h="15em"
-            w="15em"
-            description="Upload 2 or more versions of your design"
-            icon={<AddIcon w="3em" h="3em" color={iconColor} />}
-            isLoading={isLoading}
-          />
         </SimpleGrid>
-      </Box>
+      </Flex>
     </Box>
   )
 }
