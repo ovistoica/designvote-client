@@ -48,7 +48,7 @@ export const ManageDesign = () => {
   }
 
   return (
-    <Tabs isFitted colorScheme="brand" defaultIndex={2}>
+    <Tabs isFitted colorScheme="brand" defaultIndex={3}>
       <Flex
         direction="column"
         align="stretch"
