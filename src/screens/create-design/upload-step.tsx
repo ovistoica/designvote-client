@@ -14,7 +14,6 @@ import {Image, ImageProps} from '@chakra-ui/image'
 import {DeleteBin} from 'assets/icons'
 import shallow from 'zustand/shallow'
 import {useCallback} from 'react'
-import {Input} from '@chakra-ui/input'
 import {AddIcon} from '@chakra-ui/icons'
 import {Button} from '@chakra-ui/button'
 import {CreateDesignStep} from 'types'
@@ -121,18 +120,26 @@ export function UploadStep() {
         direction="column"
         align="center"
         maxW={{base: 'xl', md: '7xl'}}
-        // mx="auto"
+        mx="auto"
         px={{base: '3', md: '8'}}
       >
-        <Text fontSize="xl" textAlign="center" mb="4">
+        <Text fontSize="xl" textAlign="center" mb="8">
           Upload two or more versions of your design
         </Text>
         <SimpleGrid
           columns={{base: 1, md: 3}}
           spacing={{base: '4', md: '4', lg: '8'}}
-          alignItems="center"
-          maxW={{base: '15em', md: 'inherit'}}
+          maxW={{base: 'inherit', md: '3xl'}}
         >
+          <ImageDropInput
+            onImageUpload={onImageUpload}
+            h="15em"
+            w="15em"
+            description="Upload 2 or more versions of your design"
+            icon={
+              <AddIcon w="3em" h="3em" color={mode('gray.500', 'gray.300')} />
+            }
+          />
           {imagesByUrl.map(url => {
             return (
               <UploadedImage
@@ -143,15 +150,6 @@ export function UploadStep() {
               />
             )
           })}
-          <ImageDropInput
-            onImageUpload={onImageUpload}
-            h="15em"
-            w="15em"
-            description="Upload 2 or more versions of your design"
-            icon={
-              <AddIcon w="3em" h="3em" color={mode('gray.500', 'gray.300')} />
-            }
-          />
         </SimpleGrid>
       </Flex>
     </Box>

@@ -119,7 +119,13 @@ export function PreviewTab({designId}: PreviewTabProps) {
   }
   return (
     <Box as="section" bg={mode('gray.50', 'gray.800')}>
-      <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '3', md: '8'}}>
+      <Flex
+        direction="column"
+        align="center"
+        maxW={{base: 'xl', md: '7xl'}}
+        mx="auto"
+        px={{base: '3', md: '8'}}
+      >
         <Stack mb="1em" w="100%" align="center">
           <Heading textAlign="center">{design.question}</Heading>
           {design.description ? (
@@ -144,7 +150,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
             )
           })}
         </SimpleGrid>
-      </Box>
+      </Flex>
     </Box>
   )
 }

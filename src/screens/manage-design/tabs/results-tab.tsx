@@ -23,7 +23,7 @@ export function ResultsTab({designId}: ResultsTabProps) {
             const version = versions[vId]
             const value = version.votes.length
             const limit = design.totalVotes
-            const title = `Version #${index + 1}`
+            const title = `Version #${index + 1} votes`
             const [picId] = version.pictures
             const {uri: imageUrl} = pictures[picId]
 

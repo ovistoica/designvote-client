@@ -13,7 +13,7 @@ type InitialDataState = {
 }
 
 const initialState: InitialDataState = {
-  tab: DesignTab.Share,
+  tab: DesignTab.Preview,
 }
 
 export const useManageDesign = create<ManageDesignState>(

@@ -41,6 +41,7 @@ module.exports = {
     '!<rootDir>/src/setupTests*',
     '!<rootDir>/src/dev-tools/**/*',
     '!<rootDir>/src/types/**/*',
+    '!<rootDir>/src/use-keyboard-shortcut*',
   ],
   watchPlugins: [
     'jest-watch-typeahead/filename',

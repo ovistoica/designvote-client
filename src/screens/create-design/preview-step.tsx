@@ -2,7 +2,8 @@ import * as React from 'react'
 import {Button} from '@chakra-ui/button'
 import {useDisclosure} from '@chakra-ui/hooks'
 import {Image} from '@chakra-ui/image'
-import {Flex, Grid, Heading, Stack, Text} from '@chakra-ui/layout'
+import {Box, Flex, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
+import {useColorModeValue as mode} from '@chakra-ui/react'
 import {useToast} from '@chakra-ui/toast'
 import Rating from '@material-ui/lab/Rating'
 import {PreviewDesignFullImageModal} from 'components/full-image-modal'
@@ -121,8 +122,6 @@ export function PreviewStep() {
 
   const setStep = useCreateDesignStore(useCallback(state => state.setStep, []))
 
-  const numOfColumns = design.imagesByUrl.length === 2 ? 2 : 3
-
   if (isDesignInvalid) {
     return (
       <Stack spacing="1em" mt="1em" align="center">
@@ -159,47 +158,46 @@ export function PreviewStep() {
     )
   }
   return (
-    <Flex
-      flex="1"
-      align="center"
-      flexDir="column"
-      maxW={['512px', '1024px', '1440px']}
-    >
-      <Stack mb="1em" w="100%" p="1em" align="center">
-        <Heading>{design.question}</Heading>
-        {design.description ? (
-          <Text fontWeight="300" fontSize="xl">
-            {design.description}
-          </Text>
-        ) : null}
-      </Stack>
-
-      <Grid
-        m="1em"
-        mt="0em"
-        column={numOfColumns}
-        gridTemplateColumns={`repeat(${numOfColumns}, 1fr)`}
-        rowGap="1.5em"
-        columnGap="1.5em"
-        alignContent="center"
+    <Box as="section" bg={mode('gray.50', 'gray.800')} mt="4">
+      <Flex
+        direction="column"
+        align="center"
+        maxW={{base: '3xl', md: '7xl'}}
+        mx="auto"
+        px={{base: '3', md: '8'}}
       >
-        {design.imagesByUrl.map((imageUrl, index) => {
-          return (
-            <DesignVersion
-              imageUrl={imageUrl}
-              showRating={design.voteStyle === VoteStyle.FiveStar}
-            />
-          )
-        })}
-      </Grid>
-      <Button
-        colorScheme="brand"
-        size="lg"
-        mt=".5em"
-        onClick={() => setStep(CreateDesignStep.Share)}
-      >
-        Publish design
-      </Button>
-    </Flex>
+        <Stack mb="1em" w="100%" align="center">
+          <Heading textAlign="center">{design.question}</Heading>
+          {design.description ? (
+            <Text fontWeight="300" fontSize="xl">
+              {design.description}
+            </Text>
+          ) : null}
+        </Stack>
+        <SimpleGrid
+          columns={{base: 1, md: 3}}
+          spacing={{base: '2', md: '4', lg: '8'}}
+          rowGap={{base: 8, md: 8, lg: 8}}
+          alignItems="center"
+        >
+          {design.imagesByUrl.map((imageUrl, index) => {
+            return (
+              <DesignVersion
+                imageUrl={imageUrl}
+                showRating={design.voteStyle === VoteStyle.FiveStar}
+              />
+            )
+          })}
+        </SimpleGrid>
+        <Button
+          colorScheme="brand"
+          size="lg"
+          my="8"
+          onClick={() => setStep(CreateDesignStep.Share)}
+        >
+          Publish design
+        </Button>
+      </Flex>
+    </Box>
   )
 }

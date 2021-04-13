@@ -38,14 +38,14 @@ export const StatCard = (props: StatCardProps) => {
       <Box d={id} srOnly>
         {value} out of {limit} {title} used
       </Box>
-      {/* <Image
+      <Image
         alignSelf="center"
         src={imageUrl}
         boxSize={{base: 'xs', md: '2xs'}}
         objectFit="contain"
         align="center"
         p="5"
-      /> */}
+      />
       <Box
         flex="1"
         as="dl"
@@ -77,7 +77,7 @@ export const StatCard = (props: StatCardProps) => {
               /
             </Box>
             <Box srOnly>out of</Box>
-            <Text ps="1">{_limit}</Text>
+            <Text ps="1">{_limit} </Text>
           </Flex>
         </Stack>
       </Box>

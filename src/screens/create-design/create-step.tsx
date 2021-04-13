@@ -240,7 +240,7 @@ function CreateStep() {
     ),
   )
   return (
-    <Stack pb={6}>
+    <Stack pb={6} maxW="3xl" px={{base: '6', md: '8'}}>
       <Formik
         validationSchema={validationSchema}
         initialValues={initialValues}
