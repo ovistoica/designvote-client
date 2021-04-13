@@ -7,7 +7,6 @@ import {
 import {StrictMode} from 'react'
 import {BrowserRouter as Router} from 'react-router-dom'
 import {DefaultOptions, QueryClient, QueryClientProvider} from 'react-query'
-import {ReactQueryDevtools} from 'react-query/devtools'
 import {AuthProvider, Auth0Provider} from './auth-context'
 import {CookiesProvider} from 'react-cookie'
 import {Fonts} from 'assets/fonts'
@@ -96,7 +95,7 @@ const AppProviders: React.FC = ({children}) => {
               <CookiesProvider>
                 <Router>{children}</Router>
               </CookiesProvider>
-              <ReactQueryDevtools initialIsOpen={false} />
+              {/* <ReactQueryDevtools initialIsOpen={false} /> */}
             </QueryClientProvider>
           </AuthProvider>
         </Auth0Provider>

@@ -103,8 +103,8 @@ function FormRow({
       aria-label={ariaLabel}
       isRequired={isRequired}
       isInvalid={isInvalid}
-      py="0.5em"
-      minW="40em"
+      py="2"
+      minW={{base: 'xs', md: 'md'}}
     >
       <Flex alignItems="center">
         <FormLabel marginInlineEnd="0.2rem">{ariaLabel}</FormLabel>
@@ -119,7 +119,7 @@ function FormRow({
         placeholder={placeholder}
         onBlur={onBlur}
         onChange={onChange}
-        minH={type === 'textarea' ? '3em' : undefined}
+        minH={type === 'textarea' ? '4em' : undefined}
         _focus={{borderColor: 'brand.500'}}
         as={type}
       />
@@ -132,7 +132,6 @@ interface DesignInfoProps {
   designId: string
 }
 
-// TODO: Alert user when changing from this tab to save changes
 export function DesignInfoTab({designId}: DesignInfoProps) {
   const {
     data: {design},
@@ -146,7 +145,7 @@ export function DesignInfoTab({designId}: DesignInfoProps) {
   }
   const {mutate: saveDesign, isLoading: isEditLoading} = useEditDesign(designId)
   return (
-    <Stack pb={6}>
+    <Stack pb={6} alignItems="center">
       <Formik
         key={`design${designId}${isSuccess}`}
         validationSchema={validationSchema}
@@ -157,7 +156,7 @@ export function DesignInfoTab({designId}: DesignInfoProps) {
         }}
       >
         {({handleChange, handleBlur, values, errors, touched}) => (
-          <Form style={{marginTop: '1em'}}>
+          <Form>
             <FormRow
               id="name"
               ariaLabel="Design name"

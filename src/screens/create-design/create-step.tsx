@@ -130,7 +130,7 @@ function VoteStylePopover() {
   return (
     <Popover trigger="hover">
       <PopoverTrigger>
-        <QuestionIcon width="1em" height="1em" mb="0.5rem" cursor="help" />
+        <QuestionIcon width="4" height="4" mb="0.5rem" cursor="help" />
       </PopoverTrigger>
       <PopoverContent>
         <PopoverHeader fontWeight="semibold">Voting style</PopoverHeader>
@@ -150,7 +150,7 @@ function VoteStylePopover() {
             </Text>{' '}
             Voters can leave comments on each design regardless of voting style
           </Text>
-          <Alert status="info" w="96%" mt={5} borderRadius=".5em">
+          <Alert status="info" mt={5} borderRadius=".5em">
             <AlertIcon />
             <Text>
               Voting style{' '}
@@ -186,7 +186,7 @@ function FormRow({
       isRequired={isRequired}
       isInvalid={isInvalid}
       py="0.5em"
-      minW="40em"
+      minW={{base: 'xs', md: 'sm'}}
     >
       <Flex alignItems="center">
         <FormLabel marginInlineEnd="0.2rem">{ariaLabel}</FormLabel>
@@ -298,7 +298,12 @@ function CreateStep() {
               type="textarea"
             />
 
-            <FormControl id="type" py="0.5em" minW="40em" isRequired>
+            <FormControl
+              id="type"
+              py="0.5em"
+              // minW={{base: 'xs', md: 'sm'}}
+              isRequired
+            >
               <Flex alignItems="center">
                 <FormLabel marginInlineEnd="0.2rem">Design type</FormLabel>
                 <ModePopover />
@@ -326,7 +331,12 @@ function CreateStep() {
               />
             </FormControl>
 
-            <FormControl id="voteStyle" py="0.5em" minW="40em" isRequired>
+            <FormControl
+              id="voteStyle"
+              py="0.5em"
+              // minW={{base: 'xs', md: 'sm'}}
+              isRequired
+            >
               <Flex alignItems="center">
                 <FormLabel marginInlineEnd="0.2rem">Voting style</FormLabel>
                 <VoteStylePopover />

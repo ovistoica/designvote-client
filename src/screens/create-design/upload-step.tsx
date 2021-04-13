@@ -1,4 +1,13 @@
-import {Box, Circle, Grid, Heading, Stack, Text} from '@chakra-ui/layout'
+import {
+  Box,
+  Circle,
+  Flex,
+  Heading,
+  SimpleGrid,
+  Stack,
+  Text,
+} from '@chakra-ui/layout'
+import {useColorModeValue as mode} from '@chakra-ui/react'
 import {ImageDropInput} from 'components/image-input'
 import {useCreateDesignStore} from 'store'
 import {Image, ImageProps} from '@chakra-ui/image'
@@ -25,15 +34,6 @@ function UploadedImage({
   const onDeletePress = useCreateDesignStore(
     useCallback(state => state.deleteVersion, []),
   )
-  const setDescription = useCreateDesignStore(
-    useCallback(state => state.setVersionDescrption, []),
-  )
-
-  const currentValue = useCreateDesignStore(
-    useCallback(state => state.images[imageUrl].description, [imageUrl]),
-  )
-
-  const onInputChange = (value: string) => setDescription(imageUrl, value)
 
   return (
     <Box role="group" position="relative">
@@ -67,13 +67,6 @@ function UploadedImage({
           boxShadow: '2xl',
         }}
         {...rest}
-      />
-      <Input
-        mt="0.2em"
-        textAlign="center"
-        placeholder="Version description"
-        onChange={e => onInputChange(e.target.value)}
-        value={currentValue}
       />
     </Box>
   )
@@ -123,46 +116,44 @@ export function UploadStep() {
   }
 
   return (
-    <>
-      <Text mt="1em" fontSize="xl">
-        Upload two or more versions of your design
-      </Text>
-
-      <Grid
-        mt="1em"
-        gridTemplateColumns="repeat(3, 1fr)"
-        columnGap="1em"
-        rowGap="1em"
+    <Box as="section" bg={mode('gray.50', 'gray.800')} p="8">
+      <Flex
+        direction="column"
+        align="center"
+        maxW={{base: 'xl', md: '7xl'}}
+        // mx="auto"
+        px={{base: '3', md: '8'}}
       >
-        {imagesByUrl.map(url => {
-          return (
-            <UploadedImage
-              imageUrl={url}
-              w="15em"
-              h="15em"
-              key={`imageUpload${url}`}
-            />
-          )
-        })}
-        <ImageDropInput
-          onImageUpload={onImageUpload}
-          h="15em"
-          w="15em"
-          description="Upload 2 or more versions of your design"
-          justifyContent="space-between"
-          icon={<AddIcon w="3em" h="3em" color="info" />}
-        />
-      </Grid>
-      {/* TODO: Put description when design is disabled */}
-      <Button
-        colorScheme="brand"
-        size="lg"
-        mt="1em"
-        disabled={imagesByUrl.length < 2}
-        onClick={() => setStep(CreateDesignStep.Preview)}
-      >
-        Next
-      </Button>
-    </>
+        <Text fontSize="xl" textAlign="center" mb="4">
+          Upload two or more versions of your design
+        </Text>
+        <SimpleGrid
+          columns={{base: 1, md: 3}}
+          spacing={{base: '4', md: '4', lg: '8'}}
+          alignItems="center"
+          maxW={{base: '15em', md: 'inherit'}}
+        >
+          {imagesByUrl.map(url => {
+            return (
+              <UploadedImage
+                imageUrl={url}
+                w="15em"
+                h="15em"
+                key={`imageUpload${url}`}
+              />
+            )
+          })}
+          <ImageDropInput
+            onImageUpload={onImageUpload}
+            h="15em"
+            w="15em"
+            description="Upload 2 or more versions of your design"
+            icon={
+              <AddIcon w="3em" h="3em" color={mode('gray.500', 'gray.300')} />
+            }
+          />
+        </SimpleGrid>
+      </Flex>
+    </Box>
   )
 }

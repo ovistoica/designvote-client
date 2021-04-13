@@ -21,10 +21,10 @@ import {keysToCamel} from './object'
 
 interface CreateDesignBody {
   name: string
-  description: string | undefined
-  question: string | undefined
-  type: DesignType
-  voteStyle: VoteStyle
+  description: string | null | undefined
+  question: string
+  'design-type': DesignType
+  'vote-style': VoteStyle
   img: null
 }
 
@@ -136,7 +136,14 @@ export function useCreateFromDraft() {
 
   return useMutation(
     () =>
-      createDesign({...design, img: null}).then(async data => {
+      createDesign({
+        name: design.name,
+        description: design.description ?? null,
+        question: design.question ?? '',
+        'vote-style': design.voteStyle,
+        'design-type': design.type,
+        img: null,
+      }).then(async data => {
         const designId = data?.['design-id']
         const [result] = await Promise.all([
           createDesignVersions(designId, designVersions),
