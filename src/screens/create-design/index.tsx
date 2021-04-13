@@ -1,46 +1,12 @@
-import {Button, ButtonProps} from '@chakra-ui/button'
-import {useColorModeValue} from '@chakra-ui/color-mode'
-import {ArrowForwardIcon} from '@chakra-ui/icons'
-import {Divider, Flex, Heading, Stack} from '@chakra-ui/layout'
 import {useCreateDesignStore} from 'store'
 import {CreateDesignStep} from 'types'
+import {Box, HStack} from '@chakra-ui/react'
+import {Step} from 'components/step-with-arrow'
 
 import {CreateStep} from './create-step'
 import {PreviewStep} from './preview-step'
 import {ShareStep} from './share-step'
 import {UploadStep} from './upload-step'
-
-const linkStyle: ButtonProps = {
-  textTransform: 'uppercase',
-  variant: 'link',
-  mx: '0.3em',
-  fontWeight: '400',
-}
-
-interface StepLinkProps extends ButtonProps {}
-
-function StepLink(props: StepLinkProps) {
-  const textInfoColor = useColorModeValue('textInfoLight', 'gray.400')
-  const rightIcon = <ArrowForwardIcon mb="1px" color={textInfoColor} />
-
-  const selectedProps: ButtonProps = props['aria-selected']
-    ? {
-        color: 'brand.500',
-        textDecoration: 'underline',
-      }
-    : {}
-
-  return (
-    <Button
-      {...linkStyle}
-      rightIcon={rightIcon}
-      {...props}
-      {...selectedProps}
-      _active={{}}
-      _focus={{}}
-    />
-  )
-}
 
 export function CurrentScreen() {
   const step = useCreateDesignStore(state => state.step)
@@ -62,53 +28,45 @@ export function CurrentScreen() {
 }
 
 export function CreateDesign() {
-  const {step, setStep, name} = useCreateDesignStore()
-  const bg = useColorModeValue('whiteAlpha.900', 'gray.700')
+  const {step, setStep} = useCreateDesignStore()
 
   return (
-    <Flex
-      direction="column"
-      alignItems="center"
-      minH="100vh"
-      w="100%"
-      p={['5em 1em', '5em 2em', '4em 0em']}
+    <Box
+      p={0}
+      mx="auto"
+      maxW="3xl"
+      px={{base: '6', md: '8'}}
+      py={{base: '5em', md: '5em'}}
     >
-      <Stack spacing="1em" bg={bg} w="100vw" p="1em" borderBottomWidth="1px">
-        <Heading fontSize="1.8rem" fontWeight="400">
-          {name ?? 'Create Design'}
-        </Heading>
-        <Divider w="100%" />
-        <Flex>
-          <StepLink
-            ml="0em"
-            aria-selected={step === CreateDesignStep.Create}
+      <nav aria-label="Progress steps">
+        <HStack as="ol" listStyleType="none" spacing="0">
+          <Step
+            isCurrent={step === CreateDesignStep.Create}
             onClick={() => setStep(CreateDesignStep.Create)}
           >
-            Create design
-          </StepLink>
-          <StepLink
-            aria-selected={step === CreateDesignStep.Upload}
+            Create Design
+          </Step>
+          <Step
+            isCurrent={step === CreateDesignStep.Upload}
             onClick={() => setStep(CreateDesignStep.Upload)}
           >
-            Upload versions
-          </StepLink>
-          <StepLink
-            aria-selected={step === CreateDesignStep.Preview}
+            Upload Versions
+          </Step>
+          <Step
+            isCurrent={step === CreateDesignStep.Preview}
             onClick={() => setStep(CreateDesignStep.Preview)}
           >
-            Preview
-          </StepLink>
-          <StepLink
-            rightIcon={undefined}
-            aria-selected={step === CreateDesignStep.Share}
+            Review
+          </Step>
+          <Step
+            isCurrent={step === CreateDesignStep.Share}
             onClick={() => setStep(CreateDesignStep.Share)}
           >
-            Share
-          </StepLink>
-        </Flex>
-      </Stack>
-
+            Publish
+          </Step>
+        </HStack>
+      </nav>
       <CurrentScreen />
-    </Flex>
+    </Box>
   )
 }

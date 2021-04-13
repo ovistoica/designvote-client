@@ -1,4 +1,4 @@
-import {Box, HStack} from '@chakra-ui/layout'
+import {Box, SimpleGrid} from '@chakra-ui/layout'
 import {useRadio, useRadioGroup, UseRadioProps} from '@chakra-ui/radio'
 
 const RadioCard: React.FC<UseRadioProps> = props => {
@@ -53,9 +53,10 @@ export function RadioGroup({
   })
 
   const group = getRootProps()
+  const baseColumns = options.length > 2 ? 3 : 2
 
   return (
-    <HStack {...group}>
+    <SimpleGrid columns={{base: baseColumns, md: 6}} spacing="2" {...group}>
       {options.map(option => {
         const radio = getRadioProps({value: option.value})
         return (
@@ -64,6 +65,6 @@ export function RadioGroup({
           </RadioCard>
         )
       })}
-    </HStack>
+    </SimpleGrid>
   )
 }

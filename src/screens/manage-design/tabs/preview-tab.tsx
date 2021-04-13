@@ -2,12 +2,13 @@ import * as React from 'react'
 import {Button} from '@chakra-ui/button'
 import {useDisclosure} from '@chakra-ui/hooks'
 import {Image} from '@chakra-ui/image'
-import {Flex, Grid, Heading, Stack, Text} from '@chakra-ui/layout'
+import {useColorModeValue as mode} from '@chakra-ui/react'
+import {Box, Flex, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
 import Rating from '@material-ui/lab/Rating'
 import {useManageDesign} from 'store'
 import {DesignTab, VoteStyle} from 'types'
 import {useDesign} from 'utils/design-query'
-import {ImageCarouselModal} from './image-carousel-modal'
+import {ImageCarouselModal} from '../components/image-carousel-modal'
 
 interface DesignVersionProps {
   versionId: string
@@ -81,8 +82,6 @@ export function PreviewTab({designId}: PreviewTabProps) {
     React.useCallback(state => ({setTab: state.setTab}), []),
   )
 
-  const numOfColumns = design.versions.length === 2 ? 2 : 3
-
   if (!design.name || !design.question) {
     return (
       <Stack spacing="1em" mt="1em" align="center">
@@ -119,48 +118,33 @@ export function PreviewTab({designId}: PreviewTabProps) {
     )
   }
   return (
-    <Flex
-      flex="1"
-      align="center"
-      flexDir="column"
-      maxW={['512px', '1024px', '1440px']}
-    >
-      <Stack mb="1em" w="100%" p="1em" align="center">
-        <Heading>{design.question}</Heading>
-        {design.description ? (
-          <Text fontWeight="300" fontSize="xl">
-            {design.description}
-          </Text>
-        ) : null}
-      </Stack>
-
-      <Grid
-        m="1em"
-        mt="0em"
-        column={numOfColumns}
-        gridTemplateColumns={`repeat(${numOfColumns}, 1fr)`}
-        rowGap="1.5em"
-        columnGap="1.5em"
-        alignContent="center"
-      >
-        {design.versions.map((vId, index) => {
-          return (
-            <DesignVersion
-              versionId={vId}
-              designId={designId}
-              showRating={design.voteStyle === VoteStyle.FiveStar}
-            />
-          )
-        })}
-      </Grid>
-      <Button
-        colorScheme="brand"
-        size="lg"
-        mt=".5em"
-        onClick={() => setTab(DesignTab.Share)}
-      >
-        Publish design
-      </Button>
-    </Flex>
+    <Box as="section" bg={mode('gray.50', 'gray.800')}>
+      <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '3', md: '8'}}>
+        <Stack mb="1em" w="100%" align="center">
+          <Heading textAlign="center">{design.question}</Heading>
+          {design.description ? (
+            <Text fontWeight="300" fontSize="xl">
+              {design.description}
+            </Text>
+          ) : null}
+        </Stack>
+        <SimpleGrid
+          columns={{base: 1, md: 3}}
+          spacing={{base: '2', md: '4', lg: '8'}}
+          rowGap={{base: 8, md: 8, lg: 8}}
+          alignItems="center"
+        >
+          {design.versions.map((vId, index) => {
+            return (
+              <DesignVersion
+                versionId={vId}
+                designId={designId}
+                showRating={design.voteStyle === VoteStyle.FiveStar}
+              />
+            )
+          })}
+        </SimpleGrid>
+      </Box>
+    </Box>
   )
 }

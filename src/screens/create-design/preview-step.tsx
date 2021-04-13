@@ -89,9 +89,8 @@ function useInitiallyShowPreviewTooltip() {
       toast({
         title: 'Preview your design',
         description:
-          'This is how your design will look to voters. If everything looks good, press publish to continue',
+          'This is how your design will look to voters. Your votes here do not count. If everything looks good, press publish to continue',
         position: 'bottom',
-        duration: null,
         isClosable: true,
         variant: 'subtle',
       })

@@ -1,132 +1,133 @@
-import * as React from 'react'
-import {Button, ButtonProps} from '@chakra-ui/button'
-import {useColorModeValue} from '@chakra-ui/color-mode'
-import {Divider, Flex, Heading, Stack, Text} from '@chakra-ui/layout'
-import {DesignTab} from 'types'
-import {useDesign} from 'utils/design-query'
+import {LinkIcon} from '@chakra-ui/icons'
+import {
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Heading,
+  HStack,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+  Text,
+  useClipboard,
+  useColorModeValue as mode,
+  useToast,
+} from '@chakra-ui/react'
 import {useParams} from 'react-router'
-import {VersionsTab} from './versions-tab'
-import {DesignInfoTab} from './design-info-tab'
-import {PreviewTab} from './preview-tab'
-import {ShareTab} from './share-tab'
-import {useManageDesign} from 'store'
+import {useDesign} from 'utils/design-query'
+import {DesignInfoTab, PreviewTab, ResultsTab, VersionsTab} from './tabs'
 
-const linkStyle: ButtonProps = {
-  textTransform: 'uppercase',
-  variant: 'link',
-  mx: 5,
-  fontWeight: 'semibold',
-}
-
-interface StepLinkProps extends ButtonProps {}
-
-function Tab(props: StepLinkProps) {
-  const selectedProps: ButtonProps = props['aria-selected']
-    ? {
-        color: 'brand.500',
-        textDecoration: 'underline',
-      }
-    : {}
-
-  return (
-    <Button
-      size="lg"
-      {...linkStyle}
-      {...props}
-      {...selectedProps}
-      _active={{}}
-      _focus={{}}
-    />
-  )
-}
-
-interface CurrentScreenProps {
-  designId: string
-}
-
-export function CurrentScreen({designId}: CurrentScreenProps) {
-  const {tab} = useManageDesign(
-    React.useCallback(state => ({tab: state.tab, setTab: state.setTab}), []),
-  )
-  switch (tab) {
-    case DesignTab.Info: {
-      return <DesignInfoTab designId={designId} />
-    }
-    case DesignTab.Versions: {
-      return <VersionsTab designId={designId} />
-    }
-    case DesignTab.Preview: {
-      return <PreviewTab designId={designId} />
-    }
-    case DesignTab.Share: {
-      return <ShareTab designId={designId} />
-    }
-    case DesignTab.Analyse: {
-      return <Text>Analyse results</Text>
-    }
-  }
-}
-
-export function ManageDesign() {
+export const ManageDesign = () => {
   const {designId} = useParams()
   const {
     data: {design},
+    isLoading,
   } = useDesign(designId)
-  const bg = useColorModeValue('whiteAlpha.900', 'gray.700')
-  const {tab, setTab} = useManageDesign(
-    React.useCallback(state => ({tab: state.tab, setTab: state.setTab}), []),
-  )
+
+  // get current website link (for production and development)
+  const end = window.location.href.lastIndexOf(`/design`)
+  const websiteLink = window.location.href.slice(0, end)
+  const link = isLoading
+    ? 'Loading ...'
+    : `${websiteLink}/vote/${design.shortUrl}`
+  const {onCopy} = useClipboard(link)
+  const toast = useToast()
+
+  const onCopyLinkPress = () => {
+    onCopy()
+    toast({
+      title: 'Link copied to clipboard.',
+      description: 'Design link copied to clipboard',
+      status: 'success',
+      duration: 2000,
+      isClosable: true,
+    })
+  }
 
   return (
-    <Flex
-      direction="column"
-      alignItems="center"
-      minH="100vh"
-      w="100%"
-      p={['5em 1em', '5em 2em', '4em 0em']}
-    >
-      <Stack spacing="1em" bg={bg} w="100vw" p="1em" borderBottomWidth="1px">
-        <Heading fontSize="1.8rem" fontWeight="400">
-          {design.name ?? 'Loading'}
-        </Heading>
-        <Divider w="100%" />
-        <Flex w="100%" justify="center">
-          <Tab
-            ml="0em"
-            aria-selected={tab === DesignTab.Info}
-            onClick={() => setTab(DesignTab.Info)}
-          >
-            Design info
-          </Tab>
-          <Tab
-            aria-selected={tab === DesignTab.Versions}
-            onClick={() => setTab(DesignTab.Versions)}
-          >
-            Manage versions
-          </Tab>
-          <Tab
-            aria-selected={tab === DesignTab.Preview}
-            onClick={() => setTab(DesignTab.Preview)}
-          >
-            Preview
-          </Tab>
-          <Tab
-            aria-selected={tab === DesignTab.Share}
-            onClick={() => setTab(DesignTab.Share)}
-          >
-            Share
-          </Tab>
-          <Tab
-            rightIcon={undefined}
-            aria-selected={tab === DesignTab.Analyse}
-            onClick={() => setTab(DesignTab.Analyse)}
-          >
-            Analyse results
-          </Tab>
-        </Flex>
-      </Stack>
+    <Tabs isFitted colorScheme="brand">
+      <Flex
+        direction="column"
+        align="stretch"
+        minH="100vh"
+        pt={{base: '5em', md: '5em'}}
+      >
+        <Box bg={mode('gray.50', 'gray.800')}>
+          <Box maxW="7xl" mx="auto">
+            <Flex
+              direction={{base: 'column', md: 'row'}}
+              justify="space-between"
+              align="flex-start"
+              mb="10"
+              px="8"
+            >
+              <HStack mb={{base: '4', md: '0'}}>
+                <Heading size="lg">{design.name ?? 'Loading'}</Heading>
+                <Text color={mode('gray.500', 'gray.300')} fontSize="sm">
+                  ({design.totalVotes} Vote{design.totalVotes === 1 ? '' : 's'})
+                </Text>
+              </HStack>
 
-      <CurrentScreen designId={designId} />
-    </Flex>
+              <HStack spacing={{base: '2', md: '4'}}>
+                <Button
+                  colorScheme="brand"
+                  leftIcon={<LinkIcon />}
+                  fontSize="sm"
+                  onClick={onCopyLinkPress}
+                >
+                  Share link
+                </Button>
+              </HStack>
+            </Flex>
+
+            <Flex
+              justify={{base: 'center', md: 'space-between'}}
+              align="center"
+              px={{base: '0', md: '8'}}
+            >
+              <TabList
+                border="0"
+                position="relative"
+                zIndex={1}
+                w={{base: '100%', md: 'auto'}}
+              >
+                <Tab fontWeight="semibold">Design</Tab>
+                <Tab fontWeight="semibold">Versions</Tab>
+                <Tab fontWeight="semibold">Preview</Tab>
+                <Tab fontWeight="semibold">Results</Tab>
+              </TabList>
+            </Flex>
+          </Box>
+        </Box>
+        <Box pos="relative" zIndex={0}>
+          <Divider
+            borderBottomWidth="2px"
+            opacity={1}
+            borderColor={mode('gray.100', 'gray.700')}
+          />
+        </Box>
+        <Box px="4" flex="1">
+          <Box maxW="7xl" mx="auto">
+            <TabPanels mt="2" h="full">
+              <TabPanel>
+                <DesignInfoTab designId={designId} />
+              </TabPanel>
+              <TabPanel>
+                <VersionsTab designId={designId} />
+              </TabPanel>
+              <TabPanel>
+                <PreviewTab designId={designId} />
+              </TabPanel>
+              <TabPanel>
+                <ResultsTab designId={designId} />
+              </TabPanel>
+            </TabPanels>
+          </Box>
+        </Box>
+      </Flex>
+    </Tabs>
   )
 }
