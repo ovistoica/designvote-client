@@ -2,6 +2,7 @@
   "name": "designvote-client",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://designvote.io",
   "dependencies": {
     "@auth0/auth0-react": "^1.2.0",
     "@chakra-ui/icons": "^1.0.5",

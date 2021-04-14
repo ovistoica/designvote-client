@@ -1,26 +1,16 @@
 import * as React from 'react'
-import {
-  Flex,
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Heading,
-  Input,
-  Stack,
-  Text,
-} from '@chakra-ui/react'
+import {Flex, Heading, Stack, Text} from '@chakra-ui/react'
 import {Button, Container, FullPageSpinner} from 'components/lib'
 import {useParams} from 'react-router-dom'
 import {useCookies} from 'react-cookie'
 import {useUrlDesign} from 'utils/design-query'
-import {useVoteDesignVersion} from 'utils/design-version'
+import {useVoteDesignVersion} from 'utils/design-query'
 import {MobileVersions} from './mobile-vote'
 import {WebVote} from './web-vote'
 import {useIsMobile} from 'utils/hooks'
 import {MetaDecorator} from 'components/meta-decorator'
 
 export function VoteDesign() {
-  const [opinion, setOpinion] = React.useState('')
   const {shortUrl} = useParams()
   const {data, isLoading} = useUrlDesign(shortUrl)
   const {design} = data
@@ -88,24 +78,16 @@ export function VoteDesign() {
               )}
             </Stack>
 
-            <FormControl id="opinion" maxW="40em" mt="1em">
-              <FormLabel fontSize="sm">Leave opinion (optional)</FormLabel>
-              <Input
-                type="text"
-                as="textarea"
-                placeholder="Opinions help the designer to better understand your choice"
-                minH="5em"
-                onChange={e => setOpinion(e.target.value)}
-              />
-              <FormHelperText></FormHelperText>
-            </FormControl>
             <Button
               variant="secondary"
               w="12.5em"
               mt="1em"
               disabled={!selectedVersion}
               onClick={() => {
-                vote({versionId: selectedVersion, opinion})
+                if (!selectedVersion) {
+                  throw new Error('Voted version must be a valid ID')
+                }
+                vote(selectedVersion)
               }}
             >
               Choose
