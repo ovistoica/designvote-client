@@ -2,14 +2,14 @@ import {NavBar} from 'components/nav'
 import {Route, Routes} from 'react-router-dom'
 import {NotFoundScreen} from 'screens/not-found'
 import {LandingPage} from 'screens/landing'
-import {VoteDesign} from 'screens/vote'
 import {ErrorBoundary} from 'react-error-boundary'
 import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
+import {PublicVoteScreen} from 'screens/public-vote'
 
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/vote/:shortUrl" element={<VoteDesign />} />
+      <Route path="/vote/:shortUrl" element={<PublicVoteScreen />} />
       <Route path="/" element={<LandingPage />} />
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
