@@ -196,9 +196,24 @@ export function useUrlDesign(
   shortUrl: string,
   options: QueryOptions<NormalizedDesign, AxiosError> = {},
 ) {
+  const qc = useQueryClient()
   const {data, ...rest} = useQuery({
     queryKey: ['design', {shortUrl}],
     queryFn: () => getDesignByShortUrl(shortUrl),
+    onSettled(data) {
+      qc.setQueryData<NormalizedDesign>(
+        ['design', {designId: data?.design.designId}],
+        old => {
+          if (data) {
+            return data
+          }
+          if (old) {
+            return old
+          }
+          return loadingDesign
+        },
+      )
+    },
     ...options,
   })
   return {

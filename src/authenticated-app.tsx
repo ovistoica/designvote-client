@@ -5,9 +5,9 @@ import {Dashboard} from 'screens/dashboard'
 import {NotFoundScreen} from 'screens/not-found'
 import {PreviewScreen} from 'screens/preview-design'
 import {NavBar} from 'components/nav'
-import {VoteDesign} from 'screens/vote'
 import {CreateDesign} from 'screens/create-design'
 import {ManageDesign} from 'screens/manage-design'
+import {PublicVoteScreen} from 'screens/public-vote'
 
 function AppRoutes() {
   return (
@@ -16,7 +16,7 @@ function AppRoutes() {
         <Navigate to="/dashboard" />
       </Route>
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/vote/:shortUrl" element={<VoteDesign />} />
+      <Route path="/vote/:shortUrl" element={<PublicVoteScreen />} />
       <Route path="/design/:designId" element={<ManageDesign />} />
       <Route path="/preview/:designId" element={<PreviewScreen />} />
       <Route path="/create" element={<CreateDesign />} />
