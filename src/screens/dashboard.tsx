@@ -13,8 +13,7 @@ import {
 import {AddIcon, DeleteIcon, EditIcon} from '@chakra-ui/icons'
 import {HiDotsHorizontal} from 'react-icons/hi'
 import {FiLink} from 'react-icons/fi'
-import {useDeleteDesign} from 'utils/designs'
-import {useDesigns} from 'utils/design-query'
+import {useDesigns, useDeleteDesign} from 'utils/design-query'
 import {useNavigate} from 'react-router-dom'
 import {
   DeleteResourceAlert,

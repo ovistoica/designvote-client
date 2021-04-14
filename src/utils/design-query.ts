@@ -109,6 +109,19 @@ function editDesign(designId: string, body: EditDesignBody) {
   return putRequest<Design, EditDesignBody>(`v1/designs/${designId}`, body)
 }
 
+function voteDesignVersion(designId: string, versionId: string) {
+  return postRequest<null, {'version-id': string}>(
+    `v1/designs/${designId}/votes`,
+    {
+      'version-id': versionId,
+    },
+  )
+}
+
+function deleteDesign(designId: string) {
+  return deleteRequest<null>(`v1/designs/${designId}`)
+}
+
 export function useCreateFromDraft() {
   const qc = useQueryClient()
 
@@ -284,5 +297,29 @@ export function usePublishDesign(
     ...options,
     onSettled: () =>
       qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]}),
+  })
+}
+
+export function useVoteDesignVersion(
+  designId: string,
+  options: QueryOptions<null, AxiosError> = {},
+) {
+  const qc = useQueryClient()
+  return useMutation(
+    (versionId: string) => voteDesignVersion(designId, versionId),
+    {
+      ...options,
+      onSettled: () => {
+        qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]})
+      },
+    },
+  )
+}
+
+export function useDeleteDesign(options: QueryOptions<null, AxiosError> = {}) {
+  const qc = useQueryClient()
+  return useMutation((designId: string) => deleteDesign(designId), {
+    ...options,
+    onSettled: () => qc.invalidateQueries({queryKey: 'designs'}),
   })
 }
