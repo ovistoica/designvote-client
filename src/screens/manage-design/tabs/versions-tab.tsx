@@ -126,7 +126,7 @@ export function VersionsTab({designId}: VersionsTabProps) {
                 imageUrl={uri}
                 w="15em"
                 h="15em"
-                key={`imageUpload${uri}`}
+                key={`imageUpload${vId}`}
                 onDeletePress={() => deleteVersion(vId)}
               />
             )

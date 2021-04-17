@@ -1,6 +1,7 @@
 import {AxiosError} from 'axios'
 import * as React from 'react'
 import {
+  UseMutateFunction,
   useMutation,
   useQuery,
   useQueryClient,
@@ -109,11 +110,31 @@ function editDesign(designId: string, body: EditDesignBody) {
   return putRequest<Design, EditDesignBody>(`v1/designs/${designId}`, body)
 }
 
-function voteDesignVersion(designId: string, versionId: string) {
-  return postRequest<null, {'version-id': string}>(
+interface VoteDesignVersionBody {
+  'version-id': string
+  'voter-id': string
+  rating: number | null
+}
+
+interface VoteDesignVersionParams {
+  designId: string
+  versionId: string
+  voterId: string
+  rating: number | null
+}
+
+function voteDesignVersion({
+  designId,
+  versionId,
+  voterId,
+  rating,
+}: VoteDesignVersionParams) {
+  return postRequest<null, VoteDesignVersionBody>(
     `v1/designs/${designId}/votes`,
     {
+      rating,
       'version-id': versionId,
+      'voter-id': voterId,
     },
   )
 }
@@ -315,19 +336,27 @@ export function usePublishDesign(
   })
 }
 
+interface VoteMutateParams {
+  versionId: string
+  voterId: string
+  rating: number | null | undefined
+}
+
+export type VoteFunction = UseMutateFunction<
+  null,
+  AxiosError<any>,
+  VoteMutateParams,
+  unknown
+>
+
 export function useVoteDesignVersion(
   designId: string,
   options: QueryOptions<null, AxiosError> = {},
 ) {
-  const qc = useQueryClient()
   return useMutation(
-    (versionId: string) => voteDesignVersion(designId, versionId),
-    {
-      ...options,
-      onSettled: () => {
-        qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]})
-      },
-    },
+    ({versionId, voterId, rating = null}: VoteMutateParams) =>
+      voteDesignVersion({designId, versionId, rating, voterId}),
+    {...options},
   )
 }
 

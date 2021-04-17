@@ -83,12 +83,6 @@ export function VoteDesign() {
               w="12.5em"
               mt="1em"
               disabled={!selectedVersion}
-              onClick={() => {
-                if (!selectedVersion) {
-                  throw new Error('Voted version must be a valid ID')
-                }
-                vote(selectedVersion)
-              }}
             >
               Choose
             </Button>

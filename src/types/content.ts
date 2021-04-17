@@ -4,6 +4,7 @@ export interface Vote {
   voteId: string
   versionId: string
   uid: string | null
+  rating: number | null
 }
 
 export interface Opinion {
@@ -26,7 +27,7 @@ export interface Version {
   name: string
   description: string | null
   designId: string
-  votes: string[]
+  votes: Vote[]
   pictures: string[]
 }
 

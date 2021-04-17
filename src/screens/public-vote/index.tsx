@@ -4,26 +4,36 @@ import {
   Image,
   useColorModeValue as mode,
   useDisclosure,
+  useToken,
 } from '@chakra-ui/react'
 import {FullPageSpinner} from 'components/lib'
 import * as React from 'react'
-import {useCookies} from 'react-cookie'
 import {useParams} from 'react-router'
 import {ImageCarouselModal} from './full-image-modal'
 import {VoteStyle} from 'types'
-import {useUrlDesign, useVoteDesignVersion} from 'utils/design-query'
+import {
+  useUrlDesign,
+  useVoteDesignVersion,
+  VoteFunction,
+} from 'utils/design-query'
 import Rating from '@material-ui/lab/Rating'
+import {withStyles} from '@material-ui/core'
+import {useVoterId} from 'utils/votes'
 
 interface DesignVersionProps {
   versionId: string
   designUrl: string
   showRating?: boolean
+  index: number
+  onVote: VoteFunction
 }
 
 function DesignVersion({
   designUrl,
   versionId,
+  index,
   showRating = false,
+  onVote,
 }: DesignVersionProps) {
   const {isOpen, onOpen, onClose} = useDisclosure()
   const {data} = useUrlDesign(designUrl)
@@ -32,22 +42,42 @@ function DesignVersion({
     pictures: [picId],
   } = versions[versionId]
   const {uri: imageUrl} = pictures[picId]
+  const textColor = mode('gray.400', 'gray.600')
+  const colorHex = useToken('colors', textColor)
+  const voterId = useVoterId()
+
+  const StyledRating = withStyles({
+    iconEmpty: {
+      color: colorHex,
+    },
+  })(Rating)
+
   return (
-    <Stack align="center">
+    <Stack spacing={1}>
+      <Text
+        alignSelf="flex-start"
+        ml={2}
+        color={mode('gray.500', 'gray.300')}
+        fontSize="xl"
+      >
+        #{index + 1}
+      </Text>
       <Flex
+        py={1}
         key={imageUrl}
         direction="column"
         position="relative"
+        bg={mode('inherit', 'gray.700')}
         flex="0"
-        boxShadow="md"
+        boxShadow="base"
         role="group"
         transition="0.25s all"
         cursor="zoom-in"
         _hover={{
           boxShadow: '2xl',
+          bg: mode('inherit', 'gray.600'),
         }}
         onClick={onOpen}
-        pb="1em"
         alignItems="center"
       >
         <Image
@@ -64,12 +94,17 @@ function DesignVersion({
         />
       </Flex>
       {showRating ? (
-        <Rating
-          name={`rating for ${imageUrl}`}
-          precision={0.5}
-          defaultValue={0}
-          size="large"
-        />
+        <Box pl={2}>
+          <StyledRating
+            name={`rating for ${versionId}`}
+            precision={0.5}
+            defaultValue={0}
+            size="large"
+            onChange={(e, rating) => {
+              onVote({versionId, rating, voterId})
+            }}
+          />
+        </Box>
       ) : null}
     </Stack>
   )
@@ -79,22 +114,11 @@ export function PublicVoteScreen() {
   const {shortUrl} = useParams()
   const {data, isLoading} = useUrlDesign(shortUrl)
   const {design} = data
-  const {
-    mutate: vote,
-    isSuccess,
-    isLoading: isVoteLoading,
-  } = useVoteDesignVersion(design.designId)
-  const [cookies, setCookie] = useCookies([shortUrl])
+  const {mutate: vote} = useVoteDesignVersion(design.designId)
 
-  const {voted} = cookies[shortUrl] ?? {voted: false}
+  const bg = mode('gray.50', 'gray.800')
 
-  React.useEffect(() => {
-    if (!voted && isSuccess) {
-      setCookie(shortUrl, {voted: true})
-    }
-  }, [isSuccess, setCookie, shortUrl, voted])
-
-  if (isLoading || isVoteLoading) {
+  if (isLoading) {
     return <FullPageSpinner />
   }
 
@@ -105,7 +129,7 @@ export function PublicVoteScreen() {
       minH="100vh"
       pt={{base: '5em', md: '5em'}}
     >
-      <Box as="section" bg={mode('gray.50', 'gray.800')}>
+      <Box as="section" bg={bg}>
         <Flex
           direction="column"
           align="center"
@@ -124,21 +148,24 @@ export function PublicVoteScreen() {
 
           <SimpleGrid
             columns={{base: 1, md: 2, lg: 3}}
-            spacing={{base: '2', md: '4', lg: '8'}}
+            spacing={{base: '2', md: '8', lg: '8'}}
             rowGap={{base: 8, md: 8, lg: 8}}
             alignItems="center"
           >
             {design.versions.map((vId, index) => {
               return (
                 <DesignVersion
+                  index={index}
+                  key={`designVersion${vId}`}
                   versionId={vId}
                   designUrl={shortUrl}
                   showRating={design.voteStyle === VoteStyle.FiveStar}
+                  onVote={vote}
                 />
               )
             })}
           </SimpleGrid>
-          <Button colorScheme="brand" size="lg">
+          <Button colorScheme="brand" w={{base: '100%', md: '15em'}} m={8}>
             Finish
           </Button>
         </Flex>

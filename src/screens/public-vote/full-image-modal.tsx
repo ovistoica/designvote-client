@@ -12,14 +12,14 @@ import {Input} from '@chakra-ui/input'
 import {Image} from '@chakra-ui/image'
 import {IconButton, Button} from '@chakra-ui/button'
 import {ChevronLeftIcon, ChevronRightIcon} from '@chakra-ui/icons'
-import {useColorModeValue} from '@chakra-ui/color-mode'
-import {useAuth} from 'context/auth-context'
 import {VoteStyle} from 'types'
 import {RiSendPlaneFill} from 'react-icons/ri'
 import Rating from '@material-ui/lab/Rating'
 import useKeyboardShortcut from 'use-keyboard-shortcut'
 import {Key} from 'ts-key-enum'
 import {useDesign} from 'utils/design-query'
+import {useColorModeValue as mode, useToken} from '@chakra-ui/react'
+import {withStyles} from '@material-ui/core'
 
 interface VersionModalProps {
   designId: string
@@ -37,9 +37,7 @@ export function ImageCarouselModal({
   const [versionId, setVersionId] = React.useState(initialVersionId)
   const {data} = useDesign(designId)
   const {design, versions, pictures} = data
-  const {user} = useAuth()
   const currentIndex = design.versions.indexOf(versionId)
-  const textInfoColor = useColorModeValue('textInfoLight', 'gray.400')
 
   const goToPrevious = React.useCallback(() => {
     const totalDesigns = design.versions.length
@@ -61,26 +59,47 @@ export function ImageCarouselModal({
   useKeyboardShortcut([Key.ArrowLeft], goToPrevious)
   useKeyboardShortcut([Key.ArrowRight], goToNext)
 
+  const textColor = mode('gray.400', 'gray.600')
+  const colorHex = useToken('colors', textColor)
+
+  const StyledRating = withStyles({
+    iconEmpty: {
+      color: colorHex,
+    },
+  })(Rating)
+
   return (
     <Drawer onClose={onClose} isOpen={isOpen} size="full">
       <DrawerOverlay zIndex={99998}>
         <DrawerContent zIndex={99999}>
-          <DrawerBody p="0">
+          <DrawerBody p="0" position="relative">
+            <CloseButton
+              onClick={onClose}
+              position="absolute"
+              size="lg"
+              top={{base: 1, md: 2}}
+              right={{base: 1, md: 2}}
+              zIndex={999999}
+            />
             <Grid
-              w="100%"
-              h="100%"
-              gridTemplateColumns="6fr 2fr"
-              columnGap="1em"
+              maxH="100vh"
+              gridTemplateColumns={{
+                base: undefined,
+                md: undefined,
+                lg: '6fr 2fr',
+              }}
+              gridTemplateRows={{base: '2fr 6fr', lg: undefined}}
             >
-              <GridItem p="1em" position="relative">
+              <GridItem position="relative" p={{base: 1, md: 4}}>
                 <HStack position="absolute">
                   <IconButton
                     variant="ghost"
                     aria-label="previous version"
                     icon={<ChevronLeftIcon />}
                     onClick={goToPrevious}
+                    fontSize={{base: '2xl', md: '4xl'}}
                   />
-                  <Text>
+                  <Text fontWeight="bold" fontSize={{base: 'xl', md: 'xl'}}>
                     {currentIndex + 1} / {design.versions.length}
                   </Text>
                   <IconButton
@@ -88,33 +107,27 @@ export function ImageCarouselModal({
                     aria-label="next version"
                     icon={<ChevronRightIcon />}
                     onClick={goToNext}
+                    fontSize={{base: '2xl', md: '4xl'}}
                   />
                 </HStack>
-                <Flex w="100%" mb="1em" h="40px" alignItems="center">
-                  <Heading fontWeight="400" fontSize="xl" m="0 auto">
-                    {design.name}
-                  </Heading>
+                <Flex direction="column" alignItems="center" flex={0}>
+                  <Image
+                    mt="2.8em"
+                    src={imageUrl}
+                    objectFit="contain"
+                    align="center"
+                    maxH={{base: '60vh', lg: '90vh'}}
+                  />
                 </Flex>
-                <Image src={imageUrl} objectFit="contain" m="1em auto" />
               </GridItem>
-              <GridItem boxShadow="xl" position="relative" p="2em 1em">
-                <CloseButton
-                  onClick={onClose}
-                  position="absolute"
-                  size="lg"
-                  top={2}
-                  right={2}
-                />
+              <GridItem boxShadow="xl" position="relative" p={{base: 4, md: 4}}>
                 <Heading fontWeight="400" fontSize="xl">
-                  #{currentIndex + 1}
+                  {design.name}{' '}
+                  <Text as="span" color={mode('gray.500', 'gray.300')}>
+                    #{currentIndex + 1}
+                  </Text>
                 </Heading>
 
-                {user ? (
-                  <Text color={textInfoColor} fontStyle="italic">
-                    {' '}
-                    by {user.name}
-                  </Text>
-                ) : null}
                 <Flex
                   borderTopWidth="1px"
                   borderBottomWidth="1px"
@@ -131,7 +144,7 @@ export function ImageCarouselModal({
                       Choose as best
                     </Button>
                   ) : (
-                    <Rating
+                    <StyledRating
                       name={`rating for ${imageUrl}`}
                       precision={0.5}
                       defaultValue={0}
