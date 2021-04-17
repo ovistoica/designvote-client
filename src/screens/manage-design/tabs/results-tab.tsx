@@ -21,8 +21,6 @@ export function ResultsTab({designId}: ResultsTabProps) {
         >
           {design.versions.map((vId, index) => {
             const version = versions[vId]
-            const value = version.votes.length
-            const limit = design.totalVotes
             const title = `Version #${index + 1} votes`
             const [picId] = version.pictures
             const {uri: imageUrl} = pictures[picId]
@@ -31,8 +29,9 @@ export function ResultsTab({designId}: ResultsTabProps) {
               <StatCard
                 id={title}
                 key={`resultCard${vId}`}
-                value={value}
-                limit={limit}
+                votes={version.votes}
+                totalVotes={design.totalVotes}
+                voteStyle={design.voteStyle}
                 title={title}
                 imageUrl={imageUrl}
               />

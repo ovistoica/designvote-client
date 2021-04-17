@@ -166,10 +166,15 @@ export function PreviewStep() {
         mx="auto"
         px={{base: '3', md: '8'}}
       >
-        <Stack mb="1em" w="100%" align="center">
+        <Stack mb="2em" w="100%" align="center">
           <Heading textAlign="center">{design.question}</Heading>
           {design.description ? (
-            <Text fontWeight="300" fontSize="xl">
+            <Text
+              fontWeight="300"
+              fontSize="xl"
+              w={{base: '80%'}}
+              textAlign="center"
+            >
               {design.description}
             </Text>
           ) : null}

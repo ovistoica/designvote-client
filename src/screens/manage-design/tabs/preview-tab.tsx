@@ -32,7 +32,6 @@ function DesignVersion({
   return (
     <Stack align="center">
       <Flex
-        key={imageUrl}
         direction="column"
         position="relative"
         flex="0"
@@ -82,6 +81,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
   const {setTab} = useManageDesign(
     React.useCallback(state => ({setTab: state.setTab}), []),
   )
+  const bg = mode('gray.50', 'gray.800')
 
   if (isLoading) {
     return <FullPageSpinner h="100%" />
@@ -123,7 +123,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
     )
   }
   return (
-    <Box as="section" bg={mode('gray.50', 'gray.800')}>
+    <Box as="section" bg={bg}>
       <Flex
         direction="column"
         align="center"
@@ -148,6 +148,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
           {design.versions.map((vId, index) => {
             return (
               <DesignVersion
+                key={`preview${vId}`}
                 versionId={vId}
                 designId={designId}
                 showRating={design.voteStyle === VoteStyle.FiveStar}

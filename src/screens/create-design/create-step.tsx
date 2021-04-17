@@ -66,6 +66,7 @@ interface FormRowsProps {
   onChange: React.ChangeEventHandler<HTMLInputElement>
   ariaLabel: string
   onBlur: React.FocusEventHandler<HTMLInputElement>
+  helper?: string
   type?: As<any> | undefined
   placeholder: string
   isInvalid?: boolean
@@ -178,6 +179,7 @@ function FormRow({
   error = null,
   isRequired = false,
   autoFocus = false,
+  helper,
 }: FormRowsProps) {
   return (
     <FormControl
@@ -205,7 +207,8 @@ function FormRow({
         _focus={{borderColor: 'brand.500'}}
         as={type}
       />
-      <FormErrorMessage>{error}</FormErrorMessage>
+      {helper ? <FormHelperText>{helper}</FormHelperText> : null}
+      {error ? <FormErrorMessage>{error}</FormErrorMessage> : null}
     </FormControl>
   )
 }
@@ -287,6 +290,7 @@ function CreateStep() {
               id="description"
               ariaLabel="Design description"
               placeholder="Ex: This sign-up screen is for a travel app"
+              helper="Giving context on the current design like: who is it for, what is its role etc. will help voters give better feedback"
               onChange={e => {
                 handleChange('description')(e)
                 set.description(e.target.value)
