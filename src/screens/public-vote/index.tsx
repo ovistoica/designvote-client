@@ -19,6 +19,7 @@ import {
 import Rating from '@material-ui/lab/Rating'
 import {withStyles} from '@material-ui/core'
 import {useVoterId} from 'utils/votes'
+import {useVoteDesignState, getRating} from 'store/vote-design'
 
 interface DesignVersionProps {
   versionId: string
@@ -45,6 +46,8 @@ function DesignVersion({
   const textColor = mode('gray.400', 'gray.600')
   const colorHex = useToken('colors', textColor)
   const voterId = useVoterId()
+  const currentRating = useVoteDesignState(getRating(versionId))
+  const setRating = useVoteDesignState(state => state.setRating)
 
   const StyledRating = withStyles({
     iconEmpty: {
@@ -91,6 +94,7 @@ function DesignVersion({
           onClose={onClose}
           isOpen={isOpen}
           initialVersionId={versionId}
+          onVote={onVote}
         />
       </Flex>
       {showRating ? (
@@ -98,10 +102,13 @@ function DesignVersion({
           <StyledRating
             name={`rating for ${versionId}`}
             precision={0.5}
-            defaultValue={0}
+            defaultValue={currentRating ?? 0}
             size="large"
             onChange={(e, rating) => {
               onVote({versionId, rating, voterId})
+              if (typeof rating === 'number') {
+                setRating(versionId, rating)
+              }
             }}
           />
         </Box>
@@ -137,10 +144,15 @@ export function PublicVoteScreen() {
           mx="auto"
           px={{base: '3', md: '8'}}
         >
-          <Stack mb="1em" w="100%" align="center">
+          <Stack mb="2em" w="100%" align="center">
             <Heading textAlign="center">{design.question}</Heading>
             {design.description ? (
-              <Text fontWeight="300" fontSize="xl">
+              <Text
+                fontWeight="300"
+                fontSize="xl"
+                w={{base: '100%', lg: '75%'}}
+                textAlign="center"
+              >
                 {design.description}
               </Text>
             ) : null}

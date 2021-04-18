@@ -12,20 +12,54 @@ import {Input} from '@chakra-ui/input'
 import {Image} from '@chakra-ui/image'
 import {IconButton, Button} from '@chakra-ui/button'
 import {ChevronLeftIcon, ChevronRightIcon} from '@chakra-ui/icons'
-import {VoteStyle} from 'types'
+import {Design, VoteStyle} from 'types'
 import {RiSendPlaneFill} from 'react-icons/ri'
 import Rating from '@material-ui/lab/Rating'
 import useKeyboardShortcut from 'use-keyboard-shortcut'
 import {Key} from 'ts-key-enum'
-import {useDesign} from 'utils/design-query'
+import {useDesign, VoteFunction} from 'utils/design-query'
 import {useColorModeValue as mode, useToken} from '@chakra-ui/react'
 import {withStyles} from '@material-ui/core'
+import {getRating, useVoteDesignState} from 'store/vote-design'
+import {useVoterId} from 'utils/votes'
 
 interface VersionModalProps {
   designId: string
   isOpen: boolean
   onClose: () => void
   initialVersionId: string
+  onVote: VoteFunction
+}
+
+interface UseMoveWithArrowKeysProps {
+  currentIndex: number
+  design: Design
+  setNextVersion: (nextVersion: string) => void
+}
+
+/**
+ * Change through the images using arrow keys
+ * @param config
+ */
+function useMoveWithArrowKeys({
+  currentIndex,
+  design,
+  setNextVersion,
+}: UseMoveWithArrowKeysProps) {
+  const goToPrevious = React.useCallback(() => {
+    const totalDesigns = design.versions.length
+    const nextIndex = currentIndex - 1 < 0 ? totalDesigns - 1 : currentIndex - 1
+    setNextVersion(design.versions[nextIndex])
+  }, [currentIndex, design.versions, setNextVersion])
+  const goToNext = React.useCallback(() => {
+    const totalDesigns = design.versions.length
+    const nextIndex = totalDesigns - 1 === currentIndex ? 0 : currentIndex + 1
+    setNextVersion(design.versions[nextIndex])
+  }, [currentIndex, design.versions, setNextVersion])
+  useKeyboardShortcut([Key.ArrowLeft], goToPrevious)
+  useKeyboardShortcut([Key.ArrowRight], goToNext)
+
+  return {goToPrevious, goToNext}
 }
 
 export function ImageCarouselModal({
@@ -33,40 +67,37 @@ export function ImageCarouselModal({
   onClose,
   initialVersionId,
   designId,
+  onVote,
 }: VersionModalProps) {
   const [versionId, setVersionId] = React.useState(initialVersionId)
   const {data} = useDesign(designId)
   const {design, versions, pictures} = data
   const currentIndex = design.versions.indexOf(versionId)
 
-  const goToPrevious = React.useCallback(() => {
-    const totalDesigns = design.versions.length
-    const nextIndex = currentIndex - 1 < 0 ? totalDesigns - 1 : currentIndex - 1
-    setVersionId(design.versions[nextIndex])
-  }, [currentIndex, design.versions])
-
-  const goToNext = React.useCallback(() => {
-    const totalDesigns = design.versions.length
-    const nextIndex = totalDesigns - 1 === currentIndex ? 0 : currentIndex + 1
-    setVersionId(design.versions[nextIndex])
-  }, [currentIndex, design.versions])
-
   const {
     pictures: [picId],
   } = versions[versionId]
   const {uri: imageUrl} = pictures[picId]
 
-  useKeyboardShortcut([Key.ArrowLeft], goToPrevious)
-  useKeyboardShortcut([Key.ArrowRight], goToNext)
+  // Move through images with arrow keys
+  const {goToNext, goToPrevious} = useMoveWithArrowKeys({
+    currentIndex,
+    design,
+    setNextVersion: setVersionId,
+  })
 
+  // Style the 5 star rating w dark mode
   const textColor = mode('gray.400', 'gray.600')
   const colorHex = useToken('colors', textColor)
-
   const StyledRating = withStyles({
     iconEmpty: {
       color: colorHex,
     },
   })(Rating)
+
+  const voterId = useVoterId()
+  const currentRating = useVoteDesignState(getRating(versionId))
+  const setRating = useVoteDesignState(state => state.setRating)
 
   return (
     <Drawer onClose={onClose} isOpen={isOpen} size="full">
@@ -147,7 +178,13 @@ export function ImageCarouselModal({
                     <StyledRating
                       name={`rating for ${imageUrl}`}
                       precision={0.5}
-                      defaultValue={0}
+                      defaultValue={currentRating ?? 0}
+                      onChange={(e, rating) => {
+                        onVote({versionId, rating, voterId})
+                        if (typeof rating === 'number') {
+                          setRating(versionId, rating)
+                        }
+                      }}
                       size="large"
                     />
                   )}

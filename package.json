@@ -23,6 +23,7 @@
     "history": "^5.0.0",
     "install": "^0.13.0",
     "kill-port-process": "^2.3.0",
+    "lodash.memoize": "^4.1.2",
     "logrocket": "^1.0.14",
     "normalizr": "^3.6.1",
     "npm": "^7.7.0",
@@ -45,6 +46,7 @@
   },
   "devDependencies": {
     "@types/faker": "^5.1.7",
+    "@types/lodash.memoize": "^4.1.6",
     "@types/react-helmet": "^6.1.0",
     "@typescript-eslint/typescript-estree": "^4.20.0",
     "eslint": "^7.23.0",
