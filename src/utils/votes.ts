@@ -46,6 +46,9 @@ export function useVoterId(): string {
 
 export function getAverageRating(votes: Vote[]) {
   const nonNullRatings = votes.filter(v => v.rating !== null)
+  if (!nonNullRatings) {
+    return 0
+  }
   let totalRating = nonNullRatings.reduce(
     (total: number, current: Vote) => total + current.rating!,
     0,
