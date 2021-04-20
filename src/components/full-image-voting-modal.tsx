@@ -28,7 +28,7 @@ interface VersionModalProps {
   isOpen: boolean
   onClose: () => void
   initialVersionId: string
-  onVote: VoteFunction
+  onVote?: VoteFunction
 }
 
 interface UseMoveWithArrowKeysProps {
@@ -98,6 +98,7 @@ export function ImageCarouselModal({
   const voterId = useVoterId()
   const currentRating = useVoteDesignState(getRating(versionId))
   const setRating = useVoteDesignState(state => state.setRating)
+  const setChosen = useVoteDesignState(state => state.setChosen)
 
   return (
     <Drawer onClose={onClose} isOpen={isOpen} size="full">
@@ -171,6 +172,10 @@ export function ImageCarouselModal({
                       alignSelf="center"
                       size="md"
                       w="100%"
+                      onClick={() => {
+                        setChosen(designId, versionId)
+                        onClose()
+                      }}
                     >
                       Choose as best
                     </Button>
@@ -180,7 +185,7 @@ export function ImageCarouselModal({
                       precision={0.5}
                       defaultValue={currentRating ?? 0}
                       onChange={(e, rating) => {
-                        onVote({versionId, rating, voterId})
+                        onVote?.({versionId, rating, voterId})
                         if (typeof rating === 'number') {
                           setRating(versionId, rating)
                         }

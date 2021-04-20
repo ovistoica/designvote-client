@@ -1,75 +1,12 @@
 import * as React from 'react'
 import {Button} from '@chakra-ui/button'
-import {useDisclosure} from '@chakra-ui/hooks'
-import {Image} from '@chakra-ui/image'
 import {useColorModeValue as mode} from '@chakra-ui/react'
 import {Box, Flex, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
-import Rating from '@material-ui/lab/Rating'
 import {useManageDesign} from 'store'
-import {DesignTab, VoteStyle} from 'types'
+import {DesignTab} from 'types'
 import {useDesign} from 'utils/design-query'
-import {ImageCarouselModal} from '../components/image-carousel-modal'
 import {FullPageSpinner} from 'components/lib'
-
-interface DesignVersionProps {
-  versionId: string
-  designId: string
-  showRating?: boolean
-}
-
-function DesignVersion({
-  designId,
-  versionId,
-  showRating = false,
-}: DesignVersionProps) {
-  const {isOpen, onOpen, onClose} = useDisclosure()
-  const {data} = useDesign(designId)
-  const {versions, pictures} = data
-  const {
-    pictures: [picId],
-  } = versions[versionId]
-  const {uri: imageUrl} = pictures[picId]
-  return (
-    <Stack align="center">
-      <Flex
-        direction="column"
-        position="relative"
-        flex="0"
-        boxShadow="md"
-        role="group"
-        transition="0.25s all"
-        cursor="zoom-in"
-        _hover={{
-          boxShadow: '2xl',
-        }}
-        onClick={onOpen}
-        pb="1em"
-        alignItems="center"
-      >
-        <Image
-          src={imageUrl}
-          objectFit="contain"
-          boxSize="15em"
-          align="center"
-        />
-        <ImageCarouselModal
-          designId={designId}
-          onClose={onClose}
-          isOpen={isOpen}
-          initialVersionId={versionId}
-        />
-      </Flex>
-      {showRating ? (
-        <Rating
-          name={`rating for ${imageUrl}`}
-          precision={0.5}
-          defaultValue={0}
-          size="large"
-        />
-      ) : null}
-    </Stack>
-  )
-}
+import {VotingCard} from 'components/voting-card'
 
 interface PreviewTabProps {
   designId: string
@@ -147,11 +84,15 @@ export function PreviewTab({designId}: PreviewTabProps) {
         >
           {design.versions.map((vId, index) => {
             return (
-              <DesignVersion
+              <VotingCard
                 key={`preview${vId}`}
                 versionId={vId}
-                designId={designId}
-                showRating={design.voteStyle === VoteStyle.FiveStar}
+                voteStyle={design.voteStyle}
+                designData={data}
+                index={index}
+                onVote={() => {
+                  /* Dummy function */
+                }}
               />
             )
           })}

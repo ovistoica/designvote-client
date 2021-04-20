@@ -1,121 +1,10 @@
 import {Box, Flex, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
-import {
-  Button,
-  Image,
-  useColorModeValue as mode,
-  useDisclosure,
-  useToken,
-} from '@chakra-ui/react'
+import {Button, useColorModeValue as mode} from '@chakra-ui/react'
 import {FullPageSpinner} from 'components/lib'
 import * as React from 'react'
 import {useParams} from 'react-router'
-import {ImageCarouselModal} from './full-image-modal'
-import {VoteStyle} from 'types'
-import {
-  useUrlDesign,
-  useVoteDesignVersion,
-  VoteFunction,
-} from 'utils/design-query'
-import Rating from '@material-ui/lab/Rating'
-import {withStyles} from '@material-ui/core'
-import {useVoterId} from 'utils/votes'
-import {useVoteDesignState, getRating} from 'store/vote-design'
-
-interface DesignVersionProps {
-  versionId: string
-  designUrl: string
-  showRating?: boolean
-  index: number
-  onVote: VoteFunction
-}
-
-function DesignVersion({
-  designUrl,
-  versionId,
-  index,
-  showRating = false,
-  onVote,
-}: DesignVersionProps) {
-  const {isOpen, onOpen, onClose} = useDisclosure()
-  const {data} = useUrlDesign(designUrl)
-  const {versions, pictures, design} = data
-  const {
-    pictures: [picId],
-  } = versions[versionId]
-  const {uri: imageUrl} = pictures[picId]
-  const textColor = mode('gray.400', 'gray.600')
-  const colorHex = useToken('colors', textColor)
-  const voterId = useVoterId()
-  const currentRating = useVoteDesignState(getRating(versionId))
-  const setRating = useVoteDesignState(state => state.setRating)
-
-  const StyledRating = withStyles({
-    iconEmpty: {
-      color: colorHex,
-    },
-  })(Rating)
-
-  return (
-    <Stack spacing={1}>
-      <Text
-        alignSelf="flex-start"
-        ml={2}
-        color={mode('gray.500', 'gray.300')}
-        fontSize="xl"
-      >
-        #{index + 1}
-      </Text>
-      <Flex
-        py={1}
-        key={imageUrl}
-        direction="column"
-        position="relative"
-        bg={mode('inherit', 'gray.700')}
-        flex="0"
-        boxShadow="base"
-        role="group"
-        transition="0.25s all"
-        cursor="zoom-in"
-        _hover={{
-          boxShadow: '2xl',
-          bg: mode('inherit', 'gray.600'),
-        }}
-        onClick={onOpen}
-        alignItems="center"
-      >
-        <Image
-          src={imageUrl}
-          objectFit="contain"
-          boxSize="15em"
-          align="center"
-        />
-        <ImageCarouselModal
-          designId={design.designId}
-          onClose={onClose}
-          isOpen={isOpen}
-          initialVersionId={versionId}
-          onVote={onVote}
-        />
-      </Flex>
-      {showRating ? (
-        <Box pl={2}>
-          <StyledRating
-            name={`rating for ${versionId}`}
-            precision={0.5}
-            defaultValue={currentRating ?? 0}
-            size="large"
-            onChange={(e, rating) => {
-              onVote({versionId, rating, voterId})
-              if (typeof rating === 'number') {
-                setRating(versionId, rating)
-              }
-            }}
-          />
-        </Box>
-      ) : null}
-    </Stack>
-  )
-}
+import {useUrlDesign, useVoteDesignVersion} from 'utils/design-query'
+import {VotingCard} from '../../components/voting-card'
 
 export function PublicVoteScreen() {
   const {shortUrl} = useParams()
@@ -166,12 +55,12 @@ export function PublicVoteScreen() {
           >
             {design.versions.map((vId, index) => {
               return (
-                <DesignVersion
+                <VotingCard
                   index={index}
                   key={`designVersion${vId}`}
                   versionId={vId}
-                  designUrl={shortUrl}
-                  showRating={design.voteStyle === VoteStyle.FiveStar}
+                  voteStyle={design.voteStyle}
+                  designData={data}
                   onVote={vote}
                 />
               )

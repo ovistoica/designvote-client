@@ -2,10 +2,12 @@ import {LinkIcon} from '@chakra-ui/icons'
 import {
   Box,
   Button,
+  Center,
   Divider,
   Flex,
   Heading,
   HStack,
+  Spinner,
   Tab,
   TabList,
   TabPanel,
@@ -109,24 +111,30 @@ export const ManageDesign = () => {
             borderColor={mode('gray.100', 'gray.700')}
           />
         </Box>
-        <Box px="4" flex="1">
-          <Box maxW="7xl" mx="auto">
-            <TabPanels mt="2" h="full">
-              <TabPanel>
-                <DesignInfoTab designId={designId} />
-              </TabPanel>
-              <TabPanel>
-                <VersionsTab designId={designId} />
-              </TabPanel>
-              <TabPanel>
-                <PreviewTab designId={designId} />
-              </TabPanel>
-              <TabPanel>
-                <ResultsTab designId={designId} />
-              </TabPanel>
-            </TabPanels>
+        {isLoading ? (
+          <Center mt={8}>
+            <Spinner />
+          </Center>
+        ) : (
+          <Box px="4" flex="1">
+            <Box maxW="7xl" mx="auto">
+              <TabPanels mt="2" h="full">
+                <TabPanel>
+                  <DesignInfoTab designId={designId} />
+                </TabPanel>
+                <TabPanel>
+                  <VersionsTab designId={designId} />
+                </TabPanel>
+                <TabPanel>
+                  <PreviewTab designId={designId} />
+                </TabPanel>
+                <TabPanel>
+                  <ResultsTab designId={designId} />
+                </TabPanel>
+              </TabPanels>
+            </Box>
           </Box>
-        </Box>
+        )}
       </Flex>
     </Tabs>
   )
