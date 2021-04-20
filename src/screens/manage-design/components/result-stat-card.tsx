@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import * as React from 'react'
 import {Vote, VoteStyle} from 'types'
-import {getAverageRating} from 'utils/votes'
+import {getAverageRating, getVotePercent} from 'utils/votes'
 import Rating from '@material-ui/lab/Rating'
 
 export interface StatCardProps {
@@ -131,23 +131,42 @@ function ChooseBestRatingCard(props: SpecificVoteStyleCardProps) {
           mt="2"
           align="flex-end"
           textTransform="uppercase"
+          w="100%"
         >
-          <Box
+          <Stack
+            direction="row"
+            as="dd"
+            mt="2"
+            align="flex-end"
+            textTransform="uppercase"
+            w="100%"
+          >
+            <Box
+              fontSize={{base: '2xl', lg: '3xl'}}
+              as="span"
+              fontWeight="bold"
+              color={mode('gray.800', 'white')}
+              lineHeight="1"
+            >
+              {votes.length}
+            </Box>
+            <Flex fontWeight="semibold">
+              <Box as="span" aria-hidden>
+                /
+              </Box>
+              <Box srOnly>out of</Box>
+              <Text ps="1">{totalVotes} votes</Text>
+            </Flex>
+          </Stack>
+          <Text
             fontSize={{base: '2xl', lg: '3xl'}}
             as="span"
             fontWeight="bold"
-            color={mode('gray.800', 'white')}
+            color={mode('gray.600', 'white')}
             lineHeight="1"
           >
-            {votes.length}
-          </Box>
-          <Flex fontWeight="semibold">
-            <Box as="span" aria-hidden>
-              /
-            </Box>
-            <Box srOnly>out of</Box>
-            <Text ps="1">{totalVotes} </Text>
-          </Flex>
+            {getVotePercent(totalVotes, votes.length)}%
+          </Text>
         </Stack>
       </Box>
       <Progress
