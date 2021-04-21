@@ -3,7 +3,6 @@ import {ErrorBoundary} from 'react-error-boundary'
 import {Routes, Route, Navigate} from 'react-router-dom'
 import {Dashboard} from 'screens/dashboard'
 import {NotFoundScreen} from 'screens/not-found'
-import {PreviewScreen} from 'screens/preview-design'
 import {NavBar} from 'components/nav'
 import {CreateDesign} from 'screens/create-design'
 import {ManageDesign} from 'screens/manage-design'
@@ -18,7 +17,6 @@ function AppRoutes() {
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/vote/:shortUrl" element={<PublicVoteScreen />} />
       <Route path="/design/:designId" element={<ManageDesign />} />
-      <Route path="/preview/:designId" element={<PreviewScreen />} />
       <Route path="/create" element={<CreateDesign />} />
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
