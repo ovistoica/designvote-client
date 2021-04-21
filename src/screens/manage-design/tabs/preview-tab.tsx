@@ -61,13 +61,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
   }
   return (
     <Box as="section" bg={bg}>
-      <Flex
-        direction="column"
-        align="center"
-        maxW={{base: 'xl', md: '7xl'}}
-        mx="auto"
-        px={{base: '3', md: '8'}}
-      >
+      <Flex direction="column" align="center" mx="auto">
         <Stack mb="1em" w="100%" align="center">
           <Heading textAlign="center">{design.question}</Heading>
           {design.description ? (
@@ -77,8 +71,8 @@ export function PreviewTab({designId}: PreviewTabProps) {
           ) : null}
         </Stack>
         <SimpleGrid
-          columns={{base: 1, md: 3}}
-          spacing={{base: '2', md: '4', lg: '8'}}
+          columns={{base: 1, md: 2, lg: 3}}
+          spacing={{base: '2', md: '6', lg: '8'}}
           rowGap={{base: 8, md: 8, lg: 8}}
           alignItems="center"
         >

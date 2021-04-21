@@ -77,13 +77,13 @@ function StarsRatingCard(props: SpecificVoteStyleCardProps) {
               /
             </Box>
             <Box srOnly>out of</Box>
-            <Text ps="1">5 average rating</Text>
+            <Text ps="1">5 rating</Text>
           </Flex>
         </Stack>
         <Rating
           value={averageRating}
           size="medium"
-          precision={0.01}
+          precision={0.1}
           style={{marginTop: '.5em'}}
           readOnly
         />
@@ -159,7 +159,7 @@ function ChooseBestRatingCard(props: SpecificVoteStyleCardProps) {
             </Flex>
           </Stack>
           <Text
-            fontSize={{base: '2xl', lg: '3xl'}}
+            fontSize={{base: 'xl', lg: '3xl'}}
             as="span"
             fontWeight="bold"
             color={mode('gray.600', 'white')}
