@@ -185,7 +185,12 @@ export function ImageCarouselModal({
                       precision={0.5}
                       defaultValue={currentRating ?? 0}
                       onChange={(e, rating) => {
-                        onVote?.({versionId, rating, voterId})
+                        onVote?.({
+                          versionId,
+                          rating,
+                          voterId,
+                          voteStyle: design.voteStyle,
+                        })
                         if (typeof rating === 'number') {
                           setRating(versionId, rating)
                         }

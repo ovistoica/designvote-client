@@ -91,7 +91,7 @@ export function RateStarsVotingCard({
           defaultValue={currentRating ?? 0}
           size="large"
           onChange={(e, rating) => {
-            onVote({versionId, rating, voterId})
+            onVote({versionId, rating, voterId, voteStyle: design.voteStyle})
             if (typeof rating === 'number') {
               setRating(versionId, rating)
             }

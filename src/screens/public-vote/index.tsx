@@ -1,21 +1,80 @@
 import {Box, Flex, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
-import {Button, useColorModeValue as mode} from '@chakra-ui/react'
-import {FullPageSpinner} from 'components/lib'
+import {
+  AlertIcon,
+  Alert,
+  Button,
+  useColorModeValue as mode,
+  AlertDescription,
+  AlertTitle,
+  AlertDialogFooter,
+} from '@chakra-ui/react'
+import {Container, FullPageSpinner} from 'components/lib'
 import * as React from 'react'
 import {useParams} from 'react-router'
+import {getChosen, useVoteDesignState} from 'store/vote-design'
+import {VoteStyle} from 'types'
 import {useUrlDesign, useVoteDesignVersion} from 'utils/design-query'
+import {useVoterId} from 'utils/votes'
 import {VotingCard} from '../../components/voting-card'
+
+interface VoteSuccessProps {
+  voteStyle: VoteStyle
+}
+
+function VoteSuccess({voteStyle}: VoteSuccessProps) {
+  return (
+    <Container>
+      <Alert
+        status="success"
+        variant="subtle"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        textAlign="center"
+        height="200px"
+      >
+        <AlertIcon boxSize="40px" mr={0} />
+        <AlertTitle mt={4} mb={1} fontSize="lg">
+          {voteStyle === VoteStyle.Choose ? 'Vote' : 'Ratings'} submitted!
+        </AlertTitle>
+        <AlertDescription maxWidth="sm" mt={4}>
+          Thanks for submitting your{' '}
+          {voteStyle === VoteStyle.Choose ? 'vote' : 'ratings'} and opinions.
+          This helps more than you think :)
+        </AlertDescription>
+        <AlertDialogFooter mt={4}>
+          You can safely close this page
+        </AlertDialogFooter>
+      </Alert>
+    </Container>
+  )
+}
 
 export function PublicVoteScreen() {
   const {shortUrl} = useParams()
   const {data, isLoading} = useUrlDesign(shortUrl)
   const {design} = data
-  const {mutate: vote} = useVoteDesignVersion(design.designId)
+  const {
+    mutate: vote,
+    isLoading: isVoteLoading,
+    isSuccess: isVoteSuccess,
+  } = useVoteDesignVersion(design.designId)
+  const currentChosen = useVoteDesignState(getChosen(design.designId))
+  const voterId = useVoterId()
+  const [pressedFinish, setPressedFinish] = React.useState(false)
+
+  const shouldShowSuccess =
+    (design.voteStyle === VoteStyle.Choose && isVoteSuccess) ||
+    (design.voteStyle === VoteStyle.FiveStar && pressedFinish)
 
   const bg = mode('gray.50', 'gray.800')
 
   if (isLoading) {
     return <FullPageSpinner />
+  }
+
+  if (shouldShowSuccess) {
+    return <VoteSuccess voteStyle={design.voteStyle} />
   }
 
   return (
@@ -66,9 +125,34 @@ export function PublicVoteScreen() {
               )
             })}
           </SimpleGrid>
-          <Button colorScheme="brand" w={{base: '100%', md: '15em'}} m={8}>
-            Finish
-          </Button>
+          {design.voteStyle === VoteStyle.Choose ? (
+            <Button
+              colorScheme="brand"
+              w={{base: '100%', md: '15em'}}
+              m={8}
+              disabled={!currentChosen}
+              isLoading={isVoteLoading}
+              onClick={() => {
+                vote({
+                  versionId: currentChosen!,
+                  rating: null,
+                  voteStyle: design.voteStyle,
+                  voterId,
+                })
+              }}
+            >
+              Vote
+            </Button>
+          ) : (
+            <Button
+              colorScheme="brand"
+              w={{base: '100%', md: '15em'}}
+              m={8}
+              onClick={() => setPressedFinish(true)}
+            >
+              Finish
+            </Button>
+          )}
         </Flex>
       </Box>
     </Flex>

@@ -114,6 +114,7 @@ interface VoteDesignVersionBody {
   'version-id': string
   'voter-id': string
   rating: number | null
+  'vote-style': string
 }
 
 interface VoteDesignVersionParams {
@@ -121,6 +122,7 @@ interface VoteDesignVersionParams {
   versionId: string
   voterId: string
   rating: number | null
+  voteStyle: VoteStyle
 }
 
 function voteDesignVersion({
@@ -128,6 +130,7 @@ function voteDesignVersion({
   versionId,
   voterId,
   rating,
+  voteStyle,
 }: VoteDesignVersionParams) {
   return postRequest<null, VoteDesignVersionBody>(
     `v1/designs/${designId}/votes`,
@@ -135,6 +138,7 @@ function voteDesignVersion({
       rating,
       'version-id': versionId,
       'voter-id': voterId,
+      'vote-style': voteStyle,
     },
   )
 }
@@ -339,6 +343,7 @@ export function usePublishDesign(
 interface VoteMutateParams {
   versionId: string
   voterId: string
+  voteStyle: VoteStyle
   rating: number | null | undefined
 }
 
@@ -354,8 +359,8 @@ export function useVoteDesignVersion(
   options: QueryOptions<null, AxiosError> = {},
 ) {
   return useMutation(
-    ({versionId, voterId, rating = null}: VoteMutateParams) =>
-      voteDesignVersion({designId, versionId, rating, voterId}),
+    ({versionId, voterId, rating = null, voteStyle}: VoteMutateParams) =>
+      voteDesignVersion({designId, versionId, rating, voterId, voteStyle}),
     {...options},
   )
 }
