@@ -3,13 +3,14 @@ import {Button} from '@chakra-ui/button'
 import {useDisclosure} from '@chakra-ui/hooks'
 import {Image} from '@chakra-ui/image'
 import {Box, Flex, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
-import {useColorModeValue as mode} from '@chakra-ui/react'
+import {useColorModeValue as mode, useToken} from '@chakra-ui/react'
 import {useToast} from '@chakra-ui/toast'
 import Rating from '@material-ui/lab/Rating'
 import {PreviewDesignFullImageModal} from 'screens/create-design/full-image-modal'
 import {useCallback} from 'react'
 import {useCreateDesignStore} from 'store'
 import {CreateDesignStep, VoteStyle} from 'types'
+import {withStyles} from '@material-ui/core'
 
 interface DesignVersionProps {
   imageUrl: string
@@ -18,22 +19,32 @@ interface DesignVersionProps {
 
 function DesignVersion({imageUrl, showRating = false}: DesignVersionProps) {
   const {isOpen, onOpen, onClose} = useDisclosure()
+  const textColor = mode('gray.400', 'gray.600')
+  const colorHex = useToken('colors', textColor)
+  const StyledRating = withStyles({
+    iconEmpty: {
+      color: colorHex,
+    },
+  })(Rating)
+
   return (
     <Stack align="center">
       <Flex
+        py={1}
         key={imageUrl}
         direction="column"
         position="relative"
+        bg={mode('inherit', 'gray.700')}
         flex="0"
-        boxShadow="md"
+        boxShadow="base"
         role="group"
         transition="0.25s all"
         cursor="zoom-in"
         _hover={{
           boxShadow: '2xl',
+          bg: mode('inherit', 'gray.600'),
         }}
         onClick={onOpen}
-        pb="1em"
         alignItems="center"
       >
         <Image
@@ -49,7 +60,7 @@ function DesignVersion({imageUrl, showRating = false}: DesignVersionProps) {
         />
       </Flex>
       {showRating ? (
-        <Rating
+        <StyledRating
           name={`rating for ${imageUrl}`}
           precision={0.5}
           defaultValue={0}
@@ -188,6 +199,7 @@ export function PreviewStep() {
           {design.imagesByUrl.map((imageUrl, index) => {
             return (
               <DesignVersion
+                key={`previewCard${imageUrl}${index}`}
                 imageUrl={imageUrl}
                 showRating={design.voteStyle === VoteStyle.FiveStar}
               />
