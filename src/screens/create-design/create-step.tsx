@@ -22,6 +22,8 @@ import {
 } from '@chakra-ui/react'
 import {Formik, Form, FormikTouched} from 'formik'
 import {Persist} from 'formik-persist'
+import debounce from 'lodash.debounce'
+import memoize from 'lodash.memoize'
 
 import * as yup from 'yup'
 import * as React from 'react'
@@ -242,6 +244,11 @@ function CreateStep() {
       [],
     ),
   )
+
+  const debouncedSetName = memoize(debounce(set.name, 1000))
+  const debouncedSetDescription = memoize(debounce(set.description, 1000))
+  const debouncedSetQuestion = memoize(debounce(set.question, 1000))
+
   return (
     <Stack pb={6} maxW="3xl" px={{base: '6', md: '8'}}>
       <Formik
@@ -261,7 +268,7 @@ function CreateStep() {
               placeholder="my-cool-new-design"
               onChange={e => {
                 handleChange('name')(e)
-                set.name(e.target.value)
+                debouncedSetName(e.target.value)
               }}
               onBlur={handleBlur('name')}
               value={values.name}
@@ -276,7 +283,7 @@ function CreateStep() {
               placeholder="Ex: Which button fits better for sign up screen?"
               onChange={e => {
                 handleChange('question')(e)
-                set.question(e.target.value)
+                debouncedSetQuestion(e.target.value)
               }}
               onBlur={handleBlur('question')}
               value={values.question}
@@ -293,7 +300,7 @@ function CreateStep() {
               helper="Giving context on the current design like: who is it for, what is its role etc. will help voters give better feedback"
               onChange={e => {
                 handleChange('description')(e)
-                set.description(e.target.value)
+                debouncedSetDescription(e.target.value)
               }}
               onBlur={handleBlur('description')}
               value={values.description}
@@ -302,12 +309,7 @@ function CreateStep() {
               type="textarea"
             />
 
-            <FormControl
-              id="type"
-              py="0.5em"
-              // minW={{base: 'xs', md: 'sm'}}
-              isRequired
-            >
+            <FormControl id="type" py="0.5em" isRequired>
               <Flex alignItems="center">
                 <FormLabel marginInlineEnd="0.2rem">Design type</FormLabel>
                 <ModePopover />
@@ -335,19 +337,13 @@ function CreateStep() {
               />
             </FormControl>
 
-            <FormControl
-              id="voteStyle"
-              py="0.5em"
-              // minW={{base: 'xs', md: 'sm'}}
-              isRequired
-            >
+            <FormControl id="voteStyle" py="0.5em" isRequired>
               <Flex alignItems="center">
                 <FormLabel marginInlineEnd="0.2rem">Voting style</FormLabel>
                 <VoteStylePopover />
               </Flex>
 
               <RadioGroup
-                // defaultValue={values.voteStyle}
                 options={[
                   {label: 'Choose the best', value: VoteStyle.Choose},
                   {label: 'Rate individually', value: VoteStyle.FiveStar},
