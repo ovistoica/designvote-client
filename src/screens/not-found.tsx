@@ -25,7 +25,7 @@ function NotFoundScreen() {
         as={RouterLink}
         to="/"
         textAlign="center"
-        color="primary.500"
+        color="orange.500"
         mt="1em"
       >
         Go to home page

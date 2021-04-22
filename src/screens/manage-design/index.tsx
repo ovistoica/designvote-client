@@ -50,14 +50,9 @@ export const ManageDesign = () => {
   }
 
   return (
-    <Tabs isFitted colorScheme="brand" defaultIndex={3}>
-      <Flex
-        direction="column"
-        align="stretch"
-        minH="100vh"
-        pt={{base: '5em', md: '5em'}}
-      >
-        <Box bg={mode('gray.50', 'gray.800')}>
+    <Tabs isFitted colorScheme="orange" defaultIndex={3}>
+      <Flex direction="column" align="stretch">
+        <Box>
           <Box maxW="7xl" mx="auto">
             <Flex
               direction={{base: 'column', md: 'row'}}
@@ -75,7 +70,7 @@ export const ManageDesign = () => {
 
               <HStack spacing={{base: '2', md: '4'}}>
                 <Button
-                  colorScheme="brand"
+                  colorScheme="orange"
                   leftIcon={<LinkIcon />}
                   fontSize="sm"
                   onClick={onCopyLinkPress}

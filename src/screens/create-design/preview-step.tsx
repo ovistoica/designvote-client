@@ -143,7 +143,7 @@ export function PreviewStep() {
           mt="1em"
           size="lg"
           onClick={() => setStep(CreateDesignStep.Create)}
-          colorScheme="brand"
+          colorScheme="orange"
         >
           Go back and complete
         </Button>
@@ -154,14 +154,14 @@ export function PreviewStep() {
   if (notEnoughVersions) {
     return (
       <Stack spacing="1em" mt="1em" align="center">
-        <Heading fontWeight="400" fontSize="xl">
+        <Heading fontWeight="semibold" fontSize="xl">
           You need at least two versions of this design in order to publish it
         </Heading>
         <Button
           mt="1em"
           size="lg"
           onClick={() => setStep(CreateDesignStep.Upload)}
-          colorScheme="brand"
+          colorScheme="orange"
         >
           Go back and upload
         </Button>
@@ -169,7 +169,7 @@ export function PreviewStep() {
     )
   }
   return (
-    <Box as="section" bg={mode('gray.50', 'gray.800')} mt="4">
+    <Box as="section" mt="4">
       <Flex
         direction="column"
         align="center"
@@ -178,7 +178,9 @@ export function PreviewStep() {
         px={{base: '3', md: '8'}}
       >
         <Stack mb="2em" w="100%" align="center">
-          <Heading textAlign="center">{design.question}</Heading>
+          <Heading textAlign="center" fontWeight="medium">
+            {design.question}
+          </Heading>
           {design.description ? (
             <Text
               fontWeight="300"
@@ -207,7 +209,7 @@ export function PreviewStep() {
           })}
         </SimpleGrid>
         <Button
-          colorScheme="brand"
+          colorScheme="orange"
           size="lg"
           my="8"
           onClick={() => setStep(CreateDesignStep.Share)}

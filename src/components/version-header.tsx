@@ -34,7 +34,7 @@ export function VersionHeader({totalVotes, votes, name}: VersionHeaderProps) {
               {votes.length} votes
             </Text>
           </Flex>
-          <Text fontSize="xl" color="brand.500" fontWeight="bold">
+          <Text fontSize="xl" color="teal.500" fontWeight="bold">
             {votePercent}%
           </Text>
         </Stack>
@@ -42,8 +42,8 @@ export function VersionHeader({totalVotes, votes, name}: VersionHeaderProps) {
           value={votePercent}
           borderRadius="20em"
           h="0.3em"
-          background="brand.200"
-          colorScheme="brand"
+          background="teal.200"
+          colorScheme="teal"
         />
       </Flex>
     </Flex>
@@ -75,7 +75,7 @@ export function SmallVersionHeader({
               {votes.length} votes
             </Text>
           </Flex>
-          <Text fontSize="sm" color="brand.500" fontWeight="bold">
+          <Text fontSize="sm" color="teal.500" fontWeight="bold">
             {votePercent}%
           </Text>
         </Stack>
@@ -83,7 +83,7 @@ export function SmallVersionHeader({
           value={votePercent}
           borderRadius="20em"
           h="0.1em"
-          colorScheme="brand"
+          colorScheme="teal"
         />
       </Flex>
     </Flex>

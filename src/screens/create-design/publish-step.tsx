@@ -7,7 +7,7 @@ import {useDesign} from 'utils/design-query'
 import {useCreateDesignStore} from 'store'
 import {CreateDesignStep} from 'types'
 
-export function ShareStep() {
+export function PublishStep() {
   const {
     mutate,
     data: designId,
@@ -45,7 +45,7 @@ export function ShareStep() {
           mt="1em"
           size="lg"
           onClick={() => setStep(CreateDesignStep.Create)}
-          colorScheme="brand"
+          colorScheme="orange"
         >
           Go back and complete
         </Button>
@@ -55,7 +55,7 @@ export function ShareStep() {
 
   return (
     <Flex direction="column" align="center" mt="8" mx="auto">
-      <Heading fontWeight="500" fontSize="xl" textAlign="center">
+      <Heading fontWeight="semibold" fontSize="3xl" textAlign="center">
         Publish the design
       </Heading>
       <Text mt=".5em" w={{base: 'xs', md: 'sm'}} textAlign="center">
@@ -63,7 +63,7 @@ export function ShareStep() {
         you can share it with the world
       </Text>
       <Button
-        colorScheme="brand"
+        colorScheme="orange"
         mt="2em"
         leftIcon={<CheckIcon />}
         onClick={() => mutate()}

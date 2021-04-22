@@ -21,7 +21,7 @@ export const SkewBox = (props: SkewBoxProps) => {
   const {placement, isCurrent, ...rest} = props
 
   const defaultColor = useColorModeValue('white', 'gray.800')
-  const accentColor = useColorModeValue('brand.500', 'brand.300')
+  const accentColor = useColorModeValue('orange.500', 'orange.200')
   const hoverBgColor = useColorModeValue('gray.100', 'gray.700')
 
   const {borderToOmit, transform} = properties[placement]
@@ -29,7 +29,6 @@ export const SkewBox = (props: SkewBoxProps) => {
     [placement]: 0,
     transform,
     [borderToOmit]: '0',
-    borderColor: isCurrent ? accentColor : undefined,
   }
 
   return (

@@ -1,8 +1,10 @@
+import {useColorModeValue as mode} from '@chakra-ui/color-mode'
 import {Box, SimpleGrid} from '@chakra-ui/layout'
 import {useRadio, useRadioGroup, UseRadioProps} from '@chakra-ui/radio'
 
 const RadioCard: React.FC<UseRadioProps> = props => {
   const {getInputProps, getCheckboxProps} = useRadio(props)
+  const accentColor = mode('orange.500', 'orange.200')
 
   const input = getInputProps()
   const checkbox = getCheckboxProps()
@@ -17,9 +19,10 @@ const RadioCard: React.FC<UseRadioProps> = props => {
         borderRadius="md"
         boxShadow="md"
         _checked={{
-          bg: 'brand.500',
-          color: 'white',
-          borderColor: 'brand.500',
+          bg: accentColor,
+          // color: 'white',
+          color: mode('white', 'gray.800'),
+          borderColor: accentColor,
         }}
         _focus={{
           boxShadow: 'outline',

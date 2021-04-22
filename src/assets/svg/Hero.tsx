@@ -4,7 +4,7 @@ import * as React from 'react'
 
 function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
   const {colors} = useTheme() as any
-  const brandColors = colors.brand
+  const brandColors = colors.teal
   const stroke = useColorModeValue('#000', colors.gray[100])
   const brand = useColorModeValue(brandColors[600], brandColors[400])
   const bg = useColorModeValue('#F7F9FA', colors.gray[800])

@@ -50,7 +50,7 @@ function UploadedImage({
         borderRadius="6px"
         border={selected ? 'solid' : 'none'}
         borderWidth={selected ? '4px' : '1px'}
-        borderColor={selected ? 'brand.500' : 'info'}
+        borderColor={selected ? 'teal.500' : 'info'}
         src={imageUrl}
         objectFit="contain"
         transition="0.25s all"

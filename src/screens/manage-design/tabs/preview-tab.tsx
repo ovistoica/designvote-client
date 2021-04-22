@@ -34,7 +34,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
           mt="1em"
           size="lg"
           onClick={() => setTab(DesignTab.Info)}
-          colorScheme="brand"
+          colorScheme="teal"
         >
           Go back and complete
         </Button>
@@ -52,7 +52,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
           mt="1em"
           size="lg"
           onClick={() => setTab(DesignTab.Versions)}
-          colorScheme="brand"
+          colorScheme="teal"
         >
           Go back and upload
         </Button>

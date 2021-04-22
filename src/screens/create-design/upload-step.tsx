@@ -57,7 +57,7 @@ function UploadedImage({
         borderRadius="6px"
         border={selected ? 'solid' : 'none'}
         borderWidth={selected ? '4px' : '1px'}
-        borderColor={selected ? 'brand.500' : 'info'}
+        borderColor={selected ? 'orange.500' : 'info'}
         src={imageUrl}
         objectFit="contain"
         transition="0.25s all"
@@ -106,7 +106,7 @@ export function UploadStep() {
           mt="1em"
           size="lg"
           onClick={() => setStep(CreateDesignStep.Create)}
-          colorScheme="brand"
+          colorScheme="orange"
         >
           Go back and complete
         </Button>
@@ -115,7 +115,7 @@ export function UploadStep() {
   }
 
   return (
-    <Box as="section" bg={mode('gray.50', 'gray.800')} p="8">
+    <Box as="section" p="8">
       <Flex
         direction="column"
         align="center"
@@ -139,6 +139,7 @@ export function UploadStep() {
             icon={
               <AddIcon w="3em" h="3em" color={mode('gray.500', 'gray.300')} />
             }
+            bg={mode('gray.50', 'gray.800')}
           />
           {imagesByUrl.map(url => {
             return (
@@ -152,7 +153,7 @@ export function UploadStep() {
           })}
         </SimpleGrid>
         <Button
-          colorScheme="brand"
+          colorScheme="orange"
           size="lg"
           my="8"
           onClick={() => setStep(CreateDesignStep.Preview)}

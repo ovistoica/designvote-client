@@ -1,5 +1,5 @@
 import {
-  Button as ChakraButton,
+  Button,
   Flex,
   Menu,
   MenuButton,
@@ -15,12 +15,7 @@ import {HiDotsHorizontal} from 'react-icons/hi'
 import {FiLink} from 'react-icons/fi'
 import {useDesigns, useDeleteDesign} from 'utils/design-query'
 import {useNavigate} from 'react-router-dom'
-import {
-  DeleteResourceAlert,
-  FullPageSpinner,
-  Button,
-  Container,
-} from 'components/lib'
+import {DeleteResourceAlert, FullPageSpinner} from 'components/lib'
 import {Logo} from 'assets/icons'
 import {MetaDecorator} from 'components/meta-decorator'
 import {Design} from 'types'
@@ -69,7 +64,7 @@ function DesignCard({designId, name}: DesignCardProps) {
         <Text>{name}</Text>
         <Menu>
           <MenuButton
-            as={ChakraButton}
+            as={Button}
             size="sm"
             w="1.5em"
             h="1.5em"
@@ -140,7 +135,13 @@ function EmptyDashboard({onClick}: EmptyDashboardProps) {
       <Text mt="1em" color={textInfoColor}>
         C'mon now don't be lazy...
       </Text>
-      <Button mt="2em" fontWeigh="300" fontSize="sm" onClick={onClick}>
+      <Button
+        mt="2em"
+        fontWeigh="300"
+        fontSize="sm"
+        onClick={onClick}
+        colorScheme="orange"
+      >
         Choose your design
       </Button>
     </Flex>
@@ -157,7 +158,7 @@ function Dashboard() {
   }
 
   return (
-    <Container>
+    <>
       <MetaDecorator
         title="Designvote - Dashboard"
         description="Dashboard containing all of your designs. Share a design for people to vote."
@@ -167,7 +168,7 @@ function Dashboard() {
           <Text fontSize="xl" fontWeight="500">
             Designs
           </Text>
-          <ChakraButton
+          <Button
             aria-label="Add design"
             variant="ghost"
             ml="1em"
@@ -178,14 +179,14 @@ function Dashboard() {
             borderRadius="100px"
             p="0.1em"
             _hover={{
-              color: 'brand',
+              color: 'teal',
             }}
             _focus={{outline: 'none'}}
             background={cardBg}
             onClick={() => navigate('/create')}
           >
             <AddIcon />
-          </ChakraButton>
+          </Button>
         </Flex>
         {designs.length ? (
           <SimpleGrid
@@ -206,7 +207,7 @@ function Dashboard() {
           <EmptyDashboard onClick={() => navigate('/create')} />
         )}
       </Flex>
-    </Container>
+    </>
   )
 }
 

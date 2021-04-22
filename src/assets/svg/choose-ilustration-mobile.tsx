@@ -9,7 +9,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
     colors.textInfoLight,
     colors.gray[400],
   )
-  const brand = useColorModeValue(colors.primary[500], colors.primary[400])
+  const brand = useColorModeValue(colors.orange[500], colors.orange[400])
   const shirtColor = useColorModeValue('#3F3D56', colors.gray[700])
   const checkBg = useColorModeValue('white', colors.gray[900])
   const blue = useColorModeValue('#192261', colors.blue[500])

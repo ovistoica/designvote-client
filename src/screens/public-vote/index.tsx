@@ -67,7 +67,7 @@ export function PublicVoteScreen() {
     (design.voteStyle === VoteStyle.Choose && isVoteSuccess) ||
     (design.voteStyle === VoteStyle.FiveStar && pressedFinish)
 
-  const bg = mode('gray.50', 'gray.800')
+  // const bg = mode('gray.50', 'gray.800')
 
   if (isLoading) {
     return <FullPageSpinner />
@@ -84,7 +84,7 @@ export function PublicVoteScreen() {
       minH="100vh"
       pt={{base: '5em', md: '5em'}}
     >
-      <Box as="section" bg={bg}>
+      <Box as="section">
         <Flex
           direction="column"
           align="center"
@@ -127,7 +127,7 @@ export function PublicVoteScreen() {
           </SimpleGrid>
           {design.voteStyle === VoteStyle.Choose ? (
             <Button
-              colorScheme="brand"
+              colorScheme="teal"
               w={{base: '100%', md: '15em'}}
               m={8}
               disabled={!currentChosen}
@@ -145,7 +145,7 @@ export function PublicVoteScreen() {
             </Button>
           ) : (
             <Button
-              colorScheme="brand"
+              colorScheme="teal"
               w={{base: '100%', md: '15em'}}
               m={8}
               onClick={() => setPressedFinish(true)}
