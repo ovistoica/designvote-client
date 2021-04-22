@@ -8,11 +8,6 @@ import {
   BreadcrumbProps,
   Flex,
   HStack,
-  Input,
-  InputGroup,
-  InputGroupProps,
-  InputLeftElement,
-  InputProps,
   Stack,
   Text,
   TextProps,
@@ -20,10 +15,9 @@ import {
   useBreakpointValue,
   useColorModeValue as mode,
 } from '@chakra-ui/react'
-import {ColorModeSwitcher} from 'components/lib'
 import {useAuth} from 'context/auth-context'
 import * as React from 'react'
-import {BsPencilSquare, BsSearch} from 'react-icons/bs'
+import {BsPencilSquare} from 'react-icons/bs'
 import {HiMenu, HiChevronRight, HiX} from 'react-icons/hi'
 import {MdDashboard, MdSettings} from 'react-icons/md'
 import {useNavigate} from 'react-router'
@@ -74,13 +68,6 @@ export const AppContainer: React.FC = ({children}) => {
             </HStack>
           </Box>
           <ScrollArea pt="5" pb="6">
-            <SidebarLink
-              display={{base: 'block', lg: 'none'}}
-              mb="2"
-              icon={<BsSearch />}
-            >
-              Search
-            </SidebarLink>
             <Stack pb="6">
               <SidebarLink
                 icon={<MdDashboard />}
@@ -105,14 +92,12 @@ export const AppContainer: React.FC = ({children}) => {
               <NavSectionTitle>Designs</NavSectionTitle>
               {designs.map(design => (
                 <SidebarLink
+                  key={`sideBarDesign${design.designId}`}
                   onClick={() => navigate(`design/${design.designId}`)}
                 >
                   {design.name}
                 </SidebarLink>
               ))}
-              <SidebarLink>
-                <ColorModeSwitcher />
-              </SidebarLink>
             </Stack>
           </ScrollArea>
         </Box>
@@ -143,7 +128,6 @@ export const AppContainer: React.FC = ({children}) => {
                 <MobileMenuButton onClick={toggle} isOpen={isOpen} />
                 <NavBreadcrumb />
               </Flex>
-              <SearchInput />
             </Flex>
             <Flex
               direction="column"
@@ -210,29 +194,6 @@ const NavBreadcrumb = (props: BreadcrumbProps) => {
         </BreadcrumbItem>
       ) : null}
     </Breadcrumb>
-  )
-}
-
-const SearchInput = (props: InputProps & {rootProps?: InputGroupProps}) => {
-  const {rootProps, ...rest} = props
-  return (
-    <InputGroup
-      maxW="2xs"
-      size="sm"
-      variant="filled"
-      display={{base: 'none', lg: 'block'}}
-      {...rootProps}
-    >
-      <InputLeftElement color="gray.400" pointerEvents="none">
-        <BsSearch />
-      </InputLeftElement>
-      <Input
-        {...rest}
-        placeholder="Search"
-        rounded="md"
-        _placeholder={{color: 'gray.400'}}
-      />
-    </InputGroup>
   )
 }
 
