@@ -71,7 +71,7 @@ function NavBar(props: FlexProps) {
   const navigate = useNavigate()
   const {isAuthenticated} = useAuth()
   const to = isAuthenticated ? '/dashboard' : '/'
-  const fill = useColorModeValue(colors.primary[500], colors.primary[300])
+  const fill = useColorModeValue(colors.orange[500], colors.orange[300])
 
   return (
     <NavBarContainer {...props} zIndex={9999}>
@@ -91,7 +91,7 @@ function NavBar(props: FlexProps) {
 
 const CloseIcon = () => {
   const {colors} = useTheme() as any
-  const fill = useColorModeValue(colors.primary[500], colors.primary[300])
+  const fill = useColorModeValue(colors.orange[500], colors.orange[300])
 
   return (
     <svg width="24" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
@@ -106,7 +106,7 @@ const CloseIcon = () => {
 
 const MenuIcon = () => {
   const {colors} = useTheme() as any
-  const fill = useColorModeValue(colors.primary[500], colors.primary[300])
+  const fill = useColorModeValue(colors.orange[500], colors.orange[300])
 
   return (
     <svg
@@ -187,7 +187,7 @@ function UnauthenticatedMenuLinks({isOpen}: {isOpen: boolean}) {
               my={['0.5em', '0.5em', 0]}
               mx={'0.5em'}
               onClick={login}
-              colorScheme="brand"
+              colorScheme="teal"
               variant={isMobile ? 'link' : 'solid'}
               h="2em"
             >

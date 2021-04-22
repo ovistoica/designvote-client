@@ -21,14 +21,14 @@ export function ImageSwitch({
         <IconButton
           aria-label="mobile-mode"
           icon={<FaMobile />}
-          colorScheme={mode === DesignType.Mobile ? 'brand' : undefined}
+          colorScheme={mode === DesignType.Mobile ? 'teal' : undefined}
           onClick={() => toggle(DesignType.Mobile)}
         />
       </Tooltip>
       <Tooltip hasArrow label="Web designs">
         <IconButton
           aria-label="web-mode"
-          colorScheme={mode === DesignType.Web ? 'brand' : undefined}
+          colorScheme={mode === DesignType.Web ? 'teal' : undefined}
           icon={<RiComputerFill />}
           onClick={() => toggle(DesignType.Web)}
         />

@@ -30,7 +30,7 @@ export function ChooseBestVotingCard({
   const setChosen = useVoteDesignState(state => state.setChosen)
   const currentChosen = useVoteDesignState(getChosen(design.designId))
   const isChosen = currentChosen === versionId
-  const selectedColor = mode('brand.500', 'brand.400')
+  const selectedColor = mode('teal.500', 'teal.400')
   const defaultColor = mode('gray.300', 'gray.600')
 
   return (

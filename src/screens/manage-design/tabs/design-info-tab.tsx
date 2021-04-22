@@ -120,7 +120,6 @@ function FormRow({
         onBlur={onBlur}
         onChange={onChange}
         minH={type === 'textarea' ? '4em' : undefined}
-        _focus={{borderColor: 'brand.500'}}
         as={type}
       />
       <FormErrorMessage>{error}</FormErrorMessage>
@@ -194,7 +193,7 @@ export function DesignInfoTab({designId}: DesignInfoProps) {
               type="textarea"
             />
             <Button
-              colorScheme="brand"
+              colorScheme="orange"
               mt="1em"
               textTransform="uppercase"
               type="submit"

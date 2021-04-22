@@ -206,7 +206,6 @@ function FormRow({
         onBlur={onBlur}
         onChange={onChange}
         minH={type === 'textarea' ? '3em' : undefined}
-        _focus={{borderColor: 'brand.500'}}
         as={type}
       />
       {helper ? <FormHelperText>{helper}</FormHelperText> : null}
@@ -364,7 +363,7 @@ function CreateStep() {
             </FormControl>
 
             <Button
-              colorScheme="brand"
+              colorScheme="orange"
               mt="1em"
               textTransform="uppercase"
               type="submit"

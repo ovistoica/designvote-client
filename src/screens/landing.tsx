@@ -71,7 +71,7 @@ function HeroSection() {
           </Text>
           {isMobile ? null : (
             <Button
-              colorScheme="brand"
+              colorScheme="teal"
               mt="2em"
               fontSize="1rem"
               fontWeight="400"
@@ -86,7 +86,7 @@ function HeroSection() {
       <Stack spacing="1em" align="center" mt="4em" mb="2em">
         {isMobile ? (
           <Button
-            colorScheme="brand"
+            colorScheme="teal"
             fontSize="1rem"
             mt="-2em"
             fontWeight="400"
@@ -179,7 +179,7 @@ function ShareSection() {
                 textAlign={['center', 'center', 'start']}
               >
                 Robert Preoteasa,{' '}
-                <Text color="brand.500" as="span">
+                <Text color="teal.500" as="span">
                   Framey
                 </Text>
               </Text>
@@ -262,7 +262,7 @@ function CTASection() {
           Choose yours with Designvote
         </Text>
         <Button
-          colorScheme="brand"
+          colorScheme="teal"
           mt="2em"
           fontSize="1rem"
           fontWeight="400"

@@ -127,7 +127,7 @@ export function PreviewDesignFullImageModal({
                 >
                   {design.voteStyle === VoteStyle.Choose ? (
                     <Button
-                      colorScheme="brand"
+                      colorScheme="teal"
                       alignSelf="center"
                       size="md"
                       w="100%"
@@ -151,7 +151,7 @@ export function PreviewDesignFullImageModal({
                     placeholder="Leave a comment"
                   />
                   <IconButton
-                    colorScheme="brand"
+                    colorScheme="teal"
                     marginInlineStart="0.5em"
                     aria-label="Send comment"
                     icon={<RiSendPlaneFill />}

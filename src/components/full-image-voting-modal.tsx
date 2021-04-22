@@ -168,7 +168,7 @@ export function ImageCarouselModal({
                 >
                   {design.voteStyle === VoteStyle.Choose ? (
                     <Button
-                      colorScheme="brand"
+                      colorScheme="teal"
                       alignSelf="center"
                       size="md"
                       w="100%"
@@ -207,7 +207,7 @@ export function ImageCarouselModal({
                     placeholder="Leave a comment"
                   />
                   <IconButton
-                    colorScheme="brand"
+                    colorScheme="teal"
                     marginInlineStart="0.5em"
                     aria-label="Send comment"
                     icon={<RiSendPlaneFill />}

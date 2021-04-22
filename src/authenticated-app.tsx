@@ -3,10 +3,10 @@ import {ErrorBoundary} from 'react-error-boundary'
 import {Routes, Route, Navigate} from 'react-router-dom'
 import {Dashboard} from 'screens/dashboard'
 import {NotFoundScreen} from 'screens/not-found'
-import {NavBar} from 'components/nav'
 import {CreateDesign} from 'screens/create-design'
 import {ManageDesign} from 'screens/manage-design'
 import {PublicVoteScreen} from 'screens/public-vote'
+import {AppContainer} from 'components/app-container'
 
 function AppRoutes() {
   return (
@@ -41,11 +41,11 @@ function ErrorFallback({error}: {error: Error}) {
 function AuthenticatedApp() {
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
-      <NavBar />
-
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <AppRoutes />
-      </ErrorBoundary>
+      <AppContainer>
+        <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <AppRoutes />
+        </ErrorBoundary>
+      </AppContainer>
     </ErrorBoundary>
   )
 }

@@ -5,7 +5,7 @@ import {Step} from 'components/step-with-arrow'
 
 import {CreateStep} from './create-step'
 import {PreviewStep} from './preview-step'
-import {ShareStep} from './share-step'
+import {PublishStep} from './publish-step'
 import {UploadStep} from './upload-step'
 
 export function CurrentScreen() {
@@ -22,7 +22,7 @@ export function CurrentScreen() {
       return <PreviewStep />
     }
     case CreateDesignStep.Share: {
-      return <ShareStep />
+      return <PublishStep />
     }
   }
 }
@@ -31,13 +31,7 @@ export function CreateDesign() {
   const {step, setStep} = useCreateDesignStore()
 
   return (
-    <Flex
-      direction="column"
-      align="stretch"
-      minH="100vh"
-      bg={mode('gray.50', 'gray.800')}
-      pt={{base: '5em', md: '5em'}}
-    >
+    <Flex direction="column" align="stretch">
       <Box maxW="7xl" mx="auto">
         <Box
           p={0}

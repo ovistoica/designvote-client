@@ -94,30 +94,22 @@ const Button = styled(ChakraButton)(
 
 Button.defaultProps = {colorScheme: 'orange'}
 
-const ColorModeSwitcher = (props: IconButtonProps) => {
+type ColorModeSwitcherProps = Omit<IconButtonProps, 'aria-label'>
+
+const ColorModeSwitcher = (props: ColorModeSwitcherProps) => {
   const {toggleColorMode} = useColorMode()
   const text = useColorModeValue('dark', 'light')
   const SwitchIcon = useColorModeValue(FaMoon, FaSun)
-  const {colors} = useTheme() as any
-  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
 
   return (
     <IconButton
       size="md"
-      fontSize="lg"
       variant="ghost"
       color={['white', 'white', 'current']}
-      marginLeft="2"
       onClick={toggleColorMode}
       icon={<SwitchIcon />}
-      _hover={{
-        color: ['white', 'white', brand],
-        textDecoration: 'none',
-      }}
-      _focus={{outline: 'none'}}
-      _active={{outline: 'none'}}
-      {...props}
       aria-label={`Switch to ${text} mode`}
+      {...props}
     />
   )
 }
@@ -260,7 +252,7 @@ interface NavLinkProps extends LinkProps {
 
 function NavLink(props: NavLinkProps) {
   const {colors} = useTheme() as any
-  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
+  const brand = useColorModeValue(colors.orange[500], colors.orange[600])
   return (
     <Link
       as={RouterLink}
@@ -284,7 +276,7 @@ function SocialIcon({icon, ...restProps}: SocialIconProps) {
   const {colors} = useTheme() as any
   const textInfoColor = useColorModeValue('textInfoLight', 'gray.400')
   const iconColor = useColorModeValue('white', 'gray.900')
-  const brand = useColorModeValue(colors.primary[500], colors.primary[600])
+  const brand = useColorModeValue(colors.orange[500], colors.orange[600])
 
   return (
     <Circle
@@ -340,7 +332,7 @@ function Footer() {
           my={['0.5em', '0.5em', 0]}
           mx={'0.5em'}
           onClick={login}
-          colorScheme="brand"
+          colorScheme="teal"
           variant="link"
           h="2em"
         >
