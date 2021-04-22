@@ -13,11 +13,12 @@ export function ResultsTab({designId}: ResultsTabProps) {
   } = useDesign(designId)
 
   return (
-    <Box as="section" bg={mode('gray.50', 'gray.800')} p="8">
-      <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '3', md: '8'}}>
+    <Box as="section" bg={mode('gray.50', 'gray.800')} py="8">
+      <Box mx="auto" px={{base: '3'}}>
         <SimpleGrid
-          columns={{base: 1, md: 3}}
-          spacing={{base: '2', md: '4', lg: '8'}}
+          columns={{base: 1, md: 2, lg: 3}}
+          spacing={{base: '4', md: '8'}}
+          w="full"
         >
           {design.versions.map((vId, index) => {
             const version = versions[vId]

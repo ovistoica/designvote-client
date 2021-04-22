@@ -13,7 +13,6 @@ import {
 } from 'utils/design-query'
 
 interface UploadedImageProps extends ImageProps {
-  selected?: boolean
   imageUrl: string
   description?: string
   onDeletePress: () => void
@@ -21,7 +20,6 @@ interface UploadedImageProps extends ImageProps {
 
 // TODO: Don't let user delete from the last two
 function UploadedImage({
-  selected = false,
   imageUrl,
   description,
   onDeletePress,
@@ -47,10 +45,7 @@ function UploadedImage({
         <DeleteBin />
       </Circle>
       <Image
-        borderRadius="6px"
-        border={selected ? 'solid' : 'none'}
-        borderWidth={selected ? '4px' : '1px'}
-        borderColor={selected ? 'teal.500' : 'info'}
+        rounded="sm"
         src={imageUrl}
         objectFit="contain"
         transition="0.25s all"
@@ -96,22 +91,15 @@ export function VersionsTab({designId}: VersionsTabProps) {
 
   return (
     <Box as="section" bg={mode('gray.50', 'gray.800')} p="8">
-      <Flex
-        direction="column"
-        align="center"
-        maxW={{base: 'xl', md: '7xl'}}
-        mx="auto"
-        px={{base: '3', md: '8'}}
-      >
+      <Flex direction="column" align="center">
         <SimpleGrid
-          columns={{base: 1, md: 3}}
+          columns={{base: 1, md: 2, lg: 3}}
           spacing={{base: '4', md: '4', lg: '8'}}
-          maxW={{base: 'inherit', md: '3xl'}}
         >
           <ImageDropInput
             onImageUpload={onImageUpload}
-            h="15em"
-            w="15em"
+            h={{base: '12rem', lg: '15em'}}
+            w={{base: '12rem', lg: '15em'}}
             description="Upload 2 or more versions of your design"
             icon={<AddIcon w="3em" h="3em" color={iconColor} />}
             isLoading={isLoading}
@@ -124,8 +112,8 @@ export function VersionsTab({designId}: VersionsTabProps) {
             return (
               <UploadedImage
                 imageUrl={uri}
-                w="15em"
-                h="15em"
+                h={{base: '12rem', lg: '15em'}}
+                w={{base: '12rem', lg: '15em'}}
                 key={`imageUpload${vId}`}
                 onDeletePress={() => deleteVersion(vId)}
               />

@@ -44,13 +44,13 @@ function StarsRatingCard(props: SpecificVoteStyleCardProps) {
         boxSize={{base: 'xs', md: '2xs'}}
         objectFit="contain"
         align="center"
-        p="5"
+        // p="5"
       />
       <Box
         flex="1"
         as="dl"
         px={{base: '4', lg: '8'}}
-        py="4"
+        py="2"
         color={mode('gray.500', 'gray.400')}
       >
         <Text as="dt" fontSize="sm" fontWeight="medium">
@@ -110,10 +110,10 @@ function ChooseBestRatingCard(props: SpecificVoteStyleCardProps) {
       <Image
         alignSelf="center"
         src={imageUrl}
-        boxSize={{base: 'xs', md: '2xs'}}
+        boxSize={{base: 'xs', md: 'md'}}
         objectFit="contain"
         align="center"
-        p="5"
+        // p="5"
       />
       <Box
         flex="1"

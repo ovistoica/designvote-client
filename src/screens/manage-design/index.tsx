@@ -53,7 +53,7 @@ export const ManageDesign = () => {
     <Tabs isFitted colorScheme="orange" defaultIndex={3}>
       <Flex direction="column" align="stretch">
         <Box>
-          <Box maxW="7xl" mx="auto">
+          <Box mx="auto">
             <Flex
               direction={{base: 'column', md: 'row'}}
               justify="space-between"
@@ -83,7 +83,6 @@ export const ManageDesign = () => {
             <Flex
               justify={{base: 'center', md: 'space-between'}}
               align="center"
-              px={{base: '0', md: '8'}}
             >
               <TabList
                 border="0"
@@ -111,9 +110,9 @@ export const ManageDesign = () => {
             <Spinner />
           </Center>
         ) : (
-          <Box px="4" flex="1">
-            <Box maxW="7xl" mx="auto">
-              <TabPanels mt="2" h="full">
+          <Box flex="1">
+            <Box mx="auto">
+              <TabPanels mt="2" h="full" w="full">
                 <TabPanel>
                   <DesignInfoTab designId={designId} />
                 </TabPanel>
