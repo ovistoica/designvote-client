@@ -4,15 +4,7 @@ import {Link as RouterLink} from 'react-router-dom'
 
 function NotFoundScreen() {
   return (
-    <Flex
-      direction="column"
-      minH="100vh"
-      w="100vw"
-      pt={['4.5em', '6em', '6em']}
-      py={['1em', '2em', '4em']}
-      as="main"
-      justify="center"
-    >
+    <Flex direction="column" minH="80vh" w="full" as="main" justify="center">
       <MetaDecorator
         title="Designvote - 404"
         description="This is the 404 page. You've been redirected here because the page you 

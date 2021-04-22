@@ -1,23 +1,26 @@
 import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {ErrorBoundary} from 'react-error-boundary'
 import {Routes, Route, Navigate} from 'react-router-dom'
-import {Dashboard} from 'screens/dashboard'
+import {HomeScreen} from 'screens/home'
 import {NotFoundScreen} from 'screens/not-found'
 import {CreateDesign} from 'screens/create-design'
 import {ManageDesign} from 'screens/manage-design'
 import {PublicVoteScreen} from 'screens/public-vote'
 import {AppContainer} from 'components/app-container'
+import {SettingsScreen} from 'screens/settings'
 
 function AppRoutes() {
   return (
     <Routes>
       <Route path="/">
-        <Navigate to="/dashboard" />
+        <Navigate to="/home" />
       </Route>
-      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/home" element={<HomeScreen />} />
       <Route path="/vote/:shortUrl" element={<PublicVoteScreen />} />
       <Route path="/design/:designId" element={<ManageDesign />} />
       <Route path="/create" element={<CreateDesign />} />
+      <Route path="/settings" element={<SettingsScreen />} />
+
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
   )
