@@ -24,75 +24,12 @@ import {
 } from '@chakra-ui/react'
 import {FaMoon, FaSun, FaTwitter} from 'react-icons/fa'
 import * as colors from 'styles/colors'
-import styled from '@emotion/styled/'
-import {lightenDarkenColor} from 'utils/color'
 import {useTheme} from '@emotion/react'
 import {Link as RouterLink} from 'react-router-dom'
 import {GrFacebookOption} from 'react-icons/gr'
 import {IoMdMailOpen} from 'react-icons/io'
 import {LogoIcon} from 'assets/svg/logo-icon'
 import {useAuth} from 'context/auth-context'
-
-const buttonVariants = {
-  primary: {
-    background:
-      'linear-gradient(69.05deg, #F07320 2.77%, #F19852 73.44%, #F3CE9A 94.45%)',
-    ':hover': {
-      background: `linear-gradient(69.05deg, ${lightenDarkenColor(
-        '#F07320',
-        -10,
-      )} 2.77%,${lightenDarkenColor(
-        '#F19852',
-        -10,
-      )} 73.44%,${lightenDarkenColor('#F3CE9A', -10)} 94.45%)`,
-    },
-    ':active': {
-      background: `linear-gradient(69.05deg, ${lightenDarkenColor(
-        '#F07320',
-        -10,
-      )} 2.77%,${lightenDarkenColor(
-        '#F19852',
-        -10,
-      )} 73.44%,${lightenDarkenColor('#F3CE9A', -10)} 94.45%)`,
-    },
-  },
-  secondary: {
-    background: '#059FA3',
-    ':hover': {
-      background: '#00868A',
-    },
-    ':active': {
-      background: '#00868A',
-    },
-  },
-  outlined: {
-    border: ' 2px solid #059FA3',
-    color: '#059FA3',
-    ':hover': {
-      background: '#059FA3',
-      color: 'white',
-    },
-    ':active': {
-      background: '#059FA3',
-      color: 'white',
-    },
-  },
-}
-
-const Button = styled(ChakraButton)(
-  {
-    color: 'white',
-    transition: 'all .25s ease',
-    textTransform: 'uppercase',
-    fontFamily: 'Lato',
-    ':focus': {
-      boxShadow: 'none',
-    },
-  },
-  ({variant = 'primary'}) => (buttonVariants as any)[variant],
-)
-
-Button.defaultProps = {colorScheme: 'orange'}
 
 type ColorModeSwitcherProps = Omit<IconButtonProps, 'aria-label'>
 
@@ -104,8 +41,6 @@ const ColorModeSwitcher = (props: ColorModeSwitcherProps) => {
   return (
     <IconButton
       size="md"
-      variant="ghost"
-      color={['white', 'white', 'current']}
       onClick={toggleColorMode}
       icon={<SwitchIcon />}
       aria-label={`Switch to ${text} mode`}
@@ -384,7 +319,6 @@ export {
   FullPageSpinner,
   ErrorMessage,
   FullPageErrorFallback,
-  Button,
   DeleteResourceAlert,
   NavLink,
   SocialIcon,
