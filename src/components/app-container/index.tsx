@@ -39,7 +39,7 @@ export const AppContainer: React.FC = ({children}) => {
   return (
     <Flex
       height="100vh"
-      bg={mode('blue.800', 'gray.800')}
+      bg={mode('blue.800', 'gray.900')}
       overflow="hidden"
       sx={{'--sidebar-width': '220px'}}
     >
@@ -126,7 +126,12 @@ export const AppContainer: React.FC = ({children}) => {
         left={isOpen ? 'var(--sidebar-width)' : '0'}
         transition="left 0.2s"
       >
-        <Box maxW="2560px" bg={mode('white', 'gray.700')} height="100%" pb="6">
+        <Box
+          maxW="2560px"
+          bg={mode('gray.50', 'gray.800')}
+          height="100%"
+          pb="6"
+        >
           <Flex direction="column" height="full">
             <Flex
               w="full"
@@ -141,7 +146,13 @@ export const AppContainer: React.FC = ({children}) => {
               </Flex>
               <SearchInput />
             </Flex>
-            <Flex direction="column" flex="1" overflow="auto" px="10" pt="8">
+            <Flex
+              direction="column"
+              flex="1"
+              overflow="auto"
+              px={{base: '0', md: '10'}}
+              pt="8"
+            >
               {children}
             </Flex>
           </Flex>

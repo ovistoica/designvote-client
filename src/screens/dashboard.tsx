@@ -163,7 +163,7 @@ function Dashboard() {
         title="Designvote - Dashboard"
         description="Dashboard containing all of your designs. Share a design for people to vote."
       />
-      <Flex h="100%" w="100%" flexDir="column">
+      <Flex h="100%" w="100%" flexDir="column" px={{base: '10', md: '0'}}>
         <Flex alignItems="center" flex="0">
           <Text fontSize="xl" fontWeight="500">
             Designs

@@ -3,7 +3,6 @@ import {
   AlertIcon,
   Alert,
   Button,
-  useColorModeValue as mode,
   AlertDescription,
   AlertTitle,
   AlertDialogFooter,
