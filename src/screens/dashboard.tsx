@@ -32,7 +32,7 @@ function DesignCard({designId, name}: DesignCardProps) {
   // dark mode support
   const cardBg = useColorModeValue('white', 'gray.700')
   const menuBG = useColorModeValue('white', 'gray.700')
-  const cardHover = useColorModeValue('rgba(55, 53, 47, 0.03)', '#283240')
+  const cardHover = useColorModeValue('gray.100', 'gray.600')
 
   // Delete alert specific
   const {
