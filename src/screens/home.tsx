@@ -148,7 +148,7 @@ function EmptyDashboard({onClick}: EmptyDashboardProps) {
   )
 }
 
-function Dashboard() {
+export function HomeScreen() {
   const navigate = useNavigate()
   const {data: designs, isLoading} = useDesigns()
   const cardBg = useColorModeValue('white', 'gray.700')
@@ -210,5 +210,3 @@ function Dashboard() {
     </>
   )
 }
-
-export {Dashboard}

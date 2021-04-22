@@ -1,5 +1,7 @@
 import {useBreakpoint} from '@chakra-ui/media-query'
 import * as React from 'react'
+import {useLocation} from 'react-router'
+import {useDesigns} from './design-query'
 
 export function useSafeDispatch<Value = unknown>(
   dispatch: React.Dispatch<Value>,
@@ -107,4 +109,28 @@ export function useIsMobile() {
   const currentBreak = useBreakpoint()
 
   return currentBreak === 'base' || currentBreak === 'sm'
+}
+
+export function useFormattedLocationName() {
+  const {data: designs} = useDesigns()
+
+  const location = useLocation()
+  const {pathname} = location
+  if (pathname === '/home') {
+    return null
+  }
+  if (pathname.startsWith('/design')) {
+    const designId = pathname.slice(8)
+    const design = designs.find(design => design.designId === designId)
+    return design?.name
+  }
+  if (pathname === '/create') {
+    return 'Create Design'
+  }
+
+  if (pathname === '/settings') {
+    return 'Settings'
+  }
+
+  return 'Not Found'
 }

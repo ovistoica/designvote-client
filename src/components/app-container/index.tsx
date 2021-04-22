@@ -28,13 +28,14 @@ import {HiMenu, HiChevronRight, HiX} from 'react-icons/hi'
 import {MdDashboard, MdSettings} from 'react-icons/md'
 import {useNavigate} from 'react-router'
 import {useDesigns} from 'utils/design-query'
+import {useFormattedLocationName} from 'utils/hooks'
 import {SidebarLink} from './sidebar-link'
 
 export const AppContainer: React.FC = ({children}) => {
   const {isOpen, toggle} = useMobileMenuState()
   const {user} = useAuth()
   const navigate = useNavigate()
-  // bg={mode('#0f123f', 'gray.800')}
+
   const {data: designs} = useDesigns()
   return (
     <Flex
@@ -69,13 +70,6 @@ export const AppContainer: React.FC = ({children}) => {
               <Avatar size="sm" name={user?.name} src={user?.picture} />
               <Box lineHeight="1">
                 <Text fontWeight="semibold">{user?.name}</Text>
-                <Text
-                  fontSize="xs"
-                  mt="1"
-                  color={mode('whiteAlpha.700', 'gray.400')}
-                >
-                  {user?.email}
-                </Text>
               </Box>
             </HStack>
           </Box>
@@ -90,7 +84,7 @@ export const AppContainer: React.FC = ({children}) => {
             <Stack pb="6">
               <SidebarLink
                 icon={<MdDashboard />}
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate('/home')}
               >
                 Designs
               </SidebarLink>
@@ -100,7 +94,12 @@ export const AppContainer: React.FC = ({children}) => {
               >
                 Create
               </SidebarLink>
-              <SidebarLink icon={<MdSettings />}>Settings</SidebarLink>
+              <SidebarLink
+                icon={<MdSettings />}
+                onClick={() => navigate('/settings')}
+              >
+                Settings
+              </SidebarLink>
             </Stack>
             <Stack pb="6">
               <NavSectionTitle>Designs</NavSectionTitle>
@@ -184,28 +183,35 @@ const MobileMenuButton = (props: {onClick: () => void; isOpen: boolean}) => {
   )
 }
 
-const NavBreadcrumb = (props: BreadcrumbProps) => (
-  <Breadcrumb
-    fontSize="sm"
-    {...props}
-    separator={
-      <Box
-        as={HiChevronRight}
-        color="gray.400"
-        fontSize="md"
-        top="2px"
-        pos="relative"
-      />
-    }
-  >
-    <BreadcrumbItem color="inherit">
-      <BreadcrumbLink>Welcome</BreadcrumbLink>
-    </BreadcrumbItem>
-    <BreadcrumbItem color="inherit" isCurrentPage>
-      <BreadcrumbLink>Product Vision</BreadcrumbLink>
-    </BreadcrumbItem>
-  </Breadcrumb>
-)
+const NavBreadcrumb = (props: BreadcrumbProps) => {
+  const navigate = useNavigate()
+  const currentLocation = useFormattedLocationName()
+
+  return (
+    <Breadcrumb
+      fontSize="sm"
+      {...props}
+      separator={
+        <Box
+          as={HiChevronRight}
+          color="gray.400"
+          fontSize="md"
+          top="2px"
+          pos="relative"
+        />
+      }
+    >
+      <BreadcrumbItem color="inherit">
+        <BreadcrumbLink onClick={() => navigate('/home')}>Home</BreadcrumbLink>
+      </BreadcrumbItem>
+      {currentLocation ? (
+        <BreadcrumbItem color="inherit" isCurrentPage>
+          <BreadcrumbLink>{currentLocation}</BreadcrumbLink>
+        </BreadcrumbItem>
+      ) : null}
+    </Breadcrumb>
+  )
+}
 
 const SearchInput = (props: InputProps & {rootProps?: InputGroupProps}) => {
   const {rootProps, ...rest} = props
