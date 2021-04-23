@@ -1,8 +1,8 @@
 import {useColorModeValue as mode} from '@chakra-ui/color-mode'
 import {AddIcon} from '@chakra-ui/icons'
 import {Image, ImageProps} from '@chakra-ui/image'
-import {Box, Circle, Flex, SimpleGrid} from '@chakra-ui/layout'
-import {DeleteBin} from 'assets/icons'
+import {Box, Flex, SimpleGrid} from '@chakra-ui/layout'
+import {DeleteTooltip} from 'components/delete-tooltip'
 import {ImageDropInput} from 'components/image-input'
 import {useCallback} from 'react'
 
@@ -27,23 +27,7 @@ function UploadedImage({
 }: UploadedImageProps) {
   return (
     <Box role="group" position="relative">
-      <Circle
-        position="absolute"
-        right="-2"
-        top="-2"
-        bg="info"
-        size="2em"
-        boxShadow="md"
-        opacity={0}
-        transition="0.25s all"
-        cursor="pointer"
-        onClick={onDeletePress}
-        _groupHover={{
-          opacity: 1,
-        }}
-      >
-        <DeleteBin />
-      </Circle>
+      <DeleteTooltip onClick={onDeletePress} />
       <Image
         rounded="sm"
         src={imageUrl}

@@ -17,7 +17,7 @@ export const DesignCard = (props: DesignCardProps) => {
       position="relative"
       cursor="pointer"
       bg={useColorModeValue('white', 'gray.700')}
-      shadow={{md: 'base'}}
+      shadow="base"
       role="group"
       _hover={{
         bg: useColorModeValue('gray.50', 'gray.600'),
