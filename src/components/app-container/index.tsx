@@ -141,7 +141,8 @@ export const AppContainer: React.FC = ({children}) => {
             <Flex
               direction="column"
               flex="1"
-              overflow="auto"
+              overflowX="hidden"
+              overFlowY="scroll"
               align={currentLocation === 'Create Design' ? 'center' : undefined}
               px={{base: '0', md: '10'}}
             >
