@@ -59,6 +59,7 @@ export const AppContainer: React.FC = ({children}) => {
             rounded="xl"
             _hover={{bg: 'whiteAlpha.200'}}
             whiteSpace="nowrap"
+            onClick={() => navigate('/settings')}
           >
             <HStack display="inline-flex">
               <Avatar size="sm" name={user?.name} src={user?.picture} />
