@@ -169,15 +169,9 @@ export function PreviewStep() {
     )
   }
   return (
-    <Box as="section" mt="4">
-      <Flex
-        direction="column"
-        align="center"
-        maxW={{base: '3xl', md: '7xl'}}
-        mx="auto"
-        px={{base: '3', md: '8'}}
-      >
-        <Stack mb="2em" w="100%" align="center">
+    <Box as="section">
+      <Flex direction="column" align="center">
+        <Stack align="center">
           <Heading textAlign="center" fontWeight="medium">
             {design.question}
           </Heading>
@@ -193,7 +187,7 @@ export function PreviewStep() {
           ) : null}
         </Stack>
         <SimpleGrid
-          columns={{base: 1, md: 3}}
+          columns={{base: 1, md: 2, lg: 3}}
           spacing={{base: '2', md: '4', lg: '8'}}
           rowGap={{base: 8, md: 8, lg: 8}}
           alignItems="center"

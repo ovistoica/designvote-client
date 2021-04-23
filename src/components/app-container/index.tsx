@@ -29,6 +29,7 @@ export const AppContainer: React.FC = ({children}) => {
   const {isOpen, toggle} = useMobileMenuState()
   const {user} = useAuth()
   const navigate = useNavigate()
+  const currentLocation = useFormattedLocationName()
 
   const {data: designs} = useDesigns()
   return (
@@ -123,12 +124,7 @@ export const AppContainer: React.FC = ({children}) => {
         left={isOpen ? 'var(--sidebar-width)' : '0'}
         transition="left 0.2s"
       >
-        <Box
-          maxW="2560px"
-          bg={mode('gray.50', 'gray.800')}
-          height="100%"
-          pb="6"
-        >
+        <Box maxW="2560px" bg={mode('gray.50', 'gray.800')} height="100%">
           <Flex direction="column" height="full">
             <Flex
               w="full"
@@ -146,6 +142,7 @@ export const AppContainer: React.FC = ({children}) => {
               direction="column"
               flex="1"
               overflow="auto"
+              align={currentLocation === 'Create Design' ? 'center' : undefined}
               px={{base: '0', md: '10'}}
               pt="8"
             >
@@ -234,7 +231,7 @@ const ScrollArea = (props: BoxProps) => (
 
 const useMobileMenuState = () => {
   const [isOpen, actions] = useBoolean()
-  const isMobile = useBreakpointValue({base: true, lg: false})
+  const isMobile = useBreakpointValue({base: true, md: false})
   React.useEffect(() => {
     if (isMobile === false) {
       actions.off()
