@@ -8,7 +8,7 @@ import {HangedImage} from 'assets/icons'
 import {Spinner} from '@chakra-ui/spinner'
 
 interface ImageDropInputProps extends StackProps {
-  onImageUpload: (imageUrl: string) => void
+  onImageUpload: (imageUrls: string[]) => void
   description?: string
   icon?: JSX.Element
   isLoading?: boolean
@@ -24,7 +24,7 @@ export function ImageDropInput({
   const bg = useColorModeValue('surface', 'gray.700')
   const text = useColorModeValue('gray.500', 'gray.300')
   const {
-    uploadImage: onDrop,
+    uploadImages: onDrop,
     isLoading: isUploadLoading,
     isSuccess,
     imageUrl,

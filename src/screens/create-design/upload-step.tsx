@@ -68,7 +68,9 @@ export function UploadStep() {
   const setStep = useCreateDesignStore(useCallback(state => state.setStep, []))
 
   const onImageUpload = useCallback(
-    (imageUrl: string) => addVersion({url: imageUrl}),
+    (imageUrls: string[]) => {
+      imageUrls.forEach(imageUrl => addVersion({url: imageUrl}))
+    },
     [addVersion],
   )
 
