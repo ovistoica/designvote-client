@@ -59,7 +59,10 @@ export const AppContainer: React.FC = ({children}) => {
             rounded="xl"
             _hover={{bg: 'whiteAlpha.200'}}
             whiteSpace="nowrap"
-            onClick={() => navigate('/settings')}
+            onClick={() => {
+              navigate('/settings')
+              toggle()
+            }}
           >
             <HStack display="inline-flex">
               <Avatar size="sm" name={user?.name} src={user?.picture} />
@@ -72,19 +75,28 @@ export const AppContainer: React.FC = ({children}) => {
             <Stack pb="6">
               <SidebarLink
                 icon={<MdDashboard />}
-                onClick={() => navigate('/home')}
+                onClick={() => {
+                  navigate('/home')
+                  toggle()
+                }}
               >
                 Designs
               </SidebarLink>
               <SidebarLink
                 icon={<BsPencilSquare />}
-                onClick={() => navigate('/create')}
+                onClick={() => {
+                  navigate('/create')
+                  toggle()
+                }}
               >
                 Create
               </SidebarLink>
               <SidebarLink
                 icon={<MdSettings />}
-                onClick={() => navigate('/settings')}
+                onClick={() => {
+                  navigate('/settings')
+                  toggle()
+                }}
               >
                 Settings
               </SidebarLink>

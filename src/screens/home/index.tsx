@@ -10,48 +10,10 @@ import {AddIcon} from '@chakra-ui/icons'
 import {useDesigns} from 'utils/design-query'
 import {useNavigate} from 'react-router-dom'
 import {FullPageSpinner} from 'components/lib'
-import {Logo} from 'assets/icons'
 import {MetaDecorator} from 'components/meta-decorator'
 import {Design} from 'types'
 import {DesignCard, DesignInfo, VotesCount} from 'components/design-card'
-
-interface EmptyDashboardProps {
-  onClick: () => void
-}
-
-function EmptyDashboard({onClick}: EmptyDashboardProps) {
-  const bg = useColorModeValue('surface', 'gray.700')
-  const textInfoColor = useColorModeValue('textSecondary', 'gray.400')
-  return (
-    <Flex
-      w={['90%', '80%', '60%']}
-      bg={bg}
-      alignSelf="center"
-      mt="2em"
-      py={['3em', '3em', '3em']}
-      direction="column"
-      align="center"
-      justify="center"
-    >
-      <Logo />
-      <Text fontSize={['1.5rem', '2rem', '2rem']} fontWeight="500" mt="0.5em">
-        Huh, no designs?
-      </Text>
-      <Text mt="1em" color={textInfoColor}>
-        C'mon now don't be lazy...
-      </Text>
-      <Button
-        mt="2em"
-        fontWeigh="300"
-        fontSize="sm"
-        onClick={onClick}
-        colorScheme="orange"
-      >
-        Choose your design
-      </Button>
-    </Flex>
-  )
-}
+import {NoDesigns} from './no-designs'
 
 export function HomeScreen() {
   const navigate = useNavigate()
@@ -68,7 +30,7 @@ export function HomeScreen() {
         title="Designvote - Dashboard"
         description="Dashboard containing all of your designs. Share a design for people to vote."
       />
-      <Box as="section" maxW={{base: 'xs', md: '3xl'}}>
+      <Box as="section" maxW={{base: 'full', md: '3xl'}} px={{base: 4, md: 0}}>
         <Flex alignItems="center" flex="0">
           <Text fontSize="xl" fontWeight="500">
             Designs
@@ -113,7 +75,7 @@ export function HomeScreen() {
             })}
           </SimpleGrid>
         ) : (
-          <EmptyDashboard onClick={() => navigate('/create')} />
+          <NoDesigns onClick={() => navigate('/create')} />
         )}
       </Box>
     </>
