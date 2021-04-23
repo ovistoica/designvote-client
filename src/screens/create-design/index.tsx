@@ -27,44 +27,48 @@ export function CurrentScreen() {
   }
 }
 
-export function CreateDesign() {
+function ProgressSteps() {
   const {step, setStep} = useCreateDesignStore()
 
   return (
-    <Flex direction="column" align="stretch">
-      <Box maxW="7xl" mx="auto">
-        <Box p={0} mx="auto" px={{base: '6', md: '0'}}>
-          <nav aria-label="Progress steps">
-            <HStack as="ol" listStyleType="none" spacing="0">
-              <Step
-                isCurrent={step === CreateDesignStep.Create}
-                onClick={() => setStep(CreateDesignStep.Create)}
-              >
-                Create Design
-              </Step>
-              <Step
-                isCurrent={step === CreateDesignStep.Upload}
-                onClick={() => setStep(CreateDesignStep.Upload)}
-              >
-                Upload Versions
-              </Step>
-              <Step
-                isCurrent={step === CreateDesignStep.Preview}
-                onClick={() => setStep(CreateDesignStep.Preview)}
-              >
-                Review
-              </Step>
-              <Step
-                isCurrent={step === CreateDesignStep.Share}
-                onClick={() => setStep(CreateDesignStep.Share)}
-              >
-                Publish
-              </Step>
-            </HStack>
-          </nav>
-        </Box>
-        <CurrentScreen />
-      </Box>
+    <Box p={0} w="full" mx="auto" px={{base: '6', md: '0'}}>
+      <nav aria-label="Progress steps">
+        <HStack as="ol" listStyleType="none" spacing="0">
+          <Step
+            isCurrent={step === CreateDesignStep.Create}
+            onClick={() => setStep(CreateDesignStep.Create)}
+          >
+            Create Design
+          </Step>
+          <Step
+            isCurrent={step === CreateDesignStep.Upload}
+            onClick={() => setStep(CreateDesignStep.Upload)}
+          >
+            Upload Versions
+          </Step>
+          <Step
+            isCurrent={step === CreateDesignStep.Preview}
+            onClick={() => setStep(CreateDesignStep.Preview)}
+          >
+            Review
+          </Step>
+          <Step
+            isCurrent={step === CreateDesignStep.Share}
+            onClick={() => setStep(CreateDesignStep.Share)}
+          >
+            Publish
+          </Step>
+        </HStack>
+      </nav>
+    </Box>
+  )
+}
+
+export function CreateDesign() {
+  return (
+    <Flex direction="column" align="stretch" width="full" maxWidth="1000px">
+      <ProgressSteps />
+      <CurrentScreen />
     </Flex>
   )
 }

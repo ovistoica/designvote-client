@@ -3,9 +3,9 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Button,
   useColorModeValue as mode,
   useDisclosure,
+  IconButton,
 } from '@chakra-ui/react'
 import {HiDotsHorizontal} from 'react-icons/hi'
 import {DeleteIcon, EditIcon} from '@chakra-ui/icons'
@@ -29,23 +29,19 @@ export function DesignMenu({designId}: DesignMenuProps) {
     <>
       <Menu>
         <MenuButton
-          as={Button}
+          as={IconButton}
           size="sm"
-          w="1.5em"
-          h="1.5em"
-          m="0.5em"
           position="absolute"
           top="0"
           right="0"
+          variant="ghost"
           background={mode('white', 'gray.700')}
           onClick={e => e.stopPropagation()}
-          opacity={0}
-          _groupHover={{opacity: 1}}
           _focus={{border: 'none'}}
           _active={{border: 'none'}}
-        >
-          <HiDotsHorizontal />
-        </MenuButton>
+          icon={<HiDotsHorizontal />}
+        />
+
         <MenuList>
           <MenuItem icon={<EditIcon />}>Edit</MenuItem>
           <MenuItem icon={<FiLink />}>Get link</MenuItem>

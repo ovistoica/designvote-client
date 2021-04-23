@@ -91,19 +91,18 @@ export function UploadStep() {
   }
 
   return (
-    <Box as="section" p="8">
+    <Box as="section" pt="8">
       <Flex
         direction="column"
         align="center"
-        maxW={{base: 'xl', md: '7xl'}}
         mx="auto"
-        px={{base: '3', md: '8'}}
+        px={{base: '3', md: '0'}}
       >
         <Text fontSize="xl" textAlign="center" mb="8">
           Upload two or more versions of your design
         </Text>
         <SimpleGrid
-          columns={{base: 1, md: 3}}
+          columns={{base: 1, md: 2, lg: 3}}
           spacing={{base: '4', md: '4', lg: '8'}}
           maxW={{base: 'inherit', md: '3xl'}}
         >

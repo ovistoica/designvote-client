@@ -249,7 +249,7 @@ function CreateStep() {
   const debouncedSetQuestion = memoize(debounce(set.question, 1000))
 
   return (
-    <Stack pb={6} maxW="3xl" px={{base: '6', md: '8'}}>
+    <Stack pb={6} px={{base: '6', md: '0'}}>
       <Formik
         validationSchema={validationSchema}
         initialValues={initialValues}
