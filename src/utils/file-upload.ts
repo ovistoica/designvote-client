@@ -3,8 +3,7 @@ import {config, s3} from './aws'
 import {useAsync} from './hooks'
 
 function useUploadImage() {
-  const [progress, setProgress] = React.useState(0)
-  const [imageUrl, setimageUrl] = React.useState<string>()
+  const [imageUrls, setImageUrls] = React.useState<string[]>()
   const {
     run,
     setError,
@@ -16,41 +15,44 @@ function useUploadImage() {
     reset,
   } = useAsync()
 
-  const uploadImage = React.useCallback(
-    acceptedFiles => {
-      const [blob] = acceptedFiles
-
-      if (!blob) {
+  const uploadImages = React.useCallback(
+    (acceptedFiles: File[]) => {
+      if (!acceptedFiles.length || acceptedFiles.length < 1) {
         setError('Invalid file uploaded')
         return
       }
 
-      setimageUrl(`${config.digitalOceanSpaces}/${blob.name}`)
+      const imageUrls = acceptedFiles.map(
+        file => `${config.digitalOceanSpaces}/${file.name}`,
+      )
+
+      setImageUrls(imageUrls)
 
       // Constructing upload image request
-      const params = {
-        Body: blob,
-        Bucket: `${config.bucketName}`,
-        Key: blob.name,
-      }
-      const uploadReq = s3.putObject(params)
-      uploadReq
-        .on('build', request => {
+
+      const uploadPromises = acceptedFiles.map(file => {
+        const params = {
+          Body: file,
+          Bucket: `${config.bucketName}`,
+          Key: file.name,
+        }
+
+        const uploadReq = s3.putObject(params)
+        uploadReq.on('build', request => {
           request.httpRequest.headers.Host = `${config.digitalOceanSpaces}`
-          request.httpRequest.headers['Content-Length'] = blob.size
-          request.httpRequest.headers['Content-Type'] = blob.type
+          request.httpRequest.headers['Content-Length'] = `${file.size}`
+          request.httpRequest.headers['Content-Type'] = file.type
           request.httpRequest.headers['Accept'] = '*/*'
           request.httpRequest.headers['Accept-Language'] =
             'en-GB,en-US;q=0.9,en;q=0.8'
           // Header that the image is public
           request.httpRequest.headers['x-amz-acl'] = 'public-read'
         })
-        .on('httpUploadProgress', ({loaded, total}) =>
-          setProgress((loaded / total) * 100),
-        )
+        return uploadReq.promise()
+      })
 
-      // Start the promise
-      run(uploadReq.promise())
+      // Upload all images at once
+      run(Promise.all(uploadPromises))
     },
     [run, setError],
   )
@@ -66,12 +68,10 @@ function useUploadImage() {
     error,
 
     // function to upload image
-    uploadImage,
-
-    progress,
+    uploadImages,
 
     // imageUrl if upload was succesfull
-    imageUrl: isSuccess ? imageUrl : undefined,
+    imageUrl: isSuccess ? imageUrls : undefined,
 
     reset,
   }

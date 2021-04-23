@@ -8,8 +8,8 @@ import {useCallback} from 'react'
 
 import {
   useDesign,
-  useCreateDesignVersion,
   useDeleteDesignVersion,
+  useCreateMultipleDesignVersions,
 } from 'utils/design-query'
 
 interface UploadedImageProps extends ImageProps {
@@ -50,9 +50,9 @@ interface VersionsTabProps {
 export function VersionsTab({designId}: VersionsTabProps) {
   const {data, isLoading: isDesignLoading} = useDesign(designId)
   const {
-    mutate: addVersion,
+    mutate: addVersions,
     isLoading: isCreateLoading,
-  } = useCreateDesignVersion(designId)
+  } = useCreateMultipleDesignVersions(designId)
   const {
     mutate: deleteVersion,
     isLoading: isDeleteLoading,
@@ -64,13 +64,15 @@ export function VersionsTab({designId}: VersionsTabProps) {
   const {versions: versionsById} = design
 
   const onImageUpload = useCallback(
-    (imageUrl: string) =>
-      addVersion({
-        name: `#${versionsById.length + 1}`,
-        pictures: [imageUrl],
-        description: null,
-      }),
-    [addVersion, versionsById.length],
+    (imageUrls: string[]) =>
+      addVersions(
+        imageUrls.map((imgUrl, index) => ({
+          name: `#${versionsById.length + index + 1}`,
+          pictures: [imgUrl],
+          description: null,
+        })),
+      ),
+    [addVersions, versionsById.length],
   )
 
   return (

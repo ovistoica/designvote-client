@@ -147,7 +147,7 @@ function deleteDesign(designId: string) {
   return deleteRequest<null>(`v1/designs/${designId}`)
 }
 
-export function useCreateFromDraft() {
+export function useCreateDesignFromDraft() {
   const qc = useQueryClient()
 
   const {images, imagesByUrl, ...design} = useCreateDesignStore(
@@ -371,4 +371,20 @@ export function useDeleteDesign(options: QueryOptions<null, AxiosError> = {}) {
     ...options,
     onSettled: () => qc.invalidateQueries({queryKey: 'designs'}),
   })
+}
+
+export function useCreateMultipleDesignVersions(
+  designId: string,
+  options: QueryOptions<CreateDesignResponse, AxiosError> = {},
+) {
+  const qc = useQueryClient()
+
+  return useMutation(
+    (apiVersions: ApiVersion[]) => createDesignVersions(designId, apiVersions),
+    {
+      ...options,
+      onSettled: () =>
+        qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]}),
+    },
+  )
 }
