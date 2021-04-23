@@ -40,12 +40,13 @@ function UploadedImage({
         position="absolute"
         right="-2"
         top="-2"
-        bg="info"
+        bg={mode('gray.50', 'gray.700')}
         size="2em"
         boxShadow="md"
         opacity={0}
         transition="0.25s all"
         cursor="pointer"
+        zIndex="sticky"
         onClick={() => onDeletePress(imageUrl)}
         _groupHover={{
           opacity: 1,

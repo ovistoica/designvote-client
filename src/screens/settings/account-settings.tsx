@@ -20,7 +20,7 @@ import {useAuth} from 'context/auth-context'
 import {FaMoon, FaSun} from 'react-icons/fa'
 
 export const AccountSettings = (props: StackProps) => {
-  const {user} = useAuth()
+  const {user, logout} = useAuth()
   const value = useColorModeValue('dark', 'light')
   const {toggleColorMode} = useColorMode()
   const SwitchIcon = useColorModeValue(FaMoon, FaSun)
@@ -71,9 +71,9 @@ export const AccountSettings = (props: StackProps) => {
                 <Switch id="email-news" colorScheme="orange" />
               </FormControl>
             </Stack>
-            <Button mt="5" size="sm" fontWeight="normal" colorScheme="orange">
-              Save Changes
-            </Button>
+          </FieldGroup>
+          <FieldGroup>
+            <Button onClick={() => logout()}>Logout</Button>
           </FieldGroup>
         </Stack>
       </Card>

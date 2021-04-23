@@ -357,7 +357,7 @@ function CreateStep() {
                 }}
               />
               <FormHelperText>
-                Wether voters should choose the best of all or rate each one
+                Whether voters should choose the best of all or rate each one
                 individually
               </FormHelperText>
             </FormControl>

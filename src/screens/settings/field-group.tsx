@@ -1,7 +1,7 @@
 import {Box, BoxProps, Text, useColorModeValue as mode} from '@chakra-ui/react'
 
 interface FieldGroupProps extends BoxProps {
-  title: string
+  title?: string
   description?: string
 }
 
@@ -10,7 +10,7 @@ export const FieldGroup = (props: FieldGroupProps) => {
   const descriptionColor = mode('gray.600', 'gray.400')
   return (
     <Box>
-      <Text fontWeight="semibold">{title}</Text>
+      {title ? <Text fontWeight="semibold">{title}</Text> : null}
       {description ? (
         <Text color={descriptionColor} fontSize="sm">
           {description}
