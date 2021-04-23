@@ -73,7 +73,9 @@ export const AccountSettings = (props: StackProps) => {
             </Stack>
           </FieldGroup>
           <FieldGroup>
-            <Button onClick={() => logout()}>Logout</Button>
+            <Button onClick={() => logout({returnTo: window.location.origin})}>
+              Logout
+            </Button>
           </FieldGroup>
         </Stack>
       </Card>

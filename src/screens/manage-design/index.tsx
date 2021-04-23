@@ -29,9 +29,7 @@ export const ManageDesign = () => {
     isLoading,
   } = useDesign(designId)
 
-  // get current website link (for production and development)
-  const end = window.location.href.lastIndexOf(`/design`)
-  const websiteLink = window.location.href.slice(0, end)
+  const websiteLink = window.location.origin
   const link = isLoading
     ? 'Loading ...'
     : `${websiteLink}/vote/${design.shortUrl}`

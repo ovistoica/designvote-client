@@ -144,7 +144,6 @@ export const AppContainer: React.FC = ({children}) => {
               overflow="auto"
               align={currentLocation === 'Create Design' ? 'center' : undefined}
               px={{base: '0', md: '10'}}
-              pt="8"
             >
               {children}
             </Flex>
