@@ -1,114 +1,19 @@
 import {
+  Box,
   Button,
   Flex,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   SimpleGrid,
   Text,
   useColorModeValue,
-  useDisclosure,
 } from '@chakra-ui/react'
-import {AddIcon, DeleteIcon, EditIcon} from '@chakra-ui/icons'
-import {HiDotsHorizontal} from 'react-icons/hi'
-import {FiLink} from 'react-icons/fi'
-import {useDesigns, useDeleteDesign} from 'utils/design-query'
+import {AddIcon} from '@chakra-ui/icons'
+import {useDesigns} from 'utils/design-query'
 import {useNavigate} from 'react-router-dom'
-import {DeleteResourceAlert, FullPageSpinner} from 'components/lib'
+import {FullPageSpinner} from 'components/lib'
 import {Logo} from 'assets/icons'
 import {MetaDecorator} from 'components/meta-decorator'
 import {Design} from 'types'
-
-interface DesignCardProps {
-  designId: string
-  name: string
-}
-
-function DesignCard({designId, name}: DesignCardProps) {
-  const navigate = useNavigate()
-  const {mutate: deleteDesign} = useDeleteDesign()
-
-  // dark mode support
-  const cardBg = useColorModeValue('white', 'gray.700')
-  const menuBG = useColorModeValue('white', 'gray.700')
-  const cardHover = useColorModeValue('gray.100', 'gray.600')
-
-  // Delete alert specific
-  const {
-    isOpen: isAlertOpen,
-    onOpen: onAlertOpen,
-    onClose: onAlertClose,
-  } = useDisclosure()
-
-  return (
-    <>
-      <Flex
-        aria-label={`Design ${name}`}
-        boxShadow="md"
-        h="5em"
-        align="center"
-        justify="space-between"
-        p="1em"
-        borderRadius="8px"
-        flex="1"
-        maxW="300px"
-        backgroundColor={cardBg}
-        cursor="pointer"
-        _hover={{background: cardHover}}
-        transition="0.25s all"
-        onClick={() => navigate(`/design/${designId}`)}
-        role="group"
-        position="relative"
-      >
-        <Text>{name}</Text>
-        <Menu>
-          <MenuButton
-            as={Button}
-            size="sm"
-            w="1.5em"
-            h="1.5em"
-            m="0.5em"
-            position="absolute"
-            top="0"
-            right="0"
-            background={menuBG}
-            onClick={e => e.stopPropagation()}
-            opacity={0}
-            _groupHover={{opacity: 1}}
-            _focus={{border: 'none'}}
-            _active={{border: 'none'}}
-          >
-            <HiDotsHorizontal />
-          </MenuButton>
-          <MenuList>
-            <MenuItem icon={<EditIcon />}>Edit</MenuItem>
-            <MenuItem icon={<FiLink />}>Get link</MenuItem>
-            <MenuItem
-              icon={<DeleteIcon />}
-              onClick={e => {
-                e.stopPropagation()
-                onAlertOpen()
-              }}
-            >
-              Delete
-            </MenuItem>
-          </MenuList>
-        </Menu>
-      </Flex>
-      <DeleteResourceAlert
-        onClose={onAlertClose}
-        isOpen={isAlertOpen}
-        onDeletePress={() => {
-          deleteDesign(designId)
-          onAlertClose()
-        }}
-        title="Delete design"
-        body="Are you sure? This action cannot be undone"
-      />
-    </>
-  )
-}
+import {DesignCard, DesignInfo, VotesCount} from 'components/design-card'
 
 interface EmptyDashboardProps {
   onClick: () => void
@@ -163,7 +68,7 @@ export function HomeScreen() {
         title="Designvote - Dashboard"
         description="Dashboard containing all of your designs. Share a design for people to vote."
       />
-      <Flex h="100%" w="100%" flexDir="column" px={{base: '10', md: '0'}}>
+      <Box as="section" maxW={{base: 'xs', md: '3xl'}}>
         <Flex alignItems="center" flex="0">
           <Text fontSize="xl" fontWeight="500">
             Designs
@@ -189,24 +94,28 @@ export function HomeScreen() {
           </Button>
         </Flex>
         {designs.length ? (
-          <SimpleGrid
-            mt="1em"
-            gridTemplateColumns={{sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)'}}
-            minChildWidth="300px"
-            spacing="1.5em"
-          >
-            {designs.map((design: Design) => (
-              <DesignCard
-                key={design.designId}
-                designId={design.designId}
-                name={design.name}
-              />
-            ))}
+          <SimpleGrid columns={{base: 1, md: 3}} spacing="6" mt={42}>
+            {designs.map((design: Design) => {
+              const {
+                name,
+                description,
+                totalVotes,
+                voteStyle,
+                designId,
+              } = design
+              const onClick = () => navigate(`/design/${designId}`)
+              return (
+                <DesignCard key={name} designId={designId} onClick={onClick}>
+                  <DesignInfo mt="3" name={name} description={description} />
+                  <VotesCount my="4" count={totalVotes} voteStyle={voteStyle} />
+                </DesignCard>
+              )
+            })}
           </SimpleGrid>
         ) : (
           <EmptyDashboard onClick={() => navigate('/create')} />
         )}
-      </Flex>
+      </Box>
     </>
   )
 }

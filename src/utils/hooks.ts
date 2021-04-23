@@ -129,7 +129,7 @@ export function useFormattedLocationName() {
   }
 
   if (pathname === '/settings') {
-    return 'Settings'
+    return 'Account & Settings'
   }
 
   return 'Not Found'
