@@ -8,7 +8,7 @@ import {withStyles} from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
 import {Box, Flex, Stack, Text} from '@chakra-ui/layout'
 import {Image} from '@chakra-ui/image'
-import {ImageCarouselModal} from '../full-image-voting-modal'
+import {VotingModal} from '../voting-modal'
 import {NormalizedDesign} from 'types'
 
 interface RateStarsCardProps {
@@ -76,7 +76,7 @@ export function RateStarsVotingCard({
           boxSize="15em"
           align="center"
         />
-        <ImageCarouselModal
+        <VotingModal
           designId={design.designId}
           onClose={onClose}
           isOpen={isOpen}

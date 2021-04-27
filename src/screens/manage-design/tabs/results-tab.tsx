@@ -20,24 +20,37 @@ export function ResultsTab({designId}: ResultsTabProps) {
           spacing={{base: '4', md: '8'}}
           w="full"
         >
-          {design.versions.map((vId, index) => {
-            const version = versions[vId]
-            const title = `Version #${index + 1} votes`
-            const [picId] = version.pictures
-            const {uri: imageUrl} = pictures[picId]
+          {design.versions
+            .sort((a, b) => {
+              const {name: nameA} = versions[a]
+              const {name: nameB} = versions[b]
+              if (nameA === nameB) {
+                return 0
+              }
+              return nameA > nameB ? 1 : -1
+            })
+            .map((vId, index) => {
+              const version = versions[vId]
+              const title = `Version #${index + 1} votes`
+              const [picId] = version.pictures
+              const {uri: imageUrl} = pictures[picId]
+              const numberOfOpinions = version.opinions.length
 
-            return (
-              <StatCard
-                id={title}
-                key={`resultCard${vId}`}
-                votes={version.votes}
-                totalVotes={design.totalVotes}
-                voteStyle={design.voteStyle}
-                title={title}
-                imageUrl={imageUrl}
-              />
-            )
-          })}
+              return (
+                <StatCard
+                  id={title}
+                  key={`resultCard${vId}`}
+                  votes={version.votes}
+                  totalVotes={design.totalVotes}
+                  voteStyle={design.voteStyle}
+                  title={title}
+                  imageUrl={imageUrl}
+                  designId={design.designId}
+                  versionId={vId}
+                  numberOfOpinions={numberOfOpinions}
+                />
+              )
+            })}
         </SimpleGrid>
       </Box>
     </Box>

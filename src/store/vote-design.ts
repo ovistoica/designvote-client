@@ -20,9 +20,16 @@ export type VoteDesignState = {
    */
   currentChosen: Record<DesignId, VersionId>
 
+  /**
+   * Record to keep evidence of comments on design
+   * versions
+   */
+  opinions: Record<string, string[] | undefined>
+
   setVoterId: (voterId: string) => void
   setRating: (versionId: string, rating: number) => void
   setChosen: (designId: DesignId, versionId: VersionId) => void
+  setComment: (versionId: string, comment: string) => void
   clearState: () => void
 }
 
@@ -30,11 +37,13 @@ type InitialDataState = {
   voterId?: string
   currentRatings: Record<string, number>
   currentChosen: Record<DesignId, VersionId>
+  opinions: Record<string, string[] | undefined>
 }
 
 const initialState: InitialDataState = {
   currentRatings: {},
   currentChosen: {},
+  opinions: {},
 }
 
 export const getRating = memoize(
@@ -62,6 +71,16 @@ export const useVoteDesignState = create<VoteDesignState>(
       setChosen(designId, versionId) {
         set({
           currentChosen: {...getState().currentChosen, [designId]: versionId},
+        })
+      },
+      setComment(versionId, comment) {
+        const oldOpinions = getState().opinions
+        const versionOpinions = oldOpinions[versionId] ?? []
+        set({
+          opinions: {
+            ...oldOpinions,
+            [versionId]: [...versionOpinions, comment],
+          },
         })
       },
       clearState() {
