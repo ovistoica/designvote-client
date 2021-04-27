@@ -9,7 +9,14 @@ import {
 } from 'react-query'
 import {useNavigate} from 'react-router'
 import {useCreateDesignStore} from 'store'
-import {ApiDesign, Design, DesignType, NormalizedDesign, VoteStyle} from 'types'
+import {
+  ApiDesign,
+  Design,
+  DesignType,
+  NormalizedDesign,
+  Opinion,
+  VoteStyle,
+} from 'types'
 import {
   deleteRequest,
   getRequest,
@@ -50,6 +57,12 @@ interface EditDesignBody {
   img: string | null
   'design-type': DesignType | null
   public: boolean | null
+}
+
+interface AddOpinionBody {
+  'voter-id': string
+  'version-id': string
+  opinion: string
 }
 
 type QueryOptions<Data, Error> = Omit<
@@ -108,6 +121,13 @@ function deleteDesignVersion(designId: string, versionId: string) {
 
 function editDesign(designId: string, body: EditDesignBody) {
   return putRequest<Design, EditDesignBody>(`v1/designs/${designId}`, body)
+}
+
+function addOpinion(designId: string, body: AddOpinionBody) {
+  return postRequest<Opinion, AddOpinionBody>(
+    `v1/designs/${designId}/opinions`,
+    body,
+  )
 }
 
 interface VoteDesignVersionBody {
@@ -381,6 +401,27 @@ export function useCreateMultipleDesignVersions(
 
   return useMutation(
     (apiVersions: ApiVersion[]) => createDesignVersions(designId, apiVersions),
+    {
+      ...options,
+      onSettled: () =>
+        qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]}),
+    },
+  )
+}
+
+export function useAddOpinion(
+  designId: string,
+  options: QueryOptions<Opinion, AxiosError> = {},
+) {
+  const qc = useQueryClient()
+
+  return useMutation(
+    (params: {voterId: string; opinion: string; versionId: string}) =>
+      addOpinion(designId, {
+        'version-id': params.versionId,
+        opinion: params.opinion,
+        'voter-id': params.voterId,
+      }),
     {
       ...options,
       onSettled: () =>

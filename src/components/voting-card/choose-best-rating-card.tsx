@@ -4,7 +4,7 @@ import {VoteFunction} from 'utils/design-query'
 import {getChosen, useVoteDesignState} from 'store/vote-design'
 import {Center, Circle, Flex, Stack, Text} from '@chakra-ui/layout'
 import {Image} from '@chakra-ui/image'
-import {ImageCarouselModal} from '../full-image-voting-modal'
+import {VotingModal} from '../voting-modal'
 import {CheckIcon} from '@chakra-ui/icons'
 import {NormalizedDesign} from 'types'
 
@@ -67,7 +67,7 @@ export function ChooseBestVotingCard({
           boxSize="15em"
           align="center"
         />
-        <ImageCarouselModal
+        <VotingModal
           designId={design.designId}
           onClose={onClose}
           isOpen={isOpen}

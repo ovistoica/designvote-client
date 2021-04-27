@@ -7,18 +7,20 @@ export const picture = new schema.Entity<types.Picture>(
 
   {idAttribute: 'pictureId'},
 )
-export const version = new schema.Entity<types.Version>(
-  'version',
-  {
-    pictures: [picture],
-  },
-  {idAttribute: 'versionId'},
-)
 
 export const opinion = new schema.Entity<types.Opinion>(
   'opinion',
   {},
   {idAttribute: 'opinionId'},
+)
+
+export const version = new schema.Entity<types.Version>(
+  'version',
+  {
+    pictures: [picture],
+    opinions: [opinion],
+  },
+  {idAttribute: 'versionId'},
 )
 
 export const design = new schema.Entity<types.Design>(

@@ -29,12 +29,13 @@ export interface Version {
   designId: string
   votes: Vote[]
   pictures: string[]
+  opinions: number[]
 }
 
 export interface Design {
   designId: string
   description?: string | null
-  opinions: string[]
+  opinions: number[]
   uid: string
   name: string
   public: boolean

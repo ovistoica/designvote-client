@@ -7,21 +7,19 @@ import {
 } from '@chakra-ui/modal'
 import {Flex, Grid, GridItem, Heading, HStack, Text} from '@chakra-ui/layout'
 import {CloseButton} from '@chakra-ui/close-button'
-import {FormControl} from '@chakra-ui/form-control'
-import {Input} from '@chakra-ui/input'
 import {Image} from '@chakra-ui/image'
 import {IconButton, Button} from '@chakra-ui/button'
 import {ChevronLeftIcon, ChevronRightIcon} from '@chakra-ui/icons'
 import {Design, VoteStyle} from 'types'
-import {RiSendPlaneFill} from 'react-icons/ri'
 import Rating from '@material-ui/lab/Rating'
 import useKeyboardShortcut from 'use-keyboard-shortcut'
 import {Key} from 'ts-key-enum'
 import {useDesign, VoteFunction} from 'utils/design-query'
-import {useColorModeValue as mode, useToken} from '@chakra-ui/react'
+import {Avatar, useColorModeValue as mode, useToken} from '@chakra-ui/react'
 import {withStyles} from '@material-ui/core'
 import {getRating, useVoteDesignState} from 'store/vote-design'
 import {useVoterId} from 'utils/votes'
+import {CommentsSection} from './comments-sections'
 
 interface VersionModalProps {
   designId: string
@@ -62,7 +60,7 @@ function useMoveWithArrowKeys({
   return {goToPrevious, goToNext}
 }
 
-export function ImageCarouselModal({
+export function VotingModal({
   isOpen,
   onClose,
   initialVersionId,
@@ -99,6 +97,12 @@ export function ImageCarouselModal({
   const currentRating = useVoteDesignState(getRating(versionId))
   const setRating = useVoteDesignState(state => state.setRating)
   const setChosen = useVoteDesignState(state => state.setChosen)
+  const comments = useVoteDesignState(
+    React.useCallback(state => state.opinions[versionId] ?? [], [versionId]),
+  )
+  const addComment = useVoteDesignState(
+    React.useCallback(state => state.setComment, []),
+  )
 
   return (
     <Drawer onClose={onClose} isOpen={isOpen} size="full">
@@ -199,21 +203,19 @@ export function ImageCarouselModal({
                     />
                   )}
                 </Flex>
-
-                <FormControl id="opinion" maxW="40em" display="flex" pt="0.5em">
-                  <Input
-                    type="text"
-                    as="textarea"
-                    placeholder="Leave a comment"
-                  />
-                  <IconButton
-                    colorScheme="teal"
-                    marginInlineStart="0.5em"
-                    aria-label="Send comment"
-                    icon={<RiSendPlaneFill />}
-                    variant="outline"
-                  />
-                </FormControl>
+                {comments.map((comment, index) => {
+                  return (
+                    <Flex p="1" mt={index !== 0 ? '2' : undefined}>
+                      <Avatar size="sm" m="1" mt="0" />
+                      <Text ml="2">{comment}</Text>
+                    </Flex>
+                  )
+                })}
+                <CommentsSection
+                  designId={designId}
+                  versionId={versionId}
+                  onSubmitComment={comment => addComment(versionId, comment)}
+                />
               </GridItem>
             </Grid>
           </DrawerBody>
