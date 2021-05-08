@@ -50,14 +50,18 @@ export const ManageDesign = () => {
   return (
     <Tabs isFitted colorScheme="orange" defaultIndex={3}>
       <Flex direction="column" align="stretch">
-        <Box>
+        <Box
+          position={{base: 'fixed', md: 'relative'}}
+          bg={{base: mode('gray.50', 'gray.800'), md: 'transparent'}}
+          zIndex="9999"
+        >
           <Box mx="auto">
             <Flex
               direction={{base: 'column', md: 'row'}}
-              justify="space-between"
+              justify={{base: 'center', md: 'space-between'}}
               align="flex-start"
-              mb="10"
-              px="8"
+              mb={{base: '2', md: '10'}}
+              px={{base: '6', md: '8'}}
             >
               <HStack mb={{base: '4', md: '0'}}>
                 <Heading size="lg">{design.name ?? 'Loading'}</Heading>
@@ -95,22 +99,22 @@ export const ManageDesign = () => {
               </TabList>
             </Flex>
           </Box>
-        </Box>
-        <Box pos="relative" zIndex={0}>
-          <Divider
-            borderBottomWidth="2px"
-            opacity={1}
-            borderColor={mode('gray.100', 'gray.700')}
-          />
+          <Box pos="relative">
+            <Divider
+              borderBottomWidth="2px"
+              opacity={1}
+              borderColor={mode('gray.100', 'gray.700')}
+            />
+          </Box>
         </Box>
         {isLoading ? (
-          <Center mt={8}>
+          <Center mt={8} pt={{base: '10rem', md: '0'}}>
             <Spinner />
           </Center>
         ) : (
           <Box flex="1">
             <Box mx="auto">
-              <TabPanels mt="2" h="full" w="full">
+              <TabPanels mt="0" h="full" w="full" pt={{base: '10rem', md: '0'}}>
                 <TabPanel>
                   <DesignInfoTab designId={designId} />
                 </TabPanel>

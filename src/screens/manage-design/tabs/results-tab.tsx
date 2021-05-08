@@ -13,7 +13,11 @@ export function ResultsTab({designId}: ResultsTabProps) {
   } = useDesign(designId)
 
   return (
-    <Box as="section" bg={mode('gray.50', 'gray.800')} py="8">
+    <Box
+      as="section"
+      bg={mode('gray.50', 'gray.800')}
+      py={{base: '2', md: '8'}}
+    >
       <Box mx="auto" px={{base: '3'}}>
         <SimpleGrid
           columns={{base: 1, md: 2, lg: 3}}

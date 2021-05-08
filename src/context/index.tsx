@@ -77,9 +77,10 @@ const theme = extendTheme({
       },
     }),
   },
-  config: {
-    useSystemColorMode: process.env.NODE_ENV === 'production',
-  },
+  // TODO: Toggle on Settings
+  // config: {
+  //   useSystemColorMode: process.env.NODE_ENV === 'production',
+  // },
 })
 
 const AppProviders: React.FC = ({children}) => {
@@ -94,7 +95,7 @@ const AppProviders: React.FC = ({children}) => {
               <CookiesProvider>
                 <Router>{children}</Router>
               </CookiesProvider>
-              <ReactQueryDevtools initialIsOpen={false} />
+              {/* <ReactQueryDevtools initialIsOpen={false} /> */}
             </QueryClientProvider>
           </AuthProvider>
         </Auth0Provider>

@@ -1,4 +1,4 @@
-import {NavBar} from 'components/nav'
+import {NavBar} from 'components/nav-bar'
 import {Route, Routes} from 'react-router-dom'
 import {NotFoundScreen} from 'screens/not-found'
 import {LandingPage} from 'screens/landing'
