@@ -56,7 +56,7 @@ function StarsRatingCard(props: SpecificVoteStyleCardProps) {
       <Image
         alignSelf="center"
         src={imageUrl}
-        boxSize={{base: 'xs', md: '2xs'}}
+        boxSize={{base: '2xs', md: '2xs'}}
         objectFit="contain"
         align="center"
         // p="5"
