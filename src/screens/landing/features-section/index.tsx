@@ -1,5 +1,4 @@
 import {Box, Center, DarkMode, Heading, SimpleGrid} from '@chakra-ui/react'
-import * as React from 'react'
 import {
   FcComments,
   FcDoughnutChart,
@@ -14,9 +13,8 @@ export const FeaturesSection = () => (
   <Center
     as="section"
     bg="blue.700"
-    pt={{base: '12', md: '24'}}
-    pb={{base: '12', md: '24'}}
-    h={{base: 'auto', md: '2xl'}}
+    py={{base: '12', md: '24', lg: '24'}}
+    h={{base: 'auto', md: '3xl', lg: '2xl'}}
   >
     <Box maxW={{base: 'xl', md: '8xl'}} mx="auto" px={{base: '6', md: '6'}}>
       <DarkMode>
@@ -27,12 +25,12 @@ export const FeaturesSection = () => (
           textAlign="center"
           letterSpacing="wide"
           size="2xl"
-          mb={{base: '8', md: '24'}}
+          mb={{base: '8', md: '16', lg: '24'}}
         >
           Everything you need to get validation.
         </Heading>
         <SimpleGrid
-          columns={{base: 1, md: 3}}
+          columns={{base: 1, md: 2, lg: 3}}
           spacingX="10"
           spacingY={{base: '8', md: '14'}}
         >
