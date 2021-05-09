@@ -23,7 +23,7 @@ import {
   HiQuestionMarkCircle,
 } from 'react-icons/hi'
 import {RemoveScroll} from 'react-remove-scroll'
-import {Logo} from './logo'
+import {Logo} from '../logo'
 import {NavLink} from './nav-link'
 
 const variants: Variants = {

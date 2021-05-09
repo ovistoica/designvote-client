@@ -23,7 +23,7 @@ export function FeedbackSection() {
           mt="8"
           align={{lg: 'center'}}
           justify="space-between"
-          overflow="hidden"
+          overflow={{md: 'hidden'}}
         >
           <Box flex="1" maxW={{lg: '3xl'}}>
             <Heading
@@ -52,7 +52,7 @@ export function FeedbackSection() {
             w={{base: 'full', md: '90%'}}
             h={{base: 'auto'}}
             shadow="lg"
-            mr="-25rem"
+            mr={{md: '-25rem'}}
             rounded="lg"
             overflow="hidden"
           >

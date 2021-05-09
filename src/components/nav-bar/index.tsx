@@ -7,7 +7,7 @@ import {
   VisuallyHidden,
 } from '@chakra-ui/react'
 import {useAuth} from 'context/auth-context'
-import {Logo} from './logo'
+import {Logo} from '../logo'
 import {MobileNav} from './mobile-nav'
 import {NavLink} from './nav-link'
 

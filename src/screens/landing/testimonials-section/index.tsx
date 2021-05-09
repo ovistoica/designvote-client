@@ -50,6 +50,7 @@ export const TestimonialSection = () => {
               mt="8"
               rightIcon={<FaArrowRight />}
               size="lg"
+              color="white"
               _hover={{
                 bg: 'blue.800',
                 shadow: 'lg',

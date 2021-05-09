@@ -15,7 +15,7 @@ import {
   Button,
 } from '@chakra-ui/react'
 
-import Logo from './logo'
+import {Logo} from './logo'
 import {useAuth} from 'context/auth-context'
 import {useTheme} from '@emotion/react'
 import {useNavigate} from 'react-router-dom'
