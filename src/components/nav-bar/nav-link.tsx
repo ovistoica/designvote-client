@@ -49,7 +49,11 @@ const MobileNavLink = (props: MobileNavLinkProps) => {
       _hover={{bg: mode('gray.50', 'gray.600')}}
     >
       <Icon as={icon} color={mode('orange.600', 'orange.400')} fontSize="xl" />
-      <Box marginStart="3" fontWeight="medium">
+      <Box
+        marginStart="3"
+        fontWeight="medium"
+        color={mode('gray.600', 'gray.300')}
+      >
         {children}
       </Box>
     </Flex>

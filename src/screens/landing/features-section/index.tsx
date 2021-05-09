@@ -13,7 +13,7 @@ export const FeaturesSection = () => (
   <Center
     as="section"
     bg="blue.700"
-    py={{base: '12', md: '24', lg: '24'}}
+    py={{base: '8', md: '16'}}
     h={{base: 'auto', md: '3xl', lg: '2xl'}}
   >
     <Box maxW={{base: 'xl', md: '8xl'}} mx="auto" px={{base: '6', md: '6'}}>

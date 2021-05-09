@@ -10,7 +10,13 @@ import {
 import heroImage from 'assets/hero-image.png'
 
 export const HeroSection = () => (
-  <Box as="section" bg="gray.800" color="white" pt="7.5rem">
+  <Box
+    as="section"
+    bg="gray.800"
+    color="white"
+    pt="7.5rem"
+    pb={{base: '8', md: '16'}}
+  >
     <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '6', md: '8'}}>
       <Box textAlign="center">
         <Heading
@@ -70,7 +76,7 @@ export const HeroSection = () => (
         position="relative"
         rounded="lg"
         overflow="hidden"
-        pb={10}
+        pb="10"
       >
         <Img alt="Screenshot of Designvote App" src={heroImage} rounded="lg" />
       </Box>

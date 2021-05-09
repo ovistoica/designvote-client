@@ -13,7 +13,11 @@ import {RiDashboardFill} from 'react-icons/ri'
 
 export const PhoneSection = () => {
   return (
-    <Box as="section" bg={mode('gray.50', 'gray.800')} pt="16" pb="16">
+    <Box
+      as="section"
+      bg={mode('gray.50', 'gray.800')}
+      py={{base: '9', md: '16'}}
+    >
       <Box maxW={{base: 'xl', md: '8xl'}} mx="auto" px={{base: '6', md: '8'}}>
         <Heading
           letterSpacing="wide"

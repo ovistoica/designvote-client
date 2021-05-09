@@ -9,6 +9,7 @@ export const LinkGrid = (props: SimpleGridProps) => (
         <Link>How it works</Link>
         <Link>Pricing</Link>
         <Link>Use Cases</Link>
+        <Link href="mailto:ovidiu.stoica1094@gmail.com">Contact</Link>
       </Stack>
     </Box>
     <Box minW="130px">
