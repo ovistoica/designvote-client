@@ -74,7 +74,7 @@ export const PhoneSection = () => {
             h="full"
           >
             <Img
-              shadow="lg"
+              shadow="full"
               rounded="lg"
               objectFit="cover"
               maxW={{base: '320px', md: '320px', lg: '350px'}}

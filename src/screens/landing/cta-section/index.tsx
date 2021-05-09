@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Center,
   Heading,
   Stack,
   Text,
@@ -9,7 +10,11 @@ import {
 
 export const CTASection = () => {
   return (
-    <Box as="section" bg={mode('gray.100', 'gray.700')}>
+    <Center
+      as="section"
+      bg={mode('gray.100', 'gray.700')}
+      h={{base: 'auto', md: '3xl', lg: '2xl'}}
+    >
       <Box
         maxW="3xl"
         mx="auto"
@@ -63,6 +68,6 @@ export const CTASection = () => {
           </Button>
         </Stack>
       </Box>
-    </Box>
+    </Center>
   )
 }

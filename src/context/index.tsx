@@ -35,6 +35,10 @@ const queryClient = new QueryClient({
   defaultOptions: defaultOptions as DefaultOptions,
 })
 const theme = extendTheme({
+  shadows: {
+    ...defaultTheme.shadows,
+    full: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;',
+  },
   colors: {
     ...defaultTheme.colors,
     red: {

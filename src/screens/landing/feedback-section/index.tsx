@@ -51,10 +51,9 @@ export function FeedbackSection() {
             pos="relative"
             w={{base: 'full', md: '90%'}}
             h={{base: 'auto'}}
-            shadow="lg"
             mr={{md: '-25rem'}}
-            rounded="lg"
             overflow="hidden"
+            p="9"
           >
             <Img
               w="full"
@@ -62,8 +61,9 @@ export function FeedbackSection() {
               h={{lg: '90%'}}
               objectFit="cover"
               src={feedbackFeature}
-              alt="Screening talent"
-              mr="-15em"
+              alt="Design feedback screen"
+              shadow="full"
+              rounded="lg"
             />
           </Box>
         </Stack>
