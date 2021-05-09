@@ -4,12 +4,7 @@ import {Testimonial} from './testimonial'
 
 export const TestimonialSection = () => {
   return (
-    <Box
-      as="section"
-      py={{base: '8', md: '16'}}
-      px={{base: '6', md: '8'}}
-      mt={{base: 0, md: 16}}
-    >
+    <Box as="section" py={{base: '8', md: '16'}} px={{base: '6', md: '8'}}>
       <Heading
         textAlign="center"
         fontWeight="semibold"
@@ -43,18 +38,14 @@ export const TestimonialSection = () => {
               feedback and gathering all the results manually.
             </Text>
             <Button
-              colorScheme="blue"
+              colorScheme="orange"
               zIndex="999"
-              bg="blue.900"
               transition="0.25s all"
               mt="8"
               rightIcon={<FaArrowRight />}
               size="lg"
               color="white"
-              _hover={{
-                bg: 'blue.800',
-                shadow: 'lg',
-              }}
+              w={{base: 'full', md: 'auto'}}
             >
               Get started free
             </Button>

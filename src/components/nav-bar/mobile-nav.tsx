@@ -146,7 +146,11 @@ export const MobileNav = () => {
                 <Button w="full" colorScheme="orange">
                   Start Free Trial
                 </Button>
-                <Box textAlign="center" fontWeight="medium">
+                <Box
+                  textAlign="center"
+                  fontWeight="medium"
+                  color={mode('gray.600', 'gray.300')}
+                >
                   Have an account?{' '}
                   <Box
                     as="a"
