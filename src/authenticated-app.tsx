@@ -8,6 +8,8 @@ import {ManageDesign} from 'screens/manage-design'
 import {PublicVoteScreen} from 'screens/public-vote'
 import {AppContainer} from 'components/app-container'
 import {SettingsScreen} from 'screens/settings'
+import {Privacy} from 'screens/privacy'
+import {Terms} from 'screens/terms'
 
 function AppRoutes() {
   return (
@@ -20,6 +22,8 @@ function AppRoutes() {
       <Route path="/design/:designId" element={<ManageDesign />} />
       <Route path="/create" element={<CreateDesign />} />
       <Route path="/settings" element={<SettingsScreen />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
 
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>

@@ -11,6 +11,7 @@ import {useAuth} from 'context/auth-context'
 import {Logo} from '../logo'
 import {MobileNav} from './mobile-nav'
 import {NavLink} from './nav-link'
+import {Link as RouterLink} from 'react-router-dom'
 
 interface NavBarProps extends BoxProps {}
 
@@ -29,16 +30,22 @@ export const NavBar = (props: NavBarProps) => {
             <HStack spacing="8">
               <Box as="a" href="#" rel="home">
                 <VisuallyHidden>Designvote app</VisuallyHidden>
-                <Logo h="6" iconColor="orange.500" />
+                <RouterLink to="/">
+                  <Logo h="6" iconColor="orange.500" />
+                </RouterLink>
               </Box>
               <HStack display={{base: 'none', lg: 'flex'}} spacing="8">
-                <NavLink.Desktop active>Product</NavLink.Desktop>
-                <NavLink.Desktop>Pricing</NavLink.Desktop>
+                <NavLink.Desktop active to="/">
+                  Product
+                </NavLink.Desktop>
+                <NavLink.Desktop to="/pricing">Pricing</NavLink.Desktop>
               </HStack>
             </HStack>
             <Flex align="center">
               <HStack spacing="8" display={{base: 'none', md: 'flex'}}>
-                <NavLink.Desktop onClick={login}>Log in </NavLink.Desktop>
+                <NavLink.Desktop onClick={login} to="">
+                  Log in{' '}
+                </NavLink.Desktop>
                 <Button colorScheme="orange" rounded="full" onClick={login}>
                   Start Free Trial
                 </Button>
