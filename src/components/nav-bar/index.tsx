@@ -11,12 +11,13 @@ import {useAuth} from 'context/auth-context'
 import {Logo} from '../logo'
 import {MobileNav} from './mobile-nav'
 import {NavLink} from './nav-link'
-import {Link as RouterLink} from 'react-router-dom'
+import {Link as RouterLink, useLocation} from 'react-router-dom'
 
 interface NavBarProps extends BoxProps {}
 
 export const NavBar = (props: NavBarProps) => {
   const {login} = useAuth()
+  const {pathname} = useLocation()
   return (
     <Box position="fixed" w="full" zIndex="1000" {...props}>
       <Box
@@ -28,17 +29,17 @@ export const NavBar = (props: NavBarProps) => {
         <Box maxW="7xl" mx="auto" py="4" px={{base: '6', md: '8'}}>
           <Flex as="nav" justify="space-between">
             <HStack spacing="8">
-              <Box as="a" href="#" rel="home">
+              <RouterLink to="/" rel="home">
                 <VisuallyHidden>Designvote app</VisuallyHidden>
-                <RouterLink to="/">
-                  <Logo h="6" iconColor="orange.500" />
-                </RouterLink>
-              </Box>
+                <Logo h="6" iconColor="orange.500" />
+              </RouterLink>
               <HStack display={{base: 'none', lg: 'flex'}} spacing="8">
-                <NavLink.Desktop active to="/">
+                <NavLink.Desktop active={pathname === '/'} to="/">
                   Product
                 </NavLink.Desktop>
-                <NavLink.Desktop to="/pricing">Pricing</NavLink.Desktop>
+                <NavLink.Desktop to="/pricing" active={pathname === '/pricing'}>
+                  Pricing
+                </NavLink.Desktop>
               </HStack>
             </HStack>
             <Flex align="center">
