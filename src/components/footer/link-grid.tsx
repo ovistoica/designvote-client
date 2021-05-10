@@ -1,4 +1,5 @@
 import {Box, Link, SimpleGrid, SimpleGridProps, Stack} from '@chakra-ui/react'
+import {Link as RouterLink} from 'react-router-dom'
 import {FooterHeading} from './footer-heading'
 
 export const LinkGrid = (props: SimpleGridProps) => (
@@ -15,8 +16,12 @@ export const LinkGrid = (props: SimpleGridProps) => (
     <Box minW="130px">
       <FooterHeading mb="4">Legal</FooterHeading>
       <Stack>
-        <Link>Privacy</Link>
-        <Link>Terms</Link>
+        <Link as={RouterLink} to="/privacy">
+          Privacy
+        </Link>
+        <Link as={RouterLink} to="/terms">
+          Terms
+        </Link>
       </Stack>
     </Box>
   </SimpleGrid>

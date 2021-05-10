@@ -9,6 +9,7 @@ import {PublicVoteScreen} from 'screens/public-vote'
 import {useScrollPosition} from '@n8tb1t/use-scroll-position'
 import {DarkMode, LightMode} from '@chakra-ui/color-mode'
 import {Privacy} from 'screens/privacy'
+import {Terms} from 'screens/terms'
 
 function AppRoutes() {
   return (
@@ -16,6 +17,7 @@ function AppRoutes() {
       <Route path="/vote/:shortUrl" element={<PublicVoteScreen />} />
       <Route path="/" element={<LandingPage />} />
       <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
   )

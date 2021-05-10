@@ -1,22 +1,24 @@
 import {
   Box,
-  chakra,
   Flex,
   HTMLChakraProps,
   Icon,
+  Link,
   useColorModeValue as mode,
 } from '@chakra-ui/react'
+import {Link as RouterLink} from 'react-router-dom'
 import * as React from 'react'
 
 interface DesktopNavLinkProps extends HTMLChakraProps<'a'> {
   active?: boolean
+  to?: string
 }
 
 const DesktopNavLink = (props: DesktopNavLinkProps) => {
   const {active, ...rest} = props
   return (
-    <chakra.a
-      href="#"
+    <Link
+      as={RouterLink}
       aria-current={active ? 'page' : undefined}
       fontWeight="semibold"
       color={mode('gray.600', 'gray.300')}
@@ -32,15 +34,15 @@ const DesktopNavLink = (props: DesktopNavLinkProps) => {
 interface MobileNavLinkProps {
   icon: React.ElementType
   children: React.ReactNode
-  href?: string
+  to?: string
 }
 
 const MobileNavLink = (props: MobileNavLinkProps) => {
-  const {icon, children, href} = props
+  const {icon, children, to} = props
   return (
     <Flex
-      as="a"
-      href={href}
+      as={RouterLink}
+      to={to as any}
       m="-3"
       p="3"
       align="center"
