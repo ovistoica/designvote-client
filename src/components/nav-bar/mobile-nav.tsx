@@ -15,12 +15,10 @@ import {HTMLMotionProps, motion, Variants} from 'framer-motion'
 import * as React from 'react'
 import FocusLock from 'react-focus-lock'
 import {
-  HiBookOpen,
   HiCloudDownload,
   HiCurrencyDollar,
   HiOutlineMenu,
   HiOutlineX,
-  HiQuestionMarkCircle,
 } from 'react-icons/hi'
 import {RemoveScroll} from 'react-remove-scroll'
 import {Logo} from '../logo'
@@ -135,15 +133,13 @@ export const MobileNav = () => {
                 </Box>
               </Flex>
               <SimpleGrid as="nav" gap="6" mt="8" columns={{base: 1, sm: 2}}>
-                <NavLink.Mobile icon={HiCloudDownload}>Product</NavLink.Mobile>
-                <NavLink.Mobile icon={HiCurrencyDollar}>Pricing</NavLink.Mobile>
-                <NavLink.Mobile icon={HiBookOpen}>Resources</NavLink.Mobile>
-                <NavLink.Mobile icon={HiQuestionMarkCircle}>
-                  Help
+                <NavLink.Mobile icon={HiCloudDownload} href="/">
+                  Product
                 </NavLink.Mobile>
+                <NavLink.Mobile icon={HiCurrencyDollar}>Pricing</NavLink.Mobile>
               </SimpleGrid>
               <VStack mt="8" spacing="4">
-                <Button w="full" colorScheme="orange">
+                <Button w="full" colorScheme="orange" onClick={login}>
                   Start Free Trial
                 </Button>
                 <Box

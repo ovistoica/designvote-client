@@ -34,14 +34,12 @@ export const NavBar = (props: NavBarProps) => {
               <HStack display={{base: 'none', lg: 'flex'}} spacing="8">
                 <NavLink.Desktop active>Product</NavLink.Desktop>
                 <NavLink.Desktop>Pricing</NavLink.Desktop>
-                <NavLink.Desktop>Resources</NavLink.Desktop>
-                <NavLink.Desktop>Help</NavLink.Desktop>
               </HStack>
             </HStack>
             <Flex align="center">
               <HStack spacing="8" display={{base: 'none', md: 'flex'}}>
                 <NavLink.Desktop onClick={login}>Log in </NavLink.Desktop>
-                <Button colorScheme="orange" rounded="full">
+                <Button colorScheme="orange" rounded="full" onClick={login}>
                   Start Free Trial
                 </Button>
               </HStack>
