@@ -1,15 +1,5 @@
 import * as React from 'react'
-import {
-  Box,
-  forwardRef,
-  Center,
-  DarkMode,
-  Heading,
-  SimpleGrid,
-  HTMLChakraProps,
-  chakra,
-} from '@chakra-ui/react'
-import {useRef} from 'react'
+import {Box, Center, DarkMode, Heading, SimpleGrid} from '@chakra-ui/react'
 import {
   FcComments,
   FcDoughnutChart,
@@ -18,39 +8,37 @@ import {
   FcRating,
   FcTimeline,
 } from 'react-icons/fc'
-import {useInViewport} from 'react-in-viewport'
 
 import {Feature} from './feature'
-import {HTMLMotionProps, motion} from 'framer-motion'
 
-type Merge<P, T> = Omit<P, keyof T> & T
-type MotionBoxProps = Merge<HTMLChakraProps<'div'>, HTMLMotionProps<'div'>>
-const MotionBox: React.FC<MotionBoxProps> = motion(chakra.div)
+// type Merge<P, T> = Omit<P, keyof T> & T
+// type MotionBoxProps = Merge<HTMLChakraProps<'div'>, HTMLMotionProps<'div'>>
+// const MotionBox: React.FC<MotionBoxProps> = motion(chakra.div)
 
 // 2. You'll get access to `motion` and `chakra` props in `MotionBox`
-function Example() {
-  return (
-    <MotionBox
-      boxSize="40px"
-      bg="red.300"
-      drag="x"
-      dragConstraints={{left: -100, right: 100}}
-      whileHover={{scale: 1.1}}
-      whileTap={{scale: 0.9}}
-    />
-  )
-}
+// function Example() {
+//   return (
+//     <MotionBox
+//       boxSize="40px"
+//       bg="red.300"
+//       drag="x"
+//       dragConstraints={{left: -100, right: 100}}
+//       whileHover={{scale: 1.1}}
+//       whileTap={{scale: 0.9}}
+//     />
+//   )
+// }
 
 export const FeaturesSection = () => {
   const gridRef = React.createRef<HTMLDivElement>()
-  const {inViewport} = useInViewport(
-    gridRef,
-    undefined,
-    {
-      disconnectOnLeave: true,
-    },
-    {},
-  )
+  // const {inViewport} = useInViewport(
+  //   gridRef,
+  //   undefined,
+  //   {
+  //     disconnectOnLeave: true,
+  //   },
+  //   {},
+  // )
   return (
     <Center
       as="section"

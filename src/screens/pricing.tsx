@@ -1,9 +1,7 @@
 import {MetaDecorator} from 'components/meta-decorator'
-import {Link as RouterLink} from 'react-router-dom'
 import {
   Box,
   Flex,
-  Link,
   Button,
   Heading,
   Input,
