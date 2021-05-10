@@ -24,9 +24,9 @@ export const CTASection = () => {
         py={{base: '16', sm: '20'}}
         textAlign="center"
       >
-        <Text fontWeight="semibold" color={mode('orange.500', 'blue.300')}>
+        {/* <Text fontWeight="semibold" color={mode('orange.500', 'blue.300')}>
           Prices now start at just $23/month
-        </Text>
+        </Text> */}
         <Heading
           my="4"
           as="h2"
