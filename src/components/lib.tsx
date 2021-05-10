@@ -22,14 +22,10 @@ import {
   SquareProps,
   Grid,
 } from '@chakra-ui/react'
-import {FaMoon, FaSun, FaTwitter} from 'react-icons/fa'
+import {FaMoon, FaSun} from 'react-icons/fa'
 import * as colors from 'styles/colors'
 import {useTheme} from '@emotion/react'
 import {Link as RouterLink} from 'react-router-dom'
-import {GrFacebookOption} from 'react-icons/gr'
-import {IoMdMailOpen} from 'react-icons/io'
-import {LogoIcon} from 'assets/svg/logo-icon'
-import {useAuth} from 'context/auth-context'
 
 type ColorModeSwitcherProps = Omit<IconButtonProps, 'aria-label'>
 
@@ -232,72 +228,6 @@ function SocialIcon({icon, ...restProps}: SocialIconProps) {
   )
 }
 
-function Footer() {
-  const textInfoColor = useColorModeValue('textInfoLight', 'gray.400')
-  const {login} = useAuth()
-
-  return (
-    <Flex direction="column" align="center" mb="3.6em" as="footer">
-      <LogoIcon width="2em" height="2.5em" style={{marginTop: '2.5em'}} />
-      <Flex
-        direction={['column', 'column', 'row']}
-        mt="2em"
-        color={textInfoColor}
-        w="24em"
-        align="center"
-        justify="space-between"
-      >
-        <NavLink to="/how-it-works" my={['0.5em', '0.5em', 0]}>
-          How it works
-        </NavLink>
-        <NavLink to="/contact" my={['0.5em', '0.5em', 0]}>
-          Contact
-        </NavLink>
-        <ChakraButton
-          my={['0.5em', '0.5em', 0]}
-          mx={'0.5em'}
-          onClick={login}
-          variant="link"
-          h="2em"
-        >
-          Login
-        </ChakraButton>
-
-        <ChakraButton
-          my={['0.5em', '0.5em', 0]}
-          mx={'0.5em'}
-          onClick={login}
-          colorScheme="teal"
-          variant="link"
-          h="2em"
-        >
-          Signup
-        </ChakraButton>
-      </Flex>
-      <Flex mt="2em">
-        <SocialIcon icon={<GrFacebookOption />} />
-        <SocialIcon icon={<FaTwitter />} />
-        <SocialIcon icon={<IoMdMailOpen />} />
-      </Flex>
-      <Flex
-        direction={['column', 'column', 'row']}
-        align="center"
-        mt="2em"
-        color={textInfoColor}
-        justify="space-between"
-        w="24em"
-      >
-        <NavLink to="/terms-and-conditions" my={['0.5em', '0.5em', 0]}>
-          Terms and Conditions
-        </NavLink>
-        <NavLink to="/privacy" my={['0.5em', '0.5em', 0]}>
-          Privacy
-        </NavLink>
-      </Flex>
-    </Flex>
-  )
-}
-
 const Container: React.FC<BoxProps> = ({children, ...rest}) => {
   return (
     <Grid
@@ -322,6 +252,5 @@ export {
   DeleteResourceAlert,
   NavLink,
   SocialIcon,
-  Footer,
   Container,
 }

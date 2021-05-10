@@ -9,7 +9,6 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import {DefaultOptions, QueryClient, QueryClientProvider} from 'react-query'
 import {AuthProvider, Auth0Provider} from './auth-context'
 import {CookiesProvider} from 'react-cookie'
-import {Fonts} from 'assets/fonts'
 import {mode} from '@chakra-ui/theme-tools'
 
 const defaultOptions: DefaultOptions<{status: number}> = {
@@ -91,7 +90,6 @@ const AppProviders: React.FC = ({children}) => {
     <StrictMode>
       <ColorModeScript />
       <ChakraProvider theme={theme}>
-        <Fonts />
         <Auth0Provider>
           <AuthProvider>
             <QueryClientProvider client={queryClient}>
