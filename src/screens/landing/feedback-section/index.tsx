@@ -11,16 +11,20 @@ import feedbackFeature from 'assets/feedback-feature.png'
 
 export function FeedbackSection() {
   return (
-    <Box
+    <Center
       as="section"
       bg={mode('gray.50', 'gray.800')}
       py={{base: '8', md: '16'}}
+      mx="auto"
     >
-      <Box maxW={{base: 'xl', md: '8xl'}} mx="auto" px={{base: '6', md: '6'}}>
+      <Box maxW={{base: 'xl', md: '8xl', lg: '100vw'}} mx="auto" pl={{lg: 6}}>
         <Stack
           direction={{base: 'column', lg: 'row'}}
           spacing={{base: '3rem', lg: '2rem'}}
-          align={'center'}
+          align="center"
+          mx="auto"
+          w="full"
+          px={{base: '6', md: '6', lg: '0'}}
           overflow={{lg: 'hidden'}}
         >
           <Box flex="1" maxW={{lg: '3xl'}}>
@@ -46,24 +50,24 @@ export function FeedbackSection() {
           </Box>
           <Center
             pos="relative"
-            w={{base: 'full', md: '95%', lg: '90%'}}
-            mr={{lg: '-25rem'}}
+            w={{base: 'full', md: '95%', lg: 'auto'}}
             overflow={{lg: 'hidden'}}
             p={{lg: '9'}}
+            mr={{lg: '-5rem', xl: '0'}}
           >
             <Img
-              w="full"
               zIndex="1"
-              h={{base: 'auto', lg: '90%'}}
-              objectFit="cover"
+              objectFit="contain"
               src={feedbackFeature}
               alt="Design feedback screen"
+              h={{base: 'auto', lg: '600px'}}
               shadow="full"
               rounded="lg"
+              objectPosition={{lg: 'left center'}}
             />
           </Center>
         </Stack>
       </Box>
-    </Box>
+    </Center>
   )
 }
