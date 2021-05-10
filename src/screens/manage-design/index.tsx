@@ -42,7 +42,7 @@ export const ManageDesign = () => {
       title: 'Link copied to clipboard.',
       description: 'Design link copied to clipboard',
       status: 'success',
-      duration: 8000,
+      duration: 2000,
       isClosable: true,
     })
   }

@@ -8,12 +8,14 @@ import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {PublicVoteScreen} from 'screens/public-vote'
 import {useScrollPosition} from '@n8tb1t/use-scroll-position'
 import {DarkMode, LightMode} from '@chakra-ui/color-mode'
+import {Privacy} from 'screens/privacy'
 
 function AppRoutes() {
   return (
     <Routes>
       <Route path="/vote/:shortUrl" element={<PublicVoteScreen />} />
       <Route path="/" element={<LandingPage />} />
+      <Route path="/privacy" element={<Privacy />} />
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
   )

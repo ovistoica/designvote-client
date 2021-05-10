@@ -7,8 +7,10 @@ import {
   Text,
   useColorModeValue as mode,
 } from '@chakra-ui/react'
+import {useAuth} from 'context/auth-context'
 
 export const CTASection = () => {
+  const {login} = useAuth()
   return (
     <Center
       as="section"
@@ -55,14 +57,13 @@ export const CTASection = () => {
           mx="auto"
         >
           <Button
-            as="a"
-            href="#"
             size="lg"
             h="16"
             px="10"
             colorScheme="orange"
             fontWeight="bold"
             flex={{md: '1'}}
+            onClick={login}
           >
             Get started free
           </Button>
