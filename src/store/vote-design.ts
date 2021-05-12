@@ -6,7 +6,7 @@ type DesignId = string
 type VersionId = string | undefined
 
 export type VoteDesignState = {
-  voterId?: string
+  voterName?: string
   /**
    * A record with versionId as key and the
    * rating given as value
@@ -24,26 +24,26 @@ export type VoteDesignState = {
    * Record to keep evidence of comments on design
    * versions
    */
-  opinions: Record<string, string[] | undefined>
+  comments: Record<string, string | undefined>
 
-  setVoterId: (voterId: string) => void
-  setRating: (versionId: string, rating: number) => void
+  setVoterName: (voterName: string) => void
+  setRating: (versionId: string, rating: number | undefined) => void
   setChosen: (designId: DesignId, versionId: VersionId) => void
   setComment: (versionId: string, comment: string) => void
   clearState: () => void
 }
 
 type InitialDataState = {
-  voterId?: string
+  voterName?: string
   currentRatings: Record<string, number>
   currentChosen: Record<DesignId, VersionId>
-  opinions: Record<string, string[] | undefined>
+  comments: Record<string, string | undefined>
 }
 
 const initialState: InitialDataState = {
   currentRatings: {},
   currentChosen: {},
-  opinions: {},
+  comments: {},
 }
 
 export const getRating = memoize(
@@ -51,17 +51,30 @@ export const getRating = memoize(
     state.currentRatings[versionId],
 )
 
+export const getComment = memoize(
+  (versionId: string) => (state: VoteDesignState) => state.comments[versionId],
+)
+
 export const getChosen = memoize(
   (designId: string) => (state: VoteDesignState) =>
     state.currentChosen[designId],
 )
 
+export const canSubmit = (state: VoteDesignState) => {
+  const {comments, currentRatings} = state
+
+  const hasComments = Object.values(comments).filter(com => !!com).length > 0
+  const hasRatings = Object.values(currentRatings).filter(r => !!r).length > 0
+
+  return hasRatings || hasComments
+}
+
 export const useVoteDesignState = create<VoteDesignState>(
   persist(
     (set, getState) => ({
       ...initialState,
-      setVoterId(voterId) {
-        set({voterId})
+      setVoterName(voterName) {
+        set({voterName})
       },
       setRating(versionId, rating) {
         set({
@@ -74,12 +87,11 @@ export const useVoteDesignState = create<VoteDesignState>(
         })
       },
       setComment(versionId, comment) {
-        const oldOpinions = getState().opinions
-        const versionOpinions = oldOpinions[versionId] ?? []
+        const oldOpinions = getState().comments
         set({
-          opinions: {
+          comments: {
             ...oldOpinions,
-            [versionId]: [...versionOpinions, comment],
+            [versionId]: comment,
           },
         })
       },

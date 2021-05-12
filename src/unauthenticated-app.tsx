@@ -6,6 +6,7 @@ import {LandingPage} from 'screens/landing'
 import {ErrorBoundary} from 'react-error-boundary'
 import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {PublicVoteScreen} from 'screens/public-vote'
+import {PublicVoteScreen2} from 'screens/public-vote/v2'
 import {useScrollPosition} from '@n8tb1t/use-scroll-position'
 import {DarkMode, LightMode} from '@chakra-ui/color-mode'
 import {Privacy} from 'screens/privacy'
@@ -16,6 +17,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/vote/:shortUrl" element={<PublicVoteScreen />} />
+      <Route path="/vote2/:shortUrl" element={<PublicVoteScreen2 />} />
       <Route path="/" element={<LandingPage />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
@@ -75,15 +77,6 @@ function UnauthenticatedApp() {
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <AppRoutes />
       </ErrorBoundary>
-      {/* <Grid
-        minH="100vh"
-        p={['4em 1em', '4em 2em', '4em 4em']}
-        m="0 auto"
-        maxW="1440px"
-        w="100%"
-      >
-        <Box as="main" w="100%"></Box>
-      </Grid> */}
     </ErrorBoundary>
   )
 }

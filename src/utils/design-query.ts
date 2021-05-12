@@ -9,6 +9,7 @@ import {
 } from 'react-query'
 import {useNavigate} from 'react-router'
 import {useCreateDesignStore} from 'store'
+import {useVoteDesignState} from 'store/vote-design'
 import {
   ApiDesign,
   Design,
@@ -25,7 +26,7 @@ import {
 } from './axios-client'
 import {loadingDesign} from './loading-data'
 import {normalizeDesign} from './normalize'
-import {keysToCamel} from './object'
+import {filterNullValues, keysToCamel} from './object'
 
 interface CreateDesignBody {
   name: string
@@ -126,6 +127,19 @@ function editDesign(designId: string, body: EditDesignBody) {
 function addOpinion(designId: string, body: AddOpinionBody) {
   return postRequest<Opinion, AddOpinionBody>(
     `v1/designs/${designId}/opinions`,
+    body,
+  )
+}
+
+type DesignFeedbackBody = {
+  comments: [string, string][]
+  ratings: [string, number][]
+  'voter-name': string | null
+}
+
+function addDesignFeedback(designId: string, body: DesignFeedbackBody) {
+  return postRequest<undefined, DesignFeedbackBody>(
+    `v1/designs/${designId}/feedback`,
     body,
   )
 }
@@ -428,4 +442,34 @@ export function useAddOpinion(
         qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]}),
     },
   )
+}
+
+export function useGiveDesignFeedback(
+  designId: string,
+  options: QueryOptions<undefined, AxiosError> = {},
+) {
+  const qc = useQueryClient()
+
+  // Get necessary data from vote state
+  const feedbackBody = useVoteDesignState(state => ({
+    comments: Object.entries(state.comments).filter(([_, v]) => !!v) as [
+      string,
+      string,
+    ][],
+    ratings: Object.entries(state.currentRatings).filter(([_, v]) => !!v) as [
+      string,
+      number,
+    ][],
+    'voter-name': state.voterName ?? null,
+  }))
+
+  const clearVoteState = useVoteDesignState(state => state.clearState)
+
+  return useMutation(() => addDesignFeedback(designId, feedbackBody), {
+    ...options,
+    onSettled: () => {
+      qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]})
+      clearVoteState()
+    },
+  })
 }

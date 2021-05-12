@@ -28,3 +28,15 @@ export function keysToCamel<SnakeObj = unknown, CamelObj = unknown>(
 
   return args as any
 }
+
+export function filterNullValues<T = unknown>(obj: Record<string, T>) {
+  const keys = Object.keys(obj)
+  let finalObject: Record<string, T> = {}
+
+  keys.forEach(k => {
+    if (obj[k] !== null || obj[k] !== undefined) {
+      finalObject[k] = obj[k]
+    }
+  })
+  return finalObject
+}

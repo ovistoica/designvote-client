@@ -1,4 +1,4 @@
-import {NormalizedDesign, VoteStyle} from 'types'
+import {DesignType, NormalizedDesign, VoteStyle} from 'types'
 
 export const loadingDesign: NormalizedDesign = {
   design: {
@@ -12,7 +12,7 @@ export const loadingDesign: NormalizedDesign = {
     versions: [],
     totalVotes: 0,
     opinions: [],
-    designType: 'mobile',
+    designType: DesignType.Mobile,
     shortUrl: 'Loading...',
     voteStyle: VoteStyle.Choose,
   },
