@@ -1,4 +1,4 @@
-import {VoteStyle} from './enums'
+import {DesignType, VoteStyle} from './enums'
 
 export interface Vote {
   voteId: string
@@ -44,7 +44,7 @@ export interface Design {
   versions: string[]
   img: null
   question: string
-  designType: 'web' | 'mobile'
+  designType: DesignType
   voteStyle: VoteStyle
 }
 

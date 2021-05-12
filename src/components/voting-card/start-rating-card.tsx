@@ -1,15 +1,14 @@
-import {useDisclosure} from '@chakra-ui/hooks'
 import {useColorModeValue as mode} from '@chakra-ui/color-mode'
 import {VoteFunction} from 'utils/design-query'
 import {useToken} from '@chakra-ui/system'
 import {useVoterId} from 'utils/votes'
-import {getRating, useVoteDesignState} from 'store/vote-design'
+import {getRating, getComment, useVoteDesignState} from 'store/vote-design'
 import {withStyles} from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
 import {Box, Flex, Stack, Text} from '@chakra-ui/layout'
 import {Image} from '@chakra-ui/image'
-import {VotingModal} from '../voting-modal'
 import {NormalizedDesign} from 'types'
+import {CommentInput} from 'components/comment-input'
 
 interface RateStarsCardProps {
   versionId: string
@@ -24,7 +23,6 @@ export function RateStarsVotingCard({
   onVote,
   designData,
 }: RateStarsCardProps) {
-  const {isOpen, onOpen, onClose} = useDisclosure()
   const {versions, pictures, design} = designData
   const {
     pictures: [picId],
@@ -34,8 +32,9 @@ export function RateStarsVotingCard({
   const colorHex = useToken('colors', textColor)
   const voterId = useVoterId()
   const currentRating = useVoteDesignState(getRating(versionId))
+  const currentComment = useVoteDesignState(getComment(versionId))
   const setRating = useVoteDesignState(state => state.setRating)
-
+  const setComment = useVoteDesignState(state => state.setComment)
   const StyledRating = withStyles({
     iconEmpty: {
       color: colorHex,
@@ -67,7 +66,6 @@ export function RateStarsVotingCard({
           boxShadow: '2xl',
           bg: mode('inherit', 'gray.600'),
         }}
-        onClick={onOpen}
         alignItems="center"
       >
         <Image
@@ -75,13 +73,6 @@ export function RateStarsVotingCard({
           objectFit="contain"
           boxSize="15em"
           align="center"
-        />
-        <VotingModal
-          designId={design.designId}
-          onClose={onClose}
-          isOpen={isOpen}
-          initialVersionId={versionId}
-          onVote={onVote}
         />
       </Flex>
       <Box pl={2}>
@@ -92,12 +83,14 @@ export function RateStarsVotingCard({
           size="large"
           onChange={(e, rating) => {
             onVote({versionId, rating, voterId, voteStyle: design.voteStyle})
-            if (typeof rating === 'number') {
-              setRating(versionId, rating)
-            }
+            setRating(versionId, rating ?? undefined)
           }}
         />
       </Box>
+      <CommentInput
+        onChange={comment => setComment(versionId, comment)}
+        initialValue={currentComment}
+      />
     </Stack>
   )
 }
