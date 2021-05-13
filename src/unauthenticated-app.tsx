@@ -1,17 +1,14 @@
-import * as React from 'react'
-import {NavBar} from 'components/nav-bar'
 import {Route, Routes} from 'react-router-dom'
 import {NotFoundScreen} from 'screens/not-found'
 import {LandingPage} from 'screens/landing'
 import {ErrorBoundary} from 'react-error-boundary'
 import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {PublicVoteScreen} from 'screens/public-vote'
-import {useScrollPosition} from '@n8tb1t/use-scroll-position'
-import {DarkMode, LightMode} from '@chakra-ui/color-mode'
 import {Privacy} from 'screens/privacy'
 import {Terms} from 'screens/terms'
 import {Pricing} from 'screens/pricing'
 import {ThankYouScreen} from 'screens/thank-you'
+import {UnauthenticatedNavBar} from 'components/nav-bar'
 
 function AppRoutes() {
   return (
@@ -46,34 +43,9 @@ function ErrorFallback({error}: ErrorFallBackProps) {
 }
 
 function UnauthenticatedApp() {
-  const [startedScrolling, setStartedScrolling] = React.useState(false)
-  useScrollPosition(({currPos}) => {
-    if (currPos.y < -60) {
-      setStartedScrolling(true)
-    } else {
-      setStartedScrolling(false)
-    }
-  })
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
-      <DarkMode>
-        <NavBar
-          transition="0.3s all"
-          {...{
-            opacity: startedScrolling ? 0 : 1,
-            visibility: startedScrolling ? 'hidden' : 'visible',
-          }}
-        />
-      </DarkMode>
-      <LightMode>
-        <NavBar
-          transition="0.3s all"
-          {...{
-            opacity: startedScrolling ? 1 : 0,
-            visibility: startedScrolling ? 'visible' : 'hidden',
-          }}
-        />
-      </LightMode>
+      <UnauthenticatedNavBar />
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <AppRoutes />
       </ErrorBoundary>
