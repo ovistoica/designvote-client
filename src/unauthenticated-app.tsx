@@ -6,22 +6,22 @@ import {LandingPage} from 'screens/landing'
 import {ErrorBoundary} from 'react-error-boundary'
 import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {PublicVoteScreen} from 'screens/public-vote'
-import {PublicVoteScreen2} from 'screens/public-vote/v2'
 import {useScrollPosition} from '@n8tb1t/use-scroll-position'
 import {DarkMode, LightMode} from '@chakra-ui/color-mode'
 import {Privacy} from 'screens/privacy'
 import {Terms} from 'screens/terms'
 import {Pricing} from 'screens/pricing'
+import {ThankYouScreen} from 'screens/thank-you'
 
 function AppRoutes() {
   return (
     <Routes>
       <Route path="/vote/:shortUrl" element={<PublicVoteScreen />} />
-      <Route path="/vote2/:shortUrl" element={<PublicVoteScreen2 />} />
       <Route path="/" element={<LandingPage />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/pricing" element={<Pricing />} />
+      <Route path="/thank-you" element={<ThankYouScreen />} />
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
   )

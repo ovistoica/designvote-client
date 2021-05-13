@@ -9,7 +9,7 @@ export function getDesignSurveyType(type: DesignType): string {
       return 'Illustration Design Survey'
     }
     case DesignType.Mobile: {
-      return 'Mobile Design Survey'
+      return 'Mobile App Design Survey'
     }
     case DesignType.Web: {
       return 'Web Design Survey'

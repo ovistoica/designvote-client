@@ -2,6 +2,7 @@ import {DesignType, NormalizedDesign, VoteStyle} from 'types'
 
 export const loadingDesign: NormalizedDesign = {
   design: {
+    nickname: 'loading',
     name: 'Loading design',
     designId: 'loading',
     uid: 'loading',

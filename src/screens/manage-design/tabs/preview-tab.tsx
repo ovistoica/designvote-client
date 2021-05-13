@@ -1,12 +1,20 @@
 import * as React from 'react'
 import {Button} from '@chakra-ui/button'
-import {useColorModeValue as mode} from '@chakra-ui/react'
-import {Box, Flex, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
+import {
+  Input,
+  Spinner,
+  useColorModeValue as mode,
+  useDisclosure,
+} from '@chakra-ui/react'
+import {Box, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
 import {useManageDesign} from 'store'
-import {DesignTab} from 'types'
+import {DesignTab, VoteStyle} from 'types'
 import {useDesign} from 'utils/design-query'
 import {FullPageSpinner} from 'components/lib'
-import {VotingCard} from 'components/voting-card'
+import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
+import {getDesignSurveyType} from 'utils/design'
+import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
+import {useAuth} from 'context/auth-context'
 
 interface PreviewTabProps {
   designId: string
@@ -14,11 +22,21 @@ interface PreviewTabProps {
 
 export function PreviewTab({designId}: PreviewTabProps) {
   const {data, isLoading} = useDesign(designId)
-  const {design} = data
+  const {design, versions, pictures} = data
   const {setTab} = useManageDesign(
     React.useCallback(state => ({setTab: state.setTab}), []),
   )
-  const bg = mode('gray.50', 'gray.800')
+
+  const {user} = useAuth()
+  const {isOpen, onOpen, onClose} = useDisclosure()
+  const setImage = useZoomModalState(state => state.setImage)
+
+  const surveyType = isLoading
+    ? 'Loading...'
+    : getDesignSurveyType(design.designType)
+  const heading = isLoading
+    ? 'Loading survey...'
+    : `${user?.nickname} wants your feedback on their ${surveyType}`
 
   if (isLoading) {
     return <FullPageSpinner h="100%" />
@@ -60,38 +78,129 @@ export function PreviewTab({designId}: PreviewTabProps) {
     )
   }
   return (
-    <Box as="section" bg={bg}>
-      <Flex direction="column" align="center" mx="auto">
-        <Stack mb="1em" w="100%" align="center">
-          <Heading textAlign="center">{design.question}</Heading>
-          {design.description ? (
-            <Text fontWeight="300" fontSize="xl">
-              {design.description}
-            </Text>
-          ) : null}
-        </Stack>
-        <SimpleGrid
-          columns={{base: 1, md: 2, lg: 3}}
-          spacing={{base: '2', md: '6', lg: '8'}}
-          rowGap={{base: 8, md: 8, lg: 8}}
-          alignItems="center"
-        >
-          {design.versions.map((vId, index) => {
-            return (
-              <VotingCard
-                key={`preview${vId}`}
-                versionId={vId}
-                voteStyle={design.voteStyle}
-                designData={data}
-                index={index}
-                onVote={() => {
-                  /* Dummy function */
-                }}
-              />
-            )
-          })}
-        </SimpleGrid>
-      </Flex>
-    </Box>
+    <>
+      <Box as="section" bg={mode('gray.50', 'gray.800')} pb="24">
+        <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '6', md: '8'}}>
+          <Stack
+            direction={{base: 'column', lg: 'row'}}
+            spacing={{base: '3rem', lg: '2rem'}}
+            mt="8"
+            align={{lg: 'center'}}
+            justify="space-between"
+          >
+            <Box flex="1">
+              <Text
+                size="xs"
+                textTransform="uppercase"
+                fontWeight="semibold"
+                color={mode('gray.600', 'gray.300')}
+                letterSpacing="wide"
+              >
+                {surveyType}
+              </Text>
+              <Heading
+                as="h1"
+                size="xl"
+                color={mode('gray.700', 'gray.300')}
+                mt="4"
+                fontWeight="bold"
+                letterSpacing="tight"
+              >
+                {heading}
+              </Heading>
+              <Text mt="4" fontSize="lg" fontWeight="medium">
+                {design.question}
+              </Text>
+              <Text
+                color={mode('gray.600', 'gray.400')}
+                mt={{base: '8', md: 16}}
+                fontSize="md"
+                fontWeight="extrabold"
+              >
+                {design.voteStyle === VoteStyle.Choose
+                  ? 'Choose your favorite '
+                  : 'Rate your favorites '}
+                and leave your feedback below:
+              </Text>
+            </Box>
+          </Stack>
+          <SimpleGrid
+            columns={{base: 1, md: 2, lg: 3}}
+            spacing={{base: '2', md: '8', lg: '8'}}
+            rowGap={{base: 8, md: 8, lg: 8}}
+            mt="8"
+          >
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              design.versions
+                .sort((a, b) => {
+                  const {name: nameA} = versions[a]
+                  const {name: nameB} = versions[b]
+                  if (nameA === nameB) {
+                    return 0
+                  }
+                  return nameA > nameB ? 1 : -1
+                })
+                .map((vId, index) => {
+                  const {
+                    pictures: [picId],
+                    name,
+                  } = versions[vId]
+                  const {uri: imageUrl} = pictures[picId]
+                  return (
+                    <RateStarsVotingCard
+                      index={index}
+                      key={`designVersion${vId}`}
+                      versionId={vId}
+                      inPreview
+                      imageUrl={imageUrl}
+                      onClick={() => {
+                        setImage(imageUrl, name)
+                        onOpen()
+                      }}
+                    />
+                  )
+                })
+            )}
+          </SimpleGrid>
+          <Stack
+            direction={{base: 'column', lg: 'row'}}
+            spacing={{base: '3rem', lg: '2rem'}}
+            mt="8"
+            align={{lg: 'center'}}
+            justify="space-between"
+          >
+            <Box flex="1">
+              <Heading
+                as="h1"
+                size="xl"
+                color={mode('gray.700', 'gray.300')}
+                mt="4"
+                fontWeight="bold"
+                letterSpacing="tight"
+              >
+                Send your feedback
+              </Heading>
+              <Text
+                color={mode('gray.600', 'gray.400')}
+                mt={{base: '4', md: '4'}}
+                fontSize="lg"
+                fontWeight="extrabold"
+              >
+                Let {user?.nickname} know who you are:
+              </Text>
+              <Stack direction={{base: 'column', md: 'row'}} spacing="8" mt="4">
+                <Input size="lg" placeholder="Enter your name" maxW="md" />
+                <Button size="lg" colorScheme="orange" disabled={true}>
+                  Submit feedback
+                </Button>
+              </Stack>
+            </Box>
+          </Stack>
+        </Box>
+      </Box>
+      <ZoomModal isOpen={isOpen} onClose={onClose} />
+    </>
   )
 }
