@@ -10,6 +10,7 @@ import {AppContainer} from 'components/app-container'
 import {SettingsScreen} from 'screens/settings'
 import {Privacy} from 'screens/privacy'
 import {Terms} from 'screens/terms'
+import {ThankYouScreen} from 'screens/thank-you'
 
 function AppRoutes() {
   return (
@@ -24,6 +25,7 @@ function AppRoutes() {
       <Route path="/settings" element={<SettingsScreen />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
+      <Route path="/thank-you" element={<ThankYouScreen />} />
 
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>

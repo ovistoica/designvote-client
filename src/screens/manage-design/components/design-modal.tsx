@@ -1,14 +1,20 @@
-import {Avatar} from '@chakra-ui/avatar'
-import {Image} from '@chakra-ui/image'
-import {Flex, GridItem, SimpleGrid, Text} from '@chakra-ui/layout'
 import {
+  Avatar,
+  Image,
+  Flex,
+  GridItem,
+  SimpleGrid,
+  Text,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-} from '@chakra-ui/modal'
+  Heading,
+  Stack,
+  Divider,
+} from '@chakra-ui/react'
 import {useDesign} from 'utils/design-query'
 
 interface DesignModalProps {
@@ -41,11 +47,7 @@ export function DesignModal({
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <SimpleGrid
-            columns={{base: undefined, md: 2}}
-            rows={{base: 2, md: undefined}}
-            spacing={1}
-          >
+          <SimpleGrid rows={2} w="full">
             <GridItem position="relative">
               <Flex direction="column" alignItems="center">
                 <Image
@@ -56,18 +58,33 @@ export function DesignModal({
                 />
               </Flex>
             </GridItem>
-            <GridItem boxShadow="xl" position="relative">
-              <Flex direction="column" alignItems="flex-start" p="1">
+            <GridItem mt="4">
+              <Divider />
+              <Heading size="lg" fontWeight="medium" my="4">
+                Comments:{' '}
+              </Heading>
+              <Stack align="flex-start" spacing="4">
                 {version.opinions.map((opId, index) => {
-                  const {opinion} = opinions[opId]
+                  const {opinion, voterName} = opinions[opId]
                   return (
-                    <Flex p="1" mt={index !== 0 ? '2' : undefined}>
-                      <Avatar size="sm" m="1" mt="0" />
-                      <Text ml="2">{opinion}</Text>
-                    </Flex>
+                    <SimpleGrid
+                      columns={2}
+                      key={`opin${opId}`}
+                      alignItems="flex-start"
+                      w="full"
+                      templateColumns={{base: '2fr 11.5fr', md: '1fr 11fr'}}
+                    >
+                      <Avatar size="sm" name={voterName} my="auto" />
+                      <Flex direction="column" w="full">
+                        <Text fontWeight="semibold">
+                          {voterName ?? 'anonymus'}
+                        </Text>
+                        <Text>{opinion}</Text>
+                      </Flex>
+                    </SimpleGrid>
                   )
                 })}
-              </Flex>
+              </Stack>
             </GridItem>
           </SimpleGrid>
         </ModalBody>

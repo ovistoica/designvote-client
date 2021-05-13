@@ -26,7 +26,7 @@ import {
 } from './axios-client'
 import {loadingDesign} from './loading-data'
 import {normalizeDesign} from './normalize'
-import {filterNullValues, keysToCamel} from './object'
+import {keysToCamel} from './object'
 
 interface CreateDesignBody {
   name: string

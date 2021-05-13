@@ -14,6 +14,7 @@ export interface Opinion {
   designId: string
   uid: string | null
   thumbsUp: number
+  voterName?: string
 }
 
 export interface Picture {
@@ -36,6 +37,7 @@ export interface Design {
   designId: string
   description?: string | null
   opinions: number[]
+  nickname: string
   uid: string
   name: string
   public: boolean

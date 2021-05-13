@@ -1,36 +1,35 @@
 import {useColorModeValue as mode} from '@chakra-ui/color-mode'
-import {VoteFunction} from 'utils/design-query'
 import {useToken} from '@chakra-ui/system'
-import {useVoterId} from 'utils/votes'
 import {getRating, getComment, useVoteDesignState} from 'store/vote-design'
 import {withStyles} from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
 import {Box, Flex, Stack, Text} from '@chakra-ui/layout'
 import {Image} from '@chakra-ui/image'
-import {NormalizedDesign} from 'types'
 import {CommentInput} from 'components/comment-input'
 
 interface RateStarsCardProps {
   versionId: string
   index: number
-  onVote: VoteFunction
-  designData: NormalizedDesign
+  imageUrl: string
+  onClick: () => void
+
+  /**
+   * Prop used if component is in preview mode
+   * If set to true, leaving ratings will not have
+   * side effects
+   */
+  inPreview?: boolean
 }
 
 export function RateStarsVotingCard({
   versionId,
   index,
-  onVote,
-  designData,
+  imageUrl,
+  onClick,
+  inPreview = false,
 }: RateStarsCardProps) {
-  const {versions, pictures, design} = designData
-  const {
-    pictures: [picId],
-  } = versions[versionId]
-  const {uri: imageUrl} = pictures[picId]
   const textColor = mode('gray.400', 'gray.600')
   const colorHex = useToken('colors', textColor)
-  const voterId = useVoterId()
   const currentRating = useVoteDesignState(getRating(versionId))
   const currentComment = useVoteDesignState(getComment(versionId))
   const setRating = useVoteDesignState(state => state.setRating)
@@ -40,6 +39,10 @@ export function RateStarsVotingCard({
       color: colorHex,
     },
   })(Rating)
+
+  const onCommentChange = inPreview
+    ? (comment: string) => {}
+    : (comment: string) => setComment(versionId, comment)
 
   return (
     <Stack spacing={1}>
@@ -52,6 +55,7 @@ export function RateStarsVotingCard({
         #{index + 1}
       </Text>
       <Flex
+        onClick={onClick}
         py={1}
         key={imageUrl}
         direction="column"
@@ -82,15 +86,11 @@ export function RateStarsVotingCard({
           defaultValue={currentRating ?? 0}
           size="large"
           onChange={(e, rating) => {
-            onVote({versionId, rating, voterId, voteStyle: design.voteStyle})
-            setRating(versionId, rating ?? undefined)
+            !inPreview && setRating(versionId, rating ?? undefined)
           }}
         />
       </Box>
-      <CommentInput
-        onChange={comment => setComment(versionId, comment)}
-        initialValue={currentComment}
-      />
+      <CommentInput onChange={onCommentChange} initialValue={currentComment} />
     </Stack>
   )
 }
