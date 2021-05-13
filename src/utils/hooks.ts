@@ -132,5 +132,13 @@ export function useFormattedLocationName() {
     return 'Account & Settings'
   }
 
+  if (pathname.startsWith('/vote')) {
+    return 'Vote on design'
+  }
+
+  if (pathname === '/thank-you') {
+    return 'Thank you screen'
+  }
+
   return 'Not Found'
 }
