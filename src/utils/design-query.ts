@@ -191,7 +191,7 @@ export function useCreateDesignFromDraft() {
         description: state.description,
         question: state.question,
         type: state.type,
-        voteStyle: state.voteStyle,
+        voteStyle: VoteStyle.FiveStar,
         images: state.images,
         imagesByUrl: state.imagesByUrl,
       }),
