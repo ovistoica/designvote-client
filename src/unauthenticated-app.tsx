@@ -1,16 +1,16 @@
 import * as React from 'react'
 import {NavBar} from 'components/nav-bar'
 import {Route, Routes} from 'react-router-dom'
-import {NotFoundScreen} from 'screens/not-found'
-import {LandingPage} from 'screens/landing'
+import {NotFoundScreen} from 'pages/not-found'
+import {LandingPage} from 'pages/landing'
 import {ErrorBoundary} from 'react-error-boundary'
 import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
-import {PublicVoteScreen} from 'screens/public-vote'
+import {PublicVoteScreen} from 'pages/public-vote'
 import {useScrollPosition} from '@n8tb1t/use-scroll-position'
 import {DarkMode, LightMode} from '@chakra-ui/color-mode'
-import {Privacy} from 'screens/privacy'
-import {Terms} from 'screens/terms'
-import {Pricing} from 'screens/pricing'
+import {Privacy} from 'pages/privacy'
+import {Terms} from 'pages/terms'
+import {Pricing} from 'pages/pricing'
 
 function AppRoutes() {
   return (

@@ -1,15 +1,15 @@
 import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {ErrorBoundary} from 'react-error-boundary'
 import {Routes, Route, Navigate} from 'react-router-dom'
-import {HomeScreen} from 'screens/home'
-import {NotFoundScreen} from 'screens/not-found'
-import {CreateDesign} from 'screens/create-design'
-import {ManageDesign} from 'screens/manage-design'
-import {PublicVoteScreen} from 'screens/public-vote'
+import {HomeScreen} from 'pages/home'
+import {NotFoundScreen} from 'pages/not-found'
+import {CreateDesign} from 'pages/create-design'
+import {ManageDesign} from 'pages/manage-design'
+import {PublicVoteScreen} from 'pages/public-vote'
 import {AppContainer} from 'components/app-container'
-import {SettingsScreen} from 'screens/settings'
-import {Privacy} from 'screens/privacy'
-import {Terms} from 'screens/terms'
+import {SettingsScreen} from 'pages/settings'
+import {Privacy} from 'pages/privacy'
+import {Terms} from 'pages/terms'
 
 function AppRoutes() {
   return (

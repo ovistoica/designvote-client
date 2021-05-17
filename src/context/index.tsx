@@ -5,7 +5,6 @@ import {
   theme as defaultTheme,
 } from '@chakra-ui/react'
 import {StrictMode} from 'react'
-import {BrowserRouter as Router} from 'react-router-dom'
 import {DefaultOptions, QueryClient, QueryClientProvider} from 'react-query'
 import {AuthProvider, Auth0Provider} from './auth-context'
 import {CookiesProvider} from 'react-cookie'
@@ -93,9 +92,7 @@ const AppProviders: React.FC = ({children}) => {
         <Auth0Provider>
           <AuthProvider>
             <QueryClientProvider client={queryClient}>
-              <CookiesProvider>
-                <Router>{children}</Router>
-              </CookiesProvider>
+              <CookiesProvider>{children}</CookiesProvider>
               {/* <ReactQueryDevtools initialIsOpen={false} /> */}
             </QueryClientProvider>
           </AuthProvider>
