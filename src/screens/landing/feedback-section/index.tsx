@@ -60,7 +60,7 @@ export function FeedbackSection() {
               objectFit="contain"
               src={feedbackFeature}
               alt="Design feedback screen"
-              h={{base: 'auto', lg: '600px'}}
+              h={{base: 'auto', lg: '500px'}}
               shadow="full"
               rounded="lg"
               objectPosition={{lg: 'left center'}}
