@@ -6,10 +6,13 @@ import {FeaturesSection} from './features-section'
 import {PhoneSection} from './phone-section'
 import {CTASection} from './cta-section'
 import {Footer} from 'components/footer'
+import {UnauthenticatedNavBar} from 'components/nav-bar'
 
 export const LandingPage = () => {
   return (
     <Box>
+      <UnauthenticatedNavBar />
+
       <HeroSection />
       <TestimonialSection />
       <FeedbackSection />
@@ -20,3 +23,5 @@ export const LandingPage = () => {
     </Box>
   )
 }
+
+export default LandingPage

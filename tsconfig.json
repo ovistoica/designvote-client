@@ -3,9 +3,12 @@
     "target": "esnext",
     "module": "esnext",
     "skipLibCheck": true,
-    "lib": ["es6", "DOM"],
+    "lib": [
+      "es6",
+      "DOM"
+    ],
     "allowJs": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "noEmit": true,
     "isolatedModules": true,
     "strict": true,
@@ -17,7 +20,11 @@
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true
   },
-  "include": ["src", "node_modules/cypress", "./cypress/**/*.js"],
+  "include": [
+    "src",
+    "node_modules/cypress",
+    "./cypress/**/*.js"
+  ],
   "exclude": [
     "node_modules",
     "babel.config.js",

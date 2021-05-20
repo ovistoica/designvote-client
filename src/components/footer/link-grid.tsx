@@ -1,29 +1,20 @@
 import {Box, Link, SimpleGrid, SimpleGridProps, Stack} from '@chakra-ui/react'
 import {useAuth} from 'context/auth-context'
-import {Link as RouterLink, useLocation} from 'react-router-dom'
+import NextLink from 'next/link'
 import {FooterHeading} from './footer-heading'
 
 export const LinkGrid = (props: SimpleGridProps) => {
   const {login} = useAuth()
-  const {pathname} = useLocation()
   return (
     <SimpleGrid columns={2} {...props}>
       <Box minW="130px">
         <FooterHeading mb="4">Product</FooterHeading>
         <Stack>
           <Link onClick={login}>Sign in</Link>
-          <Link as={RouterLink} to="/pricing">
+          <Link as={NextLink} href="/pricing">
             Pricing
           </Link>
-          <Link
-            as={RouterLink}
-            to="/"
-            onClick={() => {
-              if (pathname === '/') {
-                window.scrollTo({top: 0})
-              }
-            }}
-          >
+          <Link as={NextLink} href="/">
             Features
           </Link>
           <Link href="mailto:ovidiu.stoica1094@gmail.com">Contact</Link>
@@ -32,10 +23,10 @@ export const LinkGrid = (props: SimpleGridProps) => {
       <Box minW="130px">
         <FooterHeading mb="4">Legal</FooterHeading>
         <Stack>
-          <Link as={RouterLink} to="/privacy">
+          <Link as={NextLink} href="/privacy">
             Privacy
           </Link>
-          <Link as={RouterLink} to="/terms">
+          <Link as={NextLink} href="/terms">
             Terms
           </Link>
         </Stack>

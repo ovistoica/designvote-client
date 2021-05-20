@@ -25,7 +25,7 @@ import {
 import {FaMoon, FaSun} from 'react-icons/fa'
 import * as colors from 'styles/colors'
 import {useTheme} from '@emotion/react'
-import {Link as RouterLink} from 'react-router-dom'
+import NextLink from 'next/link'
 
 type ColorModeSwitcherProps = Omit<IconButtonProps, 'aria-label'>
 
@@ -178,7 +178,7 @@ function DeleteResourceAlert({
 }
 
 interface NavLinkProps extends LinkProps {
-  to: string
+  href: string
 }
 
 function NavLink(props: NavLinkProps) {
@@ -186,7 +186,7 @@ function NavLink(props: NavLinkProps) {
   const brand = useColorModeValue(colors.orange[500], colors.orange[600])
   return (
     <Link
-      as={RouterLink}
+      as={NextLink}
       _hover={{
         color: brand,
         textDecoration: 'none',

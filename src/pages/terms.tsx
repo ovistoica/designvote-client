@@ -280,3 +280,5 @@ export function Terms() {
     </Container>
   )
 }
+
+export default Terms

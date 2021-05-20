@@ -12,10 +12,12 @@ import {
 import * as React from 'react'
 import {HiShieldCheck} from 'react-icons/hi'
 import {Footer} from 'components/footer'
+import {UnauthenticatedNavBar} from 'components/nav-bar'
 
 export function Pricing() {
   return (
     <>
+      <UnauthenticatedNavBar />
       <Flex
         direction="column"
         pt={{base: '8', md: '16'}}
@@ -108,3 +110,5 @@ export function Pricing() {
     </>
   )
 }
+
+export default Pricing

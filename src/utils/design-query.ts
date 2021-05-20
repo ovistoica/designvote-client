@@ -7,7 +7,7 @@ import {
   useQueryClient,
   UseQueryOptions,
 } from 'react-query'
-import {useNavigate} from 'react-router'
+import {useRouter} from 'next/router'
 import {useCreateDesignStore} from 'store'
 import {
   ApiDesign,
@@ -185,7 +185,7 @@ export function useCreateDesignFromDraft() {
     ),
   )
   const clearDraftState = useCreateDesignStore(state => state.clearState)
-  const navigate = useNavigate()
+  const router = useRouter()
   const designVersions = imagesByUrl.map((img, index) => ({
     name: images[img].description ?? `#${index + 1}`,
     pictures: [img],
@@ -213,7 +213,11 @@ export function useCreateDesignFromDraft() {
       onSettled: designId => {
         // clear out draft from localstorage and zustand
         // refetch designs to include the new one
-        navigate(`/design/${designId}`)
+        router.push(`/design/${designId}`)
+        router.push({
+          pathname: '/design/[did]',
+          query: {did: designId},
+        })
         window.localStorage.removeItem('design-info')
         clearDraftState()
         qc.invalidateQueries({queryKey: 'designs'})

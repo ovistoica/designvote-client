@@ -133,10 +133,10 @@ export const MobileNav = () => {
                 </Box>
               </Flex>
               <SimpleGrid as="nav" gap="6" mt="8" columns={{base: 1, sm: 2}}>
-                <NavLink.Mobile icon={HiCloudDownload} to="/">
+                <NavLink.Mobile icon={HiCloudDownload} href="/">
                   Product
                 </NavLink.Mobile>
-                <NavLink.Mobile icon={HiCurrencyDollar} to="/pricing">
+                <NavLink.Mobile icon={HiCurrencyDollar} href="/pricing">
                   Pricing
                 </NavLink.Mobile>
               </SimpleGrid>

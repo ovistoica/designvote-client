@@ -6,9 +6,9 @@ import {
 } from '@chakra-ui/react'
 import {StrictMode} from 'react'
 import {DefaultOptions, QueryClient, QueryClientProvider} from 'react-query'
-import {AuthProvider, Auth0Provider} from './auth-context'
 import {CookiesProvider} from 'react-cookie'
 import {mode} from '@chakra-ui/theme-tools'
+import {UserProvider} from '@auth0/nextjs-auth0'
 
 const defaultOptions: DefaultOptions<{status: number}> = {
   queries: {
@@ -84,19 +84,21 @@ const theme = extendTheme({
   // },
 })
 
-const AppProviders: React.FC = ({children}) => {
+interface AppProviderProps {
+  user: any
+}
+
+const AppProviders: React.FC<AppProviderProps> = ({children, user}) => {
   return (
     <StrictMode>
       <ColorModeScript />
       <ChakraProvider theme={theme}>
-        <Auth0Provider>
-          <AuthProvider>
-            <QueryClientProvider client={queryClient}>
-              <CookiesProvider>{children}</CookiesProvider>
-              {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-            </QueryClientProvider>
-          </AuthProvider>
-        </Auth0Provider>
+        <UserProvider user={user}>
+          <QueryClientProvider client={queryClient}>
+            <CookiesProvider>{children}</CookiesProvider>
+            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+          </QueryClientProvider>
+        </UserProvider>
       </ChakraProvider>
     </StrictMode>
   )

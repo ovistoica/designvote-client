@@ -29,6 +29,7 @@
     "lodash.memoize": "^4.1.2",
     "logrocket": "^1.0.14",
     "next": "^10.2.0",
+    "next-images": "^1.7.0",
     "normalizr": "^3.6.1",
     "npm": "^7.7.0",
     "react": "^17.0.1",
@@ -78,12 +79,6 @@
     "check-types": "tsc",
     "validate": "npm-run-all --parallel check-types lint test:coverage build",
     "precommit": "npm-run-all --parallel check-types lint-staged"
-  },
-  "reactSnap": {
-    "puppeteerArgs": [
-      "--no-sandbox",
-      "--disable-setuid-sandbox"
-    ]
   },
   "eslintConfig": {
     "extends": "react-app",
