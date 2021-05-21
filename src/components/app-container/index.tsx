@@ -104,14 +104,14 @@ export const AppContainer: React.FC = ({children}) => {
             </Stack>
             <Stack pb="6">
               <NavSectionTitle>Designs</NavSectionTitle>
-              {designs.map(design => (
+              {/* {designs.map(design => (
                 <SidebarLink
                   key={`sideBarDesign${design.designId}`}
                   onClick={() => navigate(`design/${design.designId}`)}
                 >
                   {design.name}
                 </SidebarLink>
-              ))}
+              ))} */}
             </Stack>
           </ScrollArea>
         </Box>

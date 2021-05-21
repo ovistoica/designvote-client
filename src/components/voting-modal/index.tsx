@@ -12,7 +12,6 @@ import {IconButton, Button} from '@chakra-ui/button'
 import {ChevronLeftIcon, ChevronRightIcon} from '@chakra-ui/icons'
 import {Design, VoteStyle} from 'types'
 import Rating from '@material-ui/lab/Rating'
-import useKeyboardShortcut from 'use-keyboard-shortcut'
 import {Key} from 'ts-key-enum'
 import {useDesign, VoteFunction} from 'utils/design-query'
 import {Avatar, useColorModeValue as mode, useToken} from '@chakra-ui/react'
@@ -54,8 +53,6 @@ function useMoveWithArrowKeys({
     const nextIndex = totalDesigns - 1 === currentIndex ? 0 : currentIndex + 1
     setNextVersion(design.versions[nextIndex])
   }, [currentIndex, design.versions, setNextVersion])
-  useKeyboardShortcut([Key.ArrowLeft], goToPrevious)
-  useKeyboardShortcut([Key.ArrowRight], goToNext)
 
   return {goToPrevious, goToNext}
 }

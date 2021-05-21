@@ -18,7 +18,6 @@ import {useAuth} from 'context/auth-context'
 import {VoteStyle} from 'types'
 import {RiSendPlaneFill} from 'react-icons/ri'
 import Rating from '@material-ui/lab/Rating'
-import useKeyboardShortcut from 'use-keyboard-shortcut'
 import {Key} from 'ts-key-enum'
 
 interface VersionModalProps {
@@ -61,9 +60,6 @@ export function PreviewDesignFullImageModal({
     const nextIndex = totalDesigns - 1 === currentIndex ? 0 : currentIndex + 1
     setImageUrl(design.imagesByUrl[nextIndex])
   }, [currentIndex, design.imagesByUrl])
-
-  useKeyboardShortcut([Key.ArrowLeft], goToPrevious)
-  useKeyboardShortcut([Key.ArrowRight], goToNext)
 
   return (
     <Drawer onClose={onClose} isOpen={isOpen} size="full">

@@ -8,7 +8,7 @@ import {
   useColorModeValue as mode,
   VisuallyHidden,
 } from '@chakra-ui/react'
-import {useAuth} from 'context/auth-context'
+import {useAuth0} from '@auth0/auth0-react'
 import {useRouter} from 'next/router'
 import {Logo} from '../logo'
 import {MobileNav} from './mobile-nav'
@@ -18,7 +18,7 @@ import NextLink from 'next/link'
 interface NavBarProps extends BoxProps {}
 
 export const NavBar = (props: NavBarProps) => {
-  const {login} = useAuth()
+  const {loginWithRedirect} = useAuth0()
   const {pathname} = useRouter()
   return (
     <Box position="fixed" w="full" zIndex="1000" {...props}>
@@ -50,14 +50,20 @@ export const NavBar = (props: NavBarProps) => {
             </HStack>
             <Flex align="center">
               <HStack spacing="8" display={{base: 'none', md: 'flex'}}>
-                <NavLink.Desktop onClick={login} href="">
+                <NavLink.Desktop onClick={loginWithRedirect}>
                   Log in
                 </NavLink.Desktop>
-                <Button colorScheme="orange" rounded="full" onClick={login}>
+                <Button
+                  colorScheme="orange"
+                  rounded="full"
+                  onClick={loginWithRedirect}
+                >
                   Start Free Trial
                 </Button>
               </HStack>
-              <Box ml="5">{/* <MobileNav /> */}</Box>
+              <Box ml="5">
+                <MobileNav />
+              </Box>
             </Flex>
           </Flex>
         </Box>

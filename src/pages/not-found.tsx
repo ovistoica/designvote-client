@@ -1,6 +1,6 @@
 import {Flex, Heading, Link} from '@chakra-ui/react'
 import {MetaDecorator} from 'components/meta-decorator'
-import {Link as RouterLink} from 'react-router-dom'
+import NextLink from 'next/link'
 
 function NotFoundScreen() {
   return (
@@ -14,8 +14,8 @@ function NotFoundScreen() {
         404. Sorry... nothing here.{' '}
       </Heading>
       <Link
-        as={RouterLink}
-        to="/"
+        as={NextLink}
+        href="/"
         textAlign="center"
         color="orange.500"
         mt="1em"

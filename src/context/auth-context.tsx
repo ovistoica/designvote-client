@@ -14,19 +14,19 @@ import {apiClient} from 'utils/axios-client'
 
 const Auth0Provider: React.FC = props => {
   if (
-    !process.env.REACT_APP_AUTH0_DOMAIN ||
-    !process.env.REACT_APP_AUTH0_CLIENT_ID
+    !process.env.NEXT_PUBLIC_AUTH0_DOMAIN ||
+    !process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID
   ) {
     throw new Error(
-      'Missing .env values for REACT_APP_AUTH0_DOMAIN or REACT_APP_AUTH0_CLIENT_ID',
+      'Missing .env values for NEXT_PUBLIC_AUTH0_DOMAIN or NEXT_PUBLIC_AUTH0_CLIENT_ID',
     )
   }
   return (
     <BaseAuth0Provider
-      domain={process.env.REACT_APP_AUTH0_DOMAIN}
-      clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
-      redirectUri={window.location.origin}
-      audience={process.env.REACT_APP_AUTH_AUDIENCE}
+      domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN}
+      clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}
+      redirectUri={process.env.NEXT_PUBLIC_REDIRECT_URL}
+      audience={process.env.NEXT_PUBLIC_AUTH_AUDIENCE}
       scope="read:current_user update:current_user_metadata"
       {...props}
     />
@@ -66,6 +66,11 @@ const AuthProvider: React.FC = props => {
   } = useAuth0()
 
   const {run, data: token, isSuccess: isTokenSuccess} = useAsync<string>()
+  const [isMounted, setIsMounted] = React.useState(false)
+
+  React.useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   React.useEffect(() => {
     if (isAuthenticated) {
@@ -87,6 +92,10 @@ const AuthProvider: React.FC = props => {
     () => ({token, logout, user, login: loginWithRedirect, isAuthenticated}),
     [token, logout, user, loginWithRedirect, isAuthenticated],
   )
+
+  if (!isMounted) {
+    return null
+  }
 
   if (isLoading) {
     return <FullPageSpinner />

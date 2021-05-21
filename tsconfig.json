@@ -3,10 +3,7 @@
     "target": "esnext",
     "module": "esnext",
     "skipLibCheck": true,
-    "lib": [
-      "es6",
-      "DOM"
-    ],
+    "lib": ["es6", "DOM"],
     "allowJs": true,
     "jsx": "preserve",
     "noEmit": true,
@@ -14,17 +11,13 @@
     "strict": true,
     "moduleResolution": "node",
     "baseUrl": "src",
-    "allowSyntheticDefaultImports": true,
+    // "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true
   },
-  "include": [
-    "src",
-    "node_modules/cypress",
-    "./cypress/**/*.js"
-  ],
+  "include": ["src", "node_modules/cypress", "./cypress/**/*.js"],
   "exclude": [
     "node_modules",
     "babel.config.js",

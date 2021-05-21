@@ -1,6 +1,6 @@
 import React from 'react'
 import type {AppProps} from 'next/app'
-import {AppProviders} from 'context'
+import {BaseProviders} from 'context'
 
 export default function App({
   Component,
@@ -9,8 +9,8 @@ export default function App({
   const {user} = pageProps
 
   return (
-    <AppProviders user={user}>
+    <BaseProviders>
       <Component {...pageProps} />
-    </AppProviders>
+    </BaseProviders>
   )
 }

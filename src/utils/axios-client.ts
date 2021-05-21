@@ -2,7 +2,7 @@
 
 import axios, {AxiosResponse, AxiosError, AxiosRequestConfig} from 'axios'
 
-const apiURL = process.env.REACT_APP_API_URL
+const apiURL = process.env.NEXT_PUBLIC_API_URL
 
 export const apiClient = axios.create({
   baseURL: apiURL,

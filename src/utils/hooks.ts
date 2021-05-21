@@ -7,7 +7,7 @@ export function useSafeDispatch<Value = unknown>(
   dispatch: React.Dispatch<Value>,
 ) {
   const mounted = React.useRef(false)
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     mounted.current = true
     return () => {
       mounted.current = false

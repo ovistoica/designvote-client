@@ -1,107 +1,19 @@
-import {
-  ChakraProvider,
-  ColorModeScript,
-  extendTheme,
-  theme as defaultTheme,
-} from '@chakra-ui/react'
-import {StrictMode} from 'react'
-import {DefaultOptions, QueryClient, QueryClientProvider} from 'react-query'
 import {CookiesProvider} from 'react-cookie'
-import {mode} from '@chakra-ui/theme-tools'
-import {UserProvider} from '@auth0/nextjs-auth0'
+import {Auth0Provider} from './auth-context'
+import {ThemeProvider} from './theme'
+import {AppProviders} from './app-context'
 
-const defaultOptions: DefaultOptions<{status: number}> = {
-  queries: {
-    useErrorBoundary: true,
-    refetchOnWindowFocus: false,
-    retry(failureCount, error) {
-      if (
-        error.status &&
-        typeof error.status === 'number' &&
-        error.status === 404
-      ) {
-        return false
-      } else if (failureCount < 2) {
-        return true
-      }
-      return false
-    },
-  },
-}
-
-const queryClient = new QueryClient({
-  defaultOptions: defaultOptions as DefaultOptions,
-})
-const theme = extendTheme({
-  shadows: {
-    ...defaultTheme.shadows,
-    full: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;',
-  },
-  colors: {
-    ...defaultTheme.colors,
-    red: {
-      50: '#ffe6e4',
-      100: '#fac1ba',
-      200: '#f19e8e',
-      300: '#e97d62',
-      400: '#e24d36',
-      500: '#c9291d',
-      600: '#9d1616',
-      700: '#710e14',
-      800: '#45060d',
-      900: '#1d0008',
-    },
-    teal: {
-      50: '#dffdf9',
-      100: '#bef0e9',
-      200: '#98e4db',
-      300: '#72d9cd',
-      400: '#4ecfbe',
-      500: '#35b5a5',
-      600: '#268d80',
-      700: '#17655c',
-      800: '#053d37',
-      900: '#001613',
-    },
-  },
-  styles: {
-    global: props => ({
-      img: {
-        filter: mode('inherit', 'brightness(.88) contrast(1.2)')(props),
-      },
-      body: {
-        fontFamily: 'body',
-        color: mode('gray.800', 'whiteAlpha.900')(props),
-        bg: mode('gray.50', 'gray.800')(props),
-        transition: 'background-color 0.2s',
-        lineHeight: 'base',
-      },
-    }),
-  },
-  // TODO: Toggle on Settings
-  // config: {
-  //   useSystemColorMode: process.env.NODE_ENV === 'production',
-  // },
-})
-
-interface AppProviderProps {
-  user: any
-}
-
-const AppProviders: React.FC<AppProviderProps> = ({children, user}) => {
+/**
+ * These are the base providers for the basic pages.
+ */
+const BaseProviders: React.FC = ({children}) => {
   return (
-    <StrictMode>
-      <ColorModeScript />
-      <ChakraProvider theme={theme}>
-        <UserProvider user={user}>
-          <QueryClientProvider client={queryClient}>
-            <CookiesProvider>{children}</CookiesProvider>
-            {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-          </QueryClientProvider>
-        </UserProvider>
-      </ChakraProvider>
-    </StrictMode>
+    <ThemeProvider>
+      <Auth0Provider>
+        <CookiesProvider>{children}</CookiesProvider>
+      </Auth0Provider>
+    </ThemeProvider>
   )
 }
 
-export {AppProviders}
+export {BaseProviders, AppProviders}
