@@ -19,7 +19,14 @@ export function ZoomModal({isOpen, onClose}: Props) {
     title: state.title,
   }))
   return (
-    <Modal onClose={onClose} size="full" isOpen={isOpen} isCentered>
+    <Modal
+      onClose={onClose}
+      size="full"
+      isOpen={isOpen}
+      isCentered
+      closeOnOverlayClick
+      closeOnEsc
+    >
       <ModalOverlay />
       <ModalContent bg="transparent" shadow="none">
         <ModalCloseButton color="white" />
