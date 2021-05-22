@@ -6,12 +6,10 @@ import {FeaturesSection} from './features-section'
 import {PhoneSection} from './phone-section'
 import {CTASection} from './cta-section'
 import {Footer} from 'components/footer'
-import {Banner} from 'components/banner'
 
 export const LandingPage = () => {
   return (
     <Box>
-      <Banner />
       <HeroSection />
       <TestimonialSection />
       <FeedbackSection />
