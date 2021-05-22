@@ -61,7 +61,7 @@ export const AppContainer: React.FC = ({children}) => {
             _hover={{bg: 'whiteAlpha.200'}}
             whiteSpace="nowrap"
             onClick={() => {
-              navigate('/settings')
+              navigate('/')
               toggle()
             }}
           >

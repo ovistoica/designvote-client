@@ -21,6 +21,7 @@ export function PublishStep() {
         description: state.description ?? '',
         type: state.type,
         question: state.question ?? '',
+        imagesByUrl: state.imagesByUrl ?? [],
         voteStyle: state.voteStyle,
       }),
       [],
@@ -34,6 +35,7 @@ export function PublishStep() {
   )
 
   const isDesignLoading = isCreateLoading || isLoading
+  const notEnoughVersions = designDraft.imagesByUrl.length < 2
 
   if (!designDraft.name || !designDraft.question) {
     return (
@@ -48,6 +50,24 @@ export function PublishStep() {
           colorScheme="orange"
         >
           Go back and complete
+        </Button>
+      </Stack>
+    )
+  }
+
+  if (notEnoughVersions) {
+    return (
+      <Stack spacing="1em" mt="1em" align="center">
+        <Heading fontWeight="semibold" fontSize="xl">
+          You need at least two versions of this design in order to publish it
+        </Heading>
+        <Button
+          mt="1em"
+          size="lg"
+          onClick={() => setStep(CreateDesignStep.Upload)}
+          colorScheme="orange"
+        >
+          Go back and upload
         </Button>
       </Stack>
     )

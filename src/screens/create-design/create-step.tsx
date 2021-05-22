@@ -85,14 +85,13 @@ function QuestionPopover() {
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverBody>
-          The question your voters will see when asked to choose/rate from your
-          versions of the design.
+          The question or description your voters will see when asked to
+          choose/rate from your versions of the design.
           <Text mt={5} fontStyle="italic">
             <Text as="span" fontWeight="semibold" fontStyle="normal">
               Example:
             </Text>{' '}
-            Which version do you think will increase conversion to paying
-            costumers?
+            Which logo better suggests this app is for designers?
           </Text>
           <Code></Code>
         </PopoverBody>
@@ -200,7 +199,6 @@ function CreateStep() {
   )
 
   const debouncedSetName = memoize(debounce(set.name, 1000))
-  const debouncedSetDescription = memoize(debounce(set.description, 1000))
   const debouncedSetQuestion = memoize(debounce(set.question, 1000))
 
   return (
@@ -245,22 +243,6 @@ function CreateStep() {
               error={errors.question}
               type="textarea"
               isRequired
-            />
-
-            <FormRow
-              id="description"
-              ariaLabel="Design description"
-              placeholder="Ex: This sign-up screen is for a travel app"
-              helper="Giving context on the current design like: who is it for, what is its role etc. will help voters give better feedback"
-              value={values.description}
-              onChange={e => {
-                handleChange('description')(e)
-                debouncedSetDescription(e.target.value)
-              }}
-              onBlur={handleBlur('description')}
-              isInvalid={!!(touched.description && errors.description)}
-              error={errors.description}
-              type="textarea"
             />
 
             <FormControl id="type" py="0.5em" isRequired>
