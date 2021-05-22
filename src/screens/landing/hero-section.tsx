@@ -64,7 +64,6 @@ export const HeroSection = () => {
 
         <Box
           className="group"
-          cursor="pointer"
           position="relative"
           rounded="lg"
           overflow="hidden"
