@@ -8,8 +8,9 @@ import {
 } from '@chakra-ui/react'
 import {FaFileSignature, FaRecycle} from 'react-icons/fa'
 import {Feature} from './feature'
-import phoneImage from 'assets/phone-feature.png'
 import {RiDashboardFill} from 'react-icons/ri'
+
+const phoneImage = require('assets/phone-feature.png')
 
 export const PhoneSection = () => {
   return (

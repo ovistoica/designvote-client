@@ -68,7 +68,7 @@
   },
   "scripts": {
     "start": "next start",
-    "build": "next build",
+    "build": "next build && next export",
     "dev": "next dev",
     "test": "is-ci \"test:coverage\" \"test:watch\"",
     "test:watch": "jest --watch",

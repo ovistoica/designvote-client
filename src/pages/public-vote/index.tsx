@@ -157,3 +157,5 @@ export function PublicVoteScreen() {
     </Flex>
   )
 }
+
+export default PublicVoteScreen

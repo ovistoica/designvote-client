@@ -7,8 +7,9 @@ import {
   Text,
   LightMode,
 } from '@chakra-ui/react'
-import heroImage from 'assets/hero-image.png'
 import {useAuth} from 'context/auth-context'
+
+const heroImage = require('assets/hero-image.png')
 
 export const HeroSection = () => {
   const {login} = useAuth()

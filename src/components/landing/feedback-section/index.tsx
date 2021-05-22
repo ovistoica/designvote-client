@@ -7,7 +7,8 @@ import {
   Text,
   useColorModeValue as mode,
 } from '@chakra-ui/react'
-import feedbackFeature from 'assets/feedback-feature.png'
+
+const feedbackFeature = require('assets/feedback-feature.png')
 
 export function FeedbackSection() {
   return (

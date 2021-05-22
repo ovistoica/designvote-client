@@ -1,5 +1,6 @@
 import Head from 'next/head'
-import defaultImage from '../assets/link-preview.png'
+
+const defaultImage = require('assets/link-preview.png')
 
 const metaDecorator = require('../metaDecorator.json')
 
