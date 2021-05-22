@@ -77,7 +77,7 @@ export const AppContainer: React.FC = ({children}) => {
               <SidebarLink
                 icon={<MdDashboard />}
                 onClick={() => {
-                  navigate('/home')
+                  navigate('/app')
                   toggle()
                 }}
               >
@@ -196,7 +196,7 @@ const NavBreadcrumb = (props: BreadcrumbProps) => {
       }
     >
       <BreadcrumbItem color="inherit">
-        <BreadcrumbLink onClick={() => navigate('/home')}>Home</BreadcrumbLink>
+        <BreadcrumbLink onClick={() => navigate('/app')}>Home</BreadcrumbLink>
       </BreadcrumbItem>
       {currentLocation ? (
         <BreadcrumbItem color="inherit" isCurrentPage>

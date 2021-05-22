@@ -12,9 +12,9 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/">
-        <Navigate to="/home" />
+        <Navigate to="/app" />
       </Route>
-      <Route path="/home" element={<HomeScreen />} />
+      <Route path="/app" element={<HomeScreen />} />
       <Route path="/vote/:shortUrl" element={<PublicVoteScreen />} />
       <Route path="/design/:designId" element={<ManageDesign />} />
       <Route path="/create" element={<CreateDesign />} />

@@ -7,12 +7,12 @@ import {
   Text,
   LightMode,
 } from '@chakra-ui/react'
-import {useAuth} from 'context/auth-context'
+import {useAuth0} from '@auth0/auth0-react'
 
 const heroImage = require('assets/hero-image.png')
 
 export const HeroSection = () => {
-  const {login} = useAuth()
+  const {loginWithRedirect} = useAuth0()
   return (
     <Box
       as="section"
@@ -55,7 +55,7 @@ export const HeroSection = () => {
               px="8"
               fontWeight="bold"
               fontSize="md"
-              onClick={login}
+              onClick={() => loginWithRedirect()}
             >
               Get started free
             </Button>
