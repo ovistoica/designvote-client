@@ -1,10 +1,8 @@
 import aws from 'aws-sdk'
 
-let doEndpoint = process.env.NEXT_PUBLIC_DO_ENDPOINT
+const doEndpoint = process.env.NEXT_PUBLIC_DO_ENDPOINT
 
 if (!doEndpoint) {
-  console.log({doEndpoint})
-  console.log('env', process.env)
   throw new Error('Please provide a valid NEXT_PUBLIC_DO_ENDPOINT env variable')
 }
 

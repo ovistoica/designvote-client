@@ -1,5 +1,6 @@
-import {match} from 'node-match-path'
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import {rest} from 'msw'
+import {match} from 'node-match-path'
 
 const apiUrl = process.env.REACT_APP_API_URL
 
@@ -30,28 +31,26 @@ const handlers = [
     const token = getToken(req)
     return res(ctx.json({user: {...user, token}}))
   }),
-].map(handler => {
-  return {
-    ...handler,
-    async resolver(req, res, ctx) {
-      try {
-        if (shouldFail(req)) {
-          throw new Error('Request failure (for testing purposes).')
-        }
-        const result = await handler.resolver(req, res, ctx)
-        return result
-      } catch (error) {
-        const status = error.status || 500
-        return res(
-          ctx.status(status),
-          ctx.json({status, message: error.message || 'Unknown Error'}),
-        )
-      } finally {
-        await sleep()
+].map(handler => ({
+  ...handler,
+  async resolver(req, res, ctx) {
+    try {
+      if (shouldFail(req)) {
+        throw new Error('Request failure (for testing purposes).')
       }
-    },
-  }
-})
+      const result = await handler.resolver(req, res, ctx)
+      return result
+    } catch (error) {
+      const status = error.status || 500
+      return res(
+        ctx.status(status),
+        ctx.json({status, message: error.message || 'Unknown Error'}),
+      )
+    } finally {
+      await sleep()
+    }
+  },
+}))
 
 function shouldFail(req) {
   if (JSON.stringify(req.body)?.includes('FAIL')) return true

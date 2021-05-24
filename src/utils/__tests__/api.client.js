@@ -1,4 +1,6 @@
+// eslint-disable-next-line import/no-unresolved
 import {server, rest} from 'test/server'
+
 import {client} from '../api-client'
 
 const apiURL = process.env.REACT_APP_API_URL
@@ -7,9 +9,9 @@ test('calls fetch at the endpoint with the arguments for GET requests', async ()
   const endpoint = 'test-endpoint'
   const mockResult = {mockValue: 'VALUE'}
   server.use(
-    rest.get(`${apiURL}/${endpoint}`, async (req, res, ctx) => {
-      return res(ctx.json(mockResult))
-    }),
+    rest.get(`${apiURL}/${endpoint}`, async (req, res, ctx) =>
+      res(ctx.json(mockResult)),
+    ),
   )
   const result = await client(endpoint)
   expect(result).toEqual(result)
@@ -67,15 +69,15 @@ test('calls logout function when it receives 401 from the server', async () => {
   const endpoint = 'test-endpoint'
   const mockResult = {mockValue: 'VALUE'}
 
-  let logout = jest.fn(() => Promise.resolve(mockResult))
+  const logout = jest.fn(() => Promise.resolve(mockResult))
   server.use(
-    rest.get(`${apiURL}/${endpoint}`, async (req, res, ctx) => {
-      return res(ctx.status(401), ctx.json(mockResult))
-    }),
+    rest.get(`${apiURL}/${endpoint}`, async (req, res, ctx) =>
+      res(ctx.status(401), ctx.json(mockResult)),
+    ),
   )
   const result = await client(endpoint, {logout}).catch(e => e)
 
-  expect(result.message).toMatchInlineSnapshot(`"Please re-authenticate."`)
+  expect(result.message).toMatchInlineSnapshot('"Please re-authenticate."')
   expect(logout).toHaveBeenCalledTimes(1)
 })
 
@@ -84,9 +86,9 @@ test('correctly rejects error if request fails', async () => {
   const testError = {message: 'Test error'}
 
   server.use(
-    rest.get(`${apiURL}/${endpoint}`, async (req, res, ctx) => {
-      return res(ctx.status(400), ctx.json(testError))
-    }),
+    rest.get(`${apiURL}/${endpoint}`, async (req, res, ctx) =>
+      res(ctx.status(400), ctx.json(testError)),
+    ),
   )
   await expect(client(endpoint)).rejects.toEqual(testError)
 })

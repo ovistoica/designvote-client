@@ -22,10 +22,13 @@ export function onRequestError<Response = Record<string, unknown>>(
       (apiClient as any).logout &&
       typeof (apiClient as any).logout === 'function'
     ) {
+      // eslint-disable-next-line @typescript-eslint/no-extra-semi
       ;(apiClient as any).logout().then(() => {
         // refresh the page for them
         window.location.assign(window.location.href)
-        return Promise.reject({message: 'Please re-authenticate.'})
+        const message = 'Please re-authenticate.'
+        // eslint-disable-next-line prefer-promise-reject-errors
+        return Promise.reject({message})
       })
     }
   }

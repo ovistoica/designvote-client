@@ -4,9 +4,7 @@ import {
   Button,
   Flex,
   HStack,
-  Link,
   useColorModeValue as mode,
-  VisuallyHidden,
 } from '@chakra-ui/react'
 import {useAuth0} from '@auth0/auth0-react'
 import {useRouter} from 'next/router'

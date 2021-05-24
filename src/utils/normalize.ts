@@ -1,7 +1,8 @@
+import {normalize} from 'normalizr'
 import * as types from 'types'
+
 import {keysToCamel} from './object'
 import * as schemas from './schema'
-import {normalize} from 'normalizr'
 
 interface DesignEntities {
   version: Record<string, types.Version>

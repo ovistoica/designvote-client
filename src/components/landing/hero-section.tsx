@@ -9,7 +9,9 @@ import {
 } from '@chakra-ui/react'
 import {useAuth0} from '@auth0/auth0-react'
 
-const heroImage = require('assets/hero-image.png')
+const heroImage = require('assets/feedback-feature.png')
+// import heroImage from 'assets/hero-image.png'
+// import heroImage from 'assets/feedback-feature.png'
 
 export const HeroSection = () => {
   const {loginWithRedirect} = useAuth0()
@@ -64,7 +66,6 @@ export const HeroSection = () => {
 
         <Box
           className="group"
-          cursor="pointer"
           position="relative"
           rounded="lg"
           overflow="hidden"

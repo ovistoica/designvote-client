@@ -1,4 +1,5 @@
 import {ApiConfig} from 'types'
+
 const apiURL = process.env.REACT_APP_API_URL
 
 async function client<Result = unknown, Data = unknown>(
@@ -29,15 +30,16 @@ async function client<Result = unknown, Data = unknown>(
       }
       // refresh the page for them
       window.location.assign(window.location.href)
+      // eslint-disable-next-line prefer-promise-reject-errors
       return Promise.reject({message: 'Please re-authenticate.'})
     }
     const textData = await response.text()
+    // eslint-disable-next-line @typescript-eslint/no-shadow
     const data = textData ? JSON.parse(textData) : {}
     if (response.ok) {
       return data
-    } else {
-      return Promise.reject(data)
     }
+    return Promise.reject(data)
   })
 }
 

@@ -53,7 +53,7 @@ export const ManageDesign = () => {
         <Box
           position={{base: 'fixed', md: 'relative'}}
           bg={{base: mode('gray.50', 'gray.800'), md: 'transparent'}}
-          zIndex="9999"
+          zIndex="dropdown"
         >
           <Box mx="auto">
             <Flex

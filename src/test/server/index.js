@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 // dynamically export the server based on the environment
 // using CommonJS in this file because it's a bit simpler
 // even though mixing CJS and ESM is not typically recommended

@@ -1,117 +1,15 @@
 import * as React from 'react'
 import {Button} from '@chakra-ui/button'
-import {useDisclosure} from '@chakra-ui/hooks'
-import {Image} from '@chakra-ui/image'
-import {Box, Flex, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
-import {useColorModeValue as mode, useToken} from '@chakra-ui/react'
-import {useToast} from '@chakra-ui/toast'
-import Rating from '@material-ui/lab/Rating'
-import {PreviewDesignFullImageModal} from 'app/create-design/full-image-modal'
+import {Box, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
+import {Input, useColorModeValue as mode, useDisclosure} from '@chakra-ui/react'
 import {useCallback} from 'react'
 import {useCreateDesignStore} from 'store'
 import {CreateDesignStep, VoteStyle} from 'types'
-import {withStyles} from '@material-ui/core'
+import {getDesignSurveyType} from 'utils/design'
+import {useAuth} from 'context/auth-context'
+import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
+import {useZoomModalState, ZoomModal} from 'components/zoom-modal'
 
-interface DesignVersionProps {
-  imageUrl: string
-  showRating?: boolean
-}
-
-function DesignVersion({imageUrl, showRating = false}: DesignVersionProps) {
-  const {isOpen, onOpen, onClose} = useDisclosure()
-  const textColor = mode('gray.400', 'gray.600')
-  const colorHex = useToken('colors', textColor)
-  const StyledRating = withStyles({
-    iconEmpty: {
-      color: colorHex,
-    },
-  })(Rating)
-
-  return (
-    <Stack align="center">
-      <Flex
-        py={1}
-        key={imageUrl}
-        direction="column"
-        position="relative"
-        bg={mode('inherit', 'gray.700')}
-        flex="0"
-        boxShadow="base"
-        role="group"
-        transition="0.25s all"
-        cursor="zoom-in"
-        _hover={{
-          boxShadow: '2xl',
-          bg: mode('inherit', 'gray.600'),
-        }}
-        onClick={onOpen}
-        alignItems="center"
-      >
-        <Image
-          src={imageUrl}
-          objectFit="contain"
-          boxSize="15em"
-          align="center"
-        />
-        <PreviewDesignFullImageModal
-          initialImage={imageUrl}
-          onClose={onClose}
-          isOpen={isOpen}
-        />
-      </Flex>
-      {showRating ? (
-        <StyledRating
-          name={`rating for ${imageUrl}`}
-          precision={0.5}
-          defaultValue={0}
-          size="large"
-        />
-      ) : null}
-    </Stack>
-  )
-}
-
-function useInitiallyShowPreviewTooltip() {
-  const {
-    name,
-    question,
-    imagesByUrl,
-    shownTooltip,
-    setShownTooltip,
-  } = useCreateDesignStore(
-    useCallback(
-      state => ({
-        question: state.question,
-        name: state.name,
-        imagesByUrl: state.imagesByUrl,
-
-        shownTooltip: state.shownPreviewTooltip,
-        setShownTooltip: state.setShownTooltip,
-      }),
-      [],
-    ),
-  )
-  const toast = useToast()
-
-  const canShowTooltip =
-    name && question && imagesByUrl.length >= 2 && !shownTooltip
-
-  React.useEffect(() => {
-    if (canShowTooltip) {
-      toast({
-        title: 'Preview your design',
-        description:
-          'This is how your design will look to voters. Your votes here do not count. If everything looks good, press publish to continue',
-        position: 'bottom',
-        isClosable: true,
-        variant: 'subtle',
-      })
-      setShownTooltip(true)
-    }
-  }, [canShowTooltip, setShownTooltip, toast])
-}
-
-// TODO: Different design for choosing system
 export function PreviewStep() {
   const design = useCreateDesignStore(
     useCallback(
@@ -122,16 +20,22 @@ export function PreviewStep() {
         images: state.images,
         imagesByUrl: state.imagesByUrl,
         voteStyle: state.voteStyle,
+        designType: state.type,
       }),
       [],
     ),
   )
-  useInitiallyShowPreviewTooltip()
+  const {user} = useAuth()
+
+  const surveyType = getDesignSurveyType(design.designType)
+  const heading = `${user?.nickname} wants your feedback on their ${surveyType}`
 
   const isDesignInvalid = !design.name || !design.question
   const notEnoughVersions = design.imagesByUrl.length < 2
+  const {isOpen, onOpen, onClose} = useDisclosure()
 
   const setStep = useCreateDesignStore(useCallback(state => state.setStep, []))
+  const setImage = useZoomModalState(state => state.setImage)
 
   if (isDesignInvalid) {
     return (
@@ -169,48 +73,111 @@ export function PreviewStep() {
     )
   }
   return (
-    <Box as="section">
-      <Flex direction="column" align="center">
-        <Stack align="center">
-          <Heading textAlign="center" fontWeight="medium">
-            {design.question}
-          </Heading>
-          {design.description ? (
-            <Text
-              fontWeight="300"
-              fontSize="xl"
-              w={{base: '80%'}}
-              textAlign="center"
-            >
-              {design.description}
-            </Text>
-          ) : null}
-        </Stack>
-        <SimpleGrid
-          columns={{base: 1, md: 2, lg: 3}}
-          spacing={{base: '2', md: '4', lg: '8'}}
-          rowGap={{base: 8, md: 8, lg: 8}}
-          alignItems="center"
-        >
-          {design.imagesByUrl.map((imageUrl, index) => {
-            return (
-              <DesignVersion
-                key={`previewCard${imageUrl}${index}`}
-                imageUrl={imageUrl}
-                showRating={design.voteStyle === VoteStyle.FiveStar}
-              />
-            )
-          })}
-        </SimpleGrid>
-        <Button
-          colorScheme="orange"
-          size="lg"
-          my="8"
-          onClick={() => setStep(CreateDesignStep.Share)}
-        >
-          Publish design
-        </Button>
-      </Flex>
-    </Box>
+    <>
+      <Box as="section" bg={mode('gray.50', 'gray.800')} pb="24">
+        <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '6', md: '8'}}>
+          <Stack
+            direction={{base: 'column', lg: 'row'}}
+            spacing={{base: '3rem', lg: '2rem'}}
+            mt="8"
+            align={{lg: 'center'}}
+            justify="space-between"
+          >
+            <Box flex="1">
+              <Text
+                size="xs"
+                textTransform="uppercase"
+                fontWeight="semibold"
+                color={mode('gray.600', 'gray.300')}
+                letterSpacing="wide"
+              >
+                {surveyType}
+              </Text>
+              <Heading
+                as="h1"
+                size="xl"
+                color={mode('gray.700', 'gray.300')}
+                mt="4"
+                fontWeight="bold"
+                letterSpacing="tight"
+              >
+                {heading}
+              </Heading>
+              <Text mt="4" fontSize="lg" fontWeight="medium">
+                {design.question}
+              </Text>
+              <Text
+                color={mode('gray.600', 'gray.400')}
+                mt={{base: '8', md: 16}}
+                fontSize="md"
+                fontWeight="extrabold"
+              >
+                {design.voteStyle === VoteStyle.Choose
+                  ? 'Choose your favorite '
+                  : 'Rate your favorites '}
+                and leave your feedback below:
+              </Text>
+            </Box>
+          </Stack>
+          <SimpleGrid
+            columns={{base: 1, md: 2, lg: 3}}
+            spacing={{base: '2', md: '8', lg: '8'}}
+            rowGap={{base: 8, md: 8, lg: 8}}
+            mt="8"
+          >
+            {design.imagesByUrl.map((imageUrl, index) => {
+              return (
+                <RateStarsVotingCard
+                  index={index}
+                  key={`designVersion${imageUrl}${index}`}
+                  versionId={'irelevant'}
+                  inPreview
+                  imageUrl={imageUrl}
+                  onClick={() => {
+                    onOpen()
+                    setImage(imageUrl, '')
+                  }}
+                />
+              )
+            })}
+          </SimpleGrid>
+          <Stack
+            direction={{base: 'column', lg: 'row'}}
+            spacing={{base: '3rem', lg: '2rem'}}
+            mt="8"
+            align={{lg: 'center'}}
+            justify="space-between"
+          >
+            <Box flex="1">
+              <Heading
+                as="h1"
+                size="xl"
+                color={mode('gray.700', 'gray.300')}
+                mt="4"
+                fontWeight="bold"
+                letterSpacing="tight"
+              >
+                Send your feedback
+              </Heading>
+              <Text
+                color={mode('gray.600', 'gray.400')}
+                mt={{base: '4', md: '4'}}
+                fontSize="lg"
+                fontWeight="extrabold"
+              >
+                Let {user?.nickname} know who you are:
+              </Text>
+              <Stack direction={{base: 'column', md: 'row'}} spacing="8" mt="4">
+                <Input size="lg" placeholder="Enter your name" maxW="md" />
+                <Button size="lg" colorScheme="orange" disabled={true}>
+                  Submit feedback
+                </Button>
+              </Stack>
+            </Box>
+          </Stack>
+        </Box>
+      </Box>
+      <ZoomModal isOpen={isOpen} onClose={onClose} />
+    </>
   )
 }

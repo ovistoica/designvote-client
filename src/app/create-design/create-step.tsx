@@ -16,8 +16,6 @@ import {
   Code,
   Button,
   Text,
-  Alert,
-  AlertIcon,
   FormHelperText,
 } from '@chakra-ui/react'
 import {Formik, Form, FormikTouched} from 'formik'
@@ -59,7 +57,6 @@ const validationSchema = yup.object().shape({
       DesignType.Logo,
       DesignType.Other,
     ]),
-  voteStyle: yup.string().oneOf([VoteStyle.Choose, VoteStyle.FiveStar]),
 })
 
 interface FormRowsProps {
@@ -88,14 +85,13 @@ function QuestionPopover() {
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverBody>
-          The question your voters will see when asked to choose/rate from your
-          versions of the design.
+          The question or description your voters will see when asked to
+          choose/rate from your versions of the design.
           <Text mt={5} fontStyle="italic">
             <Text as="span" fontWeight="semibold" fontStyle="normal">
               Example:
             </Text>{' '}
-            Which version do you think will increase conversion to paying
-            costumers?
+            Which logo better suggests this app is for designers?
           </Text>
           <Code></Code>
         </PopoverBody>
@@ -123,46 +119,6 @@ function ModePopover() {
             Designs for a mobile app will be displayed in the size of a mobile
             phone (where possible)
           </Text>
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
-  )
-}
-
-function VoteStylePopover() {
-  return (
-    <Popover trigger="hover">
-      <PopoverTrigger>
-        <QuestionIcon width="4" height="4" mb="0.5rem" cursor="help" />
-      </PopoverTrigger>
-      <PopoverContent>
-        <PopoverHeader fontWeight="semibold">Voting style</PopoverHeader>
-        <PopoverArrow />
-        <PopoverCloseButton />
-        <PopoverBody>
-          Mode in which your design versions should be rated.{' '}
-          <Text mt={5}>
-            <Text as="span" fontWeight="semibold">
-              Mention 1:
-            </Text>{' '}
-            The individual rating system is based on a 1-5 star rating.
-          </Text>
-          <Text mt={5}>
-            <Text as="span" fontWeight="semibold">
-              Mention 2:
-            </Text>{' '}
-            Voters can leave comments on each design regardless of voting style
-          </Text>
-          <Alert status="info" mt={5} borderRadius=".5em">
-            <AlertIcon />
-            <Text>
-              Voting style{' '}
-              <Text as="span" fontWeight="semibold">
-                CANNOT
-              </Text>{' '}
-              changed after design is created
-            </Text>
-          </Alert>
         </PopoverBody>
       </PopoverContent>
     </Popover>
@@ -226,7 +182,6 @@ function CreateStep() {
         description: state.description ?? '',
         type: state.type,
         question: state.question ?? '',
-        voteStyle: state.voteStyle,
       }),
       [],
     ),
@@ -238,14 +193,12 @@ function CreateStep() {
         description: state.setDescription,
         question: state.setQuestion,
         type: state.setType,
-        voteStyle: state.setVoteStyle,
       }),
       [],
     ),
   )
 
   const debouncedSetName = memoize(debounce(set.name, 1000))
-  const debouncedSetDescription = memoize(debounce(set.description, 1000))
   const debouncedSetQuestion = memoize(debounce(set.question, 1000))
 
   return (
@@ -269,8 +222,8 @@ function CreateStep() {
                 handleChange('name')(e)
                 debouncedSetName(e.target.value)
               }}
-              onBlur={handleBlur('name')}
               value={values.name}
+              onBlur={handleBlur('name')}
               isInvalid={!!(touched.name && errors.name)}
               error={errors.name}
               autoFocus
@@ -280,32 +233,16 @@ function CreateStep() {
               id="question"
               ariaLabel="Targeted question"
               placeholder="Ex: Which button fits better for sign up screen?"
+              value={values.question}
               onChange={e => {
                 handleChange('question')(e)
                 debouncedSetQuestion(e.target.value)
               }}
               onBlur={handleBlur('question')}
-              value={values.question}
               isInvalid={!!(touched.question && errors.question)}
               error={errors.question}
               type="textarea"
               isRequired
-            />
-
-            <FormRow
-              id="description"
-              ariaLabel="Design description"
-              placeholder="Ex: This sign-up screen is for a travel app"
-              helper="Giving context on the current design like: who is it for, what is its role etc. will help voters give better feedback"
-              onChange={e => {
-                handleChange('description')(e)
-                debouncedSetDescription(e.target.value)
-              }}
-              onBlur={handleBlur('description')}
-              value={values.description}
-              isInvalid={!!(touched.description && errors.description)}
-              error={errors.description}
-              type="textarea"
             />
 
             <FormControl id="type" py="0.5em" isRequired>
@@ -334,32 +271,6 @@ function CreateStep() {
                   set.type(e as DesignType)
                 }}
               />
-            </FormControl>
-
-            <FormControl id="voteStyle" py="0.5em" isRequired>
-              <Flex alignItems="center">
-                <FormLabel marginInlineEnd="0.2rem">Voting style</FormLabel>
-                <VoteStylePopover />
-              </Flex>
-
-              <RadioGroup
-                options={[
-                  {label: 'Choose the best', value: VoteStyle.Choose},
-                  {label: 'Rate individually', value: VoteStyle.FiveStar},
-                ]}
-                name="voteStyle"
-                onChange={e => {
-                  const formikHandler = handleChange('voteStyle') as (
-                    e: string | number,
-                  ) => void
-                  formikHandler(e)
-                  set.voteStyle(e as VoteStyle)
-                }}
-              />
-              <FormHelperText>
-                Whether voters should choose the best of all or rate each one
-                individually
-              </FormHelperText>
             </FormControl>
 
             <Button

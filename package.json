@@ -19,6 +19,8 @@
     "@testing-library/user-event": "^12.0.2",
     "aws-sdk": "^2.848.0",
     "axios": "^0.21.1",
+    "caniuse-lite": "^1.0.30001228",
+    "faker": "^5.4.0",
     "formik": "^2.2.6",
     "formik-persist": "^1.1.0",
     "framer-motion": "^3.10.0",
@@ -30,6 +32,7 @@
     "logrocket": "^1.0.14",
     "next": "^10.2.0",
     "next-images": "^1.7.0",
+    "node-match-path": "^0.6.1",
     "normalizr": "^3.6.1",
     "npm": "^7.7.0",
     "react": "^17.0.1",
@@ -53,9 +56,15 @@
     "@types/lodash.debounce": "^4.0.6",
     "@types/lodash.memoize": "^4.1.6",
     "@types/react-helmet": "^6.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.24.0",
     "@typescript-eslint/typescript-estree": "^4.20.0",
     "eslint": "^7.23.0",
-    "faker": "^5.4.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "husky": "^5.0.9",
     "is-ci": "^2.0.0",
     "is-ci-cli": "^2.2.0",
@@ -80,12 +89,6 @@
     "check-types": "tsc",
     "validate": "npm-run-all --parallel check-types lint test:coverage build",
     "precommit": "npm-run-all --parallel check-types lint-staged"
-  },
-  "eslintConfig": {
-    "extends": "react-app",
-    "rules": {
-      "no-console": "warn"
-    }
   },
   "lint-staged": {
     "*.+(js|jsx|ts|tsx)": [

@@ -1,5 +1,7 @@
-import {AxiosError} from 'axios'
 import * as React from 'react'
+
+import {AxiosError} from 'axios'
+import {useRouter} from 'next/router'
 import {
   UseMutateFunction,
   useMutation,
@@ -7,8 +9,8 @@ import {
   useQueryClient,
   UseQueryOptions,
 } from 'react-query'
-import {useRouter} from 'next/router'
 import {useCreateDesignStore} from 'store'
+import {useVoteDesignState} from 'store/vote-design'
 import {
   ApiDesign,
   Design,
@@ -17,6 +19,7 @@ import {
   Opinion,
   VoteStyle,
 } from 'types'
+
 import {
   deleteRequest,
   getRequest,
@@ -130,6 +133,19 @@ function addOpinion(designId: string, body: AddOpinionBody) {
   )
 }
 
+type DesignFeedbackBody = {
+  comments: [string, string][]
+  ratings: [string, number][]
+  'voter-name': string | null
+}
+
+function addDesignFeedback(designId: string, body: DesignFeedbackBody) {
+  return postRequest<undefined, DesignFeedbackBody>(
+    `v1/designs/${designId}/feedback`,
+    body,
+  )
+}
+
 interface VoteDesignVersionBody {
   'version-id': string
   'voter-id': string
@@ -177,7 +193,7 @@ export function useCreateDesignFromDraft() {
         description: state.description,
         question: state.question,
         type: state.type,
-        voteStyle: state.voteStyle,
+        voteStyle: VoteStyle.FiveStar,
         images: state.images,
         imagesByUrl: state.imagesByUrl,
       }),
@@ -249,12 +265,12 @@ export function useUrlDesign(
   const {data, ...rest} = useQuery({
     queryKey: ['design', {shortUrl}],
     queryFn: () => getDesignByShortUrl(shortUrl),
-    onSettled(data) {
+    onSettled(newData) {
       qc.setQueryData<NormalizedDesign>(
-        ['design', {designId: data?.design.designId}],
+        ['design', {designId: newData?.design.designId}],
         old => {
-          if (data) {
-            return data
+          if (newData) {
+            return newData
           }
           if (old) {
             return old
@@ -333,7 +349,7 @@ export function useEditDesign(
     publicDesign = null,
     question = null,
   }: Partial<EditDesign>) => {
-    let finalData: EditDesignBody = {
+    const finalData: EditDesignBody = {
       name,
       description,
       img,
@@ -432,4 +448,34 @@ export function useAddOpinion(
         qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]}),
     },
   )
+}
+
+export function useGiveDesignFeedback(
+  designId: string,
+  options: QueryOptions<undefined, AxiosError> = {},
+) {
+  const qc = useQueryClient()
+
+  // Get necessary data from vote state
+  const feedbackBody = useVoteDesignState(state => ({
+    comments: Object.entries(state.comments).filter(([_, v]) => !!v) as [
+      string,
+      string,
+    ][],
+    ratings: Object.entries(state.currentRatings).filter(([_, v]) => !!v) as [
+      string,
+      number,
+    ][],
+    'voter-name': state.voterName ?? null,
+  }))
+
+  const clearVoteState = useVoteDesignState(state => state.clearState)
+
+  return useMutation(() => addDesignFeedback(designId, feedbackBody), {
+    ...options,
+    onSettled: () => {
+      qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]})
+      clearVoteState()
+    },
+  })
 }

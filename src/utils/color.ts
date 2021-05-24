@@ -1,12 +1,14 @@
+/* eslint-disable no-bitwise */
 function lightenDarkenColor(col: string, amt: number) {
   let usePound = false
 
+  let newCol = col
   if (col[0] === '#') {
-    col = col.slice(1)
+    newCol = col.slice(1)
     usePound = true
   }
 
-  let num = parseInt(col, 16)
+  const num = parseInt(newCol, 16)
 
   let r = (num >> 16) + amt
 

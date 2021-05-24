@@ -1,6 +1,8 @@
-import {useBreakpoint} from '@chakra-ui/media-query'
 import * as React from 'react'
+
+import {useBreakpoint} from '@chakra-ui/react'
 import {useLocation} from 'react-router-dom'
+
 import {useDesigns} from './design-query'
 
 export function useSafeDispatch<Value = unknown>(
@@ -14,7 +16,7 @@ export function useSafeDispatch<Value = unknown>(
     }
   }, [])
   return React.useCallback(
-    (value: Value) => (mounted.current ? dispatch(value) : void 0),
+    (value: Value) => (mounted.current ? dispatch(value) : undefined),
     [dispatch],
   )
 }
@@ -55,11 +57,12 @@ export function useAsync<Result = unknown>(
   const safeSetState = useSafeDispatch(setState)
 
   const setData = React.useCallback(
-    (data: Result) => safeSetState({data, status: ApiStatus.Resolved}),
+    (newData: Result) =>
+      safeSetState({data: newData, status: ApiStatus.Resolved}),
     [safeSetState],
   )
   const setError = React.useCallback(
-    error => safeSetState({error, status: ApiStatus.Rejected}),
+    e => safeSetState({error: e, status: ApiStatus.Rejected}),
     [safeSetState],
   )
   const reset = React.useCallback(() => safeSetState(initialStateRef.current), [
@@ -70,17 +73,17 @@ export function useAsync<Result = unknown>(
     (promise: Promise<Result>) => {
       if (!promise || !promise.then) {
         throw new Error(
-          `The argument passed to useAsync().run must be a promise. Maybe a function that's passed isn't returning anything?`,
+          "The argument passed to useAsync().run must be a promise. Maybe a function that's passed isn't returning anything?",
         )
       }
       safeSetState({status: ApiStatus.Pending})
       return promise.then(
-        data => {
-          setData(data)
+        newData => {
+          setData(newData)
           return data
         },
-        (error: string) => {
-          setError(error)
+        (e: string) => {
+          setError(e)
           return Promise.reject(error)
         },
       )
@@ -120,7 +123,7 @@ export function useFormattedLocationName() {
   }
   if (pathname.startsWith('/design')) {
     const designId = pathname.slice(8)
-    const design = designs.find(design => design.designId === designId)
+    const design = designs.find(d => d.designId === designId)
     return design?.name
   }
   if (pathname === '/create') {
@@ -129,6 +132,14 @@ export function useFormattedLocationName() {
 
   if (pathname === '/settings') {
     return 'Account & Settings'
+  }
+
+  if (pathname.startsWith('/vote')) {
+    return 'Vote on design'
+  }
+
+  if (pathname === '/thank-you') {
+    return 'Thank you screen'
   }
 
   return 'Not Found'

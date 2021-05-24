@@ -1,10 +1,8 @@
-import {useDisclosure} from '@chakra-ui/hooks'
 import {useColorModeValue as mode} from '@chakra-ui/color-mode'
 import {VoteFunction} from 'utils/design-query'
 import {getChosen, useVoteDesignState} from 'store/vote-design'
 import {Center, Circle, Flex, Stack, Text} from '@chakra-ui/layout'
 import {Image} from '@chakra-ui/image'
-import {VotingModal} from '../voting-modal'
 import {CheckIcon} from '@chakra-ui/icons'
 import {NormalizedDesign} from 'types'
 
@@ -21,7 +19,6 @@ export function ChooseBestVotingCard({
   index,
   onVote,
 }: ChooseBestCardProps) {
-  const {isOpen, onOpen, onClose} = useDisclosure()
   const {versions, pictures, design} = designData
   const {
     pictures: [picId],
@@ -58,7 +55,6 @@ export function ChooseBestVotingCard({
           boxShadow: '2xl',
           bg: mode('inherit', 'gray.600'),
         }}
-        onClick={onOpen}
         alignItems="center"
       >
         <Image
@@ -66,13 +62,6 @@ export function ChooseBestVotingCard({
           objectFit="contain"
           boxSize="15em"
           align="center"
-        />
-        <VotingModal
-          designId={design.designId}
-          onClose={onClose}
-          isOpen={isOpen}
-          initialVersionId={versionId}
-          onVote={onVote}
         />
       </Flex>
       <Center

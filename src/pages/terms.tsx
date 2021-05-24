@@ -1,4 +1,6 @@
-import {Container, Heading} from '@chakra-ui/layout'
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable react/no-unescaped-entities */
+import {Container, Heading} from '@chakra-ui/react'
 
 const sxProp: any = {
   ul: {listStyleType: 'none', marginTop: '1rem'},

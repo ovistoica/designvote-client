@@ -1,14 +1,15 @@
 import faker from 'faker'
+
 import {generateRandomColors, colorPool} from '../colors'
 
-let totalColors = colorPool.length
-let randomNumColors = faker.random.number({min: 2, max: totalColors - 1})
+const totalColors = colorPool.length
+const randomNumColors = faker.random.number({min: 2, max: totalColors - 1})
 
 test('colors are generated from the color pool', () => {
   const randomColors = generateRandomColors(randomNumColors)
 
   let colorNotIncluded = false
-  for (let i = 0; i < randomColors.length; ++i) {
+  for (let i = 0; i < randomColors.length; i += 1) {
     if (!colorPool.includes(randomColors[i])) {
       colorNotIncluded = true
       break
@@ -27,5 +28,5 @@ test('generated colors are not duplicated', () => {
 test('calling with parameter over total colors in colorPool throws error', () => {
   expect(() =>
     generateRandomColors(totalColors + 1),
-  ).toThrowErrorMatchingInlineSnapshot(`"Number of colors too big"`)
+  ).toThrowErrorMatchingInlineSnapshot('"Number of colors too big"')
 })

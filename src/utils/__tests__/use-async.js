@@ -1,9 +1,11 @@
 import {renderHook, act} from '@testing-library/react-hooks'
+
 import {useAsync} from '../hooks'
 
 // resolve promises imperatively
 function deferred() {
-  let resolve, reject
+  let resolve
+  let reject
   const promise = new Promise((res, rej) => {
     resolve = res
     reject = rej
@@ -176,6 +178,6 @@ test('calling "run" without a promise results in an early error', async () => {
   const {result} = renderHook(() => useAsync())
 
   expect(result.current.run).toThrowErrorMatchingInlineSnapshot(
-    `"The argument passed to useAsync().run must be a promise. Maybe a function that's passed isn't returning anything?"`,
+    '"The argument passed to useAsync().run must be a promise. Maybe a function that\'s passed isn\'t returning anything?"',
   )
 })

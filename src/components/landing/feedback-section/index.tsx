@@ -8,7 +8,9 @@ import {
   useColorModeValue as mode,
 } from '@chakra-ui/react'
 
-const feedbackFeature = require('assets/feedback-feature.png')
+const feedbackFeature = require('assets/hero-image.png')
+// import feedbackFeature from 'assets/feedback-feature.png'
+// import feedbackFeature from 'assets/hero-image.png'
 
 export function FeedbackSection() {
   return (
@@ -61,7 +63,7 @@ export function FeedbackSection() {
               objectFit="contain"
               src={feedbackFeature}
               alt="Design feedback screen"
-              h={{base: 'auto', lg: '600px'}}
+              h={{base: 'auto', lg: '500px'}}
               shadow="full"
               rounded="lg"
               objectPosition={{lg: 'left center'}}

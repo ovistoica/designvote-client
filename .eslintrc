@@ -1,0 +1,52 @@
+{
+  "plugins": ["@typescript-eslint", "jest"],
+
+  "extends": ["airbnb-typescript"],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "env": {
+    "jest/globals": true
+  },
+  "rules": {
+    "react/destructuring-assignment": "off", // Vscode doesn't support automatically destructuring, it's a pain to add a new variable
+    "jsx-a11y/anchor-is-valid": "off", // Next.js use his own internal link system
+    "react/require-default-props": "off", // Allow non-defined react props as undefined
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/semi": "off",
+    "@typescript-eslint/object-curly-spacing": "off",
+    "implicit-arrow-linebreak": "off",
+    "arrow-parens": "off",
+    "function-paren-newline": "off",
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/indent": "off",
+    "operator-linebreak": "off",
+    "object-curly-newline": "off",
+    "@typescript-eslint/comma-dangle": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ]
+  }
+}

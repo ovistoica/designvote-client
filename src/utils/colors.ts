@@ -15,22 +15,23 @@ export const colorPool = [
   '#25283D',
 ]
 
-export function generateRandomColors(numberOfColors: number) {
+export function generateRandomColors(numColors: number) {
+  let numberOfColors = numColors
   if (numberOfColors > colorPool.length) {
     throw new Error('Number of colors too big')
   }
-  let colors: string[] = []
-  let currentPool = [...colorPool]
+  const colors: string[] = []
+  const currentPool = [...colorPool]
 
   while (numberOfColors) {
     const max = currentPool.length
-    let randIndex = Math.floor(Math.random() * max)
+    const randIndex = Math.floor(Math.random() * max)
     colors.push(currentPool[randIndex])
 
     // remove color from the pool
     currentPool.splice(randIndex, 1)
 
-    numberOfColors = numberOfColors - 1
+    numberOfColors -= 1
   }
 
   return colors

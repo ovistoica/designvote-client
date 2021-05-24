@@ -1,7 +1,8 @@
 import * as React from 'react'
-import {useCookies} from 'react-cookie'
-import faker from 'faker'
+
 import {useAuth} from 'context/auth-context'
+import faker from 'faker'
+import {useCookies} from 'react-cookie'
 import {Vote} from 'types'
 
 export function getVotePercent(totalVotes: number, versionVotes: number) {
@@ -18,7 +19,7 @@ export function getVotePercent(totalVotes: number, versionVotes: number) {
     return 0
   }
   const percent = (versionVotes / totalVotes) * 100
-  return Math.round(percent * 100) / 100 //round to two decimals
+  return Math.round(percent * 100) / 100 // round to two decimals
 }
 
 function generateVoterId() {
@@ -49,7 +50,7 @@ export function getAverageRating(votes: Vote[]) {
   if (!nonNullRatings.length) {
     return 0
   }
-  let totalRating = nonNullRatings.reduce(
+  const totalRating = nonNullRatings.reduce(
     (total: number, current: Vote) => total + current.rating!,
     0,
   )
