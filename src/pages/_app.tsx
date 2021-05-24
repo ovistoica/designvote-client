@@ -1,6 +1,7 @@
 import React from 'react'
-import type {AppProps} from 'next/app'
+
 import {BaseProviders} from 'context'
+import type {AppProps} from 'next/app'
 import {DefaultOptions, QueryClient, QueryClientProvider} from 'react-query'
 import {Hydrate} from 'react-query/hydration'
 
@@ -15,7 +16,8 @@ const defaultOptions: DefaultOptions<{status: number}> = {
         error.status === 404
       ) {
         return false
-      } else if (failureCount < 2) {
+      }
+      if (failureCount < 2) {
         return true
       }
       return false

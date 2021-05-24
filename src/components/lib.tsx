@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {
   useColorMode,
   useColorModeValue,
@@ -22,10 +23,10 @@ import {
   SquareProps,
   Grid,
 } from '@chakra-ui/react'
-import {FaMoon, FaSun} from 'react-icons/fa'
-import * as colors from 'styles/colors'
 import {useTheme} from '@emotion/react'
 import NextLink from 'next/link'
+import {FaMoon, FaSun} from 'react-icons/fa'
+import * as appColors from 'styles/colors'
 
 type ColorModeSwitcherProps = Omit<IconButtonProps, 'aria-label'>
 
@@ -84,11 +85,11 @@ function ErrorMessage({
       flexDirection={variant === 'stacked' ? 'column' : 'row'}
       {...props}
     >
-      <Text as="span" color={colors.danger}>
+      <Text as="span" color={appColors.danger}>
         There was an error:{'  '}
       </Text>
       <Text
-        color={colors.danger}
+        color={appColors.danger}
         as="pre"
         css={[
           {whiteSpace: 'break-spaces', margin: '0', marginBottom: -5},
@@ -111,7 +112,7 @@ function FullPageErrorFallback({error}: ErrorFallBackProps) {
       role="alert"
       bg="background3"
       css={{
-        color: colors.danger,
+        color: appColors.danger,
         height: '100vh',
         display: 'flex',
         flexDirection: 'column',
@@ -119,7 +120,7 @@ function FullPageErrorFallback({error}: ErrorFallBackProps) {
         alignItems: 'center',
       }}
     >
-      <p>Uh oh... There's a problem. Try refreshing the app.</p>
+      <p>Uh oh... There&apos;s a problem. Try refreshing the app.</p>
       <pre>{error.message}</pre>
     </Box>
   )
@@ -228,21 +229,19 @@ function SocialIcon({icon, ...restProps}: SocialIconProps) {
   )
 }
 
-const Container: React.FC<BoxProps> = ({children, ...rest}) => {
-  return (
-    <Grid
-      minH="100vh"
-      p={['5em 1em', '5em 2em', '5em 4em']}
-      m="0 auto"
-      maxW={['512px', '1024px', '1440px']}
-      w="100%"
-    >
-      <Box as="main" w="100%" sx={{scrollPaddingTop: '8em'}} {...rest}>
-        {children}
-      </Box>
-    </Grid>
-  )
-}
+const Container: React.FC<BoxProps> = ({children, ...rest}) => (
+  <Grid
+    minH="100vh"
+    p={['5em 1em', '5em 2em', '5em 4em']}
+    m="0 auto"
+    maxW={['512px', '1024px', '1440px']}
+    w="100%"
+  >
+    <Box as="main" w="100%" sx={{scrollPaddingTop: '8em'}} {...rest}>
+      {children}
+    </Box>
+  </Grid>
+)
 
 export {
   ColorModeSwitcher,

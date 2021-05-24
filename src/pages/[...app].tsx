@@ -1,4 +1,3 @@
-import {useState, useEffect} from 'react'
 import ApplicationEntryPoint from 'app'
 import {AppProviders} from 'context'
 

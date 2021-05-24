@@ -18,7 +18,7 @@ const initialState: InitialDataState = {
 
 export const useManageDesign = create<ManageDesignState>(
   persist(
-    (set, get) => ({
+    set => ({
       ...initialState,
       setTab: (tab: DesignTab) => set({tab}),
       clearState: () => {

@@ -1,4 +1,5 @@
-import {MetaDecorator} from 'components/meta-decorator'
+import * as React from 'react'
+
 import {
   Box,
   Flex,
@@ -9,10 +10,10 @@ import {
   Text,
   useColorModeValue as mode,
 } from '@chakra-ui/react'
-import * as React from 'react'
-import {HiShieldCheck} from 'react-icons/hi'
 import {Footer} from 'components/footer'
+import {MetaDecorator} from 'components/meta-decorator'
 import {UnauthenticatedNavBar} from 'components/nav-bar'
+import {HiShieldCheck} from 'react-icons/hi'
 
 export function Pricing() {
   return (

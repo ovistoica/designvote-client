@@ -1,12 +1,13 @@
-import {Image} from '@chakra-ui/image'
 import {
   Modal,
   ModalBody,
   ModalCloseButton,
+  Image,
+  Spinner,
   ModalContent,
   ModalOverlay,
-} from '@chakra-ui/modal'
-import {Spinner} from '@chakra-ui/spinner'
+} from '@chakra-ui/react'
+
 import {useZoomModalState} from './current-zoomed-state'
 
 interface Props {

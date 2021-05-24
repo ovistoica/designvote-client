@@ -1,6 +1,11 @@
-import {useColorModeValue as mode} from '@chakra-ui/color-mode'
-import {Box, SimpleGrid} from '@chakra-ui/layout'
-import {useRadio, useRadioGroup, UseRadioProps} from '@chakra-ui/radio'
+import {
+  useColorModeValue as mode,
+  Box,
+  SimpleGrid,
+  useRadio,
+  useRadioGroup,
+  UseRadioProps,
+} from '@chakra-ui/react'
 
 const RadioCard: React.FC<UseRadioProps> = props => {
   const {getInputProps, getCheckboxProps} = useRadio(props)

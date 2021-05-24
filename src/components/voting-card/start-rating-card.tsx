@@ -1,11 +1,16 @@
-import {useColorModeValue as mode} from '@chakra-ui/color-mode'
-import {useToken} from '@chakra-ui/system'
-import {getRating, getComment, useVoteDesignState} from 'store/vote-design'
+import {
+  useColorModeValue as mode,
+  Image,
+  useToken,
+  Box,
+  Flex,
+  Stack,
+  Text,
+} from '@chakra-ui/react'
 import {withStyles} from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
-import {Box, Flex, Stack, Text} from '@chakra-ui/layout'
-import {Image} from '@chakra-ui/image'
 import {CommentInput} from 'components/comment-input'
+import {getRating, getComment, useVoteDesignState} from 'store/vote-design'
 
 interface RateStarsCardProps {
   versionId: string
@@ -41,7 +46,7 @@ export function RateStarsVotingCard({
   })(Rating)
 
   const onCommentChange = inPreview
-    ? (comment: string) => {}
+    ? (_: string) => {}
     : (comment: string) => setComment(versionId, comment)
 
   return (
@@ -86,7 +91,9 @@ export function RateStarsVotingCard({
           defaultValue={currentRating ?? 0}
           size="large"
           onChange={(e, rating) => {
-            !inPreview && setRating(versionId, rating ?? undefined)
+            if (!inPreview) {
+              setRating(versionId, rating ?? undefined)
+            }
           }}
         />
       </Box>

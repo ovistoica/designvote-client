@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 import {
   Box,
   Button,
@@ -12,7 +14,6 @@ import {
 } from '@chakra-ui/react'
 import {useAuth} from 'context/auth-context'
 import {HTMLMotionProps, motion, Variants} from 'framer-motion'
-import * as React from 'react'
 import FocusLock from 'react-focus-lock'
 import {
   HiCloudDownload,
@@ -21,6 +22,7 @@ import {
   HiOutlineX,
 } from 'react-icons/hi'
 import {RemoveScroll} from 'react-remove-scroll'
+
 import {Logo} from '../logo'
 import {NavLink} from './nav-link'
 

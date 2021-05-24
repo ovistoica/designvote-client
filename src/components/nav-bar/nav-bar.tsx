@@ -1,3 +1,4 @@
+import {useAuth0} from '@auth0/auth0-react'
 import {
   Box,
   BoxProps,
@@ -6,12 +7,12 @@ import {
   HStack,
   useColorModeValue as mode,
 } from '@chakra-ui/react'
-import {useAuth0} from '@auth0/auth0-react'
+import NextLink from 'next/link'
 import {useRouter} from 'next/router'
+
 import {Logo} from '../logo'
 import {MobileNav} from './mobile-nav'
 import {NavLink} from './nav-link'
-import NextLink from 'next/link'
 
 interface NavBarProps extends BoxProps {}
 

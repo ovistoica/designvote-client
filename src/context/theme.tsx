@@ -4,8 +4,8 @@ import {
   extendTheme,
   theme as defaultTheme,
 } from '@chakra-ui/react'
-
 import {mode} from '@chakra-ui/theme-tools'
+
 const theme = extendTheme({
   shadows: {
     ...defaultTheme.shadows,

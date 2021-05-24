@@ -3,10 +3,11 @@ import {
   extendTheme,
   theme as defaultTheme,
 } from '@chakra-ui/react'
+// eslint-disable-next-line import/no-extraneous-dependencies
+import {mode} from '@chakra-ui/theme-tools'
 import {render, RenderOptions} from '@testing-library/react'
 import {DefaultOptions, QueryClient, QueryClientProvider} from 'react-query'
 import {BrowserRouter} from 'react-router-dom'
-import {mode} from '@chakra-ui/theme-tools'
 import * as colors from 'styles/colors'
 
 const defaultOptions: DefaultOptions<{status: number}> = {
@@ -20,7 +21,8 @@ const defaultOptions: DefaultOptions<{status: number}> = {
         error.status === 404
       ) {
         return false
-      } else if (failureCount < 2) {
+      }
+      if (failureCount < 2) {
         return true
       }
       return false
@@ -80,15 +82,13 @@ const theme = extendTheme({
   },
 })
 
-const AllTheProviders: React.ComponentType = ({children}) => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <ChakraProvider theme={theme}>
-        <BrowserRouter>{children}</BrowserRouter>
-      </ChakraProvider>
-    </QueryClientProvider>
-  )
-}
+const AllTheProviders: React.FC = ({children}) => (
+  <QueryClientProvider client={queryClient}>
+    <ChakraProvider theme={theme}>
+      <BrowserRouter>{children}</BrowserRouter>
+    </ChakraProvider>
+  </QueryClientProvider>
+)
 
 const customRender = (
   ui: React.ReactElement,

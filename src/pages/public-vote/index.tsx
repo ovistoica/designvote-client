@@ -1,4 +1,5 @@
 import * as React from 'react'
+
 import {
   Box,
   Heading,
@@ -11,14 +12,14 @@ import {
   Button,
   useDisclosure,
 } from '@chakra-ui/react'
+import {Footer} from 'components/footer'
 import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
-import {useNavigate, useParams} from 'react-router'
+import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
+import {useNavigate, useParams} from 'react-router-dom'
 import {canSubmit, useVoteDesignState} from 'store/vote-design'
 import {VoteStyle} from 'types'
 import {getDesignSurveyType} from 'utils/design'
 import {useGiveDesignFeedback, useUrlDesign} from 'utils/design-query'
-import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
-import {Footer} from 'components/footer'
 
 export function PublicVoteScreen() {
   const {shortUrl} = useParams()

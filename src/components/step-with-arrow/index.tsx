@@ -1,5 +1,7 @@
-import {Box, Flex, useColorModeValue} from '@chakra-ui/react'
 import * as React from 'react'
+
+import {Box, Flex, useColorModeValue} from '@chakra-ui/react'
+
 import {SkewBox} from './skew-box'
 import {StepContent} from './step-content'
 

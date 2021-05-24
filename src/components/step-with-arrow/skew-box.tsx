@@ -1,5 +1,6 @@
-import {Box, BoxProps, useColorModeValue} from '@chakra-ui/react'
 import * as React from 'react'
+
+import {Box, BoxProps, useColorModeValue} from '@chakra-ui/react'
 
 const properties = {
   top: {

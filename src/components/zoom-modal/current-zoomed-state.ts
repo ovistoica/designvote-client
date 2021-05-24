@@ -19,7 +19,7 @@ type InitialDataState = {
 
 const initialState: InitialDataState = {}
 
-export const useZoomModalState = create<ZoomModalState>((set, get) => ({
+export const useZoomModalState = create<ZoomModalState>(set => ({
   ...initialState,
   setImage: (url: string, title: string) => {
     set({imageUrl: url, title})

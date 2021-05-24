@@ -1,5 +1,6 @@
 import {DefaultOptions, QueryClient, QueryClientProvider} from 'react-query'
 import {ReactQueryDevtools} from 'react-query/devtools'
+
 const defaultOptions: DefaultOptions<{status: number}> = {
   queries: {
     useErrorBoundary: true,
@@ -11,7 +12,8 @@ const defaultOptions: DefaultOptions<{status: number}> = {
         error.status === 404
       ) {
         return false
-      } else if (failureCount < 2) {
+      }
+      if (failureCount < 2) {
         return true
       }
       return false

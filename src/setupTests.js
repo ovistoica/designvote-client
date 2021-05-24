@@ -3,6 +3,7 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom'
+// eslint-disable-next-line import/no-unresolved
 import {server} from 'test/server'
 
 // enable API mocking in test runs using the same request handlers

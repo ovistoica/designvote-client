@@ -1,4 +1,5 @@
-import {Container, Heading} from '@chakra-ui/layout'
+/* eslint-disable react/no-unescaped-entities */
+import {Container, Heading} from '@chakra-ui/react'
 import {Footer} from 'components/footer'
 
 const sxProp: any = {

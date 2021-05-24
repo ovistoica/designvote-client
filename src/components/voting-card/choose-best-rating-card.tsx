@@ -1,15 +1,19 @@
-import {useColorModeValue as mode} from '@chakra-ui/color-mode'
-import {VoteFunction} from 'utils/design-query'
-import {getChosen, useVoteDesignState} from 'store/vote-design'
-import {Center, Circle, Flex, Stack, Text} from '@chakra-ui/layout'
-import {Image} from '@chakra-ui/image'
 import {CheckIcon} from '@chakra-ui/icons'
+import {
+  Image,
+  Center,
+  Circle,
+  Flex,
+  Stack,
+  Text,
+  useColorModeValue as mode,
+} from '@chakra-ui/react'
+import {getChosen, useVoteDesignState} from 'store/vote-design'
 import {NormalizedDesign} from 'types'
 
 interface ChooseBestCardProps {
   versionId: string
   index: number
-  onVote: VoteFunction
   designData: NormalizedDesign
 }
 
@@ -17,7 +21,6 @@ export function ChooseBestVotingCard({
   designData,
   versionId,
   index,
-  onVote,
 }: ChooseBestCardProps) {
   const {versions, pictures, design} = designData
   const {

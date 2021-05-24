@@ -1,6 +1,6 @@
+import memoize from 'lodash.memoize'
 import create from 'zustand'
 import {persist} from 'zustand/middleware'
-import memoize from 'lodash.memoize'
 
 type DesignId = string
 type VersionId = string | undefined

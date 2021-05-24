@@ -1,5 +1,6 @@
+import * as React from 'react'
+
 import {
-  Box,
   Flex,
   HTMLChakraProps,
   Icon,
@@ -7,7 +8,6 @@ import {
   useColorModeValue as mode,
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import * as React from 'react'
 
 interface DesktopNavLinkProps extends HTMLChakraProps<'a'> {
   active?: boolean

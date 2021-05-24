@@ -1,16 +1,17 @@
 import * as React from 'react'
+
 import {
   Auth0Provider as BaseAuth0Provider,
   LogoutOptions,
   RedirectLoginOptions,
   useAuth0,
 } from '@auth0/auth0-react'
-import {useAsync} from 'utils/hooks'
 import {FullPageSpinner, FullPageErrorFallback} from 'components/lib'
-import {client} from 'utils/api-client'
 import {useQueryClient} from 'react-query'
 import {ApiConfig, User} from 'types'
+import {client} from 'utils/api-client'
 import {apiClient} from 'utils/axios-client'
+import {useAsync} from 'utils/hooks'
 
 const Auth0Provider: React.FC = props => {
   if (
@@ -47,10 +48,9 @@ const AuthContext = React.createContext<AuthState | undefined>({
   logout: () => {
     /* empty func */
   },
-  login: () => {
+  login: () =>
     /* empty func */
-    return new Promise<void>(() => undefined)
-  },
+    new Promise<void>(() => undefined),
 })
 AuthContext.displayName = 'AuthContext'
 
@@ -83,7 +83,7 @@ const AuthProvider: React.FC = props => {
    */
   React.useEffect(() => {
     if (isTokenSuccess) {
-      apiClient.defaults.headers.common.Authorization = 'Bearer ' + token
+      apiClient.defaults.headers.common.Authorization = `Bearer ${token}`
       ;(apiClient as any).logout = logout
     }
   }, [isTokenSuccess, logout, token])
@@ -111,7 +111,7 @@ const AuthProvider: React.FC = props => {
 function useAuth() {
   const context = React.useContext(AuthContext)
   if (context === undefined) {
-    throw new Error(`useAuth must be used within a AuthProvider`)
+    throw new Error('useAuth must be used within a AuthProvider')
   }
   return context
 }
@@ -121,9 +121,10 @@ function useClient<Result = unknown, Data = unknown>() {
   const qc = useQueryClient()
 
   // Clear react query cache and log out user
-  const logout = React.useCallback(async () => {
-    return Promise.all([qc.clear(), authLogout?.()])
-  }, [authLogout, qc])
+  const logout = React.useCallback(
+    async () => Promise.all([qc.clear(), authLogout?.()]),
+    [authLogout, qc],
+  )
 
   return React.useCallback(
     (endpoint: string, config: ApiConfig<Data>) =>

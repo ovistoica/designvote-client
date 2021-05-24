@@ -1,5 +1,6 @@
-import {Center, Stack, Text, useColorModeValue as mode} from '@chakra-ui/react'
 import * as React from 'react'
+
+import {Center, Stack, Text, useColorModeValue as mode} from '@chakra-ui/react'
 
 interface FeatureProps {
   icon: React.ReactElement

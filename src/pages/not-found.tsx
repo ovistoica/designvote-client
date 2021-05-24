@@ -7,7 +7,7 @@ function NotFoundScreen() {
     <Flex direction="column" minH="80vh" w="full" as="main" justify="center">
       <MetaDecorator
         title="Designvote - 404"
-        description="This is the 404 page. You've been redirected here because the page you 
+        description="This is the 404 page. You've been redirected here because the page you
         requested does not exist! You can go to the homepage"
       />
       <Heading textAlign="center" fontSize={['1.6em', '2.2em']}>

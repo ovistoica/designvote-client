@@ -1,9 +1,12 @@
 import * as React from 'react'
+
 import {Box, Button, Grid, Heading, Text} from '@chakra-ui/react'
-import {FaArrowRight} from 'react-icons/fa'
-import {Testimonial} from './testimonial'
-// import {useInViewport} from 'react-in-viewport'
 import {useAuth} from 'context/auth-context'
+import {FaArrowRight} from 'react-icons/fa'
+
+import {Testimonial} from './testimonial'
+
+// import {useInViewport} from 'react-in-viewport'
 
 export const TestimonialSection = () => {
   const {login} = useAuth()
