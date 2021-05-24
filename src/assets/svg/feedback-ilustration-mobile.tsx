@@ -1,5 +1,6 @@
-import {useColorModeValue, useTheme} from '@chakra-ui/system'
 import * as React from 'react'
+
+import {useColorModeValue, useTheme} from '@chakra-ui/system'
 
 function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
   const {colors} = useTheme() as any
@@ -45,7 +46,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           letterSpacing="0em"
         >
           <tspan x={46} y={33.25}>
-            {'signup feedback'}
+            signup feedback
           </tspan>
         </text>
         <text
@@ -60,7 +61,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           letterSpacing="0em"
         >
           <tspan x={29.2036} y={54.644}>
-            {'Feedback'}
+            Feedback
           </tspan>
         </text>
         <g id="Text placeholder">
@@ -191,7 +192,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           letterSpacing="0em"
         >
           <tspan x={124.336} y={89.6283}>
-            {'Tags'}
+            Tags
           </tspan>
         </text>
         <g id="tag line">
@@ -212,7 +213,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             letterSpacing="0.02em"
           >
             <tspan x={137.611} y={110.507}>
-              {'signup'}
+              signup
             </tspan>
           </text>
           <line
@@ -225,7 +226,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             strokeWidth={0.5}
           />
           <text
-            id={'20'}
+            id="20"
             fill={textInfoColor ?? '#747474'}
             xmlSpace="preserve"
             style={{
@@ -236,7 +237,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             letterSpacing="0.02em"
           >
             <tspan x={267} y={113.644}>
-              {'20'}
+              20
             </tspan>
           </text>
         </g>
@@ -258,7 +259,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             letterSpacing="0.02em"
           >
             <tspan x={138} y={132.87}>
-              {'recommandations'}
+              recommandations
             </tspan>
           </text>
           <line
@@ -271,7 +272,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             strokeWidth={0.5}
           />
           <text
-            id={'15'}
+            id="15"
             fill={textInfoColor ?? '#747474'}
             xmlSpace="preserve"
             style={{
@@ -282,7 +283,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             letterSpacing="0.02em"
           >
             <tspan x={267} y={136.144}>
-              {'15'}
+              15
             </tspan>
           </text>
         </g>
@@ -304,7 +305,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             letterSpacing="0.02em"
           >
             <tspan x={137.611} y={155.64}>
-              {'onboarding'}
+              onboarding
             </tspan>
           </text>
           <line
@@ -317,7 +318,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             strokeWidth={0.5}
           />
           <text
-            id={'34'}
+            id="34"
             fill={textInfoColor ?? '#747474'}
             xmlSpace="preserve"
             style={{
@@ -328,7 +329,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             letterSpacing="0.02em"
           >
             <tspan x={267} y={159.144}>
-              {'34'}
+              34
             </tspan>
           </text>
         </g>
@@ -348,7 +349,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             strokeWidth={0.5}
           />
           <text
-            id={'27'}
+            id="27"
             fill={textInfoColor ?? '#747474'}
             xmlSpace="preserve"
             style={{
@@ -359,7 +360,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             letterSpacing="0.02em"
           >
             <tspan x={267} y={181.144}>
-              {'27'}
+              27
             </tspan>
           </text>
           <text
@@ -374,7 +375,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             letterSpacing="0.02em"
           >
             <tspan x={137.611} y={178.206}>
-              {'new feed'}
+              new feed
             </tspan>
           </text>
         </g>
@@ -396,7 +397,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             letterSpacing="0.02em"
           >
             <tspan x={137.611} y={200.773}>
-              {'logo variation'}
+              logo variation
             </tspan>
           </text>
           <line
@@ -420,7 +421,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
             letterSpacing="0.02em"
           >
             <tspan x={267} y={204.144}>
-              {'15'}
+              15
             </tspan>
           </text>
         </g>

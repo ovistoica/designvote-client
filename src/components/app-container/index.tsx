@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 import {
   Avatar,
   Box,
@@ -16,13 +18,12 @@ import {
   useColorModeValue as mode,
 } from '@chakra-ui/react'
 import {useAuth} from 'context/auth-context'
-import * as React from 'react'
 import {BsPencilSquare} from 'react-icons/bs'
 import {HiMenu, HiChevronRight, HiX} from 'react-icons/hi'
 import {MdDashboard, MdSettings} from 'react-icons/md'
-import {useNavigate} from 'react-router'
-import {useDesigns} from 'utils/design-query'
+import {useNavigate} from 'react-router-dom'
 import {useFormattedLocationName} from 'utils/hooks'
+
 import {SidebarLink} from './sidebar-link'
 
 export const AppContainer: React.FC = ({children}) => {
@@ -31,7 +32,6 @@ export const AppContainer: React.FC = ({children}) => {
   const navigate = useNavigate()
   const currentLocation = useFormattedLocationName()
 
-  const {data: designs} = useDesigns()
   return (
     <Flex
       height="100vh"

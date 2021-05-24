@@ -1,9 +1,12 @@
-import {useSafeLayoutEffect} from '@chakra-ui/react'
 import {useState} from 'react'
-import {useResizeObserver} from './use-resize-observer'
+
+import {useSafeLayoutEffect} from '@chakra-ui/react'
+
 import {getFluidGridProps} from './get-fluid-props'
 import {getStaticGridProps} from './get-static-grid-props'
 import {useGridConstraints} from './use-grid-constraints'
+import {useResizeObserver} from './use-resize-observer'
+
 interface UseAspectRatioGridProps {
   aspectRatio: number
   gap: number

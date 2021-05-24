@@ -1,3 +1,6 @@
+import * as React from 'react'
+
+import {QuestionIcon} from '@chakra-ui/icons'
 import {
   FormControl,
   Input,
@@ -18,17 +21,14 @@ import {
   Text,
   FormHelperText,
 } from '@chakra-ui/react'
+import {RadioGroup} from 'components/radio-group'
 import {Formik, Form, FormikTouched} from 'formik'
 import {Persist} from 'formik-persist'
 import debounce from 'lodash.debounce'
 import memoize from 'lodash.memoize'
-
-import * as yup from 'yup'
-import * as React from 'react'
-import {QuestionIcon} from '@chakra-ui/icons'
-import {RadioGroup} from 'components/radio-group'
-import {CreateDesignStep, DesignType, VoteStyle} from 'types'
 import {useCreateDesignStore} from 'store'
+import {CreateDesignStep, DesignType, VoteStyle} from 'types'
+import * as yup from 'yup'
 
 interface Values {
   name: string
@@ -93,7 +93,7 @@ function QuestionPopover() {
             </Text>{' '}
             Which logo better suggests this app is for designers?
           </Text>
-          <Code></Code>
+          <Code />
         </PopoverBody>
       </PopoverContent>
     </Popover>

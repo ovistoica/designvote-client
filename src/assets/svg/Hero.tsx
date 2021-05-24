@@ -1,6 +1,7 @@
+import * as React from 'react'
+
 import {useColorModeValue} from '@chakra-ui/color-mode'
 import {useTheme} from '@emotion/react'
-import * as React from 'react'
 
 function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
   const {colors} = useTheme() as any

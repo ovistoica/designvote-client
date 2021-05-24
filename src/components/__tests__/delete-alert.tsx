@@ -1,6 +1,7 @@
 import {useDisclosure} from '@chakra-ui/react'
-import {render, screen} from 'test/test-utils'
 import {renderHook} from '@testing-library/react-hooks'
+import {render, screen} from 'test/test-utils'
+
 import {DeleteResourceAlert} from '../lib'
 
 test('renders correctly', async () => {

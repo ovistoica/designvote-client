@@ -9,11 +9,12 @@ import {
   useColorModeValue as mode,
   useDisclosure,
 } from '@chakra-ui/react'
+import Rating from '@material-ui/lab/Rating'
+import {FaComments} from 'react-icons/fa'
 import {Vote, VoteStyle} from 'types'
 import {getAverageRating, getVotePercent} from 'utils/votes'
-import Rating from '@material-ui/lab/Rating'
+
 import {DesignModal} from './design-modal'
-import {FaComments} from 'react-icons/fa'
 
 export interface StatCardProps {
   id: string

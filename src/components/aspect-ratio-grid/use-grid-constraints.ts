@@ -1,5 +1,6 @@
-import {useSafeLayoutEffect} from '@chakra-ui/react'
 import * as React from 'react'
+
+import {useSafeLayoutEffect} from '@chakra-ui/react'
 
 export const useGridConstraints = (
   parentWidth: number,
@@ -25,4 +26,4 @@ export const useGridConstraints = (
 }
 
 export const getMax = (length: number, minLength: number, gap: number) =>
-  length && minLength ? Math.floor((length + gap) / (minLength + gap)) : 0
+  (length && minLength ? Math.floor((length + gap) / (minLength + gap)) : 0)

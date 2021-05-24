@@ -1,6 +1,8 @@
 import * as React from 'react'
-import {DarkMode, LightMode, useColorMode} from '@chakra-ui/color-mode'
+
+import {DarkMode, LightMode, useColorMode} from '@chakra-ui/react'
 import {useScrollPosition} from '@n8tb1t/use-scroll-position'
+
 import {NavBar} from './nav-bar'
 
 export function LightModeNav() {

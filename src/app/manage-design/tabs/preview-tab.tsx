@@ -1,20 +1,21 @@
 import * as React from 'react'
+
 import {Button} from '@chakra-ui/button'
+import {Box, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
 import {
   Input,
   Spinner,
   useColorModeValue as mode,
   useDisclosure,
 } from '@chakra-ui/react'
-import {Box, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
-import {useManageDesign} from 'store'
-import {DesignTab, VoteStyle} from 'types'
-import {useDesign} from 'utils/design-query'
 import {FullPageSpinner} from 'components/lib'
 import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
-import {getDesignSurveyType} from 'utils/design'
 import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
 import {useAuth} from 'context/auth-context'
+import {useManageDesign} from 'store'
+import {DesignTab, VoteStyle} from 'types'
+import {getDesignSurveyType} from 'utils/design'
+import {useDesign} from 'utils/design-query'
 
 interface PreviewTabProps {
   designId: string
@@ -192,7 +193,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
               </Text>
               <Stack direction={{base: 'column', md: 'row'}} spacing="8" mt="4">
                 <Input size="lg" placeholder="Enter your name" maxW="md" />
-                <Button size="lg" colorScheme="orange" disabled={true}>
+                <Button size="lg" colorScheme="orange" disabled>
                   Submit feedback
                 </Button>
               </Stack>

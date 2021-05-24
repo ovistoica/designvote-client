@@ -1,3 +1,6 @@
+import * as React from 'react'
+
+import {QuestionIcon} from '@chakra-ui/icons'
 import {
   FormControl,
   Input,
@@ -17,12 +20,9 @@ import {
   Text,
 } from '@chakra-ui/react'
 import {Formik, Form, FormikTouched} from 'formik'
-
-import * as yup from 'yup'
-import * as React from 'react'
-import {QuestionIcon} from '@chakra-ui/icons'
 import {DesignType, VoteStyle} from 'types'
 import {useDesign, useEditDesign} from 'utils/design-query'
+import * as yup from 'yup'
 
 interface Values {
   name: string

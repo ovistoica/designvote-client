@@ -1,5 +1,5 @@
-import {Icon} from '@chakra-ui/react'
 import {IconProps} from '@chakra-ui/icons'
+import {Icon} from '@chakra-ui/react'
 
 export const NotFoundLogo = (props: IconProps) => (
   <Icon viewBox="0 0 50 50" {...props}>

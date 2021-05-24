@@ -1,11 +1,12 @@
+import {CreateDesign} from 'app/create-design'
+import {AppContainer} from 'components/app-container'
 import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
+import {PublicVoteScreen} from 'pages/public-vote'
 import {ErrorBoundary} from 'react-error-boundary'
 import {Routes, Route, Navigate} from 'react-router-dom'
+
 import {HomeScreen} from './home'
-import {CreateDesign} from 'app/create-design'
 import {ManageDesign} from './manage-design'
-import {PublicVoteScreen} from 'pages/public-vote'
-import {AppContainer} from 'components/app-container'
 import {SettingsScreen} from './settings'
 
 function AppRoutes() {

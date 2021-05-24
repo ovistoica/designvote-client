@@ -1,7 +1,7 @@
-import {useCreateDesignStore} from 'store'
-import {CreateDesignStep} from 'types'
 import {Box, Flex, HStack} from '@chakra-ui/react'
 import {Step} from 'components/step-with-arrow'
+import {useCreateDesignStore} from 'store'
+import {CreateDesignStep} from 'types'
 
 import {CreateStep} from './create-step'
 import {PreviewStep} from './preview-step'
@@ -23,6 +23,9 @@ export function CurrentScreen() {
     }
     case CreateDesignStep.Share: {
       return <PublishStep />
+    }
+    default: {
+      return null
     }
   }
 }

@@ -1,14 +1,15 @@
+import {useCallback} from 'react'
+
+import {Button} from '@chakra-ui/button'
+import {AddIcon} from '@chakra-ui/icons'
+import {Image, ImageProps} from '@chakra-ui/image'
 import {Box, Flex, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
 import {useColorModeValue as mode} from '@chakra-ui/react'
+import {DeleteTooltip} from 'components/delete-tooltip'
 import {ImageDropInput} from 'components/image-input'
 import {useCreateDesignStore} from 'store'
-import {Image, ImageProps} from '@chakra-ui/image'
-import shallow from 'zustand/shallow'
-import {useCallback} from 'react'
-import {AddIcon} from '@chakra-ui/icons'
-import {Button} from '@chakra-ui/button'
 import {CreateDesignStep} from 'types'
-import {DeleteTooltip} from 'components/delete-tooltip'
+import shallow from 'zustand/shallow'
 
 interface UploadedImageProps extends ImageProps {
   selected?: boolean
@@ -118,16 +119,14 @@ export function UploadStep() {
             }
             bg={mode('gray.50', 'gray.800')}
           />
-          {imagesByUrl.map(url => {
-            return (
-              <UploadedImage
-                imageUrl={url}
-                w="15em"
-                h="15em"
-                key={`imageUpload${url}`}
-              />
-            )
-          })}
+          {imagesByUrl.map(url => (
+            <UploadedImage
+              imageUrl={url}
+              w="15em"
+              h="15em"
+              key={`imageUpload${url}`}
+            />
+            ))}
         </SimpleGrid>
         <Button
           colorScheme="orange"

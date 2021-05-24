@@ -1,7 +1,8 @@
 import {Box, Stack, StackDivider} from '@chakra-ui/react'
+
+import {Logo} from '../logo'
 import {Copyright} from './copyright'
 import {LinkGrid} from './link-grid'
-import {Logo} from '../logo'
 import {SocialMediaLinks} from './social-media-links'
 import {SubscribeForm} from './subscribe-form'
 

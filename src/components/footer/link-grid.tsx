@@ -1,6 +1,7 @@
 import {Box, Link, SimpleGrid, SimpleGridProps, Stack} from '@chakra-ui/react'
 import {useAuth} from 'context/auth-context'
 import NextLink from 'next/link'
+
 import {FooterHeading} from './footer-heading'
 
 export const LinkGrid = (props: SimpleGridProps) => {

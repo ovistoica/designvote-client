@@ -1,3 +1,4 @@
+import {DeleteIcon, EditIcon} from '@chakra-ui/icons'
 import {
   Menu,
   MenuButton,
@@ -7,10 +8,9 @@ import {
   useDisclosure,
   IconButton,
 } from '@chakra-ui/react'
-import {HiDotsHorizontal} from 'react-icons/hi'
-import {DeleteIcon, EditIcon} from '@chakra-ui/icons'
-import {FiLink} from 'react-icons/fi'
 import {DeleteResourceAlert} from 'components/lib'
+import {FiLink} from 'react-icons/fi'
+import {HiDotsHorizontal} from 'react-icons/hi'
 import {useDeleteDesign} from 'utils/design-query'
 
 interface DesignMenuProps {

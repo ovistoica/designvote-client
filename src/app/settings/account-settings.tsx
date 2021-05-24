@@ -13,11 +13,12 @@ import {
   useColorModeValue,
   useColorMode,
 } from '@chakra-ui/react'
-import {FieldGroup} from './field-group'
-import {HeadingGroup} from './heading-group'
-import {Card} from './card'
 import {useAuth} from 'context/auth-context'
 import {FaMoon, FaSun} from 'react-icons/fa'
+
+import {Card} from './card'
+import {FieldGroup} from './field-group'
+import {HeadingGroup} from './heading-group'
 
 export const AccountSettings = (props: StackProps) => {
   const {user, logout} = useAuth()

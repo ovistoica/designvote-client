@@ -1,11 +1,12 @@
 import * as React from 'react'
+
 import {useColorModeValue} from '@chakra-ui/color-mode'
+import {Input, InputProps} from '@chakra-ui/input'
+import {Stack, StackProps, Text} from '@chakra-ui/layout'
+import {Spinner} from '@chakra-ui/spinner'
+import {HangedImage} from 'assets/icons'
 import {useDropzone} from 'react-dropzone'
 import {useUploadImage} from 'utils/file-upload'
-import {Stack, StackProps, Text} from '@chakra-ui/layout'
-import {Input, InputProps} from '@chakra-ui/input'
-import {HangedImage} from 'assets/icons'
-import {Spinner} from '@chakra-ui/spinner'
 
 interface ImageDropInputProps extends StackProps {
   onImageUpload: (imageUrls: string[]) => void
@@ -46,7 +47,7 @@ export function ImageDropInput({
   const inputIcon = icon ?? <HangedImage />
 
   const renderContent = () =>
-    loading ? (
+    (loading ? (
       <Stack
         spacing={5}
         flexDirection="column"
@@ -69,7 +70,7 @@ export function ImageDropInput({
           {description ?? 'Drag and drop some images here or browse'}
         </Text>
       </Stack>
-    )
+    ))
 
   return (
     <Stack align="center">

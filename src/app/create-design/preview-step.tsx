@@ -1,14 +1,15 @@
 import * as React from 'react'
+import {useCallback} from 'react'
+
 import {Button} from '@chakra-ui/button'
 import {Box, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
 import {Input, useColorModeValue as mode, useDisclosure} from '@chakra-ui/react'
-import {useCallback} from 'react'
+import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
+import {useZoomModalState, ZoomModal} from 'components/zoom-modal'
+import {useAuth} from 'context/auth-context'
 import {useCreateDesignStore} from 'store'
 import {CreateDesignStep, VoteStyle} from 'types'
 import {getDesignSurveyType} from 'utils/design'
-import {useAuth} from 'context/auth-context'
-import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
-import {useZoomModalState, ZoomModal} from 'components/zoom-modal'
 
 export function PreviewStep() {
   const design = useCreateDesignStore(
@@ -125,21 +126,19 @@ export function PreviewStep() {
             rowGap={{base: 8, md: 8, lg: 8}}
             mt="8"
           >
-            {design.imagesByUrl.map((imageUrl, index) => {
-              return (
-                <RateStarsVotingCard
-                  index={index}
-                  key={`designVersion${imageUrl}${index}`}
-                  versionId={'irelevant'}
-                  inPreview
-                  imageUrl={imageUrl}
-                  onClick={() => {
-                    onOpen()
-                    setImage(imageUrl, '')
-                  }}
-                />
-              )
-            })}
+            {design.imagesByUrl.map((imageUrl, i) => (
+              <RateStarsVotingCard
+                index={i}
+                key={`designVersion${imageUrl}${i}`}
+                versionId="irelevant"
+                inPreview
+                imageUrl={imageUrl}
+                onClick={() => {
+                  onOpen()
+                  setImage(imageUrl, '')
+                }}
+              />
+            ))}
           </SimpleGrid>
           <Stack
             direction={{base: 'column', lg: 'row'}}
@@ -169,7 +168,7 @@ export function PreviewStep() {
               </Text>
               <Stack direction={{base: 'column', md: 'row'}} spacing="8" mt="4">
                 <Input size="lg" placeholder="Enter your name" maxW="md" />
-                <Button size="lg" colorScheme="orange" disabled={true}>
+                <Button size="lg" colorScheme="orange" disabled>
                   Submit feedback
                 </Button>
               </Stack>

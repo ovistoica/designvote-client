@@ -18,8 +18,9 @@ import {
   useColorModeValue as mode,
   useToast,
 } from '@chakra-ui/react'
-import {useParams} from 'react-router'
+import {useParams} from 'react-router-dom'
 import {useDesign} from 'utils/design-query'
+
 import {DesignInfoTab, PreviewTab, ResultsTab, VersionsTab} from './tabs'
 
 export const ManageDesign = () => {

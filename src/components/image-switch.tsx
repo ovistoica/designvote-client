@@ -1,8 +1,8 @@
 import {IconButton} from '@chakra-ui/button'
 import {HStack, StackProps} from '@chakra-ui/layout'
-import {RiComputerFill} from 'react-icons/ri'
-import {FaMobile} from 'react-icons/fa'
 import {Tooltip} from '@chakra-ui/tooltip'
+import {FaMobile} from 'react-icons/fa'
+import {RiComputerFill} from 'react-icons/ri'
 import {DesignType} from 'types'
 
 interface SwitchProps extends StackProps {

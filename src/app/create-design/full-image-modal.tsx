@@ -1,24 +1,24 @@
 import * as React from 'react'
+
+import {IconButton, Button} from '@chakra-ui/button'
+import {CloseButton} from '@chakra-ui/close-button'
+import {useColorModeValue} from '@chakra-ui/color-mode'
+import {FormControl} from '@chakra-ui/form-control'
+import {ChevronLeftIcon, ChevronRightIcon} from '@chakra-ui/icons'
+import {Image} from '@chakra-ui/image'
+import {Input} from '@chakra-ui/input'
+import {Flex, Grid, GridItem, Heading, HStack, Text} from '@chakra-ui/layout'
 import {
   Drawer,
   DrawerBody,
   DrawerContent,
   DrawerOverlay,
 } from '@chakra-ui/modal'
-import {Flex, Grid, GridItem, Heading, HStack, Text} from '@chakra-ui/layout'
-import {CloseButton} from '@chakra-ui/close-button'
-import {FormControl} from '@chakra-ui/form-control'
-import {Input} from '@chakra-ui/input'
-import {Image} from '@chakra-ui/image'
-import {useCreateDesignStore} from 'store'
-import {IconButton, Button} from '@chakra-ui/button'
-import {ChevronLeftIcon, ChevronRightIcon} from '@chakra-ui/icons'
-import {useColorModeValue} from '@chakra-ui/color-mode'
-import {useAuth} from 'context/auth-context'
-import {VoteStyle} from 'types'
-import {RiSendPlaneFill} from 'react-icons/ri'
 import Rating from '@material-ui/lab/Rating'
-import {Key} from 'ts-key-enum'
+import {useAuth} from 'context/auth-context'
+import {RiSendPlaneFill} from 'react-icons/ri'
+import {useCreateDesignStore} from 'store'
+import {VoteStyle} from 'types'
 
 interface VersionModalProps {
   isOpen: boolean

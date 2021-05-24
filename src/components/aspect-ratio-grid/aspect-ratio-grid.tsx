@@ -1,5 +1,7 @@
-import {Grid, GridProps} from '@chakra-ui/react'
 import * as React from 'react'
+
+import {Grid, GridProps} from '@chakra-ui/react'
+
 import {useAspectRatioGrid} from './use-aspect-ratio-grid'
 
 interface AspectRatioGridProps extends Omit<GridProps, 'gap'> {

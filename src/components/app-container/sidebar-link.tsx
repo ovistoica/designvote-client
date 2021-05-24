@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 import {
   Box,
   BoxProps,
@@ -6,7 +8,6 @@ import {
   Text,
   useColorModeValue as mode,
 } from '@chakra-ui/react'
-import * as React from 'react'
 
 interface SidebarLinkProps extends BoxProps {
   icon?: React.ReactElement

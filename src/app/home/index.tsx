@@ -1,12 +1,13 @@
 import {Box, Flex, GridItem, SimpleGrid, Text} from '@chakra-ui/react'
-import {useDesigns} from 'utils/design-query'
-import {useNavigate} from 'react-router-dom'
+import {DesignCard, DesignInfo, VotesCount} from 'components/design-card'
 import {FullPageSpinner} from 'components/lib'
 import {MetaDecorator} from 'components/meta-decorator'
+import {useNavigate} from 'react-router-dom'
 import {Design} from 'types'
-import {DesignCard, DesignInfo, VotesCount} from 'components/design-card'
-import {NoDesigns} from './no-designs'
+import {useDesigns} from 'utils/design-query'
+
 import {CreateDesignCard} from './create-design-card'
+import {NoDesigns} from './no-designs'
 
 export function HomeScreen() {
   const navigate = useNavigate()

@@ -1,6 +1,7 @@
+import * as React from 'react'
+
 import {useColorModeValue} from '@chakra-ui/color-mode'
 import {useTheme} from '@chakra-ui/system'
-import * as React from 'react'
 
 function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
   const {colors} = useTheme() as any
@@ -38,7 +39,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
         letterSpacing="0em"
       >
         <tspan x={106.342} y={72.544}>
-          {'signup feedback'}
+          signup feedback
         </tspan>
       </text>
       <text
@@ -52,7 +53,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
         letterSpacing="0em"
       >
         <tspan x={68.142} y={122.859}>
-          {'Feedback'}
+          Feedback
         </tspan>
       </text>
       <g id="Rectangle" filter="url(#prefix__filter0_d)">
@@ -107,7 +108,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
         letterSpacing="0em"
       >
         <tspan x={290.118} y={203.383}>
-          {'Tags'}
+          Tags
         </tspan>
       </text>
       <g>
@@ -125,7 +126,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           letterSpacing=".02em"
         >
           <tspan x={321.091} y={255.012}>
-            {'signup'}
+            signup
           </tspan>
         </text>
         <path stroke={surface ?? '#EEF3F4'} d="M290.121 268.969l383.038 2" />
@@ -139,7 +140,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           letterSpacing=".02em"
         >
           <tspan x={645.28} y={260.69}>
-            {'20'}
+            20
           </tspan>
         </text>
       </g>
@@ -158,7 +159,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           letterSpacing=".02em"
         >
           <tspan x={321.091} y={307.667}>
-            {'recommandations'}
+            recommandations
           </tspan>
         </text>
         <path stroke={surface ?? '#EEF3F4'} d="M290.121 321.624l383.038 2" />
@@ -172,7 +173,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           letterSpacing=".02em"
         >
           <tspan x={645.28} y={313.345}>
-            {'15'}
+            15
           </tspan>
         </text>
       </g>
@@ -191,7 +192,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           letterSpacing=".02em"
         >
           <tspan x={321.091} y={360.322}>
-            {'onboarding'}
+            onboarding
           </tspan>
         </text>
         <path stroke={surface ?? '#EEF3F4'} d="M290.121 374.279l383.038 2" />
@@ -205,7 +206,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           letterSpacing=".02em"
         >
           <tspan x={645.28} y={366}>
-            {'34'}
+            34
           </tspan>
         </text>
       </g>
@@ -225,7 +226,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           letterSpacing=".02em"
         >
           <tspan x={645.28} y={418.655}>
-            {'27'}
+            27
           </tspan>
         </text>
         <text
@@ -238,7 +239,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           letterSpacing=".02em"
         >
           <tspan x={321.091} y={412.977}>
-            {'new feed'}
+            new feed
           </tspan>
         </text>
       </g>
@@ -257,7 +258,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           letterSpacing=".02em"
         >
           <tspan x={321.091} y={465.631}>
-            {'logo variation'}
+            logo variation
           </tspan>
         </text>
         <path
@@ -274,7 +275,7 @@ function SvgComponent(props: React.SVGProps<SVGSVGElement>) {
           letterSpacing=".02em"
         >
           <tspan x={645.28} y={471.31}>
-            {'15'}
+            15
           </tspan>
         </text>
       </g>

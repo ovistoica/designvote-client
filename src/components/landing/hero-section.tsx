@@ -1,3 +1,4 @@
+import {useAuth0} from '@auth0/auth0-react'
 import {
   Box,
   Button,
@@ -7,7 +8,6 @@ import {
   Text,
   LightMode,
 } from '@chakra-ui/react'
-import {useAuth0} from '@auth0/auth0-react'
 
 const heroImage = require('assets/feedback-feature.png')
 // import heroImage from 'assets/hero-image.png'

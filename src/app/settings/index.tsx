@@ -1,4 +1,5 @@
 import {Box, Stack, useColorModeValue} from '@chakra-ui/react'
+
 import {AccountSettings} from './account-settings'
 
 export const SettingsScreen = () => (

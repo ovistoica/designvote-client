@@ -1,5 +1,6 @@
-import {useSafeLayoutEffect} from '@chakra-ui/react'
 import * as React from 'react'
+
+import {useSafeLayoutEffect} from '@chakra-ui/react'
 
 /**
  * A very simpe resize observer hoook.
@@ -24,6 +25,7 @@ export const useResizeObserver = <T extends HTMLElement>() => {
         observer.disconnect()
       }
     }
+    return () => {}
   }, [ref])
 
   return {ref, height, width}

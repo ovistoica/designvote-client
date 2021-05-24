@@ -1,4 +1,5 @@
 import {Flex, FlexProps, useColorModeValue as mode} from '@chakra-ui/react'
+
 import {DesignMenu} from './design-menu'
 
 interface DesignCardProps extends FlexProps {

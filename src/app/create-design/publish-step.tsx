@@ -1,11 +1,11 @@
 import * as React from 'react'
+
 import {Button} from '@chakra-ui/button'
 import {CheckIcon} from '@chakra-ui/icons'
 import {Flex, Heading, Stack, Text} from '@chakra-ui/layout'
-import {useCreateDesignFromDraft} from 'utils/design-query'
-import {useDesign} from 'utils/design-query'
 import {useCreateDesignStore} from 'store'
 import {CreateDesignStep} from 'types'
+import {useCreateDesignFromDraft, useDesign} from 'utils/design-query'
 
 export function PublishStep() {
   const {
