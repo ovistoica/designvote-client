@@ -13,28 +13,36 @@ import {
   useDisclosure,
 } from '@chakra-ui/react'
 import {Footer} from 'components/footer'
+import {UnauthenticatedNavBar} from 'components/nav-bar'
 import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
 import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
-import {useNavigate, useParams} from 'react-router-dom'
+import {GetServerSideProps} from 'next'
+import {useRouter} from 'next/router'
+import {QueryClient} from 'react-query'
+import {dehydrate} from 'react-query/hydration'
 import {canSubmit, useVoteDesignState} from 'store/vote-design'
 import {VoteStyle} from 'types'
 import {getDesignSurveyType} from 'utils/design'
-import {useGiveDesignFeedback, useUrlDesign} from 'utils/design-query'
+import {
+  useGiveDesignFeedback,
+  useUrlDesign,
+  getDesignByShortUrl,
+} from 'utils/design-query'
 
 export function PublicVoteScreen() {
-  const {shortUrl} = useParams()
-  const {data, isLoading, isSuccess} = useUrlDesign(shortUrl)
+  const {query} = useRouter()
+  const {shortUrl} = query
+  const {data, isLoading, isSuccess} = useUrlDesign(shortUrl as string)
   const {design, versions, pictures} = data
   const setVoterName = useVoteDesignState(state => state.setVoterName)
   const canSubmitFeedback = useVoteDesignState(canSubmit)
   const {
     mutate: submitFeedback,
-    isSuccess: isVotingSuccess,
+    // isSuccess: isVotingSuccess,
     isLoading: isVoteLoading,
   } = useGiveDesignFeedback(design.designId, {
     enabled: isSuccess,
   })
-  const navigate = useNavigate()
   const {isOpen, onOpen, onClose} = useDisclosure()
   const setImage = useZoomModalState(state => state.setImage)
 
@@ -45,14 +53,15 @@ export function PublicVoteScreen() {
     ? 'Loading survey...'
     : `${design.nickname} wants your feedback on their ${surveyType}`
 
-  React.useEffect(() => {
-    if (isVotingSuccess) {
-      navigate('/thank-you')
-    }
-  }, [isVotingSuccess, navigate])
+  // React.useEffect(() => {
+  //   if (isVotingSuccess) {
+  //     navigate('/thank-you')
+  //   }
+  // }, [isVotingSuccess, navigate])
 
   return (
     <>
+      <UnauthenticatedNavBar />
       <Box as="section" bg={mode('gray.50', 'gray.800')} pt="16" pb="24">
         <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '6', md: '8'}}>
           <Stack
@@ -188,6 +197,24 @@ export function PublicVoteScreen() {
       <Footer />
     </>
   )
+}
+
+export const getServerSideProps: GetServerSideProps<
+  Record<string, unknown>,
+  {shortUrl: string}
+> = async ({params}) => {
+  const {shortUrl} = params ?? {shortUrl: ''}
+  const queryClient = new QueryClient()
+
+  await queryClient.prefetchQuery(['design', {shortUrl}], () =>
+    getDesignByShortUrl(shortUrl),
+  )
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  }
 }
 
 export default PublicVoteScreen

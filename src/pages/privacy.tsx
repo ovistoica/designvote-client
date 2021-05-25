@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 import {Container, Heading} from '@chakra-ui/react'
 import {Footer} from 'components/footer'
+import {UnauthenticatedNavBar} from 'components/nav-bar'
 
 const sxProp: any = {
   ul: {listStyleType: 'none', marginTop: '1rem'},
@@ -12,6 +13,7 @@ const sxProp: any = {
 export function Privacy() {
   return (
     <>
+      <UnauthenticatedNavBar />
       <Container pt="7.5rem" pb="8" sx={sxProp}>
         <Heading as="h1">Privacy Policy</Heading>
         <p>Effective date: May 20, 2021</p>

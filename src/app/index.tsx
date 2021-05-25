@@ -1,7 +1,6 @@
 import {CreateDesign} from 'app/create-design'
 import {AppContainer} from 'components/app-container'
 import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
-import {PublicVoteScreen} from 'pages/public-vote'
 import {ErrorBoundary} from 'react-error-boundary'
 import {Routes, Route, Navigate} from 'react-router-dom'
 
@@ -16,7 +15,6 @@ function AppRoutes() {
         <Navigate to="/app" />
       </Route>
       <Route path="/app" element={<HomeScreen />} />
-      <Route path="/vote/:shortUrl" element={<PublicVoteScreen />} />
       <Route path="/design/:designId" element={<ManageDesign />} />
       <Route path="/create" element={<CreateDesign />} />
       <Route path="/settings" element={<SettingsScreen />} />

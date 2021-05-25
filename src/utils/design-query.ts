@@ -97,7 +97,7 @@ async function getDesign(designId: string) {
   )
 }
 
-async function getDesignByShortUrl(shortUrl: string) {
+export async function getDesignByShortUrl(shortUrl: string) {
   return getRequest<ApiDesign>(`v1/designs/short/${shortUrl}`).then(result =>
     normalizeDesign(result),
   )
