@@ -1,6 +1,4 @@
-import {IconButton} from '@chakra-ui/button'
-import {HStack, StackProps} from '@chakra-ui/layout'
-import {Tooltip} from '@chakra-ui/tooltip'
+import {Tooltip, HStack, StackProps, IconButton} from '@chakra-ui/react'
 import {FaMobile} from 'react-icons/fa'
 import {RiComputerFill} from 'react-icons/ri'
 import {DesignType} from 'types'

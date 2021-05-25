@@ -1,7 +1,7 @@
 {
   "plugins": ["@typescript-eslint", "jest"],
 
-  "extends": ["airbnb-typescript"],
+  "extends": ["airbnb-typescript", "plugin:react-hooks/recommended"],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
@@ -46,6 +46,8 @@
     "react/jsx-props-no-spreading": "off",
     "semi-style": "off",
     "react/prop-types": "off",
+    "no-confusing-arrow": "off",
+    "react/jsx-wrap-multilines": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {

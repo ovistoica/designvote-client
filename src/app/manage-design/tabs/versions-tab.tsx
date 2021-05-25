@@ -1,9 +1,14 @@
 import {useCallback} from 'react'
 
-import {useColorModeValue as mode} from '@chakra-ui/color-mode'
 import {AddIcon} from '@chakra-ui/icons'
-import {Image, ImageProps} from '@chakra-ui/image'
-import {Box, Flex, SimpleGrid} from '@chakra-ui/layout'
+import {
+  Image,
+  ImageProps,
+  Box,
+  Flex,
+  SimpleGrid,
+  useColorModeValue as mode,
+} from '@chakra-ui/react'
 import {DeleteTooltip} from 'components/delete-tooltip'
 import {ImageDropInput} from 'components/image-input'
 import {
@@ -19,12 +24,7 @@ interface UploadedImageProps extends ImageProps {
 }
 
 // TODO: Don't let user delete from the last two
-function UploadedImage({
-  imageUrl,
-  description,
-  onDeletePress,
-  ...rest
-}: UploadedImageProps) {
+function UploadedImage({imageUrl, onDeletePress, ...rest}: UploadedImageProps) {
   return (
     <Box role="group" position="relative">
       <DeleteTooltip onClick={onDeletePress} />

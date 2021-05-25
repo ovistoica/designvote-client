@@ -1,4 +1,4 @@
-import {createIcon} from '@chakra-ui/icon'
+import {createIcon} from '@chakra-ui/react'
 
 export const DeleteBin = createIcon({
   displayName: 'DeleteIcon',

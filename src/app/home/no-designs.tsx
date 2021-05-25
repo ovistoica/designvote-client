@@ -21,7 +21,7 @@ export function NoDesigns({onClick}: NoDesignsProps) {
     >
       <NotFoundLogo w="3em" h="3em" color={mode('orange.500', 'orange.300')} />
       <Text mt={4} fontWeight="medium" fontSize="md" textAlign="center">
-        You haven't uploaded any designs yet
+        You haven&apos;t uploaded any designs yet
       </Text>
       <Text mt={1} color={textInfoColor} textAlign="center">
         Click here to start the process

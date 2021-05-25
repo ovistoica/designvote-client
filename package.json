@@ -56,6 +56,7 @@
   },
   "devDependencies": {
     "@types/faker": "^5.1.7",
+    "@types/jest": "^26.0.20",
     "@types/lodash.debounce": "^4.0.6",
     "@types/lodash.memoize": "^4.1.6",
     "@types/react-helmet": "^6.1.0",
@@ -71,6 +72,7 @@
     "husky": "^5.0.9",
     "is-ci": "^2.0.0",
     "is-ci-cli": "^2.2.0",
+    "jest": "^26.6.0",
     "jest-watch-typeahead": "^0.6.1",
     "lint-staged": "^10.5.4",
     "msw": "^0.26.2",
@@ -90,13 +92,12 @@
     "lint": "eslint . --cache-location node_modules/.cache/eslint",
     "format": "prettier --write \"**/*.+(js|json|css|md|mdx|html)\"",
     "check-types": "tsc",
-    "validate": "npm-run-all --parallel check-types lint test:coverage build",
+    "validate": "npm-run-all --parallel check-types lint build",
     "precommit": "npm-run-all --parallel check-types lint-staged"
   },
   "lint-staged": {
     "*.+(js|jsx|ts|tsx)": [
-      "eslint",
-      "jest --findRelatedTests"
+      "eslint"
     ],
     "**/*.+(js|jsx|ts|tsx|md|json)": [
       "prettier --write"

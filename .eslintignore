@@ -3,6 +3,9 @@ build
 coverage
 public
 .docz
-scripts/workshop-setup.js
+scripts
 .next
 src/test
+next.config.js
+next-env.d.ts
+jest.config.js

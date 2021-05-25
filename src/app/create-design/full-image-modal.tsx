@@ -1,19 +1,25 @@
 import * as React from 'react'
 
-import {IconButton, Button} from '@chakra-ui/button'
-import {CloseButton} from '@chakra-ui/close-button'
-import {useColorModeValue} from '@chakra-ui/color-mode'
-import {FormControl} from '@chakra-ui/form-control'
 import {ChevronLeftIcon, ChevronRightIcon} from '@chakra-ui/icons'
-import {Image} from '@chakra-ui/image'
-import {Input} from '@chakra-ui/input'
-import {Flex, Grid, GridItem, Heading, HStack, Text} from '@chakra-ui/layout'
 import {
+  Flex,
+  Grid,
+  GridItem,
+  Heading,
+  HStack,
+  Text,
+  Image,
+  FormControl,
+  useColorModeValue,
+  CloseButton,
+  IconButton,
+  Button,
   Drawer,
   DrawerBody,
   DrawerContent,
   DrawerOverlay,
-} from '@chakra-ui/modal'
+  Input,
+} from '@chakra-ui/react'
 import Rating from '@material-ui/lab/Rating'
 import {useAuth} from 'context/auth-context'
 import {RiSendPlaneFill} from 'react-icons/ri'

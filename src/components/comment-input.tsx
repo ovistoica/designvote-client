@@ -1,5 +1,4 @@
-import {FormControl, FormErrorMessage} from '@chakra-ui/form-control'
-import {Input} from '@chakra-ui/input'
+import {Input, FormControl, FormErrorMessage} from '@chakra-ui/react'
 import {FormikTouched, useFormik} from 'formik'
 import * as yup from 'yup'
 

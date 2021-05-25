@@ -1,12 +1,16 @@
 import * as React from 'react'
 
-import {Button} from '@chakra-ui/button'
-import {Box, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
 import {
   Input,
   Spinner,
   useColorModeValue as mode,
   useDisclosure,
+  Button,
+  Box,
+  Heading,
+  SimpleGrid,
+  Stack,
+  Text,
 } from '@chakra-ui/react'
 import {FullPageSpinner} from 'components/lib'
 import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'

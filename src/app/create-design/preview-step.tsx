@@ -1,9 +1,16 @@
 import * as React from 'react'
-import {useCallback} from 'react'
 
-import {Button} from '@chakra-ui/button'
-import {Box, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
-import {Input, useColorModeValue as mode, useDisclosure} from '@chakra-ui/react'
+import {
+  Button,
+  Box,
+  Heading,
+  SimpleGrid,
+  Stack,
+  Text,
+  Input,
+  useColorModeValue as mode,
+  useDisclosure,
+} from '@chakra-ui/react'
 import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
 import {useZoomModalState, ZoomModal} from 'components/zoom-modal'
 import {useAuth} from 'context/auth-context'
@@ -13,7 +20,7 @@ import {getDesignSurveyType} from 'utils/design'
 
 export function PreviewStep() {
   const design = useCreateDesignStore(
-    useCallback(
+    React.useCallback(
       state => ({
         question: state.question,
         name: state.name,
@@ -35,7 +42,9 @@ export function PreviewStep() {
   const notEnoughVersions = design.imagesByUrl.length < 2
   const {isOpen, onOpen, onClose} = useDisclosure()
 
-  const setStep = useCreateDesignStore(useCallback(state => state.setStep, []))
+  const setStep = useCreateDesignStore(
+    React.useCallback(state => state.setStep, []),
+  )
   const setImage = useZoomModalState(state => state.setImage)
 
   if (isDesignInvalid) {
@@ -129,6 +138,7 @@ export function PreviewStep() {
             {design.imagesByUrl.map((imageUrl, i) => (
               <RateStarsVotingCard
                 index={i}
+                // eslint-disable-next-line react/no-array-index-key
                 key={`designVersion${imageUrl}${i}`}
                 versionId="irelevant"
                 inPreview

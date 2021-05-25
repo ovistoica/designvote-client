@@ -13,7 +13,7 @@ interface DesignInfoProps extends StackProps {
 }
 
 export const DesignInfo = (props: DesignInfoProps) => {
-  const {name, description, isVerified, ...stackProps} = props
+  const {name, description, ...stackProps} = props
   return (
     <VStack spacing="1" flex="1" {...stackProps}>
       <HStack>

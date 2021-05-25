@@ -26,6 +26,103 @@ import {useFormattedLocationName} from 'utils/hooks'
 
 import {SidebarLink} from './sidebar-link'
 
+const MobileMenuButton = (props: {onClick: () => void; isOpen: boolean}) => {
+  const {onClick, isOpen} = props
+  return (
+    <Box
+      display={{base: 'block', md: 'none'}}
+      ml="-8"
+      mr="2"
+      as="button"
+      type="button"
+      rounded="md"
+      p="1"
+      fontSize="xl"
+      color="gray.500"
+      _hover={{bg: 'gray.100'}}
+      onClick={onClick}
+    >
+      <Box srOnly>{isOpen ? 'Close Menu' : 'Open Menu'}</Box>
+      {isOpen ? <HiX /> : <HiMenu />}
+    </Box>
+  )
+}
+
+const NavBreadcrumb = (props: BreadcrumbProps) => {
+  const navigate = useNavigate()
+  const currentLocation = useFormattedLocationName()
+
+  return (
+    <Breadcrumb
+      fontSize="sm"
+      {...props}
+      separator={
+        <Box
+          as={HiChevronRight}
+          color="gray.400"
+          fontSize="md"
+          top="2px"
+          pos="relative"
+        />
+      }
+    >
+      <BreadcrumbItem color="inherit">
+        <BreadcrumbLink onClick={() => navigate('/app')}>Home</BreadcrumbLink>
+      </BreadcrumbItem>
+      {currentLocation ? (
+        <BreadcrumbItem color="inherit" isCurrentPage>
+          <BreadcrumbLink>{currentLocation}</BreadcrumbLink>
+        </BreadcrumbItem>
+      ) : null}
+    </Breadcrumb>
+  )
+}
+
+const ScrollArea = (props: BoxProps) => (
+  <Box
+    overflowY="auto"
+    height="80vh"
+    minH="px"
+    maxH="full"
+    {...props}
+    sx={{
+      '&::-webkit-scrollbar-track': {
+        bg: 'transparent',
+      },
+      '&::-webkit-scrollbar': {
+        width: '4px',
+      },
+      '&::-webkit-scrollbar-thumb': {
+        bg: mode('blue.600', 'gray.700'),
+        borderRadius: '20px',
+      },
+    }}
+  />
+)
+
+const useMobileMenuState = () => {
+  const [isOpen, actions] = useBoolean()
+  const isMobile = useBreakpointValue({base: true, md: false})
+  React.useEffect(() => {
+    if (isMobile === false) {
+      actions.off()
+    }
+  }, [isMobile, actions])
+  return {isOpen, ...actions}
+}
+
+const NavSectionTitle = (props: TextProps) => (
+  <Text
+    casing="uppercase"
+    fontSize="xs"
+    fontWeight="semibold"
+    letterSpacing="wide"
+    paddingStart="3"
+    color="gray.400"
+    {...props}
+  />
+)
+
 export const AppContainer: React.FC = ({children}) => {
   const {isOpen, toggle} = useMobileMenuState()
   const {user} = useAuth()
@@ -154,100 +251,3 @@ export const AppContainer: React.FC = ({children}) => {
     </Flex>
   )
 }
-
-const MobileMenuButton = (props: {onClick: () => void; isOpen: boolean}) => {
-  const {onClick, isOpen} = props
-  return (
-    <Box
-      display={{base: 'block', md: 'none'}}
-      ml="-8"
-      mr="2"
-      as="button"
-      type="button"
-      rounded="md"
-      p="1"
-      fontSize="xl"
-      color="gray.500"
-      _hover={{bg: 'gray.100'}}
-      onClick={onClick}
-    >
-      <Box srOnly>{isOpen ? 'Close Menu' : 'Open Menu'}</Box>
-      {isOpen ? <HiX /> : <HiMenu />}
-    </Box>
-  )
-}
-
-const NavBreadcrumb = (props: BreadcrumbProps) => {
-  const navigate = useNavigate()
-  const currentLocation = useFormattedLocationName()
-
-  return (
-    <Breadcrumb
-      fontSize="sm"
-      {...props}
-      separator={
-        <Box
-          as={HiChevronRight}
-          color="gray.400"
-          fontSize="md"
-          top="2px"
-          pos="relative"
-        />
-      }
-    >
-      <BreadcrumbItem color="inherit">
-        <BreadcrumbLink onClick={() => navigate('/app')}>Home</BreadcrumbLink>
-      </BreadcrumbItem>
-      {currentLocation ? (
-        <BreadcrumbItem color="inherit" isCurrentPage>
-          <BreadcrumbLink>{currentLocation}</BreadcrumbLink>
-        </BreadcrumbItem>
-      ) : null}
-    </Breadcrumb>
-  )
-}
-
-const ScrollArea = (props: BoxProps) => (
-  <Box
-    overflowY="auto"
-    height="80vh"
-    minH="px"
-    maxH="full"
-    {...props}
-    sx={{
-      '&::-webkit-scrollbar-track': {
-        bg: 'transparent',
-      },
-      '&::-webkit-scrollbar': {
-        width: '4px',
-      },
-      '&::-webkit-scrollbar-thumb': {
-        bg: mode('blue.600', 'gray.700'),
-        borderRadius: '20px',
-      },
-    }}
-  />
-)
-
-const useMobileMenuState = () => {
-  const [isOpen, actions] = useBoolean()
-  const isMobile = useBreakpointValue({base: true, md: false})
-  React.useEffect(() => {
-    if (isMobile === false) {
-      actions.off()
-    }
-  }, [isMobile, actions])
-  return {isOpen, ...actions}
-}
-
-const NavSectionTitle = (props: TextProps) => (
-  <Text
-    casing="uppercase"
-    fontSize="xs"
-    fontWeight="semibold"
-    letterSpacing="wide"
-    paddingStart="3"
-    color="gray.400"
-    {...props}
-  />
-)

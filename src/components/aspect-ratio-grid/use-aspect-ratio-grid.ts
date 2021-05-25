@@ -30,7 +30,7 @@ export const useAspectRatioGrid = (options: UseAspectRatioGridProps) => {
 
   useSafeLayoutEffect(() => {
     if (height && width && maxItems) {
-      const gridProps =
+      const newGridProps =
         items > maxItems
           ? getFluidGridProps({items, width, aspectRatio, gap, maxColumns})
           : getStaticGridProps({
@@ -41,7 +41,7 @@ export const useAspectRatioGrid = (options: UseAspectRatioGridProps) => {
               maxColumns,
               height,
             })
-      setGridProps(gridProps)
+      setGridProps(newGridProps)
     }
   }, [aspectRatio, gap, height, items, maxColumns, maxItems, width])
 

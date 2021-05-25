@@ -1,10 +1,18 @@
 import {useCallback} from 'react'
 
-import {Button} from '@chakra-ui/button'
 import {AddIcon} from '@chakra-ui/icons'
-import {Image, ImageProps} from '@chakra-ui/image'
-import {Box, Flex, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
-import {useColorModeValue as mode} from '@chakra-ui/react'
+import {
+  Box,
+  Flex,
+  Heading,
+  SimpleGrid,
+  Stack,
+  Text,
+  Image,
+  ImageProps,
+  useColorModeValue as mode,
+  Button,
+} from '@chakra-ui/react'
 import {DeleteTooltip} from 'components/delete-tooltip'
 import {ImageDropInput} from 'components/image-input'
 import {useCreateDesignStore} from 'store'
@@ -20,7 +28,6 @@ interface UploadedImageProps extends ImageProps {
 function UploadedImage({
   selected = false,
   imageUrl,
-  description,
   ...rest
 }: UploadedImageProps) {
   const onDeletePress = useCreateDesignStore(
@@ -126,7 +133,7 @@ export function UploadStep() {
               h="15em"
               key={`imageUpload${url}`}
             />
-            ))}
+          ))}
         </SimpleGrid>
         <Button
           colorScheme="orange"

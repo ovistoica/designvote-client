@@ -9,6 +9,15 @@ interface GetStaticGridPropsOptions {
   gap: number
 }
 
+const getSensibleNumberOfColumns = (
+  options: GetSensibleNumberOfColumnsOptions,
+) => {
+  const {items, maxColumns} = options
+  const start = Math.max(1, Math.floor(Math.sqrt(items)) - 1)
+  const end = Math.min(items, maxColumns) + 1
+  return Array.from(Array(end - start)).map((_, i) => i + start)
+}
+
 export const getStaticGridProps = (options: GetStaticGridPropsOptions) => {
   const initialGridSize = {
     columns: 0,
@@ -41,13 +50,4 @@ export const getStaticGridProps = (options: GetStaticGridPropsOptions) => {
 interface GetSensibleNumberOfColumnsOptions {
   items: number
   maxColumns: number
-}
-
-const getSensibleNumberOfColumns = (
-  options: GetSensibleNumberOfColumnsOptions,
-) => {
-  const {items, maxColumns} = options
-  const start = Math.max(1, Math.floor(Math.sqrt(items)) - 1)
-  const end = Math.min(items, maxColumns) + 1
-  return Array.from(Array(end - start)).map((_, i) => i + start)
 }

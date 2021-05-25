@@ -88,7 +88,7 @@ export function useAsync<Result = unknown>(
         },
       )
     },
-    [safeSetState, setData, setError],
+    [data, error, safeSetState, setData, setError],
   )
 
   return {

@@ -1,5 +1,4 @@
-import {Circle} from '@chakra-ui/layout'
-import {useColorModeValue as mode} from '@chakra-ui/react'
+import {Circle, useColorModeValue as mode} from '@chakra-ui/react'
 import {DeleteBin} from 'assets/icons'
 
 interface DeleteTooltipProps {

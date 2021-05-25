@@ -64,7 +64,7 @@ export function DesignModal({
                 Comments:{' '}
               </Heading>
               <Stack align="flex-start" spacing="4">
-                {version.opinions.map((opId, index) => {
+                {version.opinions.map(opId => {
                   const {opinion, voterName} = opinions[opId]
                   return (
                     <SimpleGrid
