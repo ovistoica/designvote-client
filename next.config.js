@@ -4,4 +4,5 @@ module.exports = withImages({
     return config
   },
   reactStrictMode: true,
+  distDir: 'build',
 })
