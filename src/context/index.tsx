@@ -1,17 +1,17 @@
+import {UserProfile, UserProvider} from '@auth0/nextjs-auth0'
 import {CookiesProvider} from 'react-cookie'
 
 import {AppProviders} from './app-context'
-import {Auth0Provider} from './auth-context'
 import {ThemeProvider} from './theme'
 
 /**
  * These are the base providers for the basic pages.
  */
-const BaseProviders: React.FC = ({children}) => (
+const BaseProviders: React.FC<{user: UserProfile}> = ({children, user}) => (
   <ThemeProvider>
-    <Auth0Provider>
+    <UserProvider user={user}>
       <CookiesProvider>{children}</CookiesProvider>
-    </Auth0Provider>
+    </UserProvider>
   </ThemeProvider>
 )
 

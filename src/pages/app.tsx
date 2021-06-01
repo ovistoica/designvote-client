@@ -1,7 +1,6 @@
-// pages/index.js
 import {useUser} from '@auth0/nextjs-auth0'
 
-export default function Index() {
+const Test = () => {
   const {user, error, isLoading} = useUser()
 
   if (isLoading) return <div>Loading...</div>
@@ -17,3 +16,5 @@ export default function Index() {
 
   return <a href="/api/auth/login">Login</a>
 }
+
+export default Test
