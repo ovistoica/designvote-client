@@ -142,7 +142,7 @@ export const MobileNav = () => {
               </SimpleGrid>
               <VStack mt="8" spacing="4">
                 <Button w="full" colorScheme="orange" onClick={login}>
-                  Start Free Trial
+                  Create account
                 </Button>
                 <Box
                   textAlign="center"

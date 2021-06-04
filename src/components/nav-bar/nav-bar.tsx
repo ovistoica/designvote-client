@@ -48,7 +48,7 @@ export const NavBar = (props: NavBarProps) => {
                   Log in{' '}
                 </NavLink.Desktop>
                 <Button colorScheme="orange" rounded="full" onClick={login}>
-                  Start Free Trial
+                  Sign Up
                 </Button>
               </HStack>
               <Box ml="5">

@@ -57,7 +57,7 @@ export const HeroSection = () => {
               fontSize="md"
               onClick={login}
             >
-              Get started free
+              Get started
             </Button>
           </LightMode>
         </Stack>
