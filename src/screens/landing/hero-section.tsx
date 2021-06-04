@@ -8,7 +8,7 @@ import {
   LightMode,
 } from '@chakra-ui/react'
 // import heroImage from 'assets/hero-image.png'
-import heroImage from 'assets/feedback-feature.png'
+import heroImage from 'assets/manage-design.png'
 import {useAuth} from 'context/auth-context'
 
 export const HeroSection = () => {
