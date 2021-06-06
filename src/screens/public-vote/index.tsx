@@ -97,6 +97,51 @@ export function PublicVoteScreen() {
               </Text>
             </Box>
           </Stack>
+          <Stack
+            direction={{base: 'column', lg: 'row'}}
+            spacing={{base: '3rem', lg: '2rem'}}
+            mt="8"
+            align={{lg: 'center'}}
+            justify="space-between"
+          >
+            <Box flex="1">
+              <Heading
+                as="h1"
+                size="xl"
+                color={mode('gray.700', 'gray.300')}
+                mt="4"
+                fontWeight="bold"
+                letterSpacing="tight"
+              >
+                Send your feedback
+              </Heading>
+              {/*<Text
+                color={mode('gray.600', 'gray.400')}
+                mt={{base: '4', md: '4'}}
+                fontSize="lg"
+                fontWeight="extrabold"
+              >
+                Let {design.nickname} know who you are:
+              </Text>*/}
+              <Stack direction={{base: 'column', md: 'row'}} spacing="8" mt="4">
+                <Input
+                  size="lg"
+                  placeholder="Enter your name"
+                  maxW="md"
+                  onChange={e => setVoterName(e.target.value)}
+                />
+                <Button
+                  size="lg"
+                  colorScheme="orange"
+                  disabled={!canSubmitFeedback}
+                  onClick={() => submitFeedback()}
+                  isLoading={isVoteLoading}
+                >
+                  Submit feedback
+                </Button>
+              </Stack>
+            </Box>
+          </Stack>
           <SimpleGrid
             columns={{base: 1, md: 2, lg: 3}}
             spacing={{base: '2', md: '8', lg: '8'}}
@@ -136,51 +181,6 @@ export function PublicVoteScreen() {
                 })
             )}
           </SimpleGrid>
-          <Stack
-            direction={{base: 'column', lg: 'row'}}
-            spacing={{base: '3rem', lg: '2rem'}}
-            mt="8"
-            align={{lg: 'center'}}
-            justify="space-between"
-          >
-            <Box flex="1">
-              <Heading
-                as="h1"
-                size="xl"
-                color={mode('gray.700', 'gray.300')}
-                mt="4"
-                fontWeight="bold"
-                letterSpacing="tight"
-              >
-                Send your feedback
-              </Heading>
-              <Text
-                color={mode('gray.600', 'gray.400')}
-                mt={{base: '4', md: '4'}}
-                fontSize="lg"
-                fontWeight="extrabold"
-              >
-                Let {design.nickname} know who you are:
-              </Text>
-              <Stack direction={{base: 'column', md: 'row'}} spacing="8" mt="4">
-                <Input
-                  size="lg"
-                  placeholder="Enter your name"
-                  maxW="md"
-                  onChange={e => setVoterName(e.target.value)}
-                />
-                <Button
-                  size="lg"
-                  colorScheme="orange"
-                  disabled={!canSubmitFeedback}
-                  onClick={() => submitFeedback()}
-                  isLoading={isVoteLoading}
-                >
-                  Submit feedback
-                </Button>
-              </Stack>
-            </Box>
-          </Stack>
         </Box>
       </Box>
       <ZoomModal isOpen={isOpen} onClose={onClose} />
