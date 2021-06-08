@@ -37,9 +37,9 @@ export const NavBar = (props: NavBarProps) => {
                 <NavLink.Desktop active={pathname === '/'} to="/">
                   Product
                 </NavLink.Desktop>
-                <NavLink.Desktop to="/pricing" active={pathname === '/pricing'}>
+                {/* <NavLink.Desktop to="/pricing" active={pathname === '/pricing'}>
                   Pricing
-                </NavLink.Desktop>
+                </NavLink.Desktop> */}
               </HStack>
             </HStack>
             <Flex align="center">
