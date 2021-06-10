@@ -1,3 +1,4 @@
+import React from 'react'
 import {Helmet} from 'react-helmet'
 import defaultImage from '../assets/link-preview.png'
 
@@ -15,6 +16,7 @@ export const MetaDecorator: React.FC<MetaDecoratorProps> = ({
   description,
   imageUrl = defaultImage,
   imageAlt = 'The image contains the logo of this website. A phone with a checkmark and the word designvote',
+  children,
 }) => {
   return (
     <Helmet>
@@ -34,6 +36,8 @@ export const MetaDecorator: React.FC<MetaDecoratorProps> = ({
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:image:alt" content={imageAlt} />
       <meta name="twitter:site" content={metaDecorator.twitterUsername} />
+      {/* Return other children that have been passed */}
+      {React.Children.map(children, child => child)}
     </Helmet>
   )
 }

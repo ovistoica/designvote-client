@@ -31,15 +31,6 @@ export function Pricing() {
           description="Designvote pricing plans. Choose your design. Convenient offers for anyone."
         />
         <Box as="section" py="12">
-          <Heading
-            textAlign="center"
-            mx="auto"
-            fontSize={['1.6em', '2.2em']}
-            my="8"
-            maxW="90%"
-          >
-            Pricing page coming soon. Until then:
-          </Heading>
           <Box
             textAlign="center"
             bg={mode('white', 'gray.800')}
