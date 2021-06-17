@@ -12,7 +12,7 @@ import {
   VStack,
   useColorModeValue as mode,
 } from '@chakra-ui/react'
-import {useAuth} from 'context/auth-context'
+// import {useAuth} from 'context/auth-context'
 import {HTMLMotionProps, motion, Variants} from 'framer-motion'
 import FocusLock from 'react-focus-lock'
 import {
@@ -86,7 +86,7 @@ const Transition = (props: HTMLMotionProps<'div'> & {in?: boolean}) => {
 export const MobileNav = () => {
   const [show, {toggle, off}] = useBoolean()
   const ref = React.useRef<HTMLDivElement>(null)
-  const {login} = useAuth()
+  // const {login} = useAuth()
   useFocusOnShow(ref, {visible: show, shouldFocus: true})
 
   return (
@@ -143,7 +143,7 @@ export const MobileNav = () => {
                 </NavLink.Mobile>
               </SimpleGrid>
               <VStack mt="8" spacing="4">
-                <Button w="full" colorScheme="orange" onClick={login}>
+                <Button w="full" colorScheme="orange">
                   Start Free Trial
                 </Button>
                 <Box
@@ -155,7 +155,7 @@ export const MobileNav = () => {
                   <Box
                     as="a"
                     color={mode('orange.600', 'orange.400')}
-                    onClick={login}
+                    // onClick={login}
                   >
                     Log in
                   </Box>

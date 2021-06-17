@@ -1,4 +1,3 @@
-import {useAuth0} from '@auth0/auth0-react'
 import {
   Box,
   BoxProps,
@@ -17,7 +16,6 @@ import {NavLink} from './nav-link'
 interface NavBarProps extends BoxProps {}
 
 export const NavBar = (props: NavBarProps) => {
-  const {loginWithRedirect} = useAuth0()
   const {pathname} = useRouter()
   return (
     <Box position="fixed" w="full" zIndex="1000" {...props}>
@@ -49,14 +47,8 @@ export const NavBar = (props: NavBarProps) => {
             </HStack>
             <Flex align="center">
               <HStack spacing="8" display={{base: 'none', md: 'flex'}}>
-                <NavLink.Desktop onClick={loginWithRedirect}>
-                  Log in
-                </NavLink.Desktop>
-                <Button
-                  colorScheme="orange"
-                  rounded="full"
-                  onClick={loginWithRedirect}
-                >
+                <NavLink.Desktop>Log in</NavLink.Desktop>
+                <Button colorScheme="orange" rounded="full">
                   Start Free Trial
                 </Button>
               </HStack>

@@ -1,7 +1,6 @@
 import {UserProfile, UserProvider} from '@auth0/nextjs-auth0'
 import {CookiesProvider} from 'react-cookie'
 
-import {AppProviders} from './app-context'
 import {ThemeProvider} from './theme'
 
 /**
@@ -15,4 +14,4 @@ const BaseProviders: React.FC<{user: UserProfile}> = ({children, user}) => (
   </ThemeProvider>
 )
 
-export {BaseProviders, AppProviders}
+export {BaseProviders}
