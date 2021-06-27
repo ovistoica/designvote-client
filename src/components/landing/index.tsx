@@ -21,6 +21,6 @@ export const LandingPage = () => (
     <CTASection />
     <Footer />
   </Box>
-  )
+)
 
 export default LandingPage

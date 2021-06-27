@@ -10,7 +10,6 @@ import {
   Text,
   Image,
   FormControl,
-  useColorModeValue,
   CloseButton,
   IconButton,
   Button,
@@ -21,7 +20,6 @@ import {
   Input,
 } from '@chakra-ui/react'
 import Rating from '@material-ui/lab/Rating'
-import {useAuth} from 'context/auth-context'
 import {RiSendPlaneFill} from 'react-icons/ri'
 import {useCreateDesignStore} from 'store'
 import {VoteStyle} from 'types'
@@ -51,9 +49,9 @@ export function PreviewDesignFullImageModal({
       [],
     ),
   )
-  const {user} = useAuth()
+  // const {user} = useAuth()
   const currentIndex = design.imagesByUrl.indexOf(imageUrl)
-  const textInfoColor = useColorModeValue('textInfoLight', 'gray.400')
+  // const textInfoColor = useColorModeValue('textInfoLight', 'gray.400')
 
   const goToPrevious = React.useCallback(() => {
     const totalDesigns = design.imagesByUrl.length
@@ -115,12 +113,13 @@ export function PreviewDesignFullImageModal({
                   #{currentIndex + 1}
                 </Heading>
 
-                {user ? (
-                  <Text color={textInfoColor} fontStyle="italic">
-                    {' '}
-                    by {user.name}
-                  </Text>
-                ) : null}
+                {/* TODO: FIX THIS */}
+                {/* {user ? ( */}
+                {/*  <Text color={textInfoColor} fontStyle="italic"> */}
+                {/*    {' '} */}
+                {/*    by {user.name} */}
+                {/*  </Text> */}
+                {/* ) : null} */}
                 <Flex
                   borderTopWidth="1px"
                   borderBottomWidth="1px"

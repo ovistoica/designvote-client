@@ -1,19 +1,15 @@
 import {
   HStack,
-  Avatar,
-  Box,
   Button,
   FormControl,
   FormLabel,
   Switch,
-  Text,
   Stack,
   StackDivider,
   StackProps,
   useColorModeValue,
   useColorMode,
 } from '@chakra-ui/react'
-import {useAuth} from 'context/auth-context'
 import {FaMoon, FaSun} from 'react-icons/fa'
 
 import {Card} from './card'
@@ -21,7 +17,6 @@ import {FieldGroup} from './field-group'
 import {HeadingGroup} from './heading-group'
 
 export const AccountSettings = (props: StackProps) => {
-  const {user, logout} = useAuth()
   const value = useColorModeValue('dark', 'light')
   const {toggleColorMode} = useColorMode()
   const SwitchIcon = useColorModeValue(FaMoon, FaSun)
@@ -33,13 +28,13 @@ export const AccountSettings = (props: StackProps) => {
         <Stack divider={<StackDivider />} spacing="6">
           <FieldGroup title="Name &amp; Avatar">
             <HStack spacing="4">
-              <Avatar src={user?.picture} name={user?.name} />
-              <Box>
-                <Text>{user?.name}</Text>
-                <Text color="gray.500" fontSize="sm">
-                  {user?.email}
-                </Text>
-              </Box>
+              {/* <Avatar src={user?.picture} name={user?.name} /> */}
+              {/* <Box> */}
+              {/*  <Text>{user?.name}</Text> */}
+              {/*  <Text color="gray.500" fontSize="sm"> */}
+              {/*    {user?.email} */}
+              {/*  </Text> */}
+              {/* </Box> */}
             </HStack>
           </FieldGroup>
 
@@ -74,9 +69,7 @@ export const AccountSettings = (props: StackProps) => {
             </Stack>
           </FieldGroup>
           <FieldGroup>
-            <Button onClick={() => logout({returnTo: window.location.origin})}>
-              Logout
-            </Button>
+            <Button>Logout</Button>
           </FieldGroup>
         </Stack>
       </Card>

@@ -1,7 +1,6 @@
 import * as React from 'react'
 
 import {
-  Avatar,
   Box,
   BoxProps,
   Breadcrumb,
@@ -9,7 +8,6 @@ import {
   BreadcrumbLink,
   BreadcrumbProps,
   Flex,
-  HStack,
   Stack,
   Text,
   TextProps,
@@ -17,7 +15,6 @@ import {
   useBreakpointValue,
   useColorModeValue as mode,
 } from '@chakra-ui/react'
-import {useAuth} from 'context/auth-context'
 import {BsPencilSquare} from 'react-icons/bs'
 import {HiMenu, HiChevronRight, HiX} from 'react-icons/hi'
 import {MdDashboard, MdSettings} from 'react-icons/md'
@@ -125,7 +122,6 @@ const NavSectionTitle = (props: TextProps) => (
 
 export const AppContainer: React.FC = ({children}) => {
   const {isOpen, toggle} = useMobileMenuState()
-  const {user} = useAuth()
   const navigate = useNavigate()
   const currentLocation = useFormattedLocationName()
 
@@ -162,12 +158,12 @@ export const AppContainer: React.FC = ({children}) => {
               toggle()
             }}
           >
-            <HStack display="inline-flex">
-              <Avatar size="sm" name={user?.name} src={user?.picture} />
-              <Box lineHeight="1">
-                <Text fontWeight="semibold">{user?.name}</Text>
-              </Box>
-            </HStack>
+            {/* <HStack display="inline-flex"> */}
+            {/*  <Avatar size="sm" name={user?.name} src={user?.picture} /> */}
+            {/*  <Box lineHeight="1"> */}
+            {/*    <Text fontWeight="semibold">{user?.name}</Text> */}
+            {/*  </Box> */}
+            {/* </HStack> */}
           </Box>
           <ScrollArea pt="5" pb="6">
             <Stack pb="6">

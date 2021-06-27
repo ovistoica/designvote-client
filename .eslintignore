@@ -9,3 +9,4 @@ src/test
 next.config.js
 next-env.d.ts
 jest.config.js
+server.js

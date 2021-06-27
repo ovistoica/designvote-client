@@ -1,15 +1,10 @@
 import * as React from 'react'
 
-import {useAuth} from 'context/auth-context'
 import faker from 'faker'
 import {useCookies} from 'react-cookie'
 import {Vote} from 'types'
 
 export function getVotePercent(totalVotes: number, versionVotes: number) {
-  if (typeof totalVotes !== 'number' || typeof versionVotes !== 'number') {
-    throw new Error('Invalid arguments provided. Please provide valid numbers')
-  }
-
   if (totalVotes < versionVotes) {
     throw new Error(
       'Invalid arguments. The total should be bigger than the part',
@@ -31,7 +26,9 @@ function generateVoterId() {
 export function useVoterId(): string {
   const [cookies, setCookie] = useCookies(['voterId'])
   const {voterId} = cookies.voterId ?? {voterId: null}
-  const {isAuthenticated, user} = useAuth()
+  // TODO Fix this
+  const isAuthenticated = false
+  const user = {sub: '1234'}
 
   React.useEffect(() => {
     if (!voterId) {

@@ -15,7 +15,6 @@ import {
 import {FullPageSpinner} from 'components/lib'
 import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
 import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
-import {useAuth} from 'context/auth-context'
 import {useManageDesign} from 'store'
 import {DesignTab, VoteStyle} from 'types'
 import {getDesignSurveyType} from 'utils/design'
@@ -32,7 +31,6 @@ export function PreviewTab({designId}: PreviewTabProps) {
     React.useCallback(state => ({setTab: state.setTab}), []),
   )
 
-  const {user} = useAuth()
   const {isOpen, onOpen, onClose} = useDisclosure()
   const setImage = useZoomModalState(state => state.setImage)
 
@@ -41,7 +39,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
     : getDesignSurveyType(design.designType)
   const heading = isLoading
     ? 'Loading survey...'
-    : `${user?.nickname} wants your feedback on their ${surveyType}`
+    : `TODO FIX THIS wants your feedback on their ${surveyType}`
 
   if (isLoading) {
     return <FullPageSpinner h="100%" />
@@ -193,7 +191,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
                 fontSize="lg"
                 fontWeight="extrabold"
               >
-                Let {user?.nickname} know who you are:
+                Let TODO FIX THIS know who you are:
               </Text>
               <Stack direction={{base: 'column', md: 'row'}} spacing="8" mt="4">
                 <Input size="lg" placeholder="Enter your name" maxW="md" />

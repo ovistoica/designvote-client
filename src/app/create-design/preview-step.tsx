@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react'
 import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
 import {useZoomModalState, ZoomModal} from 'components/zoom-modal'
-import {useAuth} from 'context/auth-context'
 import {useCreateDesignStore} from 'store'
 import {CreateDesignStep, VoteStyle} from 'types'
 import {getDesignSurveyType} from 'utils/design'
@@ -33,10 +32,9 @@ export function PreviewStep() {
       [],
     ),
   )
-  const {user} = useAuth()
 
   const surveyType = getDesignSurveyType(design.designType)
-  const heading = `${user?.nickname} wants your feedback on their ${surveyType}`
+  const heading = `TODO FIX THIS wants your feedback on their ${surveyType}`
 
   const isDesignInvalid = !design.name || !design.question
   const notEnoughVersions = design.imagesByUrl.length < 2
@@ -174,7 +172,7 @@ export function PreviewStep() {
                 fontSize="lg"
                 fontWeight="extrabold"
               >
-                Let {user?.nickname} know who you are:
+                Let TODO FIX THIS know who you are:
               </Text>
               <Stack direction={{base: 'column', md: 'row'}} spacing="8" mt="4">
                 <Input size="lg" placeholder="Enter your name" maxW="md" />
