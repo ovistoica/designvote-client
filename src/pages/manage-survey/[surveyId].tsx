@@ -18,17 +18,18 @@ import {
   useColorModeValue as mode,
   useToast,
 } from '@chakra-ui/react'
-import {useParams} from 'react-router-dom'
 import {useDesign} from 'utils/design-query'
 
 import {DesignInfoTab, PreviewTab, ResultsTab, VersionsTab} from './tabs'
+import {useRouter} from 'next/router'
 
 export const ManageDesign = () => {
-  const {designId} = useParams()
+  const router = useRouter()
+  const {surveyId: pollId} = router.query
   const {
     data: {design},
     isLoading,
-  } = useDesign(designId)
+  } = useDesign(pollId as string)
 
   const websiteLink = window.location.origin
   const link = isLoading
@@ -117,16 +118,16 @@ export const ManageDesign = () => {
             <Box mx="auto">
               <TabPanels mt="0" h="full" w="full" pt={{base: '10rem', md: '0'}}>
                 <TabPanel>
-                  <DesignInfoTab designId={designId} />
+                  <DesignInfoTab designId={pollId as string} />
                 </TabPanel>
                 <TabPanel>
-                  <VersionsTab designId={designId} />
+                  <VersionsTab designId={pollId as string} />
                 </TabPanel>
                 <TabPanel>
-                  <PreviewTab designId={designId} />
+                  <PreviewTab designId={pollId as string} />
                 </TabPanel>
                 <TabPanel>
-                  <ResultsTab designId={designId} />
+                  <ResultsTab designId={pollId as string} />
                 </TabPanel>
               </TabPanels>
             </Box>

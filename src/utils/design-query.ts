@@ -13,10 +13,12 @@ import {useCreateDesignStore} from 'store'
 import {useVoteDesignState} from 'store/vote-design'
 import {
   ApiDesign,
+  ApiPoll,
   Design,
   DesignType,
   NormalizedDesign,
   Opinion,
+  Poll,
   VoteStyle,
 } from 'types'
 
@@ -103,10 +105,16 @@ export async function getDesignByShortUrl(shortUrl: string) {
   )
 }
 
+async function getPolls() {
+  return getRequest<{polls: ApiPoll[]}>('/api/v1/poll').then(response => {
+    return keysToCamel<ApiPoll[], Poll[]>(response.polls)
+  })
+}
+
 async function getDesigns() {
-  return getRequest<ApiDesign[]>('v1/designs').then(apiDesigns =>
-    keysToCamel<ApiDesign[], Design[]>(apiDesigns),
-  )
+  return getRequest<{polls: ApiDesign[]}>('/api/v1/poll').then(response => {
+    return keysToCamel<ApiDesign[], Design[]>(response.polls)
+  })
 }
 
 function createDesignVersion(designId: string, version: ApiVersion) {
@@ -285,6 +293,16 @@ export function useUrlDesign(
     data: data ?? loadingDesign,
     ...rest,
   }
+}
+
+export function usePolls(options: QueryOptions<Poll[], AxiosError> = {}) {
+  const {data, ...rest} = useQuery({
+    queryKey: 'polls',
+    queryFn: () => getPolls(),
+    ...options,
+  })
+
+  return {data: data ?? [], ...rest}
 }
 
 export function useDesigns(options: QueryOptions<Design[], AxiosError> = {}) {

@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import {
+  Avatar,
   Box,
   BoxProps,
   Breadcrumb,
@@ -8,6 +9,7 @@ import {
   BreadcrumbLink,
   BreadcrumbProps,
   Flex,
+  HStack,
   Stack,
   Text,
   TextProps,
@@ -18,10 +20,13 @@ import {
 import {BsPencilSquare} from 'react-icons/bs'
 import {HiMenu, HiChevronRight, HiX} from 'react-icons/hi'
 import {MdDashboard, MdSettings} from 'react-icons/md'
-import {useNavigate} from 'react-router-dom'
 import {useFormattedLocationName} from 'utils/hooks'
+import Link from 'next/link'
 
 import {SidebarLink} from './sidebar-link'
+import {useRouter} from 'next/router'
+import {usePolls} from '../../utils/design-query'
+import {useUser} from '../../store/user'
 
 const MobileMenuButton = (props: {onClick: () => void; isOpen: boolean}) => {
   const {onClick, isOpen} = props
@@ -46,7 +51,7 @@ const MobileMenuButton = (props: {onClick: () => void; isOpen: boolean}) => {
 }
 
 const NavBreadcrumb = (props: BreadcrumbProps) => {
-  const navigate = useNavigate()
+  const {push: navigate} = useRouter()
   const currentLocation = useFormattedLocationName()
 
   return (
@@ -122,9 +127,11 @@ const NavSectionTitle = (props: TextProps) => (
 
 export const AppContainer: React.FC = ({children}) => {
   const {isOpen, toggle} = useMobileMenuState()
-  const navigate = useNavigate()
-  const currentLocation = useFormattedLocationName()
+  const {push: navigate} = useRouter()
+  const user = useUser(state => state.user)
+  const {data: polls} = usePolls()
 
+  // @ts-ignore
   return (
     <Flex
       height="100vh"
@@ -144,67 +151,49 @@ export const AppContainer: React.FC = ({children}) => {
         position="fixed"
       >
         <Box fontSize="sm" lineHeight="tall">
-          <Box
-            as="a"
-            href="#"
-            p="3"
-            display="block"
-            transition="background 0.1s"
-            rounded="xl"
-            _hover={{bg: 'whiteAlpha.200'}}
-            whiteSpace="nowrap"
-            onClick={() => {
-              navigate('/')
-              toggle()
-            }}
-          >
-            {/* <HStack display="inline-flex"> */}
-            {/*  <Avatar size="sm" name={user?.name} src={user?.picture} /> */}
-            {/*  <Box lineHeight="1"> */}
-            {/*    <Text fontWeight="semibold">{user?.name}</Text> */}
-            {/*  </Box> */}
-            {/* </HStack> */}
-          </Box>
+          <Link href="/home">
+            <Box
+              p="3"
+              display="block"
+              transition="background 0.1s"
+              rounded="xl"
+              _hover={{bg: 'whiteAlpha.200'}}
+              whiteSpace="nowrap"
+              onClick={() => {
+                navigate('/')
+                toggle()
+              }}
+            >
+              <HStack display="inline-flex">
+                <Avatar size="sm" name={user?.name} src={user?.picture} />
+                <Box lineHeight="1">
+                  <Text fontWeight="semibold">{user?.name}</Text>
+                </Box>
+              </HStack>
+            </Box>
+          </Link>
           <ScrollArea pt="5" pb="6">
             <Stack pb="6">
-              <SidebarLink
-                icon={<MdDashboard />}
-                onClick={() => {
-                  navigate('/app')
-                  toggle()
-                }}
-              >
-                Designs
+              <SidebarLink href="/home" icon={<MdDashboard />}>
+                Your Surveys
               </SidebarLink>
-              <SidebarLink
-                icon={<BsPencilSquare />}
-                onClick={() => {
-                  navigate('/create')
-                  toggle()
-                }}
-              >
+              <SidebarLink href="/create-survey" icon={<BsPencilSquare />}>
                 Create
               </SidebarLink>
-              <SidebarLink
-                icon={<MdSettings />}
-                onClick={() => {
-                  navigate('/settings')
-                  toggle()
-                }}
-              >
+              <SidebarLink href="/settings" icon={<MdSettings />}>
                 Settings
               </SidebarLink>
             </Stack>
             <Stack pb="6">
               <NavSectionTitle>Designs</NavSectionTitle>
-              {/* {designs.map(design => (
+              {polls.map(poll => (
                 <SidebarLink
-                  key={`sideBarDesign${design.designId}`}
-                  onClick={() => navigate(`design/${design.designId}`)}
+                  href={`survey/${poll.pollId}`}
+                  key={`sideBarSurvey${poll.pollId}`}
                 >
-                  {design.name}
+                  {poll.name}
                 </SidebarLink>
-              ))} */}
+              ))}
             </Stack>
           </ScrollArea>
         </Box>
@@ -236,7 +225,7 @@ export const AppContainer: React.FC = ({children}) => {
               flex="1"
               overflowX="hidden"
               overFlowY="scroll"
-              align={currentLocation === 'Create Design' ? 'center' : undefined}
+              // align={currentLocation === 'Create Design' ? 'center' : undefined}
               px={{base: '0', md: '10'}}
             >
               {children}

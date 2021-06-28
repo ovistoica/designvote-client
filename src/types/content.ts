@@ -50,6 +50,22 @@ export interface Design {
   voteStyle: VoteStyle
 }
 
+export interface Poll {
+  pollId: string
+  description?: string | null
+  nickname: string
+  uid: string
+  name: string
+  isPublic: boolean
+  totalVotes: number
+  shortUrl?: string
+  versions: string[]
+  img: null
+  question: string
+  designType: DesignType
+  voteStyle: VoteStyle
+}
+
 export interface NormalizedDesign {
   design: Design
   versions: Record<string, Version>

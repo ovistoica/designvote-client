@@ -1,12 +1,10 @@
-import {CreateDesign} from 'app/create-design'
 import {AppContainer} from 'components/app-container'
 import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {ErrorBoundary} from 'react-error-boundary'
 import {Routes, Route, Navigate} from 'react-router-dom'
 
-import {HomeScreen} from './home'
-import {ManageDesign} from './manage-design'
-import {SettingsScreen} from './settings'
+import {ManageDesign} from '../pages/manage-survey/[surveyId]'
+import {SettingsScreen} from '../pages/settings'
 
 function AppRoutes() {
   return (
@@ -14,9 +12,7 @@ function AppRoutes() {
       <Route path="/">
         <Navigate to="/app" />
       </Route>
-      <Route path="/app" element={<HomeScreen />} />
       <Route path="/design/:designId" element={<ManageDesign />} />
-      <Route path="/create" element={<CreateDesign />} />
       <Route path="/settings" element={<SettingsScreen />} />
     </Routes>
   )

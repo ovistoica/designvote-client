@@ -36,3 +36,15 @@ export interface ApiDesign {
   versions: ApiVersion[]
   img: string | null
 }
+
+export interface ApiPoll {
+  description: null
+  uid: string
+  'poll-id': string
+  name: string
+  'is-public': true
+  'total-votes': number
+  'short-url': string | null
+  versions: ApiVersion[]
+  img: string | null
+}

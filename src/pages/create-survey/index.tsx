@@ -7,6 +7,7 @@ import {CreateStep} from './create-step'
 import {PreviewStep} from './preview-step'
 import {PublishStep} from './publish-step'
 import {UploadStep} from './upload-step'
+import {AppContainer} from '../../components/app-container'
 
 export function CurrentScreen() {
   const step = useCreateDesignStore(state => state.step)
@@ -67,11 +68,13 @@ function ProgressSteps() {
   )
 }
 
-export function CreateDesign() {
+export default function CreateDesign() {
   return (
-    <Flex direction="column" align="stretch" width="full" maxWidth="1000px">
-      <ProgressSteps />
-      <CurrentScreen />
-    </Flex>
+    <AppContainer>
+      <Flex direction="column" align="stretch" width="full" maxWidth="1000px">
+        <ProgressSteps />
+        <CurrentScreen />
+      </Flex>
+    </AppContainer>
   )
 }

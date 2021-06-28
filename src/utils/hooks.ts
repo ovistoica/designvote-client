@@ -1,9 +1,12 @@
 import * as React from 'react'
 
 import {useBreakpoint} from '@chakra-ui/react'
-import {useLocation} from 'react-router-dom'
 
 import {useDesigns} from './design-query'
+import {useRouter} from 'next/router'
+import {useEffect} from 'react'
+import axios from 'axios'
+import {useUser} from '../store/user'
 
 export function useSafeDispatch<Value = unknown>(
   dispatch: React.Dispatch<Value>,
@@ -117,7 +120,7 @@ export function useIsMobile() {
 export function useFormattedLocationName() {
   const {data: designs} = useDesigns()
 
-  const {pathname} = useLocation()
+  const {pathname} = useRouter()
   if (pathname === '/app') {
     return null
   }
@@ -143,4 +146,54 @@ export function useFormattedLocationName() {
   }
 
   return 'Not Found'
+}
+
+export function useCSRFSession() {
+  useEffect(() => {
+    const getCsrfToken = async () => {
+      const {data} = await axios.get('/api/v1/csrf-token')
+      axios.defaults.headers['X-CSRF-Token'] = data.csrf
+    }
+    getCsrfToken()
+  }, [])
+}
+
+export function useInitialSetup() {
+  const clearState = useUser(state => state.clearState)
+  const router = useRouter()
+  useEffect(() => {
+    axios.interceptors.response.use(
+      response => {
+        // any status code that lie within the range of 2XX cause this function
+        // to trigger
+        return response
+      },
+      error => {
+        // any status codes that falls outside the range of 2xx cause this function
+        // to trigger
+        const res = error.response
+        if (
+          (res.status === 401 || res.status === 403) &&
+          res.config &&
+          // eslint-disable-next-line no-underscore-dangle
+          !res.config.__isRetryRequest
+        ) {
+          return new Promise((resolve, reject) => {
+            axios
+              .post('/api/v1/logout')
+              .then(async () => {
+                clearState()
+                await router.push('/auth/login')
+              })
+              .catch(err => {
+                reject(err)
+              })
+          })
+        }
+        return Promise.reject(error)
+      },
+    )
+  }, [clearState, router])
+
+  useCSRFSession()
 }

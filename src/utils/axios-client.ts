@@ -1,12 +1,6 @@
 /* Type friendly api requests and handlers for success and error */
 
-import axios, {AxiosResponse, AxiosError, AxiosRequestConfig} from 'axios'
-
-const apiURL = process.env.NEXT_PUBLIC_API_URL
-
-export const apiClient = axios.create({
-  baseURL: apiURL,
-})
+import axios, {AxiosResponse, AxiosRequestConfig} from 'axios'
 
 export function onRequestSuccess<Response = Record<string, unknown>>(
   response: AxiosResponse<Response>,
@@ -14,74 +8,37 @@ export function onRequestSuccess<Response = Record<string, unknown>>(
   return response.data
 }
 
-export function onRequestError<Response = Record<string, unknown>>(
-  error: AxiosError<Response>,
-) {
-  if (error.response && error.response.status === 401) {
-    if (
-      (apiClient as any).logout &&
-      typeof (apiClient as any).logout === 'function'
-    ) {
-      // eslint-disable-next-line @typescript-eslint/no-extra-semi
-      ;(apiClient as any).logout().then(() => {
-        // refresh the page for them
-        window.location.assign(window.location.href)
-        const message = 'Please re-authenticate.'
-        // eslint-disable-next-line prefer-promise-reject-errors
-        return Promise.reject({message})
-      })
-    }
-  }
-
-  return Promise.reject(error)
-}
-
 export async function getRequest<Response = Record<string, unknown>>(
   url: string,
   config?: AxiosRequestConfig,
 ) {
-  return apiClient
-    .get<Response>(url, config)
-    .then(onRequestSuccess)
-    .catch(onRequestError)
+  return axios.get<Response>(url, config).then(onRequestSuccess)
 }
 
 export async function postRequest<
   Response = Record<string, unknown>,
   Body = Record<string, unknown>
 >(url: string, data?: Body, config?: AxiosRequestConfig | undefined) {
-  return apiClient
-    .post<Response>(url, data, config)
-    .then(onRequestSuccess)
-    .catch(onRequestError)
+  return axios.post<Response>(url, data, config).then(onRequestSuccess)
 }
 
 export async function putRequest<
   Response = Record<string, unknown>,
   Body = Record<string, unknown>
 >(url: string, data?: Body, config?: AxiosRequestConfig) {
-  return apiClient
-    .put<Response>(url, data, config)
-    .then(onRequestSuccess)
-    .catch(onRequestError)
+  return axios.put<Response>(url, data, config).then(onRequestSuccess)
 }
 
 export async function deleteRequest<Response = Record<string, unknown>>(
   url: string,
   config?: AxiosRequestConfig,
 ) {
-  return apiClient
-    .delete<Response>(url, config)
-    .then(onRequestSuccess)
-    .catch(onRequestError)
+  return axios.delete<Response>(url, config).then(onRequestSuccess)
 }
 
 export async function patchRequest<
   Response = Record<string, unknown>,
   Body = Record<string, unknown>
 >(url: string, data?: Body, config?: AxiosRequestConfig) {
-  return apiClient
-    .patch<Response>(url, data, config)
-    .then(onRequestSuccess)
-    .catch(onRequestError)
+  return axios.patch<Response>(url, data, config).then(onRequestSuccess)
 }

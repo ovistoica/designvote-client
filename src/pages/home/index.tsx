@@ -2,15 +2,16 @@ import {Box, Flex, GridItem, SimpleGrid, Text} from '@chakra-ui/react'
 import {DesignCard, DesignInfo, VotesCount} from 'components/design-card'
 import {FullPageSpinner} from 'components/lib'
 import {MetaDecorator} from 'components/meta-decorator'
-import {useNavigate} from 'react-router-dom'
 import {Design} from 'types'
 import {useDesigns} from 'utils/design-query'
 
 import {CreateDesignCard} from './create-design-card'
 import {NoDesigns} from './no-designs'
+import {useRouter} from 'next/router'
+import {AppContainer} from 'components/app-container'
 
-export function HomeScreen() {
-  const navigate = useNavigate()
+function HomePage() {
+  const {push: navigate} = useRouter()
   const {data: designs, isLoading} = useDesigns()
 
   if (isLoading) {
@@ -18,7 +19,7 @@ export function HomeScreen() {
   }
 
   return (
-    <>
+    <AppContainer>
       <MetaDecorator
         title="Designvote - Dashboard"
         description="Dashboard containing all of your designs. Share a design for people to vote."
@@ -68,6 +69,8 @@ export function HomeScreen() {
           <NoDesigns onClick={() => navigate('/create')} />
         )}
       </Box>
-    </>
+    </AppContainer>
   )
 }
+
+export default HomePage
