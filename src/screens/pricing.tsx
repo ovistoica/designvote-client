@@ -9,7 +9,6 @@ import {
   Text,
   useColorModeValue as mode,
 } from '@chakra-ui/react'
-import * as React from 'react'
 import {HiShieldCheck} from 'react-icons/hi'
 import {Footer} from 'components/footer'
 import {useAuth} from 'context/auth-context'

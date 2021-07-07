@@ -96,9 +96,9 @@ async function getDesign(designId: string) {
 }
 
 async function getDesignByShortUrl(shortUrl: string) {
-  return getRequest<ApiDesign>(`v1/designs/short/${shortUrl}`).then(result =>
-    normalizeDesign(result),
-  )
+  return getRequest<ApiDesign>(
+    `v1/designs/vote/short/${shortUrl}`,
+  ).then(result => normalizeDesign(result))
 }
 
 async function getDesigns() {
