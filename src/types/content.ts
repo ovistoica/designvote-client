@@ -33,6 +33,15 @@ export interface Version {
   opinions: number[]
 }
 
+export interface PollVersion {
+  versionId: string
+  name: string
+  description: string | null
+  pollId: string
+  votes: Vote[]
+  img: string
+}
+
 export interface Design {
   designId: string
   description?: string | null
@@ -71,4 +80,9 @@ export interface NormalizedDesign {
   versions: Record<string, Version>
   pictures: Record<string, Picture>
   opinions: Record<string, Opinion>
+}
+
+export interface NormalizedPoll {
+  poll: Poll
+  versions: Record<string, PollVersion>
 }

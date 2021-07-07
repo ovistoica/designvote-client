@@ -1,17 +1,19 @@
 import {Box, BoxProps} from '@chakra-ui/react'
+import Link from 'next/link'
 import * as React from 'react'
 
-export const UnderlineLink = (props: BoxProps) => {
+interface LinkProps extends BoxProps {
+  href: string
+}
+
+export const UnderlineLink = ({children, ...props}: LinkProps) => {
   return (
     <Box
-      as="a"
-      href="#"
       pos="relative"
       display="inline-block"
       transition="opacity 0.2s"
       _hover={{opacity: 0.8}}
       _after={{
-        content: '',
         display: 'block',
         w: 'full',
         h: '2px',
@@ -21,6 +23,8 @@ export const UnderlineLink = (props: BoxProps) => {
         insetY: 0,
       }}
       {...props}
-    />
+    >
+      <Link href={props.href ?? '/auth/register'}>{children}</Link>
+    </Box>
   )
 }

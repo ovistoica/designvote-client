@@ -15,6 +15,7 @@ import {DividerWithText} from './divider-with-text'
 import {Logo} from 'components/logo'
 import {SignupForm} from './signup-form'
 import {Testimonial} from './testimonial'
+import Link from 'next/link'
 
 const RegisterPage = () => {
   return (
@@ -80,12 +81,10 @@ const RegisterPage = () => {
             <Text mt="8" align="center" fontWeight="medium">
               Already have an account?{' '}
               <Box
-                as="a"
-                href="#"
                 color={mode('blue.600', 'blue.200')}
                 display={{base: 'block', md: 'inline-block'}}
               >
-                Log in to Chakra
+                <Link href="/login">Log in to Chakra</Link>
               </Box>
             </Text>
           </Box>

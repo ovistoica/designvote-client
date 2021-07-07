@@ -21,7 +21,7 @@ import {
 } from '@chakra-ui/react'
 import {Formik, Form, FormikTouched} from 'formik'
 import {DesignType, VoteStyle} from 'types'
-import {useDesign, useEditDesign} from 'utils/design-query'
+import {usePoll, useEditDesign} from 'utils/design-query'
 import * as yup from 'yup'
 
 interface Values {
@@ -70,7 +70,7 @@ function QuestionPopover() {
         <PopoverCloseButton />
         <PopoverBody>
           The question your voters will see when asked to choose/rate from your
-          versions of the design.
+          versions of the poll.
           <Text mt={5} fontStyle="italic">
             <Text as="span" fontWeight="semibold" fontStyle="normal">
               Example:
@@ -128,25 +128,25 @@ function FormRow({
 }
 
 interface DesignInfoProps {
-  designId: string
+  pollId: string
 }
 
-export function DesignInfoTab({designId}: DesignInfoProps) {
+export function DesignInfoTab({pollId}: DesignInfoProps) {
   const {
-    data: {design},
-    isLoading: isDesignLoading,
+    data: {poll},
+    isLoading: isPollLoading,
     isSuccess,
-  } = useDesign(designId)
+  } = usePoll(pollId)
   const initialValues = {
-    name: design.name,
-    description: design.description ?? '',
-    question: design.question,
+    name: poll.name,
+    description: poll.description ?? '',
+    question: poll.question,
   }
-  const {mutate: saveDesign, isLoading: isEditLoading} = useEditDesign(designId)
+  const {mutate: saveDesign, isLoading: isEditLoading} = useEditDesign(pollId)
   return (
     <Stack pb={6} alignItems="center">
       <Formik
-        key={`design${designId}${isSuccess}`}
+        key={`design${pollId}${isSuccess}`}
         validationSchema={validationSchema}
         initialValues={initialValues}
         initialTouched={initialTouched}
@@ -159,7 +159,7 @@ export function DesignInfoTab({designId}: DesignInfoProps) {
             <FormRow
               id="name"
               ariaLabel="Design name"
-              placeholder="my-cool-new-design"
+              placeholder="my-cool-new-poll"
               onChange={handleChange('name')}
               onBlur={handleBlur('name')}
               value={values.name}
@@ -197,7 +197,7 @@ export function DesignInfoTab({designId}: DesignInfoProps) {
               mt="1em"
               textTransform="uppercase"
               type="submit"
-              isLoading={isDesignLoading || isEditLoading}
+              isLoading={isPollLoading || isEditLoading}
             >
               Save
             </Button>

@@ -1,10 +1,8 @@
 import {
-  Avatar,
   Image,
   Flex,
   GridItem,
   SimpleGrid,
-  Text,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -12,10 +10,9 @@ import {
   ModalHeader,
   ModalOverlay,
   Heading,
-  Stack,
   Divider,
 } from '@chakra-ui/react'
-import {useDesign} from 'utils/design-query'
+import {usePoll} from 'utils/design-query'
 
 interface DesignModalProps {
   onClose: () => void
@@ -31,19 +28,16 @@ export function DesignModal({
   versionId,
 }: DesignModalProps) {
   const {
-    data: {versions, design, pictures, opinions},
-  } = useDesign(designId)
+    data: {versions, poll},
+  } = usePoll(designId)
   const version = versions[versionId]
-  const {
-    pictures: [picId],
-  } = version
-  const {uri: imageUrl} = pictures[picId]
+  const {img: imageUrl} = versions[versionId]
   return (
     <Modal onClose={onClose} size="3xl" isOpen={isOpen}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
-          {design.name} {version.name}
+          {poll.name} {version.name}
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -63,28 +57,29 @@ export function DesignModal({
               <Heading size="lg" fontWeight="medium" my="4">
                 Comments:{' '}
               </Heading>
-              <Stack align="flex-start" spacing="4">
-                {version.opinions.map(opId => {
-                  const {opinion, voterName} = opinions[opId]
-                  return (
-                    <SimpleGrid
-                      columns={2}
-                      key={`opin${opId}`}
-                      alignItems="flex-start"
-                      w="full"
-                      templateColumns={{base: '2fr 11.5fr', md: '1fr 11fr'}}
-                    >
-                      <Avatar size="sm" name={voterName} my="auto" />
-                      <Flex direction="column" w="full">
-                        <Text fontWeight="semibold">
-                          {voterName ?? 'anonymus'}
-                        </Text>
-                        <Text>{opinion}</Text>
-                      </Flex>
-                    </SimpleGrid>
-                  )
-                })}
-              </Stack>
+              {/* TODO Put this back */}
+              {/* <Stack align="flex-start" spacing="4"> */}
+              {/*  {version.opinions.map(opId => { */}
+              {/*    const {opinion, voterName} = opinions[opId] */}
+              {/*    return ( */}
+              {/*      <SimpleGrid */}
+              {/*        columns={2} */}
+              {/*        key={`opin${opId}`} */}
+              {/*        alignItems="flex-start" */}
+              {/*        w="full" */}
+              {/*        templateColumns={{base: '2fr 11.5fr', md: '1fr 11fr'}} */}
+              {/*      > */}
+              {/*        <Avatar size="sm" name={voterName} my="auto" /> */}
+              {/*        <Flex direction="column" w="full"> */}
+              {/*          <Text fontWeight="semibold"> */}
+              {/*            {voterName ?? 'anonymus'} */}
+              {/*          </Text> */}
+              {/*          <Text>{opinion}</Text> */}
+              {/*        </Flex> */}
+              {/*      </SimpleGrid> */}
+              {/*    ) */}
+              {/*  })} */}
+              {/* </Stack> */}
             </GridItem>
           </SimpleGrid>
         </ModalBody>

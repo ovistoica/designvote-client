@@ -31,3 +31,9 @@ export const design = new schema.Entity<types.Design>(
   },
   {idAttribute: 'designId'},
 )
+
+export const pollVersions = new schema.Entity<types.PollVersion>('pollVersion')
+
+export const poll = new schema.Entity<types.Poll>('poll', {
+  pollVersions: [pollVersions],
+})

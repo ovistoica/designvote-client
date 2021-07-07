@@ -1,5 +1,5 @@
 import {Box, SimpleGrid, useColorModeValue as mode} from '@chakra-ui/react'
-import {useDesign} from 'utils/design-query'
+import {usePoll} from 'utils/design-query'
 
 import {StatCard} from '../components/result-stat-card'
 
@@ -9,8 +9,8 @@ interface ResultsTabProps {
 
 export function ResultsTab({designId}: ResultsTabProps) {
   const {
-    data: {design, versions, pictures},
-  } = useDesign(designId)
+    data: {poll, versions},
+  } = usePoll(designId)
 
   return (
     <Box
@@ -24,7 +24,7 @@ export function ResultsTab({designId}: ResultsTabProps) {
           spacing={{base: '4', md: '8'}}
           w="full"
         >
-          {design.versions
+          {poll.versions
             .sort((a, b) => {
               const {name: nameA} = versions[a]
               const {name: nameB} = versions[b]
@@ -36,22 +36,19 @@ export function ResultsTab({designId}: ResultsTabProps) {
             .map((vId, index) => {
               const version = versions[vId]
               const title = `Version #${index + 1} votes`
-              const [picId] = version.pictures
-              const {uri: imageUrl} = pictures[picId]
-              const numberOfOpinions = version.opinions.length
 
               return (
                 <StatCard
                   id={title}
                   key={`resultCard${vId}`}
                   votes={version.votes}
-                  totalVotes={design.totalVotes}
-                  voteStyle={design.voteStyle}
+                  totalVotes={poll.totalVotes}
+                  voteStyle={poll.voteStyle}
                   title={title}
-                  imageUrl={imageUrl}
-                  designId={design.designId}
+                  imageUrl={version.img}
+                  designId={poll.pollId}
                   versionId={vId}
-                  numberOfOpinions={numberOfOpinions}
+                  numberOfOpinions={0} // TODO FIX THIS
                 />
               )
             })}

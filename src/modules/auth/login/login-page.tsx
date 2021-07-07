@@ -51,7 +51,10 @@ const SignInPage = () => {
               color={mode('gray.600', 'gray.400')}
               fontWeight="medium"
             >
-              Need an account? <UnderlineLink>Sign up for free</UnderlineLink>
+              Need an account?{' '}
+              <UnderlineLink href="/auth/register">
+                Sign up for free
+              </UnderlineLink>
             </Text>
           </Box>
           <SigninForm />

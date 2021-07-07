@@ -18,6 +18,9 @@ app
         createProxyMiddleware({
           target: 'http://localhost:3001',
           changeOrigin: true,
+          onProxyRes(proxyRes, req, res) {
+            console.log('New response. URI: ', req.url, {res: proxyRes})
+          },
         }),
       )
     }

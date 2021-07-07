@@ -10,9 +10,11 @@ export function onRequestSuccess<Response = Record<string, unknown>>(
 
 export async function getRequest<Response = Record<string, unknown>>(
   url: string,
-  config?: AxiosRequestConfig,
+  config: AxiosRequestConfig = {},
 ) {
-  return axios.get<Response>(url, config).then(onRequestSuccess)
+  return axios
+    .get<Response>(url, {withCredentials: true, ...config})
+    .then(onRequestSuccess)
 }
 
 export async function postRequest<

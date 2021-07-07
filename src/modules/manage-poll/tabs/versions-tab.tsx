@@ -12,7 +12,7 @@ import {
 import {DeleteTooltip} from 'components/delete-tooltip'
 import {ImageDropInput} from 'components/image-input'
 import {
-  useDesign,
+  usePoll,
   useDeleteDesignVersion,
   useCreateMultipleDesignVersions,
 } from 'utils/design-query'
@@ -44,24 +44,24 @@ function UploadedImage({imageUrl, onDeletePress, ...rest}: UploadedImageProps) {
 }
 
 interface VersionsTabProps {
-  designId: string
+  pollId: string
 }
 
-export function VersionsTab({designId}: VersionsTabProps) {
-  const {data, isLoading: isDesignLoading} = useDesign(designId)
+export function VersionsTab({pollId}: VersionsTabProps) {
+  const {data, isLoading: isDesignLoading} = usePoll(pollId)
   const {
     mutate: addVersions,
     isLoading: isCreateLoading,
-  } = useCreateMultipleDesignVersions(designId)
+  } = useCreateMultipleDesignVersions(pollId)
   const {
     mutate: deleteVersion,
     isLoading: isDeleteLoading,
-  } = useDeleteDesignVersion(designId)
-  const {design, versions, pictures} = data
+  } = useDeleteDesignVersion(pollId)
+  const {poll, versions} = data
   const iconColor = mode('gray.500', 'gray.300')
 
   const isLoading = isCreateLoading || isDeleteLoading || isDesignLoading
-  const {versions: versionsById} = design
+  const {versions: versionsById} = poll
 
   const onImageUpload = useCallback(
     (imageUrls: string[]) =>
@@ -86,15 +86,12 @@ export function VersionsTab({designId}: VersionsTabProps) {
             onImageUpload={onImageUpload}
             h={{base: '12rem', lg: '15em'}}
             w={{base: '12rem', lg: '15em'}}
-            description="Upload 2 or more versions of your design"
+            description="Upload 2 or more versions of your poll"
             icon={<AddIcon w="3em" h="3em" color={iconColor} />}
             isLoading={isLoading}
           />
           {versionsById.map(vId => {
-            const {
-              pictures: [picId],
-            } = versions[vId]
-            const {uri} = pictures[picId]
+            const {img: uri} = versions[vId]
             return (
               <UploadedImage
                 imageUrl={uri}

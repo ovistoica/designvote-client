@@ -11,6 +11,11 @@ interface DesignEntities {
   opinion: Record<string, types.Opinion>
 }
 
+interface PollEntities {
+  version: Record<string, types.PollVersion>
+  poll: Record<string, types.Poll>
+}
+
 export function normalizeDesign(
   design: types.ApiDesign,
 ): types.NormalizedDesign {
@@ -29,5 +34,17 @@ export function normalizeDesign(
     pictures: entities.picture,
     versions: entities.version,
     opinions: entities.opinion,
+  }
+}
+
+export function normalizePoll(poll: types.ApiPoll): types.NormalizedPoll {
+  const {entities} = normalize<types.Poll, PollEntities>(poll, schemas.poll)
+  const normalisedPoll = entities.poll[poll.pollId]
+  return {
+    poll: {
+      ...normalisedPoll,
+      versions: normalisedPoll.versions ?? [],
+    },
+    versions: entities.version,
   }
 }

@@ -3,8 +3,8 @@ import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {ErrorBoundary} from 'react-error-boundary'
 import {Routes, Route, Navigate} from 'react-router-dom'
 
-import {ManageDesign} from '../pages/manage-survey/[surveyId]'
-import {SettingsScreen} from '../pages/settings'
+import {ManageDesign} from '../modules/manage-poll/[pollId]'
+import {SettingsScreen} from '../modules/settings/settings-page'
 
 function AppRoutes() {
   return (

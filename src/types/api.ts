@@ -40,11 +40,11 @@ export interface ApiDesign {
 export interface ApiPoll {
   description: null
   uid: string
-  'poll-id': string
+  pollId: string
   name: string
-  'is-public': true
-  'total-votes': number
-  'short-url': string | null
+  isPublic: true
+  totalVotes: number
+  shortUrl: string | null
   versions: ApiVersion[]
   img: string | null
 }

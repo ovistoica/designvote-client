@@ -47,7 +47,7 @@ export const NavBar = (props: NavBarProps) => {
             </HStack>
             <Flex align="center">
               <HStack spacing="8" display={{base: 'none', md: 'flex'}}>
-                <NavLink.Desktop>Log in</NavLink.Desktop>
+                <NavLink.Desktop href={'/login'}>Log in</NavLink.Desktop>
                 <Button colorScheme="orange" rounded="full">
                   Start Free Trial
                 </Button>

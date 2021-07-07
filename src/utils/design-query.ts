@@ -17,6 +17,7 @@ import {
   Design,
   DesignType,
   NormalizedDesign,
+  NormalizedPoll,
   Opinion,
   Poll,
   VoteStyle,
@@ -28,8 +29,8 @@ import {
   postRequest,
   putRequest,
 } from './axios-client'
-import {loadingDesign} from './loading-data'
-import {normalizeDesign} from './normalize'
+import {loadingDesign, loadingPoll} from './loading-data'
+import {normalizeDesign, normalizePoll} from './normalize'
 import {keysToCamel} from './object'
 
 interface CreateDesignBody {
@@ -93,10 +94,10 @@ function publishDesign(designId: string) {
   return postRequest<Design>(`v1/designs/${designId}/publish`)
 }
 
-async function getDesign(designId: string) {
-  return getRequest<ApiDesign>(`v1/designs/${designId}`).then(result =>
-    normalizeDesign(result),
-  )
+async function getPoll(pollId: string) {
+  return getRequest<{poll: ApiPoll}>(
+    `v1/poll/management/${pollId}`,
+  ).then(({poll}) => normalizePoll(poll))
 }
 
 export async function getDesignByShortUrl(shortUrl: string) {
@@ -250,19 +251,19 @@ export function useCreateDesignFromDraft() {
   )
 }
 
-export function useDesign(
-  designId: string,
-  options: QueryOptions<NormalizedDesign, AxiosError> = {},
+export function usePoll(
+  pollId: string,
+  options: QueryOptions<NormalizedPoll, AxiosError> = {},
 ) {
-  const {data, ...rest} = useQuery<NormalizedDesign, AxiosError>({
-    queryKey: ['design', {designId}],
-    queryFn: () => getDesign(designId),
+  const {data, ...rest} = useQuery<NormalizedPoll, AxiosError>({
+    queryKey: ['poll', {pollId}],
+    queryFn: () => getPoll(pollId),
     refetchOnWindowFocus: true,
-    refetchInterval: 1000 * 60 * 3,
+    refetchInterval: 1000 * 60 * 2,
     ...options,
   })
 
-  return {data: data ?? loadingDesign, ...rest}
+  return {data: data ?? loadingPoll, ...rest}
 }
 
 export function useUrlDesign(

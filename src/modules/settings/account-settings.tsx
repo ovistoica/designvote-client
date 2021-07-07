@@ -15,11 +15,16 @@ import {FaMoon, FaSun} from 'react-icons/fa'
 import {Card} from './card'
 import {FieldGroup} from './field-group'
 import {HeadingGroup} from './heading-group'
+import axios from 'axios'
+import {useUser} from '../../store/user'
+import {useRouter} from 'next/router'
 
 export const AccountSettings = (props: StackProps) => {
   const value = useColorModeValue('dark', 'light')
   const {toggleColorMode} = useColorMode()
   const SwitchIcon = useColorModeValue(FaMoon, FaSun)
+  const {clearState} = useUser(state => state)
+  const router = useRouter()
 
   return (
     <Stack as="section" spacing="6" {...props}>
@@ -69,7 +74,16 @@ export const AccountSettings = (props: StackProps) => {
             </Stack>
           </FieldGroup>
           <FieldGroup>
-            <Button>Logout</Button>
+            <Button
+              onClick={() => {
+                axios.post('/api/v1/logout').then(() => {
+                  clearState()
+                  router.push('/')
+                })
+              }}
+            >
+              Logout
+            </Button>
           </FieldGroup>
         </Stack>
       </Card>

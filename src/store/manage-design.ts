@@ -23,7 +23,7 @@ export const useManageDesign = create<ManageDesignState>(
       setTab: (tab: DesignTab) => set({tab}),
       clearState: () => {
         set({...initialState})
-        window.localStorage.removeItem('manage-survey')
+        window.localStorage.removeItem('manage-poll')
       },
     }),
     {

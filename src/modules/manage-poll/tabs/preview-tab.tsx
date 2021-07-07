@@ -18,15 +18,15 @@ import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
 import {useManageDesign} from 'store'
 import {DesignTab, VoteStyle} from 'types'
 import {getDesignSurveyType} from 'utils/design'
-import {useDesign} from 'utils/design-query'
+import {usePoll} from 'utils/design-query'
 
 interface PreviewTabProps {
-  designId: string
+  pollId: string
 }
 
-export function PreviewTab({designId}: PreviewTabProps) {
-  const {data, isLoading} = useDesign(designId)
-  const {design, versions, pictures} = data
+export function PreviewTab({pollId}: PreviewTabProps) {
+  const {data, isLoading} = usePoll(pollId)
+  const {poll, versions} = data
   const {setTab} = useManageDesign(
     React.useCallback(state => ({setTab: state.setTab}), []),
   )
@@ -36,7 +36,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
 
   const surveyType = isLoading
     ? 'Loading...'
-    : getDesignSurveyType(design.designType)
+    : getDesignSurveyType(poll.designType)
   const heading = isLoading
     ? 'Loading survey...'
     : `TODO FIX THIS wants your feedback on their ${surveyType}`
@@ -45,11 +45,11 @@ export function PreviewTab({designId}: PreviewTabProps) {
     return <FullPageSpinner h="100%" />
   }
 
-  if (!design.name || !design.question) {
+  if (!poll.name || !poll.question) {
     return (
       <Stack spacing="1em" mt="1em" align="center">
         <Heading fontWeight="400" fontSize="xl">
-          You are missing the name or the targeted question for this design
+          You are missing the name or the targeted question for this poll
         </Heading>
         <Button
           mt="1em"
@@ -63,11 +63,11 @@ export function PreviewTab({designId}: PreviewTabProps) {
     )
   }
 
-  if (design.versions.length < 2) {
+  if (poll.versions.length < 2) {
     return (
       <Stack spacing="1em" mt="1em" align="center">
         <Heading fontWeight="400" fontSize="xl">
-          You need at least two versions of this design in order to publish it
+          You need at least two versions of this poll in order to publish it
         </Heading>
         <Button
           mt="1em"
@@ -112,7 +112,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
                 {heading}
               </Heading>
               <Text mt="4" fontSize="lg" fontWeight="medium">
-                {design.question}
+                {poll.question}
               </Text>
               <Text
                 color={mode('gray.600', 'gray.400')}
@@ -120,7 +120,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
                 fontSize="md"
                 fontWeight="extrabold"
               >
-                {design.voteStyle === VoteStyle.Choose
+                {poll.voteStyle === VoteStyle.Choose
                   ? 'Choose your favorite '
                   : 'Rate your favorites '}
                 and leave your feedback below:
@@ -136,7 +136,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
             {isLoading ? (
               <Spinner />
             ) : (
-              design.versions
+              poll.versions
                 .sort((a, b) => {
                   const {name: nameA} = versions[a]
                   const {name: nameB} = versions[b]
@@ -146,20 +146,16 @@ export function PreviewTab({designId}: PreviewTabProps) {
                   return nameA > nameB ? 1 : -1
                 })
                 .map((vId, index) => {
-                  const {
-                    pictures: [picId],
-                    name,
-                  } = versions[vId]
-                  const {uri: imageUrl} = pictures[picId]
+                  const {img, name} = versions[vId]
                   return (
                     <RateStarsVotingCard
                       index={index}
-                      key={`designVersion${vId}`}
+                      key={`pollVersion${vId}`}
                       versionId={vId}
                       inPreview
-                      imageUrl={imageUrl}
+                      imageUrl={img}
                       onClick={() => {
-                        setImage(imageUrl, name)
+                        setImage(img, name)
                         onOpen()
                       }}
                     />

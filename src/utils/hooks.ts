@@ -183,7 +183,7 @@ export function useInitialSetup() {
               .post('/api/v1/logout')
               .then(async () => {
                 clearState()
-                await router.push('/auth/login')
+                await router.push('/login')
               })
               .catch(err => {
                 reject(err)

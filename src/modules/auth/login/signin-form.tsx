@@ -40,7 +40,7 @@ export const SigninForm = () => {
   useEffect(() => {
     if (user) {
       console.log('FOUND USER', {user})
-      router.replace('/home')
+      // router.replace('/home')
     }
   }, [user, router])
   const {errors, handleSubmit, handleChange, handleBlur, touched} = useFormik({
@@ -52,7 +52,7 @@ export const SigninForm = () => {
       const response = await axios.post('/api/v1/login', values)
       if (response.status === 200) {
         setUser(response.data.identity)
-        router.push('/home')
+        // router.push('/home')
       }
     },
   })
@@ -119,7 +119,9 @@ export const SigninForm = () => {
             Remember me
           </Checkbox>
         </LightMode>
-        <UnderlineLink fontSize="sm">Forgot Password</UnderlineLink>
+        <UnderlineLink fontSize="sm" href={''}>
+          Forgot Password
+        </UnderlineLink>
       </Flex>
       <LightMode>
         <Button
