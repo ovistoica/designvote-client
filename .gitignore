@@ -32,3 +32,6 @@ public/extra-*
 *.ignored.*
 ignored/
 .eslintcache
+
+# Editor stuff
+.idea
