@@ -25,3 +25,8 @@ export enum VoteStyle {
   Choose = 'choose',
   FiveStar = 'five-star',
 }
+
+export enum PriceDuration {
+  Monthly = 'monthly',
+  Yearly = 'yearly',
+}

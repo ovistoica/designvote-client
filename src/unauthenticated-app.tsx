@@ -6,7 +6,7 @@ import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {PublicVoteScreen} from 'screens/public-vote'
 import {Privacy} from 'screens/privacy'
 import {Terms} from 'screens/terms'
-import {PricingScreen} from 'screens/pricing/index'
+import {Pricing} from 'screens/pricing'
 import {ThankYouScreen} from 'screens/thank-you'
 import {UnauthenticatedNavBar} from 'components/nav-bar'
 
@@ -17,7 +17,7 @@ function AppRoutes() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
-      <Route path="/pricing" element={<PricingScreen />} />
+      <Route path="/pricing" element={<Pricing />} />
       <Route path="/thank-you" element={<ThankYouScreen />} />
       <Route path="*" element={<NotFoundScreen />} />
     </Routes>
