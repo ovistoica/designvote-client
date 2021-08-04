@@ -1,100 +1,108 @@
 import {
   Box,
   BoxProps,
-  Flex,
-  LightMode,
+  Button,
+  createIcon,
+  Divider,
+  Heading,
+  List,
   ListItem,
+  ListItemProps,
   Text,
-  UnorderedList,
+  useColorModeValue as mode,
 } from '@chakra-ui/react'
-import * as React from 'react'
 
-interface PricingCardProps extends BoxProps {
-  button: React.ReactElement
-  data: {
-    name: string
-    description: string
-    price: number
-    amountSaved?: number | string
-    duration: 'monthly' | 'yearly'
-    benefits: string[]
-    yearlyAmount: number
-  }
-}
+const CheckIcon = createIcon({
+  viewBox: '0 0 17 12',
+  d:
+    'M0 5.82857L1.64571 4.11429L5.48571 7.2L14.8114 0L16.4571 1.71429L5.48571 12L0 5.82857Z',
+})
 
-const BillingBadge = (props: BoxProps) => (
-  <Box
-    rounded="full"
-    fontSize="sm"
-    bg="white"
-    color="gray.900"
-    px="3"
-    py="1"
-    pos="absolute"
-    top="4"
-    right="4"
-    fontWeight="bold"
-    {...props}
-  />
-)
-
-export const PricingCard = (props: PricingCardProps) => {
-  const {button, data, ...rest} = props
-  const {
-    name,
-    description,
-    price,
-    amountSaved,
-    duration,
-    yearlyAmount,
-    benefits,
-  } = data
-  const isFree = price === 0
-
+const PricingDetail = (props: ListItemProps & {iconColor: string}) => {
+  const {children, iconColor, ...rest} = props
   return (
-    <Flex
-      direction="column"
-      px="6"
-      py="8"
-      rounded="lg"
-      pos="relative"
-      maxW="2xl"
-      mx="auto"
+    <ListItem
+      display="flex"
+      alignItems="flex-start"
+      fontWeight="medium"
+      maxW="260px"
       {...rest}
     >
-      <Box flex="1">
-        {!isFree && (
-          <BillingBadge>
-            {duration === 'monthly' ? 'Billed monthly' : `Save ${amountSaved}`}
-          </BillingBadge>
-        )}
-        <Text fontSize="2xl" lineHeight="1" fontWeight="bold">
-          {name}
+      <CheckIcon marginEnd="3" mt="1" color={iconColor} />
+      <Text as="span" display="inline-block">
+        {children}
+      </Text>
+    </ListItem>
+  )
+}
+
+interface PricingCardProps extends BoxProps {
+  features: string[]
+  name: string
+  duration: string
+  extras: string
+  description: string
+  price: string
+  onClick?: () => void
+  colorScheme: string
+}
+
+export const PricingCard = (props: PricingCardProps) => {
+  const {
+    features,
+    name,
+    description,
+    duration,
+    price,
+    extras,
+    onClick,
+    colorScheme: c,
+    ...rest
+  } = props
+
+  return (
+    <Box p={{base: '10', md: '16'}} {...rest}>
+      <Heading>{name}</Heading>
+      <Divider
+        opacity={1}
+        borderWidth="2px"
+        borderColor={mode(`${c}.500`, `${c}.200`)}
+        my="6"
+        w="56px"
+      />
+
+      <Text maxW="280px" fontSize="lg">
+        {description}
+      </Text>
+
+      <Box mt="2">
+        <Text fontSize={{base: '6xl', md: '7xl'}} fontWeight="extrabold">
+          {price}
         </Text>
-        <Flex align="center" fontWeight="extrabold" mt="4" mb="3">
-          <Text
-            fontSize={{base: '6xl', xl: '7xl'}}
-            lineHeight="1"
-            flexShrink={0}
-          >
-            ${price}
-          </Text>
-        </Flex>
-        <Box>{isFree ? <>&nbsp;</> : `$${yearlyAmount} billed annually`}</Box>
-        <Box mt="6">
-          <Text fontSize="xl" fontWeight="semibold" mb="6">
-            {description}
-          </Text>
-          <UnorderedList spacing="3">
-            {benefits.map((item, index) => (
-              <ListItem key={index}>{item}</ListItem>
-            ))}
-          </UnorderedList>
-        </Box>
+        <Text casing="uppercase" fontWeight="bold">
+          {duration}
+        </Text>
+        <Text mt="2" color={mode('gray.600', 'gray.400')}>
+          {extras}
+        </Text>
       </Box>
-      <Box mt="10">
-        <LightMode>{button}</LightMode>
+
+      <Button my="8" size="lg" fontSize="md" colorScheme={c} onClick={onClick}>
+        Start free trial
+      </Button>
+
+      <Box>
+        <Text fontWeight="bold" mb="4">
+          What you get:
+        </Text>
+        <List spacing="4">
+          {features.map((feature, index) => (
+            <PricingDetail key={index} iconColor={mode(`${c}.500`, `${c}.200`)}>
+              {feature}
+            </PricingDetail>
+          ))}
+        </List>
       </Box>
-    </Flex>
+    </Box>
   )
 }
