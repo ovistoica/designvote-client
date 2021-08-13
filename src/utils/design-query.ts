@@ -12,6 +12,7 @@ import {useCreateDesignStore} from 'store'
 import {useVoteDesignState} from 'store/vote-design'
 import {
   ApiDesign,
+  APIUser,
   Design,
   DesignType,
   NormalizedDesign,
@@ -70,6 +71,10 @@ type QueryOptions<Data, Error> = Omit<
   UseQueryOptions<Data, Error>,
   'queryKey' | 'queryFn'
 >
+
+function getApiUser() {
+  return getRequest<APIUser>('v1/account')
+}
 
 function createDesign(design: CreateDesignBody) {
   return postRequest<CreateDesignResponse, CreateDesignBody>(
@@ -472,4 +477,10 @@ export function useGiveDesignFeedback(
       clearVoteState()
     },
   })
+}
+
+export function useApiUser(
+  options: QueryOptions<APIUser, AxiosError<APIUser>> = {},
+) {
+  return useQuery({queryFn: getApiUser, queryKey: 'apiUser', ...options})
 }

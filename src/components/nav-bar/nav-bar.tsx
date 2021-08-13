@@ -15,7 +15,7 @@ import {Link as RouterLink, useLocation} from 'react-router-dom'
 
 interface NavBarProps extends BoxProps {}
 
-export const NavBar = (props: NavBarProps) => {
+export const UnauthenticatedNavBar = (props: NavBarProps) => {
   const {login} = useAuth()
   const {pathname} = useLocation()
   return (

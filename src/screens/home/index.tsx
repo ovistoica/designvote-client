@@ -1,4 +1,13 @@
-import {Box, Flex, GridItem, SimpleGrid, Text} from '@chakra-ui/react'
+import * as React from 'react'
+import {
+  Box,
+  Flex,
+  GridItem,
+  SimpleGrid,
+  Text,
+  useToast,
+  UseToastOptions,
+} from '@chakra-ui/react'
 import {useDesigns} from 'utils/design-query'
 import {useNavigate} from 'react-router-dom'
 import {FullPageSpinner} from 'components/lib'
@@ -7,11 +16,57 @@ import {Design} from 'types'
 import {DesignCard, DesignInfo, VotesCount} from 'components/design-card'
 import {NoDesigns} from './no-designs'
 import {CreateDesignCard} from './create-design-card'
-import React from 'react'
+
+function getQueryParams() {
+  const queryArray = document.location.search
+    .substring(1)
+    .split('&')
+    .map(q => q.split('='))
+
+  const queryObject: Record<string, string | boolean> = {}
+  queryArray.forEach(([k, v]) => {
+    if (v === 'true' || v === 'false') {
+      queryObject[k] = Boolean(v)
+    } else {
+      queryObject[k] = v
+    }
+  })
+  return queryObject
+}
+
+const FAIL_PAYMENT_TOAST: UseToastOptions = {
+  title: 'Payment was unsuccesfull',
+  description:
+    'It seems something went wrong with your payment. Please try again',
+  status: 'error',
+  duration: 10000,
+  isClosable: true,
+}
+
+const SUCCESS_PAYMENT_TOAST: UseToastOptions = {
+  title: 'Payment succesfull',
+  description:
+    'Your account upgrade was succesfull! Go ahead and share your designs!',
+  status: 'success',
+  duration: 10000,
+  isClosable: true,
+}
 
 export function HomeScreen() {
   const navigate = useNavigate()
   const {data: designs, isLoading} = useDesigns()
+
+  const toast = useToast()
+
+  React.useEffect(() => {
+    const params = getQueryParams()
+    if (params.payment_failure) {
+      toast(FAIL_PAYMENT_TOAST)
+    }
+    if (params.payment_success) {
+      toast(SUCCESS_PAYMENT_TOAST)
+    }
+  }, [toast])
 
   if (isLoading) {
     return <FullPageSpinner />

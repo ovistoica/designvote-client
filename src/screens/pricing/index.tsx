@@ -11,7 +11,7 @@ import {
 import {useAuth} from 'context/auth-context'
 import * as React from 'react'
 import {PriceDuration} from 'types'
-import {DurationSwitcher} from './duration-switch'
+import {PricingSwitch} from 'components/pricing-switch'
 import {PricingCard} from './pricing-card'
 
 const MonthlyCard = ({onClick}: {onClick: () => void}) => (
@@ -82,11 +82,7 @@ export const Pricing = () => {
           >
             For growing teams and businesses
           </Text>
-          <DurationSwitcher
-            value={duration}
-            onValueChange={setDuration}
-            mt="10"
-          />
+          <PricingSwitch value={duration} onValueChange={setDuration} mt="10" />
         </Flex>
 
         <Flex

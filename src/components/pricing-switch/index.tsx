@@ -73,7 +73,7 @@ interface DurationProps extends FlexProps {
   value: PriceDuration
 }
 
-export const DurationSwitcher = (props: DurationProps) => {
+export const PricingSwitch = (props: DurationProps) => {
   const {getRadioProps, getRootProps} = useRadioGroup({
     defaultValue: props.value,
     onChange: props.onValueChange,
@@ -103,7 +103,7 @@ export const DurationSwitcher = (props: DurationProps) => {
         top="6"
       >
         <Text lineHeight="1" fontWeight="bold">
-          Save 22%
+          Save 25%
         </Text>
         <CurvedLine fontSize="2.5rem" pos="relative" right="8" bottom="1" />
       </Box>
