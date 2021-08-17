@@ -6,7 +6,7 @@ import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {PublicVoteScreen} from 'screens/public-vote'
 import {Privacy} from 'screens/privacy'
 import {Terms} from 'screens/terms'
-import {Pricing} from 'screens/pricing'
+import {Pricing} from 'screens/pricing/index'
 import {ThankYouScreen} from 'screens/thank-you'
 import {UnauthenticatedNavBar} from 'components/nav-bar'
 
