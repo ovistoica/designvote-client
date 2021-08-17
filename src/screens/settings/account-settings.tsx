@@ -52,7 +52,8 @@ export const AccountSettings = (props: StackProps) => {
   const value = useColorModeValue('dark', 'light')
   const {toggleColorMode} = useColorMode()
   const SwitchIcon = useColorModeValue(FaMoon, FaSun)
-  const {data: apiUser} = useApiUser()
+  const {data} = useApiUser()
+  const {account: apiUser} = data ?? {}
   const navigate = useNavigate()
 
   const subscriptionPlan =

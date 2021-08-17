@@ -73,7 +73,7 @@ type QueryOptions<Data, Error> = Omit<
 >
 
 function getApiUser() {
-  return getRequest<APIUser>('v1/account')
+  return getRequest<{account: APIUser}>('v1/account')
 }
 
 function createDesign(design: CreateDesignBody) {
@@ -480,7 +480,7 @@ export function useGiveDesignFeedback(
 }
 
 export function useApiUser(
-  options: QueryOptions<APIUser, AxiosError<APIUser>> = {},
+  options: QueryOptions<{account: APIUser}, AxiosError<APIUser>> = {},
 ) {
   return useQuery({queryFn: getApiUser, queryKey: 'apiUser', ...options})
 }

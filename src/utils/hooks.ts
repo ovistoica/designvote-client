@@ -145,13 +145,19 @@ export function useFormattedLocationName() {
 }
 
 export function useCanCreateDesigns() {
-  const {data: user, isLoading: isUserLoading} = useApiUser()
+  const {data, isLoading: isUserLoading} = useApiUser()
+  const {account: user} = data ?? {}
   const {data: designs, isLoading: isDesignsLoading} = useDesigns()
 
   if (isUserLoading || isDesignsLoading || !user) {
     return false
   }
 
+  console.log(user.subscriptionStatus)
+
+  console.log({user})
+
+  console.log('TEEEEST')
   switch (user.subscriptionStatus) {
     case SubscriptionStatus.PastDue:
     case SubscriptionStatus.Active: {
