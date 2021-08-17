@@ -1,7 +1,8 @@
 import {useBreakpoint} from '@chakra-ui/media-query'
 import * as React from 'react'
 import {useLocation} from 'react-router'
-import {useDesigns} from './design-query'
+import {SubscriptionStatus} from 'types'
+import {useApiUser, useDesigns} from './design-query'
 
 export function useSafeDispatch<Value = unknown>(
   dispatch: React.Dispatch<Value>,
@@ -141,4 +142,27 @@ export function useFormattedLocationName() {
   }
 
   return 'Not Found'
+}
+
+export function useCanCreateDesigns() {
+  const {data: user, isLoading: isUserLoading} = useApiUser()
+  const {data: designs, isLoading: isDesignsLoading} = useDesigns()
+
+  if (isUserLoading || isDesignsLoading || !user) {
+    return false
+  }
+
+  switch (user.subscriptionStatus) {
+    case SubscriptionStatus.PastDue:
+    case SubscriptionStatus.Active: {
+      return true
+    }
+
+    default: {
+      if (designs.length < 2) {
+        return true
+      }
+      return false
+    }
+  }
 }

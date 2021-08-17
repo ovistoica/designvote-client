@@ -1,4 +1,6 @@
-export interface User {
+import {SubscriptionStatus} from './enums'
+
+export interface Auth0User {
   /**
    * First name of user
    */
@@ -48,4 +50,14 @@ export interface User {
    * Last update date
    */
   updated_at: string
+}
+
+export interface APIUser {
+  email: string
+  social: boolean
+  uid: string
+  nickname?: string
+  subscriptionStatus: SubscriptionStatus
+  stripeId?: string
+  picture: string
 }

@@ -21,7 +21,7 @@ import {BsPencilSquare} from 'react-icons/bs'
 import {HiMenu, HiChevronRight, HiX} from 'react-icons/hi'
 import {MdDashboard, MdSettings} from 'react-icons/md'
 import {useNavigate} from 'react-router'
-import {useDesigns} from 'utils/design-query'
+import {useApiUser, useDesigns} from 'utils/design-query'
 import {useFormattedLocationName} from 'utils/hooks'
 import {SidebarLink} from './sidebar-link'
 
@@ -30,6 +30,9 @@ export const AppContainer: React.FC = ({children}) => {
   const {user} = useAuth()
   const navigate = useNavigate()
   const currentLocation = useFormattedLocationName()
+
+  // Fetch user preemptively
+  useApiUser()
 
   const {data: designs} = useDesigns()
   return (

@@ -11,6 +11,9 @@ import {SettingsScreen} from 'screens/settings'
 import {Privacy} from 'screens/privacy'
 import {Terms} from 'screens/terms'
 import {ThankYouScreen} from 'screens/thank-you'
+import {AuthenticatedNavBar} from 'components/nav-bar'
+import {CheckoutScreen} from 'screens/checkout'
+import {StripeContext} from 'context/stripe'
 
 function AppRoutes() {
   return (
@@ -18,12 +21,63 @@ function AppRoutes() {
       <Route path="/">
         <Navigate to="/home" />
       </Route>
-      <Route path="/home" element={<HomeScreen />} />
-      <Route path="/vote/:shortUrl" element={<PublicVoteScreen />} />
-      <Route path="/design/:designId" element={<ManageDesign />} />
-      <Route path="/create" element={<CreateDesign />} />
-      <Route path="/settings" element={<SettingsScreen />} />
-      <Route path="/privacy" element={<Privacy />} />
+      <Route
+        path="/home"
+        element={
+          <AppContainer>
+            <HomeScreen />
+          </AppContainer>
+        }
+      />
+      <Route
+        path="/vote/:shortUrl"
+        element={
+          <>
+            <AuthenticatedNavBar />
+            <PublicVoteScreen />
+          </>
+        }
+      />
+      <Route
+        path="/design/:designId"
+        element={
+          <AppContainer>
+            <ManageDesign />
+          </AppContainer>
+        }
+      />
+      <Route
+        path="/create"
+        element={
+          <AppContainer>
+            <CreateDesign />
+          </AppContainer>
+        }
+      />
+      <Route
+        path="/settings"
+        element={
+          <AppContainer>
+            <SettingsScreen />
+          </AppContainer>
+        }
+      />
+      <Route
+        path="/privacy"
+        element={
+          <AppContainer>
+            <Privacy />
+          </AppContainer>
+        }
+      />
+      <Route
+        path="/checkout"
+        element={
+          <StripeContext>
+            <CheckoutScreen />
+          </StripeContext>
+        }
+      />
       <Route path="/terms" element={<Terms />} />
       <Route path="/thank-you" element={<ThankYouScreen />} />
 
@@ -50,11 +104,9 @@ function ErrorFallback({error}: {error: Error}) {
 function AuthenticatedApp() {
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
-      <AppContainer>
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-          <AppRoutes />
-        </ErrorBoundary>
-      </AppContainer>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <AppRoutes />
+      </ErrorBoundary>
     </ErrorBoundary>
   )
 }
