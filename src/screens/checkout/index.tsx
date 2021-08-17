@@ -15,6 +15,7 @@ import {Footer} from 'components/footer'
 import {HiLockClosed} from 'react-icons/hi'
 import {createCheckoutSession} from 'utils/payment-query'
 import {useStripe} from '@stripe/react-stripe-js'
+import {useState} from 'react'
 
 interface FAQProps {
   question: string
@@ -40,9 +41,11 @@ const FAQ = ({question, answer}: FAQProps) => {
 }
 
 const MonthlyCard = ({onClick}: {onClick?: () => void}) => {
+  const [isLoading, setIsLoading] = useState(false)
   const stripe = useStripe()
 
-  const handleClick = () =>
+  const handleClick = () => {
+    setIsLoading(true)
     createCheckoutSession({
       success_url: `${document.location.origin}/home?payment_success=true`,
       cancel_url: `${document.location.origin}/home?payment_failure=true`,
@@ -52,6 +55,7 @@ const MonthlyCard = ({onClick}: {onClick?: () => void}) => {
         await stripe?.redirectToCheckout({sessionId: session.id})
       }
     })
+  }
 
   return (
     <PricingCard
@@ -67,6 +71,7 @@ const MonthlyCard = ({onClick}: {onClick?: () => void}) => {
         <Button
           my="8"
           size="lg"
+          isLoading={isLoading}
           fontSize="md"
           colorScheme="orange"
           onClick={handleClick}
@@ -84,35 +89,53 @@ const MonthlyCard = ({onClick}: {onClick?: () => void}) => {
     />
   )
 }
-const YearlyCard = ({onClick}: {onClick?: () => void}) => (
-  <PricingCard
-    flex="1"
-    colorScheme="orange"
-    name="Premium"
-    description="The full designvote experience"
-    price={`$${Math.floor(75 / 12)}`}
-    duration="Per month"
-    extras=""
-    onClick={onClick}
-    button={
-      <Button
-        my="8"
-        size="lg"
-        fontSize="md"
-        colorScheme="orange"
-        leftIcon={<HiLockClosed />}
-      >
-        Continue to checkout
-      </Button>
-    }
-    features={[
-      'Unlimited design surveys',
-      'Unlimited ratings',
-      'Social sharing & email templates',
-      '24/7 Excellent customer support',
-    ]}
-  />
-)
+const YearlyCard = () => {
+  const [isLoading, setIsLoading] = useState(false)
+  const stripe = useStripe()
+
+  const handleClick = () => {
+    setIsLoading(true)
+    createCheckoutSession({
+      success_url: `${document.location.origin}/home?payment_success=true`,
+      cancel_url: `${document.location.origin}/home?payment_failure=true`,
+      duration: 'yearly',
+    }).then(async session => {
+      if (session.status === 200) {
+        await stripe?.redirectToCheckout({sessionId: session.id})
+      }
+    })
+  }
+  return (
+    <PricingCard
+      flex="1"
+      colorScheme="orange"
+      name="Premium"
+      description="The full designvote experience"
+      price={`$${Math.floor(75 / 12)}`}
+      duration="Per month"
+      extras=""
+      button={
+        <Button
+          my="8"
+          size="lg"
+          isLoading={isLoading}
+          fontSize="md"
+          colorScheme="orange"
+          onClick={handleClick}
+          leftIcon={<HiLockClosed />}
+        >
+          Continue to checkout
+        </Button>
+      }
+      features={[
+        'Unlimited design surveys',
+        'Unlimited ratings',
+        'Social sharing & email templates',
+        '24/7 Excellent customer support',
+      ]}
+    />
+  )
+}
 
 export const CheckoutScreen = () => {
   const [duration, setDuration] = React.useState<PriceDuration>(

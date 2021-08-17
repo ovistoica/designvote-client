@@ -44,7 +44,7 @@ const FAIL_PAYMENT_TOAST: UseToastOptions = {
 }
 
 const SUCCESS_PAYMENT_TOAST: UseToastOptions = {
-  title: 'Payment succesfull',
+  title: 'Upgrade succesfull',
   description:
     'Your account upgrade was succesfull! Go ahead and share your designs!',
   status: 'success',
