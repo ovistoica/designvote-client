@@ -153,11 +153,6 @@ export function useCanCreateDesigns() {
     return false
   }
 
-  console.log(user.subscriptionStatus)
-
-  console.log({user})
-
-  console.log('TEEEEST')
   switch (user.subscriptionStatus) {
     case SubscriptionStatus.PastDue:
     case SubscriptionStatus.Active: {
