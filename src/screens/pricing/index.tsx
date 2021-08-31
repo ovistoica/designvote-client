@@ -20,7 +20,7 @@ const MonthlyCard = ({onClick}: {onClick: () => void}) => (
     colorScheme="orange"
     name="Premium"
     description="The full designvote experience"
-    price="$7.99"
+    price="$8"
     duration="Per user per month"
     extras=""
     onClick={onClick}
@@ -38,7 +38,7 @@ const YearlyCard = ({onClick}: {onClick: () => void}) => (
     colorScheme="orange"
     name="Premium"
     description="The full designvote experience"
-    price="$75"
+    price="$6"
     duration="Per user per year"
     extras=""
     onClick={onClick}

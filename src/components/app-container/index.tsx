@@ -110,7 +110,7 @@ export const AppContainer: React.FC = ({children}) => {
               {designs.map(design => (
                 <SidebarLink
                   key={`sideBarDesign${design.designId}`}
-                  onClick={() => navigate(`design/${design.designId}`)}
+                  onClick={() => navigate(`/design/${design.designId}`)}
                 >
                   {design.name}
                 </SidebarLink>

@@ -50,7 +50,7 @@ function ProgressSteps() {
             isCurrent={step === CreateDesignStep.Preview}
             onClick={() => setStep(CreateDesignStep.Preview)}
           >
-            Review
+            Preview
           </Step>
           <Step
             isCurrent={step === CreateDesignStep.Share}
