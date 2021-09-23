@@ -186,6 +186,10 @@ function deleteDesign(designId: string) {
   return deleteRequest<null>(`v1/designs/${designId}`)
 }
 
+function getLatestDesigns() {
+  return getRequest<{designs: Design[]}>('v1/designs/latest')
+}
+
 export function useCreateDesignFromDraft() {
   const qc = useQueryClient()
 
@@ -284,6 +288,18 @@ export function useUrlDesign(
     data: data ?? loadingDesign,
     ...rest,
   }
+}
+
+export function useLatestDesigns(
+  options: QueryOptions<{designs: Design[]}, AxiosError> = {},
+) {
+  const {data, ...rest} = useQuery({
+    queryKey: 'latest-designs',
+    queryFn: () => getLatestDesigns(),
+    ...options,
+  })
+
+  return {data: data ?? {designs: []}, ...rest}
 }
 
 export function useDesigns(options: QueryOptions<Design[], AxiosError> = {}) {

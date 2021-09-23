@@ -1,11 +1,11 @@
-import {Box, Stack, StackDivider} from '@chakra-ui/react'
+import {Box, BoxProps, Stack, StackDivider} from '@chakra-ui/react'
 import {Copyright} from './copyright'
 import {LinkGrid} from './link-grid'
 import {Logo} from '../logo'
 import {SocialMediaLinks} from './social-media-links'
 import {SubscribeForm} from './subscribe-form'
 
-export const Footer = () => (
+export const Footer = (props: BoxProps) => (
   <Box
     as="footer"
     role="contentinfo"
@@ -13,6 +13,7 @@ export const Footer = () => (
     maxW="7xl"
     py="12"
     px={{base: '4', md: '8'}}
+    {...props}
   >
     <Stack spacing="10" divider={<StackDivider />}>
       <Stack

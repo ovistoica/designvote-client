@@ -44,10 +44,12 @@ export interface Design {
   totalVotes: number
   shortUrl?: string
   versions: string[]
-  img: null
+  img?: string | null
   question: string
   designType: DesignType
   voteStyle: VoteStyle
+  createdAt: string
+  updatedAt: string
 }
 
 export interface NormalizedDesign {

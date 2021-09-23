@@ -16,6 +16,8 @@ export const loadingDesign: NormalizedDesign = {
     designType: DesignType.Mobile,
     shortUrl: 'Loading...',
     voteStyle: VoteStyle.Choose,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   pictures: {},
   opinions: {},

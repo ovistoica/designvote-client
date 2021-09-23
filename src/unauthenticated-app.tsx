@@ -1,6 +1,5 @@
 import {Route, Routes} from 'react-router-dom'
 import {NotFoundScreen} from 'screens/not-found'
-import {LandingPage} from 'screens/landing'
 import {ErrorBoundary} from 'react-error-boundary'
 import {ErrorMessage, FullPageErrorFallback} from 'components/lib'
 import {PublicVoteScreen} from 'screens/public-vote'
@@ -9,6 +8,7 @@ import {Terms} from 'screens/terms'
 import {Pricing} from 'screens/pricing/index'
 import {ThankYouScreen} from 'screens/thank-you'
 import {UnauthenticatedNavBar} from 'components/nav-bar'
+import {Home} from 'screens/new-home'
 
 //redeploy comment
 
@@ -16,7 +16,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/vote/:shortUrl" element={<PublicVoteScreen />} />
-      <Route path="/" element={<LandingPage />} />
+      <Route path="/" element={<Home />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/pricing" element={<Pricing />} />
