@@ -48,7 +48,7 @@ interface VersionsTabProps {
 }
 
 export function VersionsTab({designId}: VersionsTabProps) {
-  const {data, isLoading: isDesignLoading} = useDesign(designId)
+  const {data: design, isLoading: isDesignLoading} = useDesign(designId)
   const {
     mutate: addVersions,
     isLoading: isCreateLoading,
@@ -57,22 +57,21 @@ export function VersionsTab({designId}: VersionsTabProps) {
     mutate: deleteVersion,
     isLoading: isDeleteLoading,
   } = useDeleteDesignVersion(designId)
-  const {design, versions, pictures} = data
   const iconColor = mode('gray.500', 'gray.300')
 
   const isLoading = isCreateLoading || isDeleteLoading || isDesignLoading
-  const {versions: versionsById} = design
+  const {versions} = design
 
   const onImageUpload = useCallback(
     (imageUrls: string[]) =>
       addVersions(
         imageUrls.map((imgUrl, index) => ({
-          name: `#${versionsById.length + index + 1}`,
+          name: `#${versions.length + index + 1}`,
           pictures: [imgUrl],
           description: null,
         })),
       ),
-    [addVersions, versionsById.length],
+    [addVersions, versions.length],
   )
 
   return (
@@ -90,18 +89,15 @@ export function VersionsTab({designId}: VersionsTabProps) {
             icon={<AddIcon w="3em" h="3em" color={iconColor} />}
             isLoading={isLoading}
           />
-          {versionsById.map(vId => {
-            const {
-              pictures: [picId],
-            } = versions[vId]
-            const {uri} = pictures[picId]
+          {versions.map(v => {
+            const {imageUrl, versionId} = v
             return (
               <UploadedImage
-                imageUrl={uri}
+                imageUrl={imageUrl}
                 h={{base: '12rem', lg: '15em'}}
                 w={{base: '12rem', lg: '15em'}}
-                key={`imageUpload${vId}`}
-                onDeletePress={() => deleteVersion(vId)}
+                key={`imageUpload${versionId}`}
+                onDeletePress={() => deleteVersion(versionId)}
               />
             )
           })}

@@ -10,23 +10,14 @@ import {
 import {useNavigate} from 'react-router'
 import {useCreateDesignStore} from 'store'
 import {useVoteDesignState} from 'store/vote-design'
-import {
-  ApiDesign,
-  APIUser,
-  Design,
-  DesignType,
-  NormalizedDesign,
-  Opinion,
-  VoteStyle,
-} from 'types'
+import {ApiDesign, APIUser, Design, DesignType, Opinion, VoteStyle} from 'types'
 import {
   deleteRequest,
   getRequest,
   postRequest,
   putRequest,
 } from './axios-client'
-import {loadingDesign} from './loading-data'
-import {normalizeDesign} from './normalize'
+import {loadingDesign, singleLoadingDesign} from './loading-data'
 import {keysToCamel} from './object'
 
 interface CreateDesignBody {
@@ -95,15 +86,11 @@ function publishDesign(designId: string) {
 }
 
 async function getDesign(designId: string) {
-  return getRequest<ApiDesign>(`v1/designs/${designId}`).then(result =>
-    normalizeDesign(result),
-  )
+  return getRequest<Design>(`v1/designs/${designId}`)
 }
 
 async function getDesignByShortUrl(shortUrl: string) {
-  return getRequest<ApiDesign>(
-    `v1/designs/vote/short/${shortUrl}`,
-  ).then(result => normalizeDesign(result))
+  return getRequest<Design>(`v1/designs/vote/short/${shortUrl}`)
 }
 
 async function getDesigns() {
@@ -247,9 +234,9 @@ export function useCreateDesignFromDraft() {
 
 export function useDesign(
   designId: string,
-  options: QueryOptions<NormalizedDesign, AxiosError> = {},
+  options: QueryOptions<Design, AxiosError> = {},
 ) {
-  const {data, ...rest} = useQuery<NormalizedDesign, AxiosError>({
+  const {data, ...rest} = useQuery<Design, AxiosError>({
     queryKey: ['design', {designId}],
     queryFn: () => getDesign(designId),
     refetchOnWindowFocus: true,
@@ -257,35 +244,32 @@ export function useDesign(
     ...options,
   })
 
-  return {data: data ?? loadingDesign, ...rest}
+  return {data: data ?? singleLoadingDesign, ...rest}
 }
 
 export function useUrlDesign(
   shortUrl: string,
-  options: QueryOptions<NormalizedDesign, AxiosError> = {},
+  options: QueryOptions<Design, AxiosError<Design>> = {},
 ) {
   const qc = useQueryClient()
   const {data, ...rest} = useQuery({
     queryKey: ['design', {shortUrl}],
     queryFn: () => getDesignByShortUrl(shortUrl),
     onSettled(data) {
-      qc.setQueryData<NormalizedDesign>(
-        ['design', {designId: data?.design.designId}],
-        old => {
-          if (data) {
-            return data
-          }
-          if (old) {
-            return old
-          }
-          return loadingDesign
-        },
-      )
+      qc.setQueryData<Design>(['design', {designId: data?.designId}], old => {
+        if (data) {
+          return data
+        }
+        if (old) {
+          return old
+        }
+        return singleLoadingDesign
+      })
     },
     ...options,
   })
   return {
-    data: data ?? loadingDesign,
+    data: data ?? singleLoadingDesign,
     ...rest,
   }
 }

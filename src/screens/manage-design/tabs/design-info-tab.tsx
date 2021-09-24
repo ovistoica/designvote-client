@@ -132,11 +132,9 @@ interface DesignInfoProps {
 }
 
 export function DesignInfoTab({designId}: DesignInfoProps) {
-  const {
-    data: {design},
-    isLoading: isDesignLoading,
-    isSuccess,
-  } = useDesign(designId)
+  const {data: design, isLoading: isDesignLoading, isSuccess} = useDesign(
+    designId,
+  )
   const initialValues = {
     name: design.name,
     description: design.description ?? '',

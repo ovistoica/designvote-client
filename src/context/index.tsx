@@ -104,7 +104,7 @@ const AppProviders: React.FC = ({children}) => {
               <CookiesProvider>
                 <Router>{children}</Router>
               </CookiesProvider>
-              <ReactQueryDevtools initialIsOpen={false} />
+              {/* <ReactQueryDevtools initialIsOpen={false} /> */}
             </QueryClientProvider>
           </AuthProvider>
         </Auth0Provider>

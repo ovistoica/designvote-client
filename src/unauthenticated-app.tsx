@@ -9,6 +9,7 @@ import {Pricing} from 'screens/pricing/index'
 import {ThankYouScreen} from 'screens/thank-you'
 import {UnauthenticatedNavBar} from 'components/nav-bar'
 import {Home} from 'screens/new-home'
+import {DesignScreen} from 'screens/design'
 
 //redeploy comment
 
@@ -16,6 +17,7 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/vote/:shortUrl" element={<PublicVoteScreen />} />
+      <Route path="/design/:shortUrl" element={<DesignScreen />} />
       <Route path="/" element={<Home />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />

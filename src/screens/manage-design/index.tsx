@@ -24,10 +24,7 @@ import {DesignInfoTab, PreviewTab, ResultsTab, VersionsTab} from './tabs'
 
 export const ManageDesign = () => {
   const {designId} = useParams()
-  const {
-    data: {design},
-    isLoading,
-  } = useDesign(designId)
+  const {data: design, isLoading} = useDesign(designId)
 
   const websiteLink = window.location.origin
   const link = isLoading

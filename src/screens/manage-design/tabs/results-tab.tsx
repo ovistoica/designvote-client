@@ -8,9 +8,7 @@ interface ResultsTabProps {
 }
 
 export function ResultsTab({designId}: ResultsTabProps) {
-  const {
-    data: {design, versions, pictures},
-  } = useDesign(designId)
+  const {data: design} = useDesign(designId)
 
   return (
     <Box
@@ -26,31 +24,29 @@ export function ResultsTab({designId}: ResultsTabProps) {
         >
           {design.versions
             .sort((a, b) => {
-              const {name: nameA} = versions[a]
-              const {name: nameB} = versions[b]
+              const {name: nameA} = a
+              const {name: nameB} = b
               if (nameA === nameB) {
                 return 0
               }
               return nameA > nameB ? 1 : -1
             })
-            .map((vId, index) => {
-              const version = versions[vId]
+            .map((v, index) => {
               const title = `Version #${index + 1} votes`
-              const [picId] = version.pictures
-              const {uri: imageUrl} = pictures[picId]
-              const numberOfOpinions = version.opinions.length
+              const {imageUrl, opinions, versionId, votes} = v
+              const numberOfOpinions = opinions.length
 
               return (
                 <StatCard
                   id={title}
-                  key={`resultCard${vId}`}
-                  votes={version.votes}
+                  key={`resultCard${versionId}`}
+                  votes={votes}
                   totalVotes={design.totalVotes}
                   voteStyle={design.voteStyle}
                   title={title}
                   imageUrl={imageUrl}
                   designId={design.designId}
-                  versionId={vId}
+                  versionId={versionId}
                   numberOfOpinions={numberOfOpinions}
                 />
               )

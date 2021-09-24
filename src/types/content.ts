@@ -29,21 +29,21 @@ export interface Version {
   description: string | null
   designId: string
   votes: Vote[]
-  pictures: string[]
-  opinions: number[]
+  imageUrl: string
+  opinions: Opinion[]
 }
 
 export interface Design {
   designId: string
   description?: string | null
   opinions: number[]
+  versions: Version[]
   nickname: string
   uid: string
   name: string
   public: boolean
   totalVotes: number
   shortUrl?: string
-  versions: string[]
   img?: string | null
   question: string
   designType: DesignType

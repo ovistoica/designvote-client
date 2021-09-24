@@ -30,14 +30,11 @@ export function DesignModal({
   designId,
   versionId,
 }: DesignModalProps) {
-  const {
-    data: {versions, design, pictures, opinions},
-  } = useDesign(designId)
-  const version = versions[versionId]
-  const {
-    pictures: [picId],
-  } = version
-  const {uri: imageUrl} = pictures[picId]
+  const {data: design} = useDesign(designId)
+  const version = design.versions.find(
+    version => version.versionId === versionId,
+  )!
+  const {imageUrl} = version
   return (
     <Modal onClose={onClose} size="3xl" isOpen={isOpen}>
       <ModalOverlay />
@@ -64,12 +61,12 @@ export function DesignModal({
                 Comments:{' '}
               </Heading>
               <Stack align="flex-start" spacing="4">
-                {version.opinions.map((opId, index) => {
-                  const {opinion, voterName} = opinions[opId]
+                {version.opinions.map((op, index) => {
+                  const {opinion, voterName, opinionId} = op
                   return (
                     <SimpleGrid
                       columns={2}
-                      key={`opin${opId}`}
+                      key={`opin${opinionId}`}
                       alignItems="flex-start"
                       w="full"
                       templateColumns={{base: '2fr 11.5fr', md: '1fr 11fr'}}

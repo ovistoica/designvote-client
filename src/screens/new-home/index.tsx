@@ -24,12 +24,14 @@ import {Comment} from './comment'
 import intervalToDuration from 'date-fns/intervalToDuration'
 import {Footer} from 'components/footer'
 import {TopExperts} from './experts'
+import {useNavigate} from 'react-router'
 
 interface DesignProps {
   question: string
   img?: string
   votes: number
   createdAt: string
+  onClick: () => void
 }
 
 /**
@@ -50,11 +52,11 @@ function getTimeAgo(createdAt: string): string {
 }
 
 export const Design = (props: DesignProps) => {
-  const {votes, question, img, createdAt} = props
+  const {votes, question, img, createdAt, onClick} = props
   const timeAgo = getTimeAgo(createdAt)
 
   return (
-    <Box position="relative">
+    <Box position="relative" onClick={onClick} cursor="pointer">
       <HStack>
         <Img
           w="125px"
@@ -207,6 +209,7 @@ export function Home() {
   const {
     data: {designs},
   } = useLatestDesigns()
+  const navigate = useNavigate()
   return (
     <>
       <Flex justifyContent="center" align="center" direction="column">
@@ -257,6 +260,7 @@ export function Home() {
                         votes={design.totalVotes}
                         createdAt={design.createdAt}
                         img={design.img ?? undefined}
+                        onClick={() => navigate(`/design/${design.shortUrl}`)}
                       />
                       {index !== 4 ? <Divider /> : null}
                     </>

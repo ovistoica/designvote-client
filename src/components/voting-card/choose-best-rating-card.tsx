@@ -19,11 +19,8 @@ export function ChooseBestVotingCard({
   index,
   onVote,
 }: ChooseBestCardProps) {
-  const {versions, pictures, design} = designData
-  const {
-    pictures: [picId],
-  } = versions[versionId]
-  const {uri: imageUrl} = pictures[picId]
+  const {versions, design} = designData
+  const {imageUrl} = versions[versionId]
   const setChosen = useVoteDesignState(state => state.setChosen)
   const currentChosen = useVoteDesignState(getChosen(design.designId))
   const isChosen = currentChosen === versionId

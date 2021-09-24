@@ -22,8 +22,7 @@ import {Footer} from 'components/footer'
 
 export function PublicVoteScreen() {
   const {shortUrl} = useParams()
-  const {data, isLoading, isSuccess} = useUrlDesign(shortUrl)
-  const {design, versions, pictures} = data
+  const {data: design, isLoading, isSuccess} = useUrlDesign(shortUrl)
   const setVoterName = useVoteDesignState(state => state.setVoterName)
   const canSubmitFeedback = useVoteDesignState(canSubmit)
   const {
@@ -153,24 +152,20 @@ export function PublicVoteScreen() {
             ) : (
               design.versions
                 .sort((a, b) => {
-                  const {name: nameA} = versions[a]
-                  const {name: nameB} = versions[b]
+                  const {name: nameA} = a
+                  const {name: nameB} = b
                   if (nameA === nameB) {
                     return 0
                   }
                   return nameA > nameB ? 1 : -1
                 })
-                .map((vId, index) => {
-                  const {
-                    pictures: [picId],
-                    name,
-                  } = versions[vId]
-                  const {uri: imageUrl} = pictures[picId]
+                .map((v, index) => {
+                  const {imageUrl, versionId, name} = v
                   return (
                     <RateStarsVotingCard
                       index={index}
-                      key={`designVersion${vId}`}
-                      versionId={vId}
+                      key={`designVersion${versionId}`}
+                      versionId={versionId}
                       imageUrl={imageUrl}
                       onClick={() => {
                         setImage(imageUrl, name)

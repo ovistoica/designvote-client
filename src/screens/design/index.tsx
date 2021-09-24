@@ -1,32 +1,38 @@
 import * as React from 'react'
-import {Button} from '@chakra-ui/button'
 import {
-  Input,
+  Box,
+  Heading,
+  SimpleGrid,
   Spinner,
+  Stack,
+  Input,
+  Text,
   useColorModeValue as mode,
+  Button,
   useDisclosure,
 } from '@chakra-ui/react'
-import {Box, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
-import {useManageDesign} from 'store'
-import {DesignTab, VoteStyle} from 'types'
-import {useDesign} from 'utils/design-query'
-import {FullPageSpinner} from 'components/lib'
 import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
+import {useNavigate, useParams} from 'react-router'
+import {canSubmit, useVoteDesignState} from 'store/vote-design'
+import {VoteStyle} from 'types'
 import {getDesignSurveyType} from 'utils/design'
+import {useGiveDesignFeedback, useUrlDesign} from 'utils/design-query'
 import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
-import {useAuth} from 'context/auth-context'
+import {Footer} from 'components/footer'
 
-interface PreviewTabProps {
-  designId: string
-}
-
-export function PreviewTab({designId}: PreviewTabProps) {
-  const {data: design, isLoading} = useDesign(designId)
-  const {setTab} = useManageDesign(
-    React.useCallback(state => ({setTab: state.setTab}), []),
-  )
-
-  const {user} = useAuth()
+export function DesignScreen() {
+  const {shortUrl} = useParams()
+  const {data: design, isLoading, isSuccess} = useUrlDesign(shortUrl)
+  const setVoterName = useVoteDesignState(state => state.setVoterName)
+  const canSubmitFeedback = useVoteDesignState(canSubmit)
+  const {
+    mutate: submitFeedback,
+    isSuccess: isVotingSuccess,
+    isLoading: isVoteLoading,
+  } = useGiveDesignFeedback(design.designId, {
+    enabled: isSuccess,
+  })
+  const navigate = useNavigate()
   const {isOpen, onOpen, onClose} = useDisclosure()
   const setImage = useZoomModalState(state => state.setImage)
 
@@ -35,50 +41,17 @@ export function PreviewTab({designId}: PreviewTabProps) {
     : getDesignSurveyType(design.designType)
   const heading = isLoading
     ? 'Loading survey...'
-    : `${user?.nickname} wants your feedback on their ${surveyType}`
+    : `${design.nickname} wants your feedback on their ${surveyType}`
 
-  if (isLoading) {
-    return <FullPageSpinner h="100%" />
-  }
+  React.useEffect(() => {
+    if (isVotingSuccess) {
+      navigate('/thank-you')
+    }
+  }, [isVotingSuccess, navigate])
 
-  if (!design.name || !design.question) {
-    return (
-      <Stack spacing="1em" mt="1em" align="center">
-        <Heading fontWeight="400" fontSize="xl">
-          You are missing the name or the targeted question for this design
-        </Heading>
-        <Button
-          mt="1em"
-          size="lg"
-          onClick={() => setTab(DesignTab.Info)}
-          colorScheme="teal"
-        >
-          Go back and complete
-        </Button>
-      </Stack>
-    )
-  }
-
-  if (design.versions.length < 2) {
-    return (
-      <Stack spacing="1em" mt="1em" align="center">
-        <Heading fontWeight="400" fontSize="xl">
-          You need at least two versions of this design in order to publish it
-        </Heading>
-        <Button
-          mt="1em"
-          size="lg"
-          onClick={() => setTab(DesignTab.Versions)}
-          colorScheme="teal"
-        >
-          Go back and upload
-        </Button>
-      </Stack>
-    )
-  }
   return (
     <>
-      <Box as="section" bg={mode('gray.50', 'gray.800')} pb="24">
+      <Box as="section" bg={mode('gray.50', 'gray.800')} pt="16" pb="24">
         <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '6', md: '8'}}>
           <Stack
             direction={{base: 'column', lg: 'row'}}
@@ -123,42 +96,6 @@ export function PreviewTab({designId}: PreviewTabProps) {
               </Text>
             </Box>
           </Stack>
-          <SimpleGrid
-            columns={{base: 1, md: 2, lg: 3}}
-            spacing={{base: '2', md: '8', lg: '8'}}
-            rowGap={{base: 8, md: 8, lg: 8}}
-            mt="8"
-          >
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              design.versions
-                .sort((a, b) => {
-                  const {name: nameA} = a
-                  const {name: nameB} = b
-                  if (nameA === nameB) {
-                    return 0
-                  }
-                  return nameA > nameB ? 1 : -1
-                })
-                .map((v, index) => {
-                  const {imageUrl, name, versionId} = v
-                  return (
-                    <RateStarsVotingCard
-                      index={index}
-                      key={`designVersion${versionId}`}
-                      versionId={versionId}
-                      inPreview
-                      imageUrl={imageUrl}
-                      onClick={() => {
-                        setImage(imageUrl, name)
-                        onOpen()
-                      }}
-                    />
-                  )
-                })
-            )}
-          </SimpleGrid>
           <Stack
             direction={{base: 'column', lg: 'row'}}
             spacing={{base: '3rem', lg: '2rem'}}
@@ -177,25 +114,72 @@ export function PreviewTab({designId}: PreviewTabProps) {
               >
                 Send your feedback
               </Heading>
-              <Text
+              {/*<Text
                 color={mode('gray.600', 'gray.400')}
                 mt={{base: '4', md: '4'}}
                 fontSize="lg"
                 fontWeight="extrabold"
               >
-                Let {user?.nickname} know who you are:
-              </Text>
+                Let {design.nickname} know who you are:
+              </Text>*/}
               <Stack direction={{base: 'column', md: 'row'}} spacing="8" mt="4">
-                <Input size="lg" placeholder="Enter your name" maxW="md" />
-                <Button size="lg" colorScheme="orange" disabled={true}>
+                <Input
+                  size="lg"
+                  placeholder="Enter your name"
+                  maxW="md"
+                  onChange={e => setVoterName(e.target.value)}
+                />
+                <Button
+                  size="lg"
+                  colorScheme="orange"
+                  disabled={!canSubmitFeedback}
+                  onClick={() => submitFeedback()}
+                  isLoading={isVoteLoading}
+                >
                   Submit feedback
                 </Button>
               </Stack>
             </Box>
           </Stack>
+          <SimpleGrid
+            columns={{base: 1, md: 2, lg: 3}}
+            spacing={{base: '2', md: '8', lg: '8'}}
+            rowGap={{base: 8, md: 8, lg: 8}}
+            mt="8"
+          >
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              design.versions
+                .sort((a, b) => {
+                  const {name: nameA} = a
+                  const {name: nameB} = b
+                  if (nameA === nameB) {
+                    return 0
+                  }
+                  return nameA > nameB ? 1 : -1
+                })
+                .map((version, index) => {
+                  const {imageUrl, versionId, name} = version
+                  return (
+                    <RateStarsVotingCard
+                      index={index}
+                      key={`designVersion${versionId}`}
+                      versionId={versionId}
+                      imageUrl={imageUrl}
+                      onClick={() => {
+                        setImage(imageUrl, name)
+                        onOpen()
+                      }}
+                    />
+                  )
+                })
+            )}
+          </SimpleGrid>
         </Box>
       </Box>
       <ZoomModal isOpen={isOpen} onClose={onClose} />
+      <Footer />
     </>
   )
 }
