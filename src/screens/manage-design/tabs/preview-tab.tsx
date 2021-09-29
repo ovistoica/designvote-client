@@ -29,6 +29,9 @@ export function PreviewTab({designId}: PreviewTabProps) {
   const {user} = useAuth()
   const {isOpen, onOpen, onClose} = useDisclosure()
   const setImages = useZoomModalState(state => state.setImages)
+  const setStartSlide = useZoomModalState(state => state.setIndex)
+  const isDesignValid = design.name && design.question
+  const hasEnoughVersions = design.versions.length >= 2
 
   const surveyType = isLoading
     ? 'Loading...'
@@ -37,11 +40,19 @@ export function PreviewTab({designId}: PreviewTabProps) {
     ? 'Loading survey...'
     : `${user?.nickname} wants your feedback on their ${surveyType}`
 
+  React.useEffect(() => {
+    if (isDesignValid && hasEnoughVersions) {
+      setImages(
+        design.versions.map(v => ({url: v.imageUrl, versionId: v.versionId})),
+      )
+    }
+  }, [design.versions, hasEnoughVersions, isDesignValid, setImages])
+
   if (isLoading) {
     return <FullPageSpinner h="100%" />
   }
 
-  if (!design.name || !design.question) {
+  if (!isDesignValid) {
     return (
       <Stack spacing="1em" mt="1em" align="center">
         <Heading fontWeight="400" fontSize="xl">
@@ -59,7 +70,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
     )
   }
 
-  if (design.versions.length < 2) {
+  if (!hasEnoughVersions) {
     return (
       <Stack spacing="1em" mt="1em" align="center">
         <Heading fontWeight="400" fontSize="xl">
@@ -142,7 +153,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
                   return nameA > nameB ? 1 : -1
                 })
                 .map((v, index) => {
-                  const {imageUrl, name, versionId} = v
+                  const {imageUrl, versionId} = v
                   return (
                     <RateStarsVotingCard
                       index={index}
@@ -151,9 +162,8 @@ export function PreviewTab({designId}: PreviewTabProps) {
                       inPreview
                       imageUrl={imageUrl}
                       onClick={() => {
-                        //TODO: Fix here
-                        // setImage(imageUrl, name)
                         onOpen()
+                        setStartSlide(index)
                       }}
                     />
                   )

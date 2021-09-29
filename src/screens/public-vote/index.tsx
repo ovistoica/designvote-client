@@ -34,7 +34,16 @@ export function PublicVoteScreen() {
   })
   const navigate = useNavigate()
   const {isOpen, onOpen, onClose} = useDisclosure()
-  // const setImage = useZoomModalState(state => state.setImage)
+  const setImages = useZoomModalState(state => state.setImages)
+  const setStartSlide = useZoomModalState(state => state.setIndex)
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      setImages(
+        design.versions.map(v => ({url: v.imageUrl, versionId: v.versionId})),
+      )
+    }
+  }, [design.versions, isSuccess, setImages])
 
   const surveyType = isLoading
     ? 'Loading...'
@@ -160,7 +169,7 @@ export function PublicVoteScreen() {
                   return nameA > nameB ? 1 : -1
                 })
                 .map((v, index) => {
-                  const {imageUrl, versionId, name} = v
+                  const {imageUrl, versionId} = v
                   return (
                     <RateStarsVotingCard
                       index={index}
@@ -168,9 +177,8 @@ export function PublicVoteScreen() {
                       versionId={versionId}
                       imageUrl={imageUrl}
                       onClick={() => {
-                        //TODO fix here
-                        // setImage(imageUrl, name)
                         onOpen()
+                        setStartSlide(index)
                       }}
                     />
                   )

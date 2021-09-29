@@ -30,20 +30,21 @@ export function PreviewStep() {
   const surveyType = getDesignSurveyType(design.designType)
   const heading = `${user?.nickname} wants your feedback on their ${surveyType}`
 
-  const isDesignInvalid = !design.name || !design.question
+  const isDesignValid = design.name && design.question
   const hasEnoughVersions = design.imagesByUrl.length >= 2
   const {isOpen, onOpen, onClose} = useDisclosure()
 
   const setStep = useCreateDesignStore(useCallback(state => state.setStep, []))
   const setImages = useZoomModalState(state => state.setImages)
+  const setStartSlide = useZoomModalState(state => state.setIndex)
 
   React.useEffect(() => {
-    if (isDesignInvalid && hasEnoughVersions) {
+    if (!isDesignValid && hasEnoughVersions) {
       setImages(design.imagesByUrl.map(url => ({url, versionId: 'preview'})))
     }
-  }, [design.imagesByUrl, hasEnoughVersions, isDesignInvalid, setImages])
+  }, [design.imagesByUrl, hasEnoughVersions, isDesignValid, setImages])
 
-  if (isDesignInvalid) {
+  if (!isDesignValid) {
     return (
       <Stack spacing="1em" mt="1em" align="center">
         <Heading fontWeight="400" fontSize="xl">
@@ -141,6 +142,7 @@ export function PreviewStep() {
                   imageUrl={imageUrl}
                   onClick={() => {
                     onOpen()
+                    setStartSlide(index)
                   }}
                 />
               )
