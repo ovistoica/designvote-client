@@ -5,15 +5,19 @@
 
 import create from 'zustand'
 
+export type CarouselImage = {url: string; versionId: string}
+
 export type ZoomModalState = {
-  imageUrl?: string
+  images?: CarouselImage[]
+  startIndex?: number
   title?: string
-  setImage: (url: string, title: string) => void
+  setImages: (images: CarouselImage[]) => void
+  setIndex: (index: number) => void
   clearState: () => void
 }
 
 type InitialDataState = {
-  imageUrl?: string
+  images?: CarouselImage[]
   title?: string
 }
 
@@ -21,8 +25,11 @@ const initialState: InitialDataState = {}
 
 export const useZoomModalState = create<ZoomModalState>((set, get) => ({
   ...initialState,
-  setImage: (url: string, title: string) => {
-    set({imageUrl: url, title})
+  setImages: (images: CarouselImage[]) => {
+    set({images})
+  },
+  setIndex: (index: number) => {
+    set({startIndex: index})
   },
   clearState: () => {
     set({...initialState})

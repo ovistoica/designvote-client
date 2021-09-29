@@ -1,4 +1,3 @@
-import {Image} from '@chakra-ui/image'
 import {
   Modal,
   ModalBody,
@@ -6,17 +5,17 @@ import {
   ModalContent,
   ModalOverlay,
 } from '@chakra-ui/modal'
-import {Spinner} from '@chakra-ui/spinner'
 import {useZoomModalState} from './current-zoomed-state'
+import {ImageCarousel} from './image-carousel'
 
 interface Props {
   isOpen: boolean
   onClose: () => void
 }
 export function ZoomModal({isOpen, onClose}: Props) {
-  const {imageUrl} = useZoomModalState(state => ({
-    imageUrl: state.imageUrl,
-    title: state.title,
+  const {images, startSlide} = useZoomModalState(state => ({
+    images: state.images,
+    startSlide: state.startIndex,
   }))
   return (
     <Modal
@@ -27,16 +26,22 @@ export function ZoomModal({isOpen, onClose}: Props) {
       closeOnOverlayClick
       closeOnEsc
     >
-      <ModalOverlay />
-      <ModalContent bg="transparent" shadow="none">
-        <ModalCloseButton color="white" />
+      <ModalOverlay onClick={onClose} />
+      <ModalContent bg="transparent" onClick={onClose}>
+        <ModalCloseButton
+          variant="solid"
+          bg="white"
+          size="lg"
+          rounded="full"
+          color="black"
+        />
         <ModalBody
           display="flex"
           alignItems="center"
           justifyContent="center"
           bg="transparent"
         >
-          {imageUrl ? <Image src={imageUrl} /> : <Spinner />}
+          <ImageCarousel images={images ?? []} startSlide={startSlide} />
         </ModalBody>
       </ModalContent>
     </Modal>

@@ -5,147 +5,215 @@ import {
   SimpleGrid,
   Spinner,
   Stack,
-  Input,
   Text,
   useColorModeValue as mode,
   Button,
   useDisclosure,
+  Grid,
+  Flex,
+  Divider,
+  HStack,
+  StackDivider,
+  Tag,
+  Image,
 } from '@chakra-ui/react'
 import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
-import {useNavigate, useParams} from 'react-router'
-import {canSubmit, useVoteDesignState} from 'store/vote-design'
-import {VoteStyle} from 'types'
-import {getDesignSurveyType} from 'utils/design'
-import {useGiveDesignFeedback, useUrlDesign} from 'utils/design-query'
+import {useParams} from 'react-router'
+import {useUrlDesign} from 'utils/design-query'
 import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
 import {Footer} from 'components/footer'
+import {Comment, Stamp} from '../../assets/icons'
+import {FaShare, FaStar} from 'react-icons/fa'
+import {ArrowUpIcon} from '@chakra-ui/icons'
+
+interface DesignStatsProps {
+  votes: number
+  opinions: number
+}
+function DesignStats({votes, opinions}: DesignStatsProps) {
+  const statsBg = mode('white', 'gray.700')
+  const iconColor = mode('#1A202C', 'rgba(255, 255, 255, 0.92)')
+  return (
+    <Flex
+      flexDir="column"
+      shadow="base"
+      w="22em"
+      h="15em"
+      p="4"
+      bg={statsBg}
+      rounded="md"
+      align="center"
+      justify="space-evenly"
+    >
+      <Flex w="100%" justify="center">
+        <Stack p="1em" w="49%" align="center">
+          <Stamp fill={iconColor} />
+          <Text fontWeight="bold">{votes}</Text>
+          <Text>Votes</Text>
+        </Stack>
+        <Divider orientation="vertical" />
+        <Stack p="1em" w="49%" align="center">
+          <Comment fill={iconColor} />
+          <Text fontWeight="bold">{opinions}</Text>
+          <Text>Opinions</Text>
+        </Stack>
+      </Flex>
+      <HStack gridTemplateColumns="1fr 1fr" w="full" pt="8">
+        <Button
+          w="full"
+          color="orange.400"
+          borderWidth="1px"
+          variant="outlined"
+          borderColor="orange.400"
+          leftIcon={<FaStar />}
+          _hover={{bg: 'orange.300', color: 'white'}}
+        >
+          Favorite
+        </Button>
+        <Button
+          w="full"
+          color="orange.400"
+          borderWidth="1px"
+          variant="outlined"
+          borderColor="orange.400"
+          role="group"
+          leftIcon={<FaShare />}
+          _hover={{bg: 'orange.300', color: 'white'}}
+        >
+          Share
+        </Button>
+      </HStack>
+    </Flex>
+  )
+}
+
+interface OpinionsSectionProps {
+  designUrl: string
+}
+
+interface OpinionProps {
+  imageUrl: string
+  opinion: string
+  userId: string
+}
+
+function OpinionView({imageUrl, opinion, userId}: OpinionProps) {
+  return (
+    <Grid gridTemplateColumns="1fr 9fr 1.5fr" alignItems="center" py="4">
+      <ArrowUpIcon />
+      <Stack px="2">
+        <Text fontWeight="600" color="gray.800">
+          Andrew Cohen
+        </Text>
+        <Text color="gray.700">{opinion}</Text>
+      </Stack>
+      <Image src={imageUrl} rounded="md"></Image>
+    </Grid>
+  )
+}
+
+function OpinionsSection({designUrl}: OpinionsSectionProps) {
+  return (
+    <Box
+      maxW={{base: 'xl', md: '5xl', lg: '6xl'}}
+      mt="12"
+      alignSelf="center"
+      px={{base: '6', md: '8'}}
+      py="8"
+      bg="white"
+      rounded="md"
+      shadow="base"
+    >
+      <Stack divider={<StackDivider color="gray.200" />}>
+        <OpinionView
+          opinion="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi."
+          userId=""
+          imageUrl="https://designvote-storage.fra1.cdn.digitaloceanspaces.com/54afe9d9-18e4-4cfc-89a6-421525186d36-1.jpeg"
+        />
+        <OpinionView
+          opinion="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi."
+          userId=""
+          imageUrl="https://designvote-storage.fra1.cdn.digitaloceanspaces.com/54afe9d9-18e4-4cfc-89a6-421525186d36-2.jpeg"
+        />
+        <OpinionView
+          opinion="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi."
+          userId=""
+          imageUrl="https://designvote-storage.fra1.cdn.digitaloceanspaces.com/54afe9d9-18e4-4cfc-89a6-421525186d36-4.jpeg"
+        />
+      </Stack>
+    </Box>
+  )
+}
+
+// TODO: Change these
+const DEFAULT_TAGS = ['ui', 'mood', 'style', 'banking', 'mobile']
 
 export function DesignScreen() {
   const {shortUrl} = useParams()
   const {data: design, isLoading, isSuccess} = useUrlDesign(shortUrl)
-  const setVoterName = useVoteDesignState(state => state.setVoterName)
-  const canSubmitFeedback = useVoteDesignState(canSubmit)
-  const {
-    mutate: submitFeedback,
-    isSuccess: isVotingSuccess,
-    isLoading: isVoteLoading,
-  } = useGiveDesignFeedback(design.designId, {
-    enabled: isSuccess,
-  })
-  const navigate = useNavigate()
+  const {question} = design
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const setImage = useZoomModalState(state => state.setImage)
-
-  const surveyType = isLoading
-    ? 'Loading...'
-    : getDesignSurveyType(design.designType)
-  const heading = isLoading
-    ? 'Loading survey...'
-    : `${design.nickname} wants your feedback on their ${surveyType}`
+  const setImages = useZoomModalState(state => state.setImages)
+  const setStartSlide = useZoomModalState(state => state.setIndex)
 
   React.useEffect(() => {
-    if (isVotingSuccess) {
-      navigate('/thank-you')
+    if (isSuccess) {
+      setImages(
+        design.versions.map(v => ({url: v.imageUrl, versionId: v.versionId})),
+      )
     }
-  }, [isVotingSuccess, navigate])
+  }, [design.versions, isSuccess, setImages])
 
   return (
     <>
       <Box as="section" bg={mode('gray.50', 'gray.800')} pt="16" pb="24">
+        <Box
+          maxW={{base: 'xl', md: '7xl'}}
+          mx="auto"
+          px={{base: '6', md: '8'}}
+          pt="8"
+        >
+          <Grid gridTemplateColumns="65fr 35fr" gap="6">
+            <Stack>
+              <Heading fontWeight="600" color="gray.700">
+                {question}
+              </Heading>
+              <Text color="gray.600">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                enim ad minim veniam, quis nostrud exercitation ullamco laboris
+                nisi.
+              </Text>
+
+              <Flex wrap="wrap" py="5">
+                {DEFAULT_TAGS.map(t => (
+                  <Tag
+                    variant="solid"
+                    colorScheme="blue"
+                    key={`tag${t}`}
+                    m="1"
+                    size="lg"
+                  >
+                    {t}
+                  </Tag>
+                ))}
+              </Flex>
+            </Stack>
+            <DesignStats
+              votes={design.totalVotes}
+              opinions={design.opinions.length}
+            />
+          </Grid>
+        </Box>
         <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '6', md: '8'}}>
-          <Stack
-            direction={{base: 'column', lg: 'row'}}
-            spacing={{base: '3rem', lg: '2rem'}}
-            mt="8"
-            align={{lg: 'center'}}
-            justify="space-between"
-          >
-            <Box flex="1">
-              <Text
-                size="xs"
-                textTransform="uppercase"
-                fontWeight="semibold"
-                color={mode('gray.600', 'gray.300')}
-                letterSpacing="wide"
-              >
-                {surveyType}
-              </Text>
-              <Heading
-                as="h1"
-                size="xl"
-                color={mode('gray.700', 'gray.300')}
-                mt="4"
-                fontWeight="bold"
-                letterSpacing="tight"
-              >
-                {heading}
-              </Heading>
-              <Text mt="4" fontSize="lg" fontWeight="medium">
-                {design.question}
-              </Text>
-              <Text
-                color={mode('gray.600', 'gray.400')}
-                mt={{base: '8', md: 16}}
-                fontSize="md"
-                fontWeight="extrabold"
-              >
-                {design.voteStyle === VoteStyle.Choose
-                  ? 'Choose your favorite '
-                  : 'Rate your favorites '}
-                and leave your feedback below:
-              </Text>
-            </Box>
-          </Stack>
-          <Stack
-            direction={{base: 'column', lg: 'row'}}
-            spacing={{base: '3rem', lg: '2rem'}}
-            mt="8"
-            align={{lg: 'center'}}
-            justify="space-between"
-          >
-            <Box flex="1">
-              <Heading
-                as="h1"
-                size="xl"
-                color={mode('gray.700', 'gray.300')}
-                mt="4"
-                fontWeight="bold"
-                letterSpacing="tight"
-              >
-                Send your feedback
-              </Heading>
-              {/*<Text
-                color={mode('gray.600', 'gray.400')}
-                mt={{base: '4', md: '4'}}
-                fontSize="lg"
-                fontWeight="extrabold"
-              >
-                Let {design.nickname} know who you are:
-              </Text>*/}
-              <Stack direction={{base: 'column', md: 'row'}} spacing="8" mt="4">
-                <Input
-                  size="lg"
-                  placeholder="Enter your name"
-                  maxW="md"
-                  onChange={e => setVoterName(e.target.value)}
-                />
-                <Button
-                  size="lg"
-                  colorScheme="orange"
-                  disabled={!canSubmitFeedback}
-                  onClick={() => submitFeedback()}
-                  isLoading={isVoteLoading}
-                >
-                  Submit feedback
-                </Button>
-              </Stack>
-            </Box>
-          </Stack>
           <SimpleGrid
-            columns={{base: 1, md: 2, lg: 3}}
+            alignContent="center"
+            alignItems="center"
+            columns={{base: 1, md: 2, lg: design.versions.length > 2 ? 3 : 2}}
             spacing={{base: '2', md: '8', lg: '8'}}
             rowGap={{base: 8, md: 8, lg: 8}}
             mt="8"
+            maxW={{base: 'xl', md: '6xl'}}
           >
             {isLoading ? (
               <Spinner />
@@ -160,7 +228,7 @@ export function DesignScreen() {
                   return nameA > nameB ? 1 : -1
                 })
                 .map((version, index) => {
-                  const {imageUrl, versionId, name} = version
+                  const {imageUrl, versionId} = version
                   return (
                     <RateStarsVotingCard
                       index={index}
@@ -168,14 +236,15 @@ export function DesignScreen() {
                       versionId={versionId}
                       imageUrl={imageUrl}
                       onClick={() => {
-                        setImage(imageUrl, name)
                         onOpen()
+                        setStartSlide(index)
                       }}
                     />
                   )
                 })
             )}
           </SimpleGrid>
+          <OpinionsSection designUrl={design.shortUrl!} />
         </Box>
       </Box>
       <ZoomModal isOpen={isOpen} onClose={onClose} />

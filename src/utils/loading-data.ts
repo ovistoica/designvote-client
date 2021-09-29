@@ -1,7 +1,11 @@
 import {Design, DesignType, NormalizedDesign, VoteStyle} from 'types'
 
 export const singleLoadingDesign: Design = {
-  nickname: 'loading',
+  owner: {
+    nickname: 'loading',
+    picture: 'loading',
+    name: 'Loading',
+  },
   name: 'Loading design',
   designId: 'loading',
   uid: 'loading',

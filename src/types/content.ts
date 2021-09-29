@@ -38,7 +38,11 @@ export interface Design {
   description?: string | null
   opinions: number[]
   versions: Version[]
-  nickname: string
+  owner?: {
+    nickname: string
+    picture: string
+    name: string
+  }
   uid: string
   name: string
   public: boolean

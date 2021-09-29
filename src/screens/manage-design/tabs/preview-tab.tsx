@@ -28,7 +28,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
 
   const {user} = useAuth()
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const setImage = useZoomModalState(state => state.setImage)
+  const setImages = useZoomModalState(state => state.setImages)
 
   const surveyType = isLoading
     ? 'Loading...'
@@ -151,7 +151,8 @@ export function PreviewTab({designId}: PreviewTabProps) {
                       inPreview
                       imageUrl={imageUrl}
                       onClick={() => {
-                        setImage(imageUrl, name)
+                        //TODO: Fix here
+                        // setImage(imageUrl, name)
                         onOpen()
                       }}
                     />

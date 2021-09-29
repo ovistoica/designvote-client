@@ -34,14 +34,14 @@ export function PublicVoteScreen() {
   })
   const navigate = useNavigate()
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const setImage = useZoomModalState(state => state.setImage)
+  // const setImage = useZoomModalState(state => state.setImage)
 
   const surveyType = isLoading
     ? 'Loading...'
     : getDesignSurveyType(design.designType)
   const heading = isLoading
     ? 'Loading survey...'
-    : `${design.nickname} wants your feedback on their ${surveyType}`
+    : `${design.owner?.nickname} wants your feedback on their ${surveyType}`
 
   React.useEffect(() => {
     if (isVotingSuccess) {
@@ -168,7 +168,8 @@ export function PublicVoteScreen() {
                       versionId={versionId}
                       imageUrl={imageUrl}
                       onClick={() => {
-                        setImage(imageUrl, name)
+                        //TODO fix here
+                        // setImage(imageUrl, name)
                         onOpen()
                       }}
                     />

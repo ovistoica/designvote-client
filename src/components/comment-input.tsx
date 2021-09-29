@@ -48,6 +48,8 @@ export function CommentInput({
         isInvalid={!!(touched.comment && errors.comment)}
       >
         <Input
+          variant="filled"
+          disabled
           name="comment"
           type="text"
           as="textarea"
