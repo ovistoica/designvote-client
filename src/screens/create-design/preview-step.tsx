@@ -7,7 +7,7 @@ import {useCreateDesignStore} from 'store'
 import {CreateDesignStep, VoteStyle} from 'types'
 import {getDesignSurveyType} from 'utils/design'
 import {useAuth} from 'context/auth-context'
-import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
+import {RateStarsVotingCard} from 'screens/design/rate-five-stars/star-rating-card'
 import {useZoomModalState, ZoomModal} from 'components/zoom-modal'
 
 export function PreviewStep() {

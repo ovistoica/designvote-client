@@ -1,5 +1,5 @@
 import {Button, SimpleGrid} from '@chakra-ui/react'
-import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
+import {RateStarsVotingCard} from 'screens/design/rate-five-stars/star-rating-card'
 import {canSubmit, useVoteDesignState} from 'store/vote-design'
 import {useUrlDesign} from 'utils/design-query'
 import {useAddDesignRatings} from 'utils/design-voting-queries'

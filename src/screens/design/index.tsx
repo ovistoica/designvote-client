@@ -23,9 +23,9 @@ import {Footer} from 'components/footer'
 import {Comment, Stamp} from '../../assets/icons'
 import {FaShare, FaStar} from 'react-icons/fa'
 import {ArrowUpIcon} from '@chakra-ui/icons'
-import {ChooseOneDesignGrid} from './choose-one-grid'
+import {ChooseOneDesignGrid} from './choose-one/choose-one-grid'
 import {VoteStyle} from 'types'
-import {RateFiveStarsGrid} from './rate-five-stars-grid'
+import {RateFiveStarsGrid} from './rate-five-stars/rate-five-stars-grid'
 
 interface DesignStatsProps {
   votes: number
