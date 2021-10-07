@@ -7,9 +7,11 @@ import {Privacy} from 'screens/privacy'
 import {Terms} from 'screens/terms'
 import {Pricing} from 'screens/pricing/index'
 import {ThankYouScreen} from 'screens/thank-you'
-import {UnauthenticatedNavBar} from 'components/nav-bar'
+import {UnauthenticatedNavBar, AuthenticatedNavBar} from 'components/nav-bar'
 import {Home} from 'screens/new-home'
 import {DesignScreen} from 'screens/design'
+import {useAuth} from 'context/auth-context'
+import {SettingsScreen} from 'screens/settings'
 
 //redeploy comment
 
@@ -24,6 +26,7 @@ function AppRoutes() {
       <Route path="/pricing" element={<Pricing />} />
       <Route path="/thank-you" element={<ThankYouScreen />} />
       <Route path="*" element={<NotFoundScreen />} />
+      <Route path="/settings" element={<SettingsScreen />} />
     </Routes>
   )
 }
@@ -47,9 +50,10 @@ function ErrorFallback({error}: ErrorFallBackProps) {
 }
 
 function UnauthenticatedApp() {
+  const {isAuthenticated} = useAuth()
   return (
     <ErrorBoundary FallbackComponent={FullPageErrorFallback}>
-      <UnauthenticatedNavBar />
+      {!isAuthenticated ? <UnauthenticatedNavBar /> : <AuthenticatedNavBar />}
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <AppRoutes />
       </ErrorBoundary>

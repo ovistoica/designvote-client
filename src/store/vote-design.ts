@@ -61,12 +61,11 @@ export const getChosen = memoize(
 )
 
 export const canSubmit = (state: VoteDesignState) => {
-  const {comments, currentRatings} = state
+  const {currentRatings} = state
 
-  const hasComments = Object.values(comments).filter(com => !!com).length > 0
   const hasRatings = Object.values(currentRatings).filter(r => !!r).length > 0
 
-  return hasRatings || hasComments
+  return hasRatings
 }
 
 export const useVoteDesignState = create<VoteDesignState>(
@@ -102,6 +101,7 @@ export const useVoteDesignState = create<VoteDesignState>(
     }),
     {
       name: 'vote-design', // persist store to local storage
+      getStorage: () => sessionStorage,
     },
   ),
 )

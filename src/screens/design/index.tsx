@@ -2,7 +2,6 @@ import * as React from 'react'
 import {
   Box,
   Heading,
-  SimpleGrid,
   Spinner,
   Stack,
   Text,
@@ -17,7 +16,6 @@ import {
   Tag,
   Image,
 } from '@chakra-ui/react'
-import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
 import {useParams} from 'react-router'
 import {useUrlDesign} from 'utils/design-query'
 import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
@@ -25,6 +23,9 @@ import {Footer} from 'components/footer'
 import {Comment, Stamp} from '../../assets/icons'
 import {FaShare, FaStar} from 'react-icons/fa'
 import {ArrowUpIcon} from '@chakra-ui/icons'
+import {ChooseOneDesignGrid} from './choose-one-grid'
+import {VoteStyle} from 'types'
+import {RateFiveStarsGrid} from './rate-five-stars-grid'
 
 interface DesignStatsProps {
   votes: number
@@ -151,10 +152,15 @@ const DEFAULT_TAGS = ['ui', 'mood', 'style', 'banking', 'mobile']
 export function DesignScreen() {
   const {shortUrl} = useParams()
   const {data: design, isLoading, isSuccess} = useUrlDesign(shortUrl)
-  const {question} = design
+  const {question, description} = design
   const {isOpen, onOpen, onClose} = useDisclosure()
   const setImages = useZoomModalState(state => state.setImages)
   const setStartSlide = useZoomModalState(state => state.setIndex)
+
+  const VotingGrid =
+    isSuccess && design.voteStyle === VoteStyle.Choose
+      ? ChooseOneDesignGrid
+      : RateFiveStarsGrid
 
   React.useEffect(() => {
     if (isSuccess) {
@@ -178,14 +184,12 @@ export function DesignScreen() {
               <Heading fontWeight="600" color="gray.700">
                 {question}
               </Heading>
-              <Text color="gray.600">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi.
-              </Text>
+              {description ? <Text color="gray.600">{description}</Text> : null}
 
               <Flex wrap="wrap" py="5">
+                {
+                  // TODO: Change default tags
+                }
                 {DEFAULT_TAGS.map(t => (
                   <Tag
                     variant="solid"
@@ -206,44 +210,17 @@ export function DesignScreen() {
           </Grid>
         </Box>
         <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '6', md: '8'}}>
-          <SimpleGrid
-            alignContent="center"
-            alignItems="center"
-            columns={{base: 1, md: 2, lg: design.versions.length > 2 ? 3 : 2}}
-            spacing={{base: '2', md: '8', lg: '8'}}
-            rowGap={{base: 8, md: 8, lg: 8}}
-            mt="8"
-            maxW={{base: 'xl', md: '6xl'}}
-          >
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              design.versions
-                .sort((a, b) => {
-                  const {name: nameA} = a
-                  const {name: nameB} = b
-                  if (nameA === nameB) {
-                    return 0
-                  }
-                  return nameA > nameB ? 1 : -1
-                })
-                .map((version, index) => {
-                  const {imageUrl, versionId} = version
-                  return (
-                    <RateStarsVotingCard
-                      index={index}
-                      key={`designVersion${versionId}`}
-                      versionId={versionId}
-                      imageUrl={imageUrl}
-                      onClick={() => {
-                        onOpen()
-                        setStartSlide(index)
-                      }}
-                    />
-                  )
-                })
-            )}
-          </SimpleGrid>
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <VotingGrid
+              designUrl={shortUrl}
+              onVersionClick={(index: number) => {
+                onOpen()
+                setStartSlide(index)
+              }}
+            />
+          )}
           <OpinionsSection designUrl={design.shortUrl!} />
         </Box>
       </Box>

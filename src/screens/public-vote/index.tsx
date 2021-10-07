@@ -16,7 +16,7 @@ import {useNavigate, useParams} from 'react-router'
 import {canSubmit, useVoteDesignState} from 'store/vote-design'
 import {VoteStyle} from 'types'
 import {getDesignSurveyType} from 'utils/design'
-import {useGiveDesignFeedback, useUrlDesign} from 'utils/design-query'
+import {useUrlDesign} from 'utils/design-query'
 import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
 import {Footer} from 'components/footer'
 
@@ -29,9 +29,10 @@ export function PublicVoteScreen() {
     mutate: submitFeedback,
     isSuccess: isVotingSuccess,
     isLoading: isVoteLoading,
-  } = useGiveDesignFeedback(design.designId, {
-    enabled: isSuccess,
-  })
+  } = {mutate: () => {}, isSuccess: false, isLoading: true}
+  // } = useGiveDesignFeedback(design.designId, {
+  //   enabled: isSuccess,
+  // })
   const navigate = useNavigate()
   const {isOpen, onOpen, onClose} = useDisclosure()
   const setImages = useZoomModalState(state => state.setImages)
