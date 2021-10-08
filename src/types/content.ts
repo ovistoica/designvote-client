@@ -1,7 +1,7 @@
 import {DesignType, VoteStyle} from './enums'
 
 export interface Vote {
-  voteId: string
+  id: string
   versionId: string
   uid: string | null
   rating: number | null
@@ -54,6 +54,7 @@ export interface Design {
   voteStyle: VoteStyle
   createdAt: string
   updatedAt: string
+  votes: Vote[]
 }
 
 export interface NormalizedDesign {

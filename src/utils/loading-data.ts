@@ -9,6 +9,7 @@ export const singleLoadingDesign: Design = {
   name: 'Loading design',
   designId: 'loading',
   uid: 'loading',
+  votes: [],
   question: 'Loading',
   public: false,
   description: 'loading',

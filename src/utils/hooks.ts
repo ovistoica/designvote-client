@@ -1,7 +1,8 @@
 import {useBreakpoint} from '@chakra-ui/media-query'
+import {useAuth} from 'context/auth-context'
 import * as React from 'react'
 import {useLocation} from 'react-router'
-import {SubscriptionStatus} from 'types'
+import {Design, SubscriptionStatus} from 'types'
 import {useApiUser, useDesigns} from './design-query'
 
 export function useSafeDispatch<Value = unknown>(
@@ -166,4 +167,16 @@ export function useCanCreateDesigns() {
       return false
     }
   }
+}
+
+export function useHasVoted(design: Design): boolean {
+  const {user} = useAuth()
+  if (!user) {
+    return false
+  }
+  const {sub: uid} = user
+
+  const hasVoted = design.votes.find(v => v.uid === uid)
+
+  return !!hasVoted
 }
