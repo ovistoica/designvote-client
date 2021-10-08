@@ -20,10 +20,10 @@ import {DesignerBanner} from './designers-banner'
 import heroImage from 'assets/dummy-pic.png'
 import dummyAvatar from 'assets/dummy-avatar.png'
 import {Comment, Stamp} from '../../assets/icons'
-import intervalToDuration from 'date-fns/intervalToDuration'
 import {Footer} from 'components/footer'
 import {TopExperts} from './experts'
 import {useNavigate} from 'react-router'
+import {formatCreatedAt} from 'utils/date'
 
 interface DesignProps {
   question: string
@@ -33,26 +33,9 @@ interface DesignProps {
   onClick: () => void
 }
 
-/**
- * Given a UTC date, return how much time ago it was
- * @param created
- */
-function getTimeAgo(createdAt: string): string {
-  const start = new Date(createdAt)
-
-  const {days, weeks, years} = intervalToDuration({start, end: new Date()})
-  if (years) {
-    return `${years} years ago`
-  }
-  if (weeks) {
-    return `${weeks} weeks ago`
-  }
-  return days ? `${days} days ago` : 'today'
-}
-
 export const Design = (props: DesignProps) => {
   const {votes, question, img, createdAt, onClick} = props
-  const timeAgo = getTimeAgo(createdAt)
+  const timeAgo = formatCreatedAt(createdAt)
 
   return (
     <Box position="relative" onClick={onClick} cursor="pointer">
@@ -66,6 +49,9 @@ export const Design = (props: DesignProps) => {
         />
         <Stack pl="5">
           <HStack>
+            {
+              // TODO Remove dummy avatar for the real thing
+            }
             <Avatar size="xs" src={dummyAvatar} />
             <Text fontWeight="600" fontSize="sm">
               Andrew Cohen

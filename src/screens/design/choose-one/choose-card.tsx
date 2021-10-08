@@ -8,8 +8,10 @@ import {
   useColorModeValue as mode,
   useId,
   Image,
+  IconButton,
 } from '@chakra-ui/react'
 import * as React from 'react'
+import {HiZoomIn} from 'react-icons/hi'
 import {MdRadioButtonChecked, MdRadioButtonUnchecked} from 'react-icons/md'
 
 const RadioBox = chakra('div', {
@@ -60,19 +62,37 @@ export const ChooseDesignCard = (props: ButtonRadioProps) => {
         _checked={checkedStyles}
         id={id}
         _focus={{}}
+        role="group"
+        position="relative"
       >
+        <IconButton
+          position="absolute"
+          right={2}
+          top={2}
+          aria-label="zoom in"
+          icon={<HiZoomIn />}
+          size="lg"
+          borderWidth="1px"
+          display={{base: 'inline-flex', md: 'none'}}
+          opacity={{base: 1, md: 0}}
+          transition="0.25s all"
+          onClick={onClick}
+          _groupHover={{
+            display: 'inline-flex',
+            opacity: 1,
+          }}
+          bg={mode('white', 'gray.800')}
+        />
         <VStack spacing="4">
           <VStack textAlign="center">
             <Text fontWeight="extrabold" fontSize="xl">
               {label}
             </Text>
             <Image
-              onClick={onClick}
               objectFit="contain"
               boxSize="15em"
               align="center"
               src={imageUrl}
-              cursor="zoom-in"
             />
           </VStack>
           <CheckboxIcon checked={state.isChecked} />

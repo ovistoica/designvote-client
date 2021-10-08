@@ -9,17 +9,17 @@ import {Pricing} from 'screens/pricing/index'
 import {ThankYouScreen} from 'screens/thank-you'
 import {UnauthenticatedNavBar, AuthenticatedNavBar} from 'components/nav-bar'
 import {Home} from 'screens/new-home'
-import {DesignScreen} from 'screens/design'
+import {DesignScreen} from 'screens/design/voting-screen'
 import {useAuth} from 'context/auth-context'
 import {SettingsScreen} from 'screens/settings'
-
-//redeploy comment
+import {ResultsScreen} from 'screens/design/results-screen'
 
 function AppRoutes() {
   return (
     <Routes>
       <Route path="/vote/:shortUrl" element={<PublicVoteScreen />} />
       <Route path="/design/:shortUrl" element={<DesignScreen />} />
+      <Route path="/results/:shortUrl" element={<ResultsScreen />} />
       <Route path="/" element={<Home />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />

@@ -15,7 +15,10 @@ export function ChooseOneDesignGrid({
 }: ChooseGridProps) {
   const {getRadioProps, getRootProps, value: selectedVersion} = useRadioGroup()
   const {data: design} = useUrlDesign(designUrl)
-  const {mutate: vote, isLoading} = useVoteDesignVersion(design.designId)
+  const {mutate: vote, isLoading} = useVoteDesignVersion(
+    design.designId,
+    designUrl,
+  )
   return (
     <>
       <SimpleGrid
@@ -53,6 +56,7 @@ export function ChooseOneDesignGrid({
       </SimpleGrid>
       <Button
         size="lg"
+        width={{base: 'full', md: 'auto'}}
         mt="12"
         colorScheme="orange"
         disabled={!selectedVersion}

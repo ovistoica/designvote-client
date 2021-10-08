@@ -1,19 +1,15 @@
 import {
   Box,
   Flex,
-  HStack,
   Image,
   Progress,
   Stack,
   Text,
   useColorModeValue as mode,
-  useDisclosure,
 } from '@chakra-ui/react'
 import {Vote, VoteStyle} from 'types'
 import {getAverageRating, getVotePercent} from 'utils/votes'
 import Rating from '@material-ui/lab/Rating'
-import {DesignModal} from './design-modal'
-import {FaComments} from 'react-icons/fa'
 
 export interface StatCardProps {
   id: string
@@ -24,7 +20,8 @@ export interface StatCardProps {
   voteStyle: VoteStyle
   designId: string
   versionId: string
-  numberOfOpinions: number
+  numberOfOpinions?: number
+  onClick: () => void
 }
 
 type SpecificVoteStyleCardProps = Omit<
@@ -33,9 +30,9 @@ type SpecificVoteStyleCardProps = Omit<
 > & {onClick: () => void}
 
 function StarsRatingCard(props: SpecificVoteStyleCardProps) {
-  const {id, title, imageUrl, votes, onClick, numberOfOpinions} = props
+  const {id, title, imageUrl, votes, onClick} = props
   const averageRating = getAverageRating(votes)
-  const ratingsGivenText = `${votes.length + 5} rating${
+  const ratingsGivenText = `${votes.length} rating${
     votes.length !== 1 ? 's' : ''
   } given`
 
@@ -52,7 +49,7 @@ function StarsRatingCard(props: SpecificVoteStyleCardProps) {
         shadow: 'xl',
       }}
       onClick={onClick}
-      pt="10"
+      pt="4"
     >
       <Box d={id} srOnly>
         {votes.length} total ratings given
@@ -108,9 +105,6 @@ function StarsRatingCard(props: SpecificVoteStyleCardProps) {
         />
         <Flex px="1" align="center" justify="space-between">
           <Text>{ratingsGivenText}</Text>
-          <HStack>
-            <Text>{numberOfOpinions} </Text>
-          </HStack>
         </Flex>
       </Box>
     </Flex>
@@ -118,15 +112,7 @@ function StarsRatingCard(props: SpecificVoteStyleCardProps) {
 }
 
 function ChooseBestRatingCard(props: SpecificVoteStyleCardProps) {
-  const {
-    id,
-    title,
-    imageUrl,
-    votes,
-    totalVotes,
-    onClick,
-    numberOfOpinions,
-  } = props
+  const {id, title, imageUrl, votes, totalVotes, onClick} = props
 
   return (
     <Flex
@@ -206,10 +192,6 @@ function ChooseBestRatingCard(props: SpecificVoteStyleCardProps) {
           >
             {getVotePercent(totalVotes, votes.length)}%
           </Text>
-          <HStack>
-            <Text>{numberOfOpinions} </Text>
-            <FaComments />
-          </HStack>
         </Flex>
       </Box>
       <Progress
@@ -225,22 +207,15 @@ function ChooseBestRatingCard(props: SpecificVoteStyleCardProps) {
 }
 
 export const StatCard = (props: StatCardProps) => {
-  const {voteStyle, designId, versionId, ...restProps} = props
-  const {isOpen, onClose, onOpen} = useDisclosure()
+  const {voteStyle, designId, versionId, onClick, ...restProps} = props
 
   return (
     <>
       {voteStyle === VoteStyle.FiveStar ? (
-        <StarsRatingCard {...restProps} onClick={onOpen} />
+        <StarsRatingCard {...restProps} onClick={onClick} />
       ) : (
-        <ChooseBestRatingCard {...restProps} onClick={onOpen} />
+        <ChooseBestRatingCard {...restProps} onClick={onClick} />
       )}
-      <DesignModal
-        designId={designId}
-        versionId={versionId}
-        isOpen={isOpen}
-        onClose={onClose}
-      />
     </>
   )
 }

@@ -4,6 +4,7 @@ import {
   useQueryClient,
   useMutation,
   UseMutationOptions,
+  Query,
 } from 'react-query'
 import {useVoteDesignState} from 'store/vote-design'
 import {Opinion} from 'types'
@@ -94,6 +95,7 @@ export function useAddOpinion(
 
 export function useVoteDesignVersion(
   designId: string,
+  shortUrl: string,
   options: QueryOptions<null, AxiosError> = {},
 ) {
   const qc = useQueryClient()
@@ -105,7 +107,12 @@ export function useVoteDesignVersion(
     {
       ...options,
       onSettled: () => {
-        qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]})
+        qc.invalidateQueries({
+          predicate: (query: Query) =>
+            query.queryKey[0] === 'design' &&
+            ((query.queryKey[1] as {designId: string})?.designId === designId ||
+              (query.queryKey[1] as {shortUrl: string})?.shortUrl === shortUrl),
+        })
         clearVoteState()
       },
     },
