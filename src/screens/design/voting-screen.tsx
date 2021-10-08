@@ -40,7 +40,7 @@ export function DesignScreen() {
     : `${design.owner?.name} wants your feedback on their ${surveyType}`
 
   // Check if current user already voted on this design
-  const hasVoted = false //useHasVoted(design)
+  const hasVoted = useHasVoted(design)
 
   const VotingGrid =
     isSuccess && design.voteStyle === VoteStyle.Choose

@@ -77,6 +77,9 @@ export function ResultsScreen() {
           </Grid>
         </Box>
         <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '6', md: '8'}}>
+          <Heading size="md" color="gray.700">
+            Current results:
+          </Heading>
           {isLoading ? (
             <Spinner />
           ) : (

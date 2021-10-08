@@ -199,7 +199,7 @@ function ChooseBestRatingCard(props: SpecificVoteStyleCardProps) {
         value={votes.length}
         max={totalVotes}
         min={0}
-        size="xs"
+        size="sm"
         colorScheme="blue"
       />
     </Flex>
