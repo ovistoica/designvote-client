@@ -13,7 +13,7 @@ import {PricingCard} from './pricing-card'
 import {AuthenticatedNavBar} from 'components/nav-bar'
 import {Footer} from 'components/footer'
 import {HiLockClosed} from 'react-icons/hi'
-import {createCheckoutSession} from 'utils/payment-query'
+import {createCheckoutSession} from 'api/payment-query'
 import {useStripe} from '@stripe/react-stripe-js'
 import {useState} from 'react'
 

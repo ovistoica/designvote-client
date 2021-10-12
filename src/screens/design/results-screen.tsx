@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import {useZoomModalState, ZoomModal} from 'components/zoom-modal'
 import {useParams} from 'react-router-dom'
-import {useUrlDesign} from 'utils/design-query'
+import {useUrlDesign} from 'api/design-query'
 import {Footer} from 'components/footer'
 import {OpinionsSection} from './opinions'
 import {DEFAULT_TAGS} from './dummy-data'

@@ -15,8 +15,8 @@ import {
   postRequest,
   putRequest,
 } from './axios-client'
-import {singleLoadingDesign} from './loading-data'
-import {keysToCamel} from './object'
+import {singleLoadingDesign} from '../utils/loading-data'
+import {keysToCamel} from '../utils/object'
 
 interface CreateDesignBody {
   name: string

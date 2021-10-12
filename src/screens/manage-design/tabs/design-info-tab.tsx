@@ -22,7 +22,7 @@ import * as yup from 'yup'
 import * as React from 'react'
 import {QuestionIcon} from '@chakra-ui/icons'
 import {DesignType, VoteStyle} from 'types'
-import {useDesign, useEditDesign} from 'utils/design-query'
+import {useDesign, useEditDesign} from 'api/design-query'
 
 interface Values {
   name: string

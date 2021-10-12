@@ -1,6 +1,6 @@
 import {Box, SimpleGrid} from '@chakra-ui/layout'
 import {useColorModeValue as mode} from '@chakra-ui/react'
-import {useDesign} from 'utils/design-query'
+import {useDesign} from 'api/design-query'
 import {StatCard} from '../components/result-stat-card'
 
 interface ResultsTabProps {

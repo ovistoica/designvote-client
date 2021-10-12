@@ -15,7 +15,7 @@ import {
   Stack,
   Divider,
 } from '@chakra-ui/react'
-import {useDesign} from 'utils/design-query'
+import {useDesign} from 'api/design-query'
 
 interface DesignModalProps {
   onClose: () => void

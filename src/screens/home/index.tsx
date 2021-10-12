@@ -8,7 +8,7 @@ import {
   useToast,
   UseToastOptions,
 } from '@chakra-ui/react'
-import {useDesigns} from 'utils/design-query'
+import {useDesigns} from 'api/design-query'
 import {useNavigate} from 'react-router-dom'
 import {FullPageSpinner} from 'components/lib'
 import {MetaDecorator} from 'components/meta-decorator'

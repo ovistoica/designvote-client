@@ -15,7 +15,7 @@ import {
   DarkMode,
   GridItem,
 } from '@chakra-ui/react'
-import {useLatestDesigns} from 'utils/design-query'
+import {useLatestDesigns} from 'api/design-query'
 import {DesignerBanner} from './designers-banner'
 import heroImage from 'assets/dummy-pic.png'
 import dummyAvatar from 'assets/dummy-avatar.png'
@@ -83,13 +83,15 @@ function DesignCard({
   question,
   img = heroImage,
   votes,
+  onClick,
 }: {
   question: string
   img?: string | null
   votes: number
+  onClick: () => void
 }) {
   return (
-    <Flex direction="column">
+    <Flex direction="column" cursor="pointer" onClick={onClick}>
       <Img src={img ?? heroImage} rounded="md" shadow="md" />
       <Text fontWeight="semibold" maxW="250px" noOfLines={1} pt="2">
         {question}
@@ -218,6 +220,7 @@ export function Home() {
                 question={design.question}
                 img={design.img}
                 votes={design.totalVotes}
+                onClick={() => navigate(`/design/${design.shortUrl}`)}
               />
             ))}
           </HStack>

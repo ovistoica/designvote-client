@@ -10,7 +10,7 @@ import {
   useDesign,
   useDeleteDesignVersion,
   useCreateMultipleDesignVersions,
-} from 'utils/design-query'
+} from 'api/design-query'
 
 interface UploadedImageProps extends ImageProps {
   imageUrl: string

@@ -1,7 +1,7 @@
 import {StarIcon} from '@chakra-ui/icons'
 import {Button, SimpleGrid, useRadioGroup} from '@chakra-ui/react'
-import {useUrlDesign} from 'utils/design-query'
-import {useVoteDesignVersion} from 'utils/design-voting-queries'
+import {useUrlDesign} from 'api/design-query'
+import {useVoteDesignVersion} from 'api/design-voting-queries'
 import {ChooseDesignCard} from './choose-card'
 
 interface ChooseGridProps {

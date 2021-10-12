@@ -3,7 +3,7 @@ import {useAuth} from 'context/auth-context'
 import * as React from 'react'
 import {useLocation} from 'react-router'
 import {Design, SubscriptionStatus} from 'types'
-import {useApiUser, useDesigns} from './design-query'
+import {useApiUser, useDesigns} from '../api/design-query'
 
 export function useSafeDispatch<Value = unknown>(
   dispatch: React.Dispatch<Value>,

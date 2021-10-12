@@ -12,7 +12,7 @@ import {
   Tag,
 } from '@chakra-ui/react'
 import {useNavigate, useParams} from 'react-router'
-import {useUrlDesign} from 'utils/design-query'
+import {useUrlDesign} from 'api/design-query'
 import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
 import {Footer} from 'components/footer'
 import {ChooseOneDesignGrid} from './choose-one/choose-one-grid'

@@ -16,7 +16,7 @@ import {useNavigate, useParams} from 'react-router'
 import {canSubmit, useVoteDesignState} from 'store/vote-design'
 import {VoteStyle} from 'types'
 import {getDesignSurveyType} from 'utils/design'
-import {useUrlDesign} from 'utils/design-query'
+import {useUrlDesign} from 'api/design-query'
 import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
 import {Footer} from 'components/footer'
 

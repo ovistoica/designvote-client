@@ -1,8 +1,8 @@
 import {Button, SimpleGrid} from '@chakra-ui/react'
 import {RateStarsVotingCard} from 'screens/design/rate-five-stars/star-rating-card'
 import {canSubmit, useVoteDesignState} from 'store/vote-design'
-import {useUrlDesign} from 'utils/design-query'
-import {useAddDesignRatings} from 'utils/design-voting-queries'
+import {useUrlDesign} from 'api/design-query'
+import {useAddDesignRatings} from 'api/design-voting-queries'
 
 interface RateFiveStarsGridProps {
   designUrl: string
@@ -18,7 +18,7 @@ export function RateFiveStarsGrid({
   const {
     mutate: submitFeedback,
     isLoading: isVoteLoading,
-  } = useAddDesignRatings(design.designId)
+  } = useAddDesignRatings(design.designId, designUrl)
   return (
     <>
       <SimpleGrid

@@ -4,16 +4,14 @@ import {
   useQueryClient,
   useMutation,
   UseMutationOptions,
-  Query,
 } from 'react-query'
 import {useVoteDesignState} from 'store/vote-design'
 import {Opinion} from 'types'
 import {postRequest} from './axios-client'
-import {filterNullValues} from './object'
+import {filterNullValues} from '../utils/object'
+import {invalidateDesign} from './query-utils'
 
 interface AddOpinionBody {
-  'voter-id': string
-  'version-id': string
   opinion: string
 }
 
@@ -30,7 +28,7 @@ type DesignRatingVoteBody = {
 
 function addOpinion(designId: string, body: AddOpinionBody) {
   return postRequest<Opinion, AddOpinionBody>(
-    `v1/designs/${designId}/opinions`,
+    `v1/designs/${designId}/opinion`,
     body,
   )
 }
@@ -52,6 +50,7 @@ function voteDesignVersion({designId, versionId}: VoteDesignVersionParams) {
 
 export function useAddDesignRatings(
   designId: string,
+  shortUrl: string,
   options: UseMutationOptions<undefined, AxiosError> = {},
 ) {
   const qc = useQueryClient()
@@ -66,7 +65,7 @@ export function useAddDesignRatings(
   return useMutation(() => addDesignRating(designId, feedbackBody), {
     ...options,
     onSettled: () => {
-      qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]})
+      invalidateDesign(qc, designId, shortUrl)
       clearVoteState()
     },
   })
@@ -74,21 +73,19 @@ export function useAddDesignRatings(
 
 export function useAddOpinion(
   designId: string,
+  shortUrl: string,
   options: QueryOptions<Opinion, AxiosError> = {},
 ) {
   const qc = useQueryClient()
 
   return useMutation(
-    (params: {voterId: string; opinion: string; versionId: string}) =>
+    (opinion: string) =>
       addOpinion(designId, {
-        'version-id': params.versionId,
-        opinion: params.opinion,
-        'voter-id': params.voterId,
+        opinion,
       }),
     {
       ...options,
-      onSettled: () =>
-        qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]}),
+      onSettled: () => invalidateDesign(qc, designId, shortUrl),
     },
   )
 }
@@ -107,12 +104,7 @@ export function useVoteDesignVersion(
     {
       ...options,
       onSettled: () => {
-        qc.invalidateQueries({
-          predicate: (query: Query) =>
-            query.queryKey[0] === 'design' &&
-            ((query.queryKey[1] as {designId: string})?.designId === designId ||
-              (query.queryKey[1] as {shortUrl: string})?.shortUrl === shortUrl),
-        })
+        invalidateDesign(qc, designId, shortUrl)
         clearVoteState()
       },
     },

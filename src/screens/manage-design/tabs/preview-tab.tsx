@@ -9,7 +9,7 @@ import {
 import {Box, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
 import {useManageDesign} from 'store'
 import {DesignTab, VoteStyle} from 'types'
-import {useDesign} from 'utils/design-query'
+import {useDesign} from 'api/design-query'
 import {FullPageSpinner} from 'components/lib'
 import {RateStarsVotingCard} from 'screens/design/rate-five-stars/star-rating-card'
 import {getDesignSurveyType} from 'utils/design'

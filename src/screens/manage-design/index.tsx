@@ -19,7 +19,7 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import {useParams} from 'react-router'
-import {useDesign} from 'utils/design-query'
+import {useDesign} from 'api/design-query'
 import {DesignInfoTab, PreviewTab, ResultsTab, VersionsTab} from './tabs'
 
 export const ManageDesign = () => {

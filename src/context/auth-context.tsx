@@ -7,10 +7,10 @@ import {
 } from '@auth0/auth0-react'
 import {useAsync} from 'utils/hooks'
 import {FullPageSpinner, FullPageErrorFallback} from 'components/lib'
-import {client} from 'utils/api-client'
+import {client} from 'api/api-client'
 import {useQueryClient} from 'react-query'
 import {ApiConfig, Auth0User} from 'types'
-import {apiClient} from 'utils/axios-client'
+import {apiClient} from 'api/axios-client'
 
 const Auth0Provider: React.FC = props => {
   if (

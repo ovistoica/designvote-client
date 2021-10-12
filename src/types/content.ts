@@ -12,9 +12,14 @@ export interface Opinion {
   opinion: string
   versionId: string
   designId: string
-  uid: string | null
+  uid: string
   thumbsUp: number
   voterName?: string
+  name: string
+  nickname: string
+  picture: string
+  createdAt: string
+  updatedAt: string
 }
 
 export interface Picture {
@@ -36,7 +41,7 @@ export interface Version {
 export interface Design {
   designId: string
   description?: string | null
-  opinions: number[]
+  opinions: Opinion[]
   versions: Version[]
   owner?: {
     nickname: string

@@ -21,7 +21,7 @@ import {BsPencilSquare} from 'react-icons/bs'
 import {HiMenu, HiChevronRight, HiX} from 'react-icons/hi'
 import {MdDashboard, MdSettings} from 'react-icons/md'
 import {useNavigate} from 'react-router'
-import {useApiUser, useDesigns} from 'utils/design-query'
+import {useApiUser, useDesigns} from 'api/design-query'
 import {useFormattedLocationName} from 'utils/hooks'
 import {SidebarLink} from './sidebar-link'
 
