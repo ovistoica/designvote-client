@@ -24,6 +24,7 @@ import {Footer} from 'components/footer'
 import {TopExperts} from './experts'
 import {useNavigate} from 'react-router'
 import {formatCreatedAt} from 'utils/date'
+import {useAuth} from 'context/auth-context'
 
 interface DesignProps {
   question: string
@@ -105,6 +106,16 @@ function DesignCard({
 }
 
 function BannerSection() {
+  const {login, isAuthenticated} = useAuth()
+  const navigate = useNavigate()
+
+  const onClick = () => {
+    if (isAuthenticated) {
+      navigate('/create')
+    } else {
+      login({redirectUri: `${window.location.origin}/create`})
+    }
+  }
   return (
     <Flex
       as="section"
@@ -134,6 +145,7 @@ function BannerSection() {
             maxW="2xs"
             _hover={{bg: 'orange.300'}}
             color="white"
+            onClick={onClick}
           >
             Create your first poll
           </Button>
@@ -244,6 +256,7 @@ export function Home() {
                   {designs.slice(0, 5).map((design, index) => (
                     <>
                       <Design
+                        key={`latestDesign${design.shortUrl}`}
                         question={design.question}
                         votes={design.totalVotes}
                         createdAt={design.createdAt}

@@ -16,6 +16,7 @@ import {useUrlDesign} from 'api/design-query'
 // import {usePublicUser} from 'api/user-query'
 import {useAddOpinion} from 'api/design-voting-queries'
 import {formatCreatedAt} from 'utils/date'
+import {Comment} from 'assets/icons'
 
 interface OpinionsSectionProps {
   designUrl: string
@@ -61,21 +62,20 @@ export function OpinionsSection({designUrl}: OpinionsSectionProps) {
       rounded="md"
       shadow="base"
     >
-      <Heading size="md" fontWeight="400" color="gray.700">
-        {design.opinions.length} Opinions
-      </Heading>
+      <HStack>
+        <Comment />
+        <Heading size="md" fontWeight="400" color="gray.700">
+          {design.opinions.length} Opinions
+        </Heading>
+      </HStack>
       <CommentInput onSubmit={submitOpinion} isLoading={isAddOpinionLoading} />
-      {design.opinions.length ? (
-        <Stack divider={<StackDivider color="gray.200" />} mt="5" spacing="4">
-          {design.opinions.map(opinion => {
-            return (
-              <OpinionView {...opinion} key={`opinion${opinion.opinionId}`} />
-            )
-          })}
-        </Stack>
-      ) : (
-        <Text color="gray.400">Be the first to leave an opinion</Text>
-      )}
+      <Stack divider={<StackDivider color="gray.200" />} mt="5" spacing="4">
+        {design.opinions.map(opinion => {
+          return (
+            <OpinionView {...opinion} key={`opinion${opinion.opinionId}`} />
+          )
+        })}
+      </Stack>
     </Box>
   )
 }

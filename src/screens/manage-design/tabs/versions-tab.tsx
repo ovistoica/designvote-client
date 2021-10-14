@@ -4,13 +4,8 @@ import {Image, ImageProps} from '@chakra-ui/image'
 import {Box, Flex, SimpleGrid} from '@chakra-ui/layout'
 import {DeleteTooltip} from 'components/delete-tooltip'
 import {ImageDropInput} from 'components/image-input'
-import {useCallback} from 'react'
 
-import {
-  useDesign,
-  useDeleteDesignVersion,
-  useCreateMultipleDesignVersions,
-} from 'api/design-query'
+import {useDesign, useDeleteDesignVersion} from 'api/design-query'
 
 interface UploadedImageProps extends ImageProps {
   imageUrl: string
@@ -49,30 +44,18 @@ interface VersionsTabProps {
 
 export function VersionsTab({designId}: VersionsTabProps) {
   const {data: design, isLoading: isDesignLoading} = useDesign(designId)
-  const {
-    mutate: addVersions,
-    isLoading: isCreateLoading,
-  } = useCreateMultipleDesignVersions(designId)
+  // const {
+  //   mutate: addVersions,
+  //   isLoading: isCreateLoading,
+  // } = useCreateMultipleDesignVersions(designId)
   const {
     mutate: deleteVersion,
     isLoading: isDeleteLoading,
   } = useDeleteDesignVersion(designId)
   const iconColor = mode('gray.500', 'gray.300')
 
-  const isLoading = isCreateLoading || isDeleteLoading || isDesignLoading
+  const isLoading = isDeleteLoading || isDesignLoading
   const {versions} = design
-
-  const onImageUpload = useCallback(
-    (imageUrls: string[]) =>
-      addVersions(
-        imageUrls.map((imgUrl, index) => ({
-          name: `#${versions.length + index + 1}`,
-          pictures: [imgUrl],
-          description: null,
-        })),
-      ),
-    [addVersions, versions.length],
-  )
 
   return (
     <Box as="section" bg={mode('gray.50', 'gray.800')} p="8">
@@ -82,7 +65,7 @@ export function VersionsTab({designId}: VersionsTabProps) {
           spacing={{base: '4', md: '4', lg: '8'}}
         >
           <ImageDropInput
-            onImageUpload={onImageUpload}
+            onImageUpload={(f: File[]) => {}}
             h={{base: '12rem', lg: '15em'}}
             w={{base: '12rem', lg: '15em'}}
             description="Upload 2 or more versions of your design"

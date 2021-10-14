@@ -6,25 +6,29 @@ import {
   useQueryClient,
   UseQueryOptions,
 } from 'react-query'
-import {useNavigate} from 'react-router'
-import {useCreateDesignStore} from 'store'
+import {useUploadDesignImagesStore, useCreateDesignStore} from 'store'
 import {ApiDesign, APIUser, Design, DesignType, VoteStyle} from 'types'
 import {
   deleteRequest,
   getRequest,
   postRequest,
   putRequest,
+  apiClient,
+  onRequestSuccess,
+  onRequestError,
 } from './axios-client'
 import {singleLoadingDesign} from '../utils/loading-data'
 import {keysToCamel} from '../utils/object'
+import {useNavigate} from 'react-router'
 
 interface CreateDesignBody {
   name: string
   description: string | null | undefined
   question: string
-  'design-type': DesignType
-  'vote-style': VoteStyle
-  img: null
+  designType: DesignType
+  voteStyle: VoteStyle
+  isPublic: boolean
+  images: File[]
 }
 
 interface CreateDesignResponse {
@@ -60,10 +64,23 @@ function getApiUser() {
 }
 
 function createDesign(design: CreateDesignBody) {
-  return postRequest<CreateDesignResponse, CreateDesignBody>(
-    'v1/designs',
-    design,
-  )
+  const data = new FormData()
+  for (let i = 0; i < design.images.length; ++i) {
+    data.append('versions', design.images[i], design.images[i].name)
+  }
+  data.append('name', design.name)
+  data.append('designType', design.designType)
+  data.append('question', design.question)
+  data.append('voteStyle', design.voteStyle)
+  data.append('description', design.description ?? '')
+  data.append('isPublic', String(design.isPublic) ?? 'true')
+  return apiClient
+    .post('v2/designs', data, {
+      headers: {'Content-Type': 'multipart/form-data;'},
+    })
+    .then(onRequestSuccess)
+    .catch(onRequestError)
+  // return postRequest<CreateDesignResponse>('v2/designs', data)
 }
 
 function createDesignVersions(designId: string, versions: ApiVersion[]) {
@@ -118,54 +135,37 @@ function getLatestDesigns() {
 
 export function useCreateDesignFromDraft() {
   const qc = useQueryClient()
+  const navigate = useNavigate()
 
-  const {images, imagesByUrl, ...design} = useCreateDesignStore(
+  const design = useCreateDesignStore(
     React.useCallback(
       state => ({
         name: state.name ?? '',
         description: state.description,
-        question: state.question,
-        type: state.type,
-        voteStyle: VoteStyle.FiveStar,
-        images: state.images,
-        imagesByUrl: state.imagesByUrl,
+        question: state.question ?? '',
+        designType: state.type,
+        isPublic: state.isPublic ?? true,
+        voteStyle: state.voteStyle,
       }),
       [],
     ),
   )
+  const images = useUploadDesignImagesStore(state => state.images)
+  const clearImages = useUploadDesignImagesStore(state => state.clearState)
+
   const clearDraftState = useCreateDesignStore(state => state.clearState)
-  const navigate = useNavigate()
-  const designVersions = imagesByUrl.map((img, index) => ({
-    name: images[img].description ?? `#${index + 1}`,
-    pictures: [img],
-    description: null,
-  }))
 
   return useMutation(
-    () =>
-      createDesign({
-        name: design.name,
-        description: design.description ?? null,
-        question: design.question ?? '',
-        'vote-style': design.voteStyle,
-        'design-type': design.type,
-        img: null,
-      }).then(async data => {
-        const designId = data?.['design-id']
-        const [result] = await Promise.all([
-          createDesignVersions(designId, designVersions),
-          publishDesign(designId),
-        ])
-        return result['design-id']
-      }),
+    () => createDesign({...design, images: images.map(img => img.file)}),
     {
-      onSettled: designId => {
+      onSettled: data => {
         // clear out draft from localstorage and zustand
         // refetch designs to include the new one
-        navigate(`/design/${designId}`)
         window.localStorage.removeItem('design-info')
         clearDraftState()
+        clearImages()
         qc.invalidateQueries({queryKey: 'designs'})
+        navigate(`/results/${data.shortUrl}`)
       },
     },
   )

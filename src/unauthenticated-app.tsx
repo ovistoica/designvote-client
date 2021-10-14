@@ -13,6 +13,7 @@ import {DesignScreen} from 'screens/design/voting-screen'
 import {useAuth} from 'context/auth-context'
 import {SettingsScreen} from 'screens/settings'
 import {ResultsScreen} from 'screens/design/results-screen'
+import {CreateDesign} from 'screens/create-design'
 
 function AppRoutes() {
   return (
@@ -27,9 +28,11 @@ function AppRoutes() {
       <Route path="/thank-you" element={<ThankYouScreen />} />
       <Route path="*" element={<NotFoundScreen />} />
       <Route path="/settings" element={<SettingsScreen />} />
+      <Route path="/create" element={<CreateDesign />} />
     </Routes>
   )
 }
+
 interface ErrorFallBackProps {
   error: Error
 }

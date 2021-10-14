@@ -3,7 +3,7 @@ import {Button} from '@chakra-ui/button'
 import {Box, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
 import {Input, useColorModeValue as mode, useDisclosure} from '@chakra-ui/react'
 import {useCallback} from 'react'
-import {useCreateDesignStore} from 'store'
+import {useCreateDesignStore, useUploadDesignImagesStore} from 'store'
 import {CreateDesignStep, VoteStyle} from 'types'
 import {getDesignSurveyType} from 'utils/design'
 import {useAuth} from 'context/auth-context'
@@ -17,21 +17,21 @@ export function PreviewStep() {
         question: state.question,
         name: state.name,
         description: state.description,
-        images: state.images,
-        imagesByUrl: state.imagesByUrl,
         voteStyle: state.voteStyle,
         designType: state.type,
       }),
       [],
     ),
   )
+  const images = useUploadDesignImagesStore(state => state.images)
+
   const {user} = useAuth()
 
   const surveyType = getDesignSurveyType(design.designType)
   const heading = `${user?.nickname} wants your feedback on their ${surveyType}`
 
   const isDesignValid = design.name && design.question
-  const hasEnoughVersions = design.imagesByUrl.length >= 2
+  const hasEnoughVersions = images.length >= 2
   const {isOpen, onOpen, onClose} = useDisclosure()
 
   const setStep = useCreateDesignStore(useCallback(state => state.setStep, []))
@@ -40,9 +40,9 @@ export function PreviewStep() {
 
   React.useEffect(() => {
     if (!isDesignValid && hasEnoughVersions) {
-      setImages(design.imagesByUrl.map(url => ({url, versionId: 'preview'})))
+      setImages(images.map(({url}) => ({url, versionId: 'preview'})))
     }
-  }, [design.imagesByUrl, hasEnoughVersions, isDesignValid, setImages])
+  }, [hasEnoughVersions, images, isDesignValid, setImages])
 
   if (!isDesignValid) {
     return (
@@ -132,14 +132,14 @@ export function PreviewStep() {
             rowGap={{base: 8, md: 8, lg: 8}}
             mt="8"
           >
-            {design.imagesByUrl.map((imageUrl, index) => {
+            {images.map(({url}, index) => {
               return (
                 <RateStarsVotingCard
                   index={index}
-                  key={`designVersion${imageUrl}${index}`}
+                  key={`designVersion${url}${index}`}
                   versionId={'irelevant'}
                   inPreview
-                  imageUrl={imageUrl}
+                  imageUrl={url}
                   onClick={() => {
                     onOpen()
                     setStartSlide(index)

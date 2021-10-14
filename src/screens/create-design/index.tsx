@@ -2,6 +2,7 @@ import {useCreateDesignStore} from 'store'
 import {CreateDesignStep} from 'types'
 import {Box, Flex, HStack} from '@chakra-ui/react'
 import {Step} from 'components/step-with-arrow'
+import {Container} from 'components/lib'
 
 import {CreateStep} from './create-step'
 import {PreviewStep} from './preview-step'
@@ -31,7 +32,7 @@ function ProgressSteps() {
   const {step, setStep} = useCreateDesignStore()
 
   return (
-    <Box p={0} w="full" mx="auto" px={{base: '6', md: '0'}}>
+    <Box p={0} w={{base: 'full', md: '3xl'}} mx="auto" px={{base: '6'}}>
       <nav aria-label="Progress steps">
         <HStack as="ol" listStyleType="none" spacing="0">
           <Step
@@ -66,9 +67,11 @@ function ProgressSteps() {
 
 export function CreateDesign() {
   return (
-    <Flex direction="column" align="stretch" width="full" maxWidth="1000px">
-      <ProgressSteps />
-      <CurrentScreen />
-    </Flex>
+    <Container>
+      <Flex flexDir="column" align="center" pt="4" justifyContent="center">
+        <ProgressSteps />
+        <CurrentScreen />
+      </Flex>
+    </Container>
   )
 }

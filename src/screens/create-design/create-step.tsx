@@ -25,7 +25,7 @@ import memoize from 'lodash.memoize'
 
 import * as yup from 'yup'
 import * as React from 'react'
-import {QuestionIcon} from '@chakra-ui/icons'
+import {CheckCircleIcon, QuestionIcon, StarIcon} from '@chakra-ui/icons'
 import {RadioGroup} from 'components/radio-group'
 import {CreateDesignStep, DesignType, VoteStyle} from 'types'
 import {useCreateDesignStore} from 'store'
@@ -57,6 +57,7 @@ const validationSchema = yup.object().shape({
       DesignType.Logo,
       DesignType.Other,
     ]),
+  voteStyle: yup.string().oneOf([VoteStyle.FiveStar, VoteStyle.Choose]),
 })
 
 interface FormRowsProps {
@@ -125,6 +126,38 @@ function ModePopover() {
   )
 }
 
+function VoteStylePopover() {
+  return (
+    <Popover trigger="hover">
+      <PopoverTrigger>
+        <QuestionIcon width="1em" height="1em" mb="0.5rem" cursor="help" />
+      </PopoverTrigger>
+      <PopoverContent>
+        <PopoverHeader fontWeight="semibold">Voting style</PopoverHeader>
+        <PopoverArrow />
+        <PopoverCloseButton />
+        <PopoverBody>
+          How should people vote on your design versions.
+          <Text mt={2}>
+            <Text as="span" fontWeight="semibold">
+              Five Stars
+            </Text>{' '}
+            Voters vote with ratings from 1-5 stars. You are shown the design
+            version with the best average.
+          </Text>
+          <Text mt={2}>
+            <Text as="span" fontWeight="semibold">
+              Choose the best
+            </Text>{' '}
+            Voters just select their favorite design. You are shown % how many
+            people chose a certain design
+          </Text>
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
 function FormRow({
   id,
   value,
@@ -182,6 +215,7 @@ function CreateStep() {
         description: state.description ?? '',
         type: state.type,
         question: state.question ?? '',
+        voteStyle: state.voteStyle,
       }),
       [],
     ),
@@ -193,6 +227,7 @@ function CreateStep() {
         description: state.setDescription,
         question: state.setQuestion,
         type: state.setType,
+        voteStyle: state.setVoteStyle,
       }),
       [],
     ),
@@ -208,7 +243,7 @@ function CreateStep() {
         initialValues={initialValues}
         initialTouched={initialTouched}
         onSubmit={values => {
-          saveDesign(values)
+          saveDesign({...values, isPublic: true})
           setStep(CreateDesignStep.Upload)
         }}
       >
@@ -232,7 +267,7 @@ function CreateStep() {
             <FormRow
               id="question"
               ariaLabel="Targeted question"
-              placeholder="Ex: Which button fits better for sign up screen?"
+              placeholder="Ex: Which logo do you prefer?"
               value={values.question}
               onChange={e => {
                 handleChange('question')(e)
@@ -244,6 +279,49 @@ function CreateStep() {
               type="textarea"
               isRequired
             />
+
+            <FormRow
+              id="description"
+              ariaLabel="Design description"
+              placeholder="Ex: The design is made for a company doing space travel. They want to express innovation and courage."
+              value={values.description}
+              onChange={e => {
+                handleChange('description')(e)
+              }}
+              onBlur={handleBlur('description')}
+              isInvalid={!!(touched.description && errors.description)}
+              error={errors.description}
+              type="textarea"
+            />
+            <FormControl id="voteStyle" py="0.5em" isRequired>
+              <Flex alignItems="center">
+                <FormLabel marginInlineEnd="0.2rem">Voting style</FormLabel>
+                <VoteStylePopover />
+              </Flex>
+
+              <RadioGroup
+                options={[
+                  {
+                    label: '1-5 Star Rating',
+                    value: VoteStyle.FiveStar,
+                    icon: <StarIcon mb="1" color="yellow.400" />,
+                  },
+                  {
+                    label: 'Choose the best',
+                    value: VoteStyle.Choose,
+                    icon: <CheckCircleIcon mb="1" color="teal.400" />,
+                  },
+                ]}
+                name="voteStyle"
+                onChange={e => {
+                  const formikHandler = handleChange('voteStyle') as (
+                    e: string | number,
+                  ) => void
+                  formikHandler(e)
+                  set.voteStyle(e as VoteStyle)
+                }}
+              />
+            </FormControl>
 
             <FormControl id="type" py="0.5em" isRequired>
               <Flex alignItems="center">
