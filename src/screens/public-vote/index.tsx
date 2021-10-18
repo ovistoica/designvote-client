@@ -51,7 +51,9 @@ export function PublicVoteScreen() {
     : getDesignSurveyType(design.designType)
   const heading = isLoading
     ? 'Loading survey...'
-    : `${design.owner?.nickname} wants your feedback on their ${surveyType}`
+    : `${
+        design.ownerName ?? design.ownerNickname
+      } wants your feedback on their ${surveyType}`
 
   React.useEffect(() => {
     if (isVotingSuccess) {

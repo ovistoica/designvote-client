@@ -49,7 +49,6 @@ export function CommentInput({
       helpers.resetForm()
     },
   })
-  const [isActive, setIsActive] = React.useState(false)
   return (
     <form style={{marginTop: '1em'}} onSubmit={handleSubmit}>
       <FormControl
@@ -68,10 +67,8 @@ export function CommentInput({
             handleChange(e)
             onChange?.(e.target.value)
           }}
-          onFocus={() => setIsActive(true)}
           onBlur={e => {
             handleBlur(e)
-            setIsActive(false)
           }}
           value={values.comment}
           transition="0.2s all"
@@ -81,7 +78,7 @@ export function CommentInput({
         <FormErrorMessage>
           {touched.comment && errors.comment && errors.comment}
         </FormErrorMessage>
-        {isActive ? (
+        {values.comment ? (
           <ButtonGroup mt={4} colorScheme="gray">
             <Button isLoading={isLoading} type="submit">
               Submit

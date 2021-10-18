@@ -13,7 +13,6 @@ import {
 import {CommentInput} from 'components/comment-input'
 import {Opinion} from 'types'
 import {useUrlDesign} from 'api/design-query'
-// import {usePublicUser} from 'api/user-query'
 import {useAddOpinion} from 'api/design-voting-queries'
 import {formatCreatedAt} from 'utils/date'
 import {Comment} from 'assets/icons'
@@ -22,14 +21,20 @@ interface OpinionsSectionProps {
   designUrl: string
 }
 
-function OpinionView({opinion, name, picture, createdAt}: Opinion) {
+function OpinionView({
+  opinion,
+  ownerName,
+  ownerPicture,
+  ownerNickname,
+  createdAt,
+}: Opinion) {
   return (
     <Grid gridTemplateColumns="1fr 24fr" alignContent="center">
-      <Avatar boxSize="1.8em" src={picture} name={name} />
+      <Avatar boxSize="1.8em" src={ownerPicture} name={ownerName} />
       <Stack spacing={1}>
         <HStack>
           <Text fontWeight="600" color="gray.800">
-            {name}
+            {ownerName ?? ownerNickname}
           </Text>
           <Text fontSize="sm" color="gray.500">
             {formatCreatedAt(createdAt)}

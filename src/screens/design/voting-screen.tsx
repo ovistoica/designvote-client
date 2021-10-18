@@ -37,7 +37,9 @@ export function DesignScreen() {
     : getDesignSurveyType(design.designType)
   const defaultDescription = isLoading
     ? 'Loading survey...'
-    : `${design.owner?.name} wants your feedback on their ${surveyType}`
+    : `${
+        design.ownerName ?? design.ownerNickname
+      } wants your feedback on their ${surveyType}`
 
   // Check if current user already voted on this design
   const hasVoted = useHasVoted(design)

@@ -15,9 +15,9 @@ export interface Opinion {
   uid: string
   thumbsUp: number
   voterName?: string
-  name: string
-  nickname: string
-  picture: string
+  ownerName: string
+  ownerNickname: string
+  ownerPicture: string
   createdAt: string
   updatedAt: string
 }
@@ -43,17 +43,15 @@ export interface Design {
   description?: string | null
   opinions: Opinion[]
   versions: Version[]
-  owner?: {
-    nickname: string
-    picture: string
-    name: string
-  }
+  ownerPicture?: string
+  ownerNickname: string
+  ownerName?: string
   uid: string
   name: string
   public: boolean
   totalVotes: number
-  shortUrl?: string
-  img?: string | null
+  shortUrl: string
+  img: string
   question: string
   designType: DesignType
   voteStyle: VoteStyle

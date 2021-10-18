@@ -17,8 +17,6 @@ import {
 } from '@chakra-ui/react'
 import {useLatestDesigns} from 'api/design-query'
 import {DesignerBanner} from './designers-banner'
-import heroImage from 'assets/dummy-pic.png'
-import dummyAvatar from 'assets/dummy-avatar.png'
 import {Comment, Stamp} from '../../assets/icons'
 import {Footer} from 'components/footer'
 import {TopExperts} from './experts'
@@ -28,34 +26,35 @@ import {useAuth} from 'context/auth-context'
 
 interface DesignProps {
   question: string
-  img?: string
+  img: string
   votes: number
   createdAt: string
   onClick: () => void
+  ownerPicture?: string
+  ownerName: string
 }
 
 export const Design = (props: DesignProps) => {
-  const {votes, question, img, createdAt, onClick} = props
+  const {
+    votes,
+    question,
+    img,
+    createdAt,
+    onClick,
+    ownerName,
+    ownerPicture,
+  } = props
   const timeAgo = formatCreatedAt(createdAt)
 
   return (
     <Box position="relative" onClick={onClick} cursor="pointer">
       <HStack>
-        <Img
-          w="125px"
-          h="94px"
-          rounded="md"
-          src={img ?? heroImage}
-          shadow="md"
-        />
+        <Img w="125px" h="94px" rounded="md" src={img} shadow="md" />
         <Stack pl="5">
           <HStack>
-            {
-              // TODO Remove dummy avatar for the real thing
-            }
-            <Avatar size="xs" src={dummyAvatar} />
+            <Avatar size="xs" src={ownerPicture} name={ownerName} />
             <Text fontWeight="600" fontSize="sm">
-              Andrew Cohen
+              {ownerName}
             </Text>
             <Text color="gray.500" fontSize="sm">
               {timeAgo}
@@ -67,7 +66,7 @@ export const Design = (props: DesignProps) => {
           <HStack spacing="8">
             <HStack color="blackAlpha.600">
               <Stamp mb="1" fill="blackAlpha.600" />
-              <Text>{votes} Votes</Text>
+              <Text>{votes} Votes</Text>{' '}
             </HStack>
             <HStack color="blackAlpha.600">
               <Comment fill="blackAlpha.600" />
@@ -82,18 +81,18 @@ export const Design = (props: DesignProps) => {
 
 function DesignCard({
   question,
-  img = heroImage,
+  img,
   votes,
   onClick,
 }: {
   question: string
-  img?: string | null
+  img: string
   votes: number
   onClick: () => void
 }) {
   return (
     <Flex direction="column" cursor="pointer" onClick={onClick}>
-      <Img src={img ?? heroImage} rounded="md" shadow="md" />
+      <Img src={img} rounded="md" shadow="md" />
       <Text fontWeight="semibold" maxW="250px" noOfLines={1} pt="2">
         {question}
       </Text>
@@ -137,8 +136,9 @@ function BannerSection() {
             Quick visual feedback from other designers
           </Heading>
           <Text>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Find out the best version of your design, get feedback faster from
+            top experts in your field and help others decide on the best version
+            on their design.
           </Text>
           <Button
             bg="orange.400"
@@ -147,7 +147,7 @@ function BannerSection() {
             color="white"
             onClick={onClick}
           >
-            Create your first poll
+            Create your first design poll
           </Button>
         </Stack>
         <Box>
@@ -260,7 +260,9 @@ export function Home() {
                         question={design.question}
                         votes={design.totalVotes}
                         createdAt={design.createdAt}
-                        img={design.img ?? undefined}
+                        img={design.img}
+                        ownerPicture={design.ownerPicture}
+                        ownerName={design.ownerName ?? design.ownerNickname}
                         onClick={() => navigate(`/design/${design.shortUrl}`)}
                       />
                       {index !== 4 ? <Divider /> : null}

@@ -1,11 +1,9 @@
 import {Design, DesignType, NormalizedDesign, VoteStyle} from 'types'
 
 export const singleLoadingDesign: Design = {
-  owner: {
-    nickname: 'loading',
-    picture: 'loading',
-    name: 'Loading',
-  },
+  ownerNickname: 'loading',
+  ownerPicture: 'loading',
+  ownerName: 'Loading',
   name: 'Loading design',
   designId: 'loading',
   uid: 'loading',
@@ -13,7 +11,7 @@ export const singleLoadingDesign: Design = {
   question: 'Loading',
   public: false,
   description: 'loading',
-  img: null,
+  img: 'loading',
   versions: [],
   totalVotes: 0,
   opinions: [],
