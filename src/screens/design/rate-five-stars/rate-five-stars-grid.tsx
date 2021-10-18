@@ -1,8 +1,9 @@
-import {Button, SimpleGrid} from '@chakra-ui/react'
+import {Button, SimpleGrid, Flex, Text, Link} from '@chakra-ui/react'
 import {RateStarsVotingCard} from 'screens/design/rate-five-stars/star-rating-card'
 import {canSubmit, useVoteDesignState} from 'store/vote-design'
 import {useUrlDesign} from 'api/design-query'
 import {useAddDesignRatings} from 'api/design-voting-queries'
+import {useAuth} from 'context/auth-context'
 
 interface RateFiveStarsGridProps {
   designUrl: string
@@ -13,12 +14,14 @@ export function RateFiveStarsGrid({
   designUrl,
   onVersionClick,
 }: RateFiveStarsGridProps) {
+  const {isAuthenticated, login} = useAuth()
   const {data: design} = useUrlDesign(designUrl)
   const canSubmitFeedback = useVoteDesignState(canSubmit)
   const {
     mutate: submitFeedback,
     isLoading: isVoteLoading,
   } = useAddDesignRatings(design.designId, designUrl)
+  const submitEnabled = canSubmitFeedback && isAuthenticated
   return (
     <>
       <SimpleGrid
@@ -53,16 +56,35 @@ export function RateFiveStarsGrid({
           })}
       </SimpleGrid>
 
-      <Button
-        size="lg"
-        mt="12"
-        colorScheme="orange"
-        disabled={!canSubmitFeedback}
-        onClick={() => submitFeedback()}
-        isLoading={isVoteLoading}
-      >
-        Submit feedback
-      </Button>
+      <Flex mt="12" alignItems="center">
+        {!isAuthenticated ? (
+          <Text color="gray.600" px="2">
+            You must be logged in to provide feedback.{' '}
+            <Link
+              fontWeight="500"
+              onClick={() => {
+                login({
+                  appState: {
+                    returnTo: `${window.location.origin}/design/${designUrl}`,
+                  },
+                })
+              }}
+            >
+              Sign in
+            </Link>
+          </Text>
+        ) : null}
+        <Button
+          size="lg"
+          width={{base: 'full', md: 'auto'}}
+          colorScheme="orange"
+          disabled={!submitEnabled}
+          onClick={() => submitFeedback()}
+          isLoading={isVoteLoading}
+        >
+          Submit feedback
+        </Button>
+      </Flex>
     </>
   )
 }

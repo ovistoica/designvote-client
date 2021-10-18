@@ -1,7 +1,15 @@
 import {StarIcon} from '@chakra-ui/icons'
-import {Button, SimpleGrid, useRadioGroup} from '@chakra-ui/react'
+import {
+  Button,
+  Flex,
+  SimpleGrid,
+  useRadioGroup,
+  Text,
+  Link,
+} from '@chakra-ui/react'
 import {useUrlDesign} from 'api/design-query'
 import {useVoteDesignVersion} from 'api/design-voting-queries'
+import {useAuth} from 'context/auth-context'
 import {ChooseDesignCard} from './choose-card'
 
 interface ChooseGridProps {
@@ -13,12 +21,15 @@ export function ChooseOneDesignGrid({
   designUrl,
   onVersionClick,
 }: ChooseGridProps) {
+  const {isAuthenticated, login} = useAuth()
   const {getRadioProps, getRootProps, value: selectedVersion} = useRadioGroup()
   const {data: design} = useUrlDesign(designUrl)
   const {mutate: vote, isLoading} = useVoteDesignVersion(
     design.designId,
     designUrl,
   )
+  const canSubmit = isAuthenticated && selectedVersion
+
   return (
     <>
       <SimpleGrid
@@ -54,17 +65,35 @@ export function ChooseOneDesignGrid({
             )
           })}
       </SimpleGrid>
-      <Button
-        size="lg"
-        width={{base: 'full', md: 'auto'}}
-        mt="12"
-        colorScheme="orange"
-        disabled={!selectedVersion}
-        onClick={() => vote(selectedVersion as string)}
-        isLoading={isLoading}
-      >
-        Submit feedback
-      </Button>
+      <Flex mt="12" alignItems="center">
+        {!isAuthenticated ? (
+          <Text color="gray.600" px="2">
+            You must be logged in to provide feedback.{' '}
+            <Link
+              fontWeight="500"
+              onClick={() => {
+                login({
+                  appState: {
+                    returnTo: `${window.location.origin}/design/${designUrl}`,
+                  },
+                })
+              }}
+            >
+              Sign in
+            </Link>
+          </Text>
+        ) : null}
+        <Button
+          size="lg"
+          width={{base: 'full', md: 'auto'}}
+          colorScheme="orange"
+          disabled={!canSubmit}
+          onClick={() => vote(selectedVersion as string)}
+          isLoading={isLoading}
+        >
+          Submit feedback
+        </Button>
+      </Flex>
     </>
   )
 }

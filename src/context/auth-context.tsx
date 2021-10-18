@@ -1,5 +1,6 @@
 import * as React from 'react'
 import {
+  AppState,
   Auth0Provider as BaseAuth0Provider,
   LogoutOptions,
   RedirectLoginOptions,
@@ -11,6 +12,16 @@ import {client} from 'api/api-client'
 import {useQueryClient} from 'react-query'
 import {ApiConfig, Auth0User} from 'types'
 import {apiClient} from 'api/axios-client'
+import {createBrowserHistory} from 'history'
+
+export const history = createBrowserHistory()
+
+const onRedirectCallback = (appState: AppState) => {
+  // If using a Hash Router, you need to use window.history.replaceState to
+  // remove the `code` and `state` query parameters from the callback url.
+  // window.history.replaceState({}, document.title, window.location.pathname);
+  history.replace((appState && appState.returnTo) || window.location.pathname)
+}
 
 const Auth0Provider: React.FC = props => {
   if (
@@ -26,6 +37,7 @@ const Auth0Provider: React.FC = props => {
       domain={process.env.REACT_APP_AUTH0_DOMAIN}
       clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
       redirectUri={window.location.origin}
+      onRedirectCallback={onRedirectCallback}
       audience={process.env.REACT_APP_AUTH_AUDIENCE}
       scope="read:current_user update:current_user_metadata"
       {...props}
