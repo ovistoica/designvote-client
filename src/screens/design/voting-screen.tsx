@@ -74,10 +74,12 @@ export function DesignScreen() {
         >
           <Grid gridTemplateColumns="65fr 35fr" gap="6">
             <Stack>
-              <Heading fontWeight="600" color="gray.700">
+              <Heading fontWeight="600" color={mode('gray.700', 'gray.200')}>
                 {question}
               </Heading>
-              <Text color="gray.700">{description ?? defaultDescription}</Text>
+              <Text color={mode('gray.700', 'gray.300')}>
+                {description ?? defaultDescription}
+              </Text>
 
               <Flex wrap="wrap" py="5">
                 {

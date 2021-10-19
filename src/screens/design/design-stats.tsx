@@ -44,25 +44,18 @@ export function DesignStats({votes, opinions}: DesignStatsProps) {
       </Flex>
       <HStack gridTemplateColumns="1fr 1fr" w="full" pt="8">
         <Button
+          colorScheme="orange"
+          variant="outline"
           w="full"
-          color="orange.400"
-          borderWidth="1px"
-          variant="outlined"
-          borderColor="orange.400"
           leftIcon={<FaStar />}
-          _hover={{bg: 'orange.300', color: 'white'}}
         >
           Favorite
         </Button>
         <Button
+          colorScheme="orange"
+          variant="outline"
           w="full"
-          color="orange.400"
-          borderWidth="1px"
-          variant="outlined"
-          borderColor="orange.400"
-          role="group"
           leftIcon={<FaShare />}
-          _hover={{bg: 'orange.300', color: 'white'}}
         >
           Share
         </Button>

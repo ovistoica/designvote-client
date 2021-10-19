@@ -7,7 +7,6 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react'
-import * as React from 'react'
 import {FooterHeading} from './footer-heading'
 
 export const SubscribeForm = (props: HTMLChakraProps<'form'>) => {

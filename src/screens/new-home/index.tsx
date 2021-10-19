@@ -64,12 +64,12 @@ export const Design = (props: DesignProps) => {
             {question}
           </Box>
           <HStack spacing="8">
-            <HStack color="blackAlpha.600">
-              <Stamp mb="1" fill="blackAlpha.600" />
+            <HStack color={mode('blackAlpha.600', 'gray.300')}>
+              <Stamp mb="1" fill={mode('blackAlpha.600', 'gray.300')} />
               <Text>{votes} Votes</Text>{' '}
             </HStack>
-            <HStack color="blackAlpha.600">
-              <Comment fill="blackAlpha.600" />
+            <HStack color={mode('blackAlpha.600', 'gray.300')}>
+              <Comment fill={mode('blackAlpha.600', 'gray.300')} />
               <Text>{votes} Opinions</Text>
             </HStack>
           </HStack>
@@ -120,7 +120,7 @@ function BannerSection() {
       as="section"
       align="center"
       justify="center"
-      bg="whiteAlpha.900"
+      bg={mode('whiteAlpha.900', 'blackAlpha.600')}
       shadow="sm"
       pt="24"
       w="full"
@@ -140,13 +140,7 @@ function BannerSection() {
             top experts in your field and help others decide on the best version
             on their design.
           </Text>
-          <Button
-            bg="orange.400"
-            maxW="2xs"
-            _hover={{bg: 'orange.300'}}
-            color="white"
-            onClick={onClick}
-          >
+          <Button maxW="2xs" onClick={onClick} colorScheme="orange">
             Create your first design poll
           </Button>
         </Stack>
@@ -271,11 +265,9 @@ export function Home() {
 
                   <Button
                     variant="outline"
+                    colorScheme="orange"
                     w="full"
-                    borderColor="orange.400"
-                    color="orange.400"
                     rightIcon={<ArrowForwardIcon />}
-                    _hover={{bg: 'orange.300', color: 'white'}}
                   >
                     View All
                   </Button>

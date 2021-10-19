@@ -6,6 +6,7 @@ import {
   useRadioGroup,
   Text,
   Link,
+  useColorModeValue as mode,
 } from '@chakra-ui/react'
 import {useUrlDesign} from 'api/design-query'
 import {useVoteDesignVersion} from 'api/design-voting-queries'
@@ -67,7 +68,7 @@ export function ChooseOneDesignGrid({
       </SimpleGrid>
       <Flex mt="12" alignItems="center">
         {!isAuthenticated ? (
-          <Text color="gray.600" px="2">
+          <Text color={mode('gray.600', 'gray.400')} px="2">
             You must be logged in to provide feedback.{' '}
             <Link
               fontWeight="500"

@@ -29,7 +29,11 @@ const RadioBox = chakra('div', {
 const CheckboxIcon = (props: {checked: boolean}) => (
   <Box
     fontSize="4xl"
-    color={props.checked ? 'orange.500' : mode('gray.300', 'whiteAlpha.400')}
+    color={
+      props.checked
+        ? mode('orange.500', 'orange.300')
+        : mode('gray.300', 'whiteAlpha.400')
+    }
   >
     {props.checked ? <MdRadioButtonChecked /> : <MdRadioButtonUnchecked />}
   </Box>
@@ -50,8 +54,8 @@ export const ChooseDesignCard = (props: ButtonRadioProps) => {
   const id = useId()
 
   const checkedStyles = {
-    bg: mode('orange.50', 'rgb(0 31 71)'),
-    borderColor: 'orange.600',
+    bg: mode('orange.50', 'rgba(246, 173, 85, 0.5)'),
+    borderColor: mode('orange.600', 'orange.300'),
   }
 
   return (

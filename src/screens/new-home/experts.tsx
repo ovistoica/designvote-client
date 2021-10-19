@@ -21,10 +21,10 @@ function Expert({src, name, upvotes}: ExpertProps) {
     <HStack>
       <Avatar src={src} />
       <Box>
-        <Text fontWeight="600" color="gray.700">
+        <Text fontWeight="600" color={mode('gray.700', 'gray.200')}>
           {name}
         </Text>
-        <Text color="gray.600">{upvotes} Upvotes</Text>
+        <Text color={mode('gray.600', 'gray.400')}>{upvotes} Upvotes</Text>
       </Box>
     </HStack>
   )
@@ -73,12 +73,10 @@ export function TopExperts() {
           upvotes={8}
         />
         <Button
+          colorScheme="orange"
           variant="outline"
           w="full"
-          borderColor="orange.400"
-          color="orange.400"
           rightIcon={<ArrowForwardIcon />}
-          _hover={{bg: 'orange.300', color: 'white'}}
         >
           View All
         </Button>

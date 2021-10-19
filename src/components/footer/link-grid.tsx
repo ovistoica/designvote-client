@@ -19,9 +19,7 @@ export const LinkGrid = (props: SimpleGridProps) => {
         <Box minW="130px">
           <FooterHeading mb="4">Product</FooterHeading>
           <Stack>
-            <Link color="gray.200" onClick={login}>
-              Sign in
-            </Link>
+            <Link onClick={login}>Sign in</Link>
             <Link as={RouterLink} to="/pricing">
               Pricing
             </Link>
