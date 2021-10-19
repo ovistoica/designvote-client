@@ -1,7 +1,6 @@
-import * as React from 'react'
 import {FormControl, FormErrorMessage} from '@chakra-ui/form-control'
 import {Input} from '@chakra-ui/input'
-import {Button, ButtonGroup} from '@chakra-ui/react'
+import {Button, ButtonGroup, useColorModeValue as mode} from '@chakra-ui/react'
 import {FormikTouched, useFormik} from 'formik'
 import * as yup from 'yup'
 
@@ -59,7 +58,7 @@ export function CommentInput({
           name="comment"
           variant="flushed"
           type="text"
-          bg="white"
+          bg={mode('white', 'gray.700')}
           as="textarea"
           placeholder="Leave your opinion"
           focusBorderColor="gray.400"
@@ -72,8 +71,6 @@ export function CommentInput({
           }}
           value={values.comment}
           transition="0.2s all"
-          // h={touched.comment && values.comment ? '20' : 'auto'}
-          // _focus={{h: '20'}}
         />
         <FormErrorMessage>
           {touched.comment && errors.comment && errors.comment}

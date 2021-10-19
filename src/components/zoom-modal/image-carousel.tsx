@@ -3,7 +3,7 @@ import {
   Text,
   Box,
   Flex,
-  useColorModeValue,
+  useColorModeValue as mode,
   Image,
   HStack,
   TextProps,
@@ -61,7 +61,7 @@ export const ImageCarousel = ({images, startSlide}: ImageCarouselProps) => {
   return (
     <Flex
       w="full"
-      bg={useColorModeValue('gray.200', 'gray.600')}
+      bg={mode('gray.200', 'gray.700')}
       p={10}
       alignItems="center"
       justifyContent="center"
@@ -100,7 +100,11 @@ export const ImageCarousel = ({images, startSlide}: ImageCarouselProps) => {
               cursor="pointer"
               boxSize={{base: '7px', lg: '15px'}}
               m="0 2px"
-              bg={currentSlide === slide ? 'orange.500' : 'blackAlpha.500'}
+              bg={
+                currentSlide === slide
+                  ? mode('orange.500', 'orange.300')
+                  : mode('blackAlpha.500', 'gray.500')
+              }
               rounded="50%"
               display="inline-block"
               transition="background-color 0.6s ease"

@@ -9,6 +9,7 @@ import {
   HStack,
   Heading,
   Grid,
+  useColorModeValue as mode,
 } from '@chakra-ui/react'
 import {CommentInput} from 'components/comment-input'
 import {Opinion} from 'types'
@@ -33,14 +34,14 @@ function OpinionView({
       <Avatar boxSize="1.8em" src={ownerPicture} name={ownerName} />
       <Stack spacing={1}>
         <HStack>
-          <Text fontWeight="600" color="gray.800">
+          <Text fontWeight="600" color={mode('gray.800', 'gray.200')}>
             {ownerName ?? ownerNickname}
           </Text>
-          <Text fontSize="sm" color="gray.500">
+          <Text fontSize="sm" color={mode('gray.500', 'gray.500')}>
             {formatCreatedAt(createdAt)}
           </Text>
         </HStack>
-        <Text color="gray.700">{opinion}</Text>
+        <Text color={mode('gray.700', 'gray.300')}>{opinion}</Text>
       </Stack>
     </Grid>
   )
@@ -63,13 +64,17 @@ export function OpinionsSection({designUrl}: OpinionsSectionProps) {
       alignSelf="center"
       px={{base: '6', md: '8'}}
       py="4"
-      bg="white"
+      bg={mode('white', 'gray.700')}
       rounded="md"
       shadow="base"
     >
       <HStack>
-        <Comment />
-        <Heading size="md" fontWeight="400" color="gray.700">
+        <Comment fill={mode('gray.700', 'gray.300')} />
+        <Heading
+          size="md"
+          fontWeight="400"
+          color={mode('gray.700', 'gray.300')}
+        >
           {design.opinions.length} Opinions
         </Heading>
       </HStack>

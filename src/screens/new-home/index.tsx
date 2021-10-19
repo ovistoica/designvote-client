@@ -14,6 +14,7 @@ import {
   Grid,
   DarkMode,
   GridItem,
+  Tag,
 } from '@chakra-ui/react'
 import {useLatestDesigns} from 'api/design-query'
 import {DesignerBanner} from './designers-banner'
@@ -96,8 +97,8 @@ function DesignCard({
       <Text fontWeight="semibold" maxW="250px" noOfLines={1} pt="2">
         {question}
       </Text>
-      <HStack>
-        <Stamp />
+      <HStack align="center">
+        <Stamp fill={mode('gray.700', 'gray.300')} mb="1" />
         <Text>{votes} Votes</Text>
       </HStack>
     </Flex>
@@ -167,9 +168,9 @@ const data = [
 
 function Topic({name}: {name: string}) {
   return (
-    <Box rounded="md" color="white" bg="blue.400" m="1" py="1" px="2">
+    <Tag colorScheme="blue" m="1" variant="solid" size="lg">
       {name}
-    </Box>
+    </Tag>
   )
 }
 

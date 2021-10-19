@@ -48,10 +48,18 @@ export function ResultsScreen() {
         >
           <Grid gridTemplateColumns="65fr 35fr" gap="6">
             <Stack>
-              <Heading fontWeight="600" color="gray.700">
+              <Heading
+                fontWeight="600"
+                size="2xl"
+                color={mode('gray.700', 'gray.300')}
+              >
                 {question}
               </Heading>
-              {description ? <Text color="gray.600">{description}</Text> : null}
+              {description ? (
+                <Text color={mode('gray.600', 'gray.400')} fontSize="lg">
+                  {description}
+                </Text>
+              ) : null}
 
               <Flex wrap="wrap" py="5">
                 {
@@ -77,7 +85,7 @@ export function ResultsScreen() {
           </Grid>
         </Box>
         <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '6', md: '8'}}>
-          <Heading size="md" color="gray.700">
+          <Heading size="md" color={mode('gray.700', 'gray.400')}>
             Current results:
           </Heading>
           {isLoading ? (
