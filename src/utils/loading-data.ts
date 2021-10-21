@@ -14,6 +14,7 @@ export const singleLoadingDesign: Design = {
   img: 'loading',
   versions: [],
   totalVotes: 0,
+  totalOpinions: 0,
   opinions: [],
   designType: DesignType.Mobile,
   shortUrl: 'Loading...',

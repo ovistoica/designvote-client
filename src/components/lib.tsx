@@ -232,7 +232,8 @@ const Container: React.FC<BoxProps> = ({children, ...rest}) => {
   return (
     <Grid
       minH="100vh"
-      p={['5em 1em', '5em 2em', '5em 4em']}
+      py={{base: '5em'}}
+      px={{base: '1', md: '4'}}
       m="0 auto"
       maxW={['512px', '1024px', '1440px']}
       w="100%"

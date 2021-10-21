@@ -15,69 +15,29 @@ import {
   DarkMode,
   GridItem,
   Tag,
+  Icon,
+  VStack,
+  StackProps,
+  SimpleGrid,
 } from '@chakra-ui/react'
 import {useLatestDesigns} from 'api/design-query'
 import {DesignerBanner} from './designers-banner'
-import {Comment, Stamp} from '../../assets/icons'
 import {Footer} from 'components/footer'
 import {TopExperts} from './experts'
 import {useNavigate} from 'react-router'
-import {formatCreatedAt} from 'utils/date'
 import {useAuth} from 'context/auth-context'
+import {DesignInfo} from './cards/design-info'
+import {FaComment, FaStamp} from 'react-icons/fa'
 
 interface DesignProps {
   question: string
   img: string
   votes: number
+  opinions: number
   createdAt: string
   onClick: () => void
   ownerPicture?: string
   ownerName: string
-}
-
-export const Design = (props: DesignProps) => {
-  const {
-    votes,
-    question,
-    img,
-    createdAt,
-    onClick,
-    ownerName,
-    ownerPicture,
-  } = props
-  const timeAgo = formatCreatedAt(createdAt)
-
-  return (
-    <Box position="relative" onClick={onClick} cursor="pointer">
-      <HStack>
-        <Img w="125px" h="94px" rounded="md" src={img} shadow="md" />
-        <Stack pl="5">
-          <HStack>
-            <Avatar size="xs" src={ownerPicture} name={ownerName} />
-            <Text fontWeight="600" fontSize="sm">
-              {ownerName}
-            </Text>
-            <Text color="gray.500" fontSize="sm">
-              {timeAgo}
-            </Text>
-          </HStack>
-          <Box maxW="xl" fontSize="xl" noOfLines={1}>
-            {question}
-          </Box>
-          <HStack spacing="8">
-            <HStack color={mode('blackAlpha.600', 'gray.300')}>
-              <Stamp mb="1" fill={mode('blackAlpha.600', 'gray.300')} />
-              <Text>{votes} Votes</Text>{' '}
-            </HStack>
-            <HStack color={mode('blackAlpha.600', 'gray.300')}>
-              <Comment fill={mode('blackAlpha.600', 'gray.300')} />
-              <Text>{votes} Opinions</Text>
-            </HStack>
-          </HStack>
-        </Stack>
-      </HStack>
-    </Box>
-  )
 }
 
 function DesignCard({
@@ -85,23 +45,49 @@ function DesignCard({
   img,
   votes,
   onClick,
-}: {
-  question: string
-  img: string
-  votes: number
-  onClick: () => void
-}) {
+  ownerName,
+  ownerPicture,
+  createdAt,
+  opinions,
+  ...flexProps
+}: DesignProps & StackProps) {
   return (
-    <Flex direction="column" cursor="pointer" onClick={onClick}>
-      <Img src={img} rounded="md" shadow="md" />
-      <Text fontWeight="semibold" maxW="250px" noOfLines={1} pt="2">
-        {question}
-      </Text>
-      <HStack align="center">
-        <Stamp fill={mode('gray.700', 'gray.300')} mb="1" />
-        <Text>{votes} Votes</Text>
-      </HStack>
-    </Flex>
+    <VStack
+      cursor="pointer"
+      onClick={onClick}
+      {...flexProps}
+      alignItems="flex-start"
+    >
+      <Img src={img} rounded="md" shadow="md" w="full" />
+      <Text fontWeight="semibold">{question}</Text>
+      <Flex justify="space-between" align="center" w="full">
+        <HStack maxW="35%">
+          <Avatar size="xs" src={ownerPicture} name={ownerName} />
+          <Text fontWeight="600" fontSize="sm" noOfLines={1}>
+            {ownerName}
+          </Text>
+        </HStack>
+
+        <HStack align="center">
+          <Icon as={FaStamp} color="gray.400" />
+          <Text
+            fontSize="sm"
+            fontWeight="medium"
+            color={mode('gray.600', 'gray.300')}
+          >
+            <b>{votes}</b>
+          </Text>
+          <Icon as={FaComment} color="gray.400" />
+          <Text
+            fontSize="sm"
+            fontWeight="medium"
+            color={mode('gray.600', 'gray.300')}
+          >
+            <b>{opinions}</b>
+          </Text>
+        </HStack>
+      </Flex>
+    </VStack>
   )
 }
 
@@ -126,13 +112,14 @@ function BannerSection() {
       pt="24"
       w="full"
     >
-      <HStack
+      <Flex
         maxW={{base: 'full', md: '7xl'}}
         justify="center"
         mx="auto"
         my="auto"
+        direction={{base: 'column', lg: 'row'}}
       >
-        <Stack h="100%" spacing="8" px="20">
+        <Stack h="100%" spacing="8" px={{base: '4', md: '12', lg: '20'}}>
           <Heading size="xl">
             Quick visual feedback from other designers
           </Heading>
@@ -141,14 +128,19 @@ function BannerSection() {
             top experts in your field and help others decide on the best version
             on their design.
           </Text>
-          <Button maxW="2xs" onClick={onClick} colorScheme="orange">
+          <Button
+            maxW="2xs"
+            onClick={onClick}
+            colorScheme="orange"
+            mb={{base: 4, md: 8, lg: 0}}
+          >
             Create your first design poll
           </Button>
         </Stack>
-        <Box>
+        <Box display={{base: 'none', md: 'block'}} mx="auto">
           <DesignerBanner />
         </Box>
-      </HStack>
+      </Flex>
     </Flex>
   )
 }
@@ -178,9 +170,10 @@ function Topics() {
   return (
     <Box
       mt="4"
-      rounded={{lg: 'lg'}}
+      rounded="lg"
       bg={mode('white', 'gray.700')}
-      maxW="2xl"
+      maxW="3xl"
+      mx="auto"
       maxH="24rem"
       shadow="base"
       overflow="hidden"
@@ -208,8 +201,13 @@ export function Home() {
     <>
       <Flex justifyContent="center" align="center" direction="column">
         <BannerSection />
-        <Flex direction="column" w={{base: 'full', md: '6xl'}} py="8">
-          <Flex align="center" pb="4">
+        <Flex
+          direction="column"
+          w={{base: 'full', lg: '6xl'}}
+          py="8"
+          px={{base: '8', lg: '0'}}
+        >
+          <Flex align="center" pb="4" w={{base: 'full', lg: '6xl'}}>
             <Heading size="md">Popular</Heading>
             <Button
               mx="2"
@@ -220,25 +218,36 @@ export function Home() {
               View all
             </Button>
           </Flex>
-          <HStack spacing="6">
-            {designs.slice(0, 4).map(design => (
+          <SimpleGrid columns={{base: 1, md: 2, lg: 4}} gridGap="4" rowGap="6">
+            {designs.slice(0, 4).map((design, index) => (
               <DesignCard
+                opinions={design?.totalOpinions ?? 0}
                 key={design.designId}
                 question={design.question}
                 img={design.img}
                 votes={design.totalVotes}
                 onClick={() => navigate(`/design/${design.shortUrl}`)}
+                createdAt={design.createdAt}
+                ownerPicture={design.ownerPicture}
+                ownerName={design.ownerNickname}
               />
             ))}
-          </HStack>
+          </SimpleGrid>
         </Flex>
-        <Box as="section" py="12" w="full">
+        <Box as="section" py="4" w="full" px={{base: '4', md: undefined}}>
           <Box maxW={{base: 'xl', md: '6xl'}} mx="auto">
-            <Grid templateColumns="2fr 1fr" gap={4}>
+            <Grid
+              templateColumns={{base: '1fr', lg: '2fr 1fr'}}
+              gap={4}
+              justifyContent="center"
+              gridAutoFlow={{base: 'row', lg: 'row'}}
+            >
               <Box
-                rounded={{lg: 'lg'}}
+                rounded="lg"
                 bg={mode('white', 'gray.700')}
-                maxW="3xl"
+                maxW={{base: 'xl', md: '3xl'}}
+                w="full"
+                mx="auto"
                 shadow="base"
                 overflow="hidden"
               >
@@ -250,17 +259,18 @@ export function Home() {
                 <Stack spacing="6" py="5" px="8" flex={1}>
                   {designs.slice(0, 5).map((design, index) => (
                     <>
-                      <Design
+                      <DesignInfo
                         key={`latestDesign${design.shortUrl}`}
                         question={design.question}
                         votes={design.totalVotes}
+                        opinions={design?.totalOpinions ?? 0}
                         createdAt={design.createdAt}
                         img={design.img}
                         ownerPicture={design.ownerPicture}
                         ownerName={design.ownerName ?? design.ownerNickname}
                         onClick={() => navigate(`/design/${design.shortUrl}`)}
                       />
-                      {index !== 4 ? <Divider /> : null}
+                      {index !== 4 ? <Divider borderColor="gray.200" /> : null}
                     </>
                   ))}
 

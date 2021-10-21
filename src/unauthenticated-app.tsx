@@ -14,6 +14,9 @@ import {useAuth} from 'context/auth-context'
 import {SettingsScreen} from 'screens/settings'
 import {ResultsScreen} from 'screens/design/results-screen'
 import {CreateDesign} from 'screens/create-design'
+import {LatestScreen} from 'screens/latest'
+import {PopularScreen} from 'screens/popular'
+import {SupportScreen} from 'screens/support'
 
 function AppRoutes() {
   return (
@@ -29,6 +32,9 @@ function AppRoutes() {
       <Route path="*" element={<NotFoundScreen />} />
       <Route path="/settings" element={<SettingsScreen />} />
       <Route path="/create" element={<CreateDesign />} />
+      <Route path="/latest" element={<LatestScreen />} />
+      <Route path="/popular" element={<PopularScreen />} />
+      <Route path="/support" element={<SupportScreen />} />
     </Routes>
   )
 }

@@ -34,11 +34,13 @@ function Expert({src, name, upvotes}: ExpertProps) {
 export function TopExperts() {
   return (
     <Box
-      rounded={{lg: 'lg'}}
+      rounded="lg"
       bg={mode('white', 'gray.700')}
-      maxW="2xl"
+      maxW={{base: 'full', md: '3xl'}}
       maxH="34rem"
       shadow="base"
+      mx="auto"
+      w="full"
       overflow="hidden"
     >
       <Flex align="center" justify="space-between" px="6" py="4">

@@ -2,22 +2,26 @@ import {
   Avatar,
   Box,
   BoxProps,
+  Button,
   Flex,
   HStack,
   useColorModeValue as mode,
   VisuallyHidden,
+  Text,
 } from '@chakra-ui/react'
 import {useAuth} from 'context/auth-context'
 import {Logo} from '../logo'
 import {NavLink} from './nav-link'
-import {Link as RouterLink, useLocation} from 'react-router-dom'
+import {Link as RouterLink, useLocation, useNavigate} from 'react-router-dom'
 import {AuthenticatedMobileNav} from './authenticated-mobile-nav'
+import {FaRegStar} from 'react-icons/fa'
 
 interface NavBarProps extends BoxProps {}
 
 export const AuthenticatedNavBar = (props: NavBarProps) => {
   const {user} = useAuth()
   const {pathname} = useLocation()
+  const navigate = useNavigate()
   return (
     <Box position="fixed" w="full" zIndex="1000" {...props}>
       <Box
@@ -28,14 +32,25 @@ export const AuthenticatedNavBar = (props: NavBarProps) => {
       >
         <Box maxW="7xl" mx="auto" py="4" px={{base: '6', md: '8'}}>
           <Flex as="nav" justify="space-between">
-            <HStack spacing="8">
+            <HStack>
               <RouterLink to="/" rel="home">
                 <VisuallyHidden>Designvote app</VisuallyHidden>
                 <Logo h="6" iconColor="orange.500" />
               </RouterLink>
+            </HStack>
+            <HStack spacing="8">
               <HStack display={{base: 'none', lg: 'flex'}} spacing="8">
                 <NavLink.Desktop active={pathname === '/'} to="/">
-                  Home
+                  Discover
+                </NavLink.Desktop>
+                <NavLink.Desktop active={pathname === '/latest'} to="/latest">
+                  Latest
+                </NavLink.Desktop>
+                <NavLink.Desktop active={pathname === '/popular'} to="/popular">
+                  Popular
+                </NavLink.Desktop>
+                <NavLink.Desktop active={pathname === '/support'} to="/support">
+                  Support
                 </NavLink.Desktop>
                 <NavLink.Desktop
                   active={pathname === '/settings'}
@@ -44,15 +59,37 @@ export const AuthenticatedNavBar = (props: NavBarProps) => {
                   Settings
                 </NavLink.Desktop>
               </HStack>
+              <Flex align="center">
+                <HStack spacing="4" display={{base: 'none', lg: 'flex'}}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    fontWeight="400"
+                    leftIcon={<FaRegStar />}
+                  >
+                    <Text as="span" fontWeight="600" mr="1">
+                      4
+                    </Text>
+                    Favorites
+                  </Button>
+                  <Button
+                    as={RouterLink}
+                    to="/create"
+                    colorScheme="orange"
+                    size="sm"
+                    onClick={() => {
+                      navigate('/create')
+                    }}
+                  >
+                    New Question
+                  </Button>
+                  <Avatar src={user?.picture} />
+                </HStack>
+                <Box ml={{base: '0', lg: '0'}}>
+                  <AuthenticatedMobileNav />
+                </Box>
+              </Flex>
             </HStack>
-            <Flex align="center">
-              <HStack spacing="8" display={{base: 'none', lg: 'flex'}}>
-                <Avatar src={user?.picture} />
-              </HStack>
-              <Box ml={{base: '5', lg: '0'}}>
-                <AuthenticatedMobileNav />
-              </Box>
-            </Flex>
           </Flex>
         </Box>
       </Box>

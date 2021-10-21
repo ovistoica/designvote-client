@@ -20,12 +20,12 @@ const DesktopNavLink = (props: DesktopNavLinkProps) => {
     <Link
       as={RouterLink}
       aria-current={active ? 'page' : undefined}
-      fontWeight="semibold"
+      // fontWeight="semibold"
       color={mode('gray.600', 'gray.300')}
       {...rest}
       _activeLink={{
         color: mode('orange.600', 'orange.300'),
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
       }}
     />
   )

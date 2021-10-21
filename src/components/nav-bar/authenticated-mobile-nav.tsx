@@ -83,7 +83,7 @@ export const AuthenticatedMobileNav = () => {
       <Box
         as="button"
         type="button"
-        p="1"
+        p="2"
         fontSize="2xl"
         color="gray.600"
         onClick={toggle}

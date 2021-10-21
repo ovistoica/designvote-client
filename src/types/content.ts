@@ -50,6 +50,7 @@ export interface Design {
   name: string
   public: boolean
   totalVotes: number
+  totalOpinions: number
   shortUrl: string
   img: string
   question: string
