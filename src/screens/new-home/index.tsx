@@ -19,6 +19,7 @@ import {
   VStack,
   StackProps,
   SimpleGrid,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import {useLatestDesigns} from 'api/design-query'
 import {DesignerBanner} from './designers-banner'
@@ -112,14 +113,18 @@ function BannerSection() {
       pt="24"
       w="full"
     >
-      <Flex
-        maxW={{base: 'full', md: '7xl'}}
-        justify="center"
-        mx="auto"
-        my="auto"
+      <Stack
         direction={{base: 'column', lg: 'row'}}
+        spacing="0"
+        align="center"
+        maxW={{base: 'full', xl: '7xl'}}
       >
-        <Stack h="100%" spacing="8" px={{base: '4', md: '12', lg: '20'}}>
+        <Stack
+          h="100%"
+          spacing={{base: '8', lg: '4', xl: '8'}}
+          px={{base: '4', md: '12', lg: '0', xl: '20'}}
+          ml={{lg: 8, xl: 0}}
+        >
           <Heading size="xl">
             Quick visual feedback from other designers
           </Heading>
@@ -137,10 +142,10 @@ function BannerSection() {
             Create your first design poll
           </Button>
         </Stack>
-        <Box display={{base: 'none', md: 'block'}} mx="auto">
+        <Box display={{base: 'none', md: 'block'}}>
           <DesignerBanner />
         </Box>
-      </Flex>
+      </Stack>
     </Flex>
   )
 }
@@ -197,17 +202,19 @@ export function Home() {
     data: {designs},
   } = useLatestDesigns()
   const navigate = useNavigate()
+
+  const nrOfDesigns = useBreakpointValue({base: 4, lg: 4, xl: 4})
   return (
     <>
       <Flex justifyContent="center" align="center" direction="column">
         <BannerSection />
         <Flex
           direction="column"
-          w={{base: 'full', lg: '6xl'}}
+          w={{base: 'full', lg: '5xl', xl: '6xl'}}
           py="8"
-          px={{base: '8', lg: '0'}}
+          px={{base: '4', md: '8', lg: '8', xl: '4'}}
         >
-          <Flex align="center" pb="4" w={{base: 'full', lg: '6xl'}}>
+          <Flex align="center" pb="4" w={{base: 'full', lg: '3xl', xl: '6xl'}}>
             <Heading size="md">Popular</Heading>
             <Button
               mx="2"
@@ -218,8 +225,12 @@ export function Home() {
               View all
             </Button>
           </Flex>
-          <SimpleGrid columns={{base: 1, md: 2, lg: 4}} gridGap="4" rowGap="6">
-            {designs.slice(0, 4).map((design, index) => (
+          <SimpleGrid
+            columns={{base: 1, md: 2, lg: 4, xl: 4}}
+            gridGap="4"
+            rowGap="6"
+          >
+            {designs.slice(0, nrOfDesigns).map((design, index) => (
               <DesignCard
                 opinions={design?.totalOpinions ?? 0}
                 key={design.designId}
@@ -234,8 +245,8 @@ export function Home() {
             ))}
           </SimpleGrid>
         </Flex>
-        <Box as="section" py="4" w="full" px={{base: '4', md: undefined}}>
-          <Box maxW={{base: 'xl', md: '6xl'}} mx="auto">
+        <Box as="section" py="4" w="full" px={{base: '4', lg: '8', xl: '4'}}>
+          <Box maxW={{base: 'xl', md: '5xl', lg: '6xl'}} mx="auto">
             <Grid
               templateColumns={{base: '1fr', lg: '2fr 1fr'}}
               gap={4}

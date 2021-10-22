@@ -10,15 +10,15 @@ export const Footer = (props: BoxProps) => (
     as="footer"
     role="contentinfo"
     mx="auto"
-    maxW="7xl"
+    maxW={{lg: '5xl', xl: '7xl'}}
     py="12"
     px={{base: '4', md: '8'}}
     {...props}
   >
     <Stack spacing="10" divider={<StackDivider />}>
       <Stack
-        direction={{base: 'column', lg: 'row'}}
-        spacing={{base: '10', lg: '28'}}
+        direction={{base: 'column', xl: 'row'}}
+        spacing={{base: '10', lg: '10', xl: '28'}}
       >
         <Box flex="1">
           <Logo h="6" iconColor="orange.500" />
@@ -27,7 +27,7 @@ export const Footer = (props: BoxProps) => (
           direction={{base: 'column', md: 'row'}}
           spacing={{base: '10', md: '20'}}
         >
-          <LinkGrid spacing={{base: '10', md: '20', lg: '28'}} flex="1" />
+          <LinkGrid spacing={{base: '10', md: '20', xl: '28'}} flex="1" />
           <SubscribeForm width={{base: 'full', md: 'sm'}} />
         </Stack>
       </Stack>

@@ -14,7 +14,6 @@ import {
 import {FaStamp, FaComment} from 'react-icons/fa'
 // import {HiCash} from 'react-icons/hi'
 import {formatCreatedAt} from 'utils/date'
-import {opinion} from 'utils/schema'
 
 export const Card = (props: BoxProps) => (
   <Box
@@ -23,7 +22,7 @@ export const Card = (props: BoxProps) => (
     bg={useColorModeValue('white', 'gray.700')}
     rounded={{md: 'xl'}}
     padding="10"
-    px={{base: '0', md: '8'}}
+    px={{base: '0', md: '8', lg: '2', xl: '8'}}
     {...props}
   />
 )
@@ -42,11 +41,15 @@ interface DesignProps {
 export function DesignInfo(props: DesignProps) {
   const timeAgo = formatCreatedAt(props.createdAt)
   return (
-    <Card onClick={props.onClick} cursor="pointer" py={{base: '4', md: '10'}}>
+    <Card
+      onClick={props.onClick}
+      cursor="pointer"
+      py={{base: '4', md: '10', lg: '4', xl: '10'}}
+    >
       <Stack
         direction={{base: 'column', md: 'row'}}
         spacing={{base: '3', md: '10'}}
-        align={{base: 'center', md: 'flex-start'}}
+        align={{base: 'center', md: 'center'}}
       >
         <Stack spacing="4" alignItems="center">
           <Image src={props.img} rounded="lg" shadow="lg" h="full" />
