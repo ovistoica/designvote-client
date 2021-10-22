@@ -203,7 +203,6 @@ export function Home() {
   } = useLatestDesigns()
   const navigate = useNavigate()
 
-  const nrOfDesigns = useBreakpointValue({base: 4, lg: 4, xl: 4})
   return (
     <>
       <Flex justifyContent="center" align="center" direction="column">
