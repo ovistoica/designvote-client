@@ -19,9 +19,8 @@ import {
   VStack,
   StackProps,
   SimpleGrid,
-  useBreakpointValue,
 } from '@chakra-ui/react'
-import {useLatestDesigns} from 'api/design-query'
+import {useHomeDesigns} from 'api/design-query'
 import {DesignerBanner} from './designers-banner'
 import {Footer} from 'components/footer'
 import {TopExperts} from './experts'
@@ -199,8 +198,9 @@ function Topics() {
 
 export function Home() {
   const {
-    data: {designs},
-  } = useLatestDesigns()
+    data: {latest, popular},
+  } = useHomeDesigns()
+
   const navigate = useNavigate()
 
   return (
@@ -229,7 +229,7 @@ export function Home() {
             gridGap="4"
             rowGap="6"
           >
-            {designs.slice(5, 9).map((design, index) => (
+            {popular.slice(0, 4).map((design, index) => (
               <DesignCard
                 opinions={design?.totalOpinions ?? 0}
                 key={design.designId}
@@ -267,7 +267,7 @@ export function Home() {
                   </Text>
                 </Flex>
                 <Stack spacing="6" py="5" px="8" flex={1}>
-                  {designs.slice(0, 5).map((design, index) => (
+                  {latest.slice(0, 5).map((design, index) => (
                     <>
                       <DesignInfo
                         key={`latestDesign${design.shortUrl}`}

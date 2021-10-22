@@ -129,8 +129,10 @@ function deleteDesign(designId: string) {
   return deleteRequest<null>(`v1/designs/${designId}`)
 }
 
-function getLatestDesigns() {
-  return getRequest<{designs: Design[]}>('v1/designs/latest')
+function getPaginatedDesign() {
+  return getRequest<{latest: Design[]; popular: Design[]}>(
+    'v1/designs/paginated/q',
+  )
 }
 
 export function useCreateDesignFromDraft() {
@@ -213,16 +215,20 @@ export function useUrlDesign(
   }
 }
 
-export function useLatestDesigns(
-  options: QueryOptions<{designs: Design[]}, AxiosError> = {},
+export enum OrderBy {
+  Latest = 'latest',
+  Popular = 'popular',
+}
+export function useHomeDesigns(
+  options: QueryOptions<{latest: Design[]; popular: Design[]}, AxiosError> = {},
 ) {
   const {data, ...rest} = useQuery({
-    queryKey: 'latest-designs',
-    queryFn: () => getLatestDesigns(),
+    queryKey: 'home-designs',
+    queryFn: () => getPaginatedDesign(),
     ...options,
   })
 
-  return {data: data ?? {designs: []}, ...rest}
+  return {data: data ?? {latest: [], popular: []}, ...rest}
 }
 
 export function useDesigns(options: QueryOptions<Design[], AxiosError> = {}) {
