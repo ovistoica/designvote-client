@@ -72,7 +72,7 @@ export function DesignScreen() {
           px={{base: '6', md: '8'}}
           pt="8"
         >
-          <Grid gridTemplateColumns="65fr 35fr" gap="6">
+          <Grid gridTemplateColumns={{base: '1fr', md: '65fr 35fr'}} gap="6">
             <Stack>
               <Heading fontWeight="600" color={mode('gray.700', 'gray.200')}>
                 {question}

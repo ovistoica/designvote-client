@@ -28,6 +28,7 @@ export function DesignStats({votes, opinions}: DesignStatsProps) {
       rounded="md"
       align="center"
       justify="space-evenly"
+      display={{base: 'none', md: undefined}}
     >
       <Flex w="100%" justify="center">
         <Stack p="1em" w="49%" align="center">

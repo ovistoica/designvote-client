@@ -12,9 +12,7 @@ import {client} from 'api/api-client'
 import {useQueryClient} from 'react-query'
 import {ApiConfig, Auth0User} from 'types'
 import {apiClient} from 'api/axios-client'
-import {createBrowserHistory} from 'history'
-
-export const history = createBrowserHistory()
+import {history} from './history'
 
 const onRedirectCallback = (appState: AppState) => {
   // If using a Hash Router, you need to use window.history.replaceState to

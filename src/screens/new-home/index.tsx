@@ -230,7 +230,7 @@ export function Home() {
             gridGap="4"
             rowGap="6"
           >
-            {designs.slice(0, nrOfDesigns).map((design, index) => (
+            {designs.slice(5, 9).map((design, index) => (
               <DesignCard
                 opinions={design?.totalOpinions ?? 0}
                 key={design.designId}
