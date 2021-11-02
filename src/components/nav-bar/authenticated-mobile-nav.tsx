@@ -7,12 +7,25 @@ import {
   useBoolean,
   useFocusOnShow,
   useColorModeValue as mode,
+  VStack,
+  Button,
+  Text,
 } from '@chakra-ui/react'
 import {HTMLMotionProps, motion, Variants} from 'framer-motion'
 import * as React from 'react'
 import FocusLock from 'react-focus-lock'
-import {HiCog, HiOutlineMenu, HiOutlineX, HiHome} from 'react-icons/hi'
+import {FaRegStar} from 'react-icons/fa'
+import {
+  HiCog,
+  HiOutlineMenu,
+  HiOutlineX,
+  HiHome,
+  HiOutlineClock,
+  HiSupport,
+} from 'react-icons/hi'
+import {SiBuzzfeed} from 'react-icons/si'
 import {RemoveScroll} from 'react-remove-scroll'
+import {useNavigate} from 'react-router'
 import {Logo} from '../logo'
 import {NavLink} from './nav-link'
 
@@ -77,6 +90,7 @@ export const AuthenticatedMobileNav = () => {
   const [show, {toggle, off}] = useBoolean()
   const ref = React.useRef<HTMLDivElement>(null)
   useFocusOnShow(ref, {visible: show, shouldFocus: true})
+  const navigate = useNavigate()
 
   return (
     <>
@@ -124,13 +138,46 @@ export const AuthenticatedMobileNav = () => {
                 </Box>
               </Flex>
               <SimpleGrid as="nav" gap="6" mt="8" columns={{base: 1, sm: 2}}>
-                <NavLink.Mobile icon={HiHome} to="/">
-                  Home
+                <NavLink.Mobile icon={HiHome} to="/" onClick={off}>
+                  Discover
                 </NavLink.Mobile>
-                <NavLink.Mobile icon={HiCog} to="/settings">
+                <NavLink.Mobile
+                  icon={HiOutlineClock}
+                  to="/latest"
+                  onClick={off}
+                >
+                  Latest
+                </NavLink.Mobile>
+                <NavLink.Mobile icon={SiBuzzfeed} to="/popular" onClick={off}>
+                  Popular
+                </NavLink.Mobile>
+                <NavLink.Mobile icon={HiSupport} to="/support" onClick={off}>
+                  Support
+                </NavLink.Mobile>
+                <NavLink.Mobile icon={HiCog} to="/settings" onClick={off}>
                   Settings
                 </NavLink.Mobile>
               </SimpleGrid>
+              <VStack mt="8" spacing="4">
+                <Button
+                  w="full"
+                  colorScheme="orange"
+                  onClick={() => navigate('/create')}
+                >
+                  Create poll
+                </Button>
+                <Button
+                  w="full"
+                  onClick={() => navigate('/create')}
+                  leftIcon={<FaRegStar />}
+                  fontWeight="regular"
+                >
+                  <Text as="span" fontWeight="bold" mr="1">
+                    4
+                  </Text>
+                  Favorites
+                </Button>
+              </VStack>
             </Box>
           </Box>
         </FocusLock>

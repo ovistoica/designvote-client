@@ -14,12 +14,14 @@ import {useAuth} from 'context/auth-context'
 import {HTMLMotionProps, motion, Variants} from 'framer-motion'
 import * as React from 'react'
 import FocusLock from 'react-focus-lock'
+import {FaHome} from 'react-icons/fa'
 import {
-  HiCloudDownload,
-  HiCurrencyDollar,
+  HiOutlineClock,
   HiOutlineMenu,
   HiOutlineX,
+  HiSupport,
 } from 'react-icons/hi'
+import {SiBuzzfeed} from 'react-icons/si'
 import {RemoveScroll} from 'react-remove-scroll'
 import {Logo} from '../logo'
 import {NavLink} from './nav-link'
@@ -39,9 +41,10 @@ const variants: Variants = {
   },
 }
 
-const Backdrop = ({show}: {show?: boolean}) => (
+const Backdrop = ({show, off}: {show?: boolean; off: () => void}) => (
   <Portal>
     <motion.div
+      onClick={off}
       initial={false}
       animate={show ? 'show' : 'hide'}
       transition={{duration: 0.1}}
@@ -103,7 +106,7 @@ export const MobileNav = () => {
 
       <Transition in={show}>
         <RemoveScroll enabled={show}>
-          <Backdrop show={show} />
+          <Backdrop off={off} show={show} />
         </RemoveScroll>
         <FocusLock disabled={!show} returnFocus>
           <Box
@@ -133,11 +136,21 @@ export const MobileNav = () => {
                 </Box>
               </Flex>
               <SimpleGrid as="nav" gap="6" mt="8" columns={{base: 1, sm: 2}}>
-                <NavLink.Mobile icon={HiCloudDownload} to="/">
-                  Product
+                <NavLink.Mobile icon={FaHome} to="/" onClick={off}>
+                  Discover
                 </NavLink.Mobile>
-                <NavLink.Mobile icon={HiCurrencyDollar} to="/pricing">
-                  Pricing
+                <NavLink.Mobile
+                  icon={HiOutlineClock}
+                  to="/latest"
+                  onClick={off}
+                >
+                  Latest
+                </NavLink.Mobile>
+                <NavLink.Mobile icon={SiBuzzfeed} to="/popular" onClick={off}>
+                  Popular
+                </NavLink.Mobile>
+                <NavLink.Mobile icon={HiSupport} to="/support" onClick={off}>
+                  Support
                 </NavLink.Mobile>
               </SimpleGrid>
               <VStack mt="8" spacing="4">
