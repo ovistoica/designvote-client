@@ -1,5 +1,6 @@
 import {FormControl, FormErrorMessage} from '@chakra-ui/form-control'
 import {Input} from '@chakra-ui/input'
+import {Button, ButtonGroup, useColorModeValue as mode} from '@chakra-ui/react'
 import {FormikTouched, useFormik} from 'formik'
 import * as yup from 'yup'
 
@@ -17,13 +18,17 @@ const validationSchema = yup.object().shape({
 const initialTouched: FormikTouched<Values> = {}
 
 interface CommentsSectionProps {
-  onChange: (comment: string) => void
+  onChange?: (comment: string) => void
+  onSubmit: (comment: string) => void
   initialValue?: string
+  isLoading?: boolean
 }
 
 export function CommentInput({
   onChange,
+  onSubmit,
   initialValue = '',
+  isLoading = false,
 }: CommentsSectionProps) {
   const initialValues = {comment: initialValue}
   const {
@@ -33,11 +38,13 @@ export function CommentInput({
     handleBlur,
     values,
     touched,
+    resetForm,
   } = useFormik({
     validationSchema,
     initialTouched,
     initialValues,
-    onSubmit: (_, helpers) => {
+    onSubmit: (values, helpers) => {
+      onSubmit(values.comment)
       helpers.resetForm()
     },
   })
@@ -49,22 +56,39 @@ export function CommentInput({
       >
         <Input
           name="comment"
+          variant="flushed"
           type="text"
+          bg={mode('white', 'gray.700')}
           as="textarea"
-          placeholder="Add your comment"
+          placeholder="Leave your opinion"
+          focusBorderColor="gray.400"
           onChange={e => {
             handleChange(e)
-            onChange(e.target.value)
+            onChange?.(e.target.value)
           }}
-          onBlur={handleBlur}
+          onBlur={e => {
+            handleBlur(e)
+          }}
           value={values.comment}
           transition="0.2s all"
-          h={touched.comment && values.comment ? '20' : 'auto'}
-          _focus={{h: '20'}}
         />
         <FormErrorMessage>
           {touched.comment && errors.comment && errors.comment}
         </FormErrorMessage>
+        {values.comment ? (
+          <ButtonGroup mt={4} colorScheme="gray">
+            <Button isLoading={isLoading} type="submit">
+              Submit
+            </Button>
+            <Button
+              variant="ghost"
+              isLoading={isLoading}
+              onClick={() => resetForm()}
+            >
+              Cancel
+            </Button>
+          </ButtonGroup>
+        ) : null}
       </FormControl>
     </form>
   )

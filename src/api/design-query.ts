@@ -1,41 +1,34 @@
 import {AxiosError} from 'axios'
 import * as React from 'react'
 import {
-  UseMutateFunction,
   useMutation,
   useQuery,
   useQueryClient,
   UseQueryOptions,
 } from 'react-query'
-import {useNavigate} from 'react-router'
-import {useCreateDesignStore} from 'store'
-import {useVoteDesignState} from 'store/vote-design'
-import {
-  ApiDesign,
-  APIUser,
-  Design,
-  DesignType,
-  NormalizedDesign,
-  Opinion,
-  VoteStyle,
-} from 'types'
+import {useUploadDesignImagesStore, useCreateDesignStore} from 'store'
+import {ApiDesign, APIUser, Design, DesignType, VoteStyle} from 'types'
 import {
   deleteRequest,
   getRequest,
   postRequest,
   putRequest,
+  apiClient,
+  onRequestSuccess,
+  onRequestError,
 } from './axios-client'
-import {loadingDesign} from './loading-data'
-import {normalizeDesign} from './normalize'
-import {keysToCamel} from './object'
+import {singleLoadingDesign} from '../utils/loading-data'
+import {keysToCamel} from '../utils/object'
+import {useNavigate} from 'react-router'
 
 interface CreateDesignBody {
   name: string
   description: string | null | undefined
   question: string
-  'design-type': DesignType
-  'vote-style': VoteStyle
-  img: null
+  designType: DesignType
+  voteStyle: VoteStyle
+  isPublic: boolean
+  images: File[]
 }
 
 interface CreateDesignResponse {
@@ -61,12 +54,6 @@ interface EditDesignBody {
   public: boolean | null
 }
 
-interface AddOpinionBody {
-  'voter-id': string
-  'version-id': string
-  opinion: string
-}
-
 type QueryOptions<Data, Error> = Omit<
   UseQueryOptions<Data, Error>,
   'queryKey' | 'queryFn'
@@ -77,10 +64,23 @@ function getApiUser() {
 }
 
 function createDesign(design: CreateDesignBody) {
-  return postRequest<CreateDesignResponse, CreateDesignBody>(
-    'v1/designs',
-    design,
-  )
+  const data = new FormData()
+  for (let i = 0; i < design.images.length; ++i) {
+    data.append('versions', design.images[i], design.images[i].name)
+  }
+  data.append('name', design.name)
+  data.append('designType', design.designType)
+  data.append('question', design.question)
+  data.append('voteStyle', design.voteStyle)
+  data.append('description', design.description ?? '')
+  data.append('isPublic', String(design.isPublic) ?? 'true')
+  return apiClient
+    .post('v2/designs', data, {
+      headers: {'Content-Type': 'multipart/form-data;'},
+    })
+    .then(onRequestSuccess)
+    .catch(onRequestError)
+  // return postRequest<CreateDesignResponse>('v2/designs', data)
 }
 
 function createDesignVersions(designId: string, versions: ApiVersion[]) {
@@ -95,15 +95,11 @@ function publishDesign(designId: string) {
 }
 
 async function getDesign(designId: string) {
-  return getRequest<ApiDesign>(`v1/designs/${designId}`).then(result =>
-    normalizeDesign(result),
-  )
+  return getRequest<Design>(`v1/designs/${designId}`)
 }
 
 async function getDesignByShortUrl(shortUrl: string) {
-  return getRequest<ApiDesign>(
-    `v1/designs/vote/short/${shortUrl}`,
-  ).then(result => normalizeDesign(result))
+  return getRequest<Design>(`v1/designs/vote/short/${shortUrl}`)
 }
 
 async function getDesigns() {
@@ -129,113 +125,49 @@ function editDesign(designId: string, body: EditDesignBody) {
   return putRequest<Design, EditDesignBody>(`v1/designs/${designId}`, body)
 }
 
-function addOpinion(designId: string, body: AddOpinionBody) {
-  return postRequest<Opinion, AddOpinionBody>(
-    `v1/designs/${designId}/opinions`,
-    body,
-  )
-}
-
-type DesignFeedbackBody = {
-  comments: [string, string][]
-  ratings: [string, number][]
-  'voter-name': string | null
-}
-
-function addDesignFeedback(designId: string, body: DesignFeedbackBody) {
-  return postRequest<undefined, DesignFeedbackBody>(
-    `v1/designs/${designId}/feedback`,
-    body,
-  )
-}
-
-interface VoteDesignVersionBody {
-  'version-id': string
-  'voter-id': string
-  rating: number | null
-  'vote-style': string
-}
-
-interface VoteDesignVersionParams {
-  designId: string
-  versionId: string
-  voterId: string
-  rating: number | null
-  voteStyle: VoteStyle
-}
-
-function voteDesignVersion({
-  designId,
-  versionId,
-  voterId,
-  rating,
-  voteStyle,
-}: VoteDesignVersionParams) {
-  return postRequest<null, VoteDesignVersionBody>(
-    `v1/designs/${designId}/votes`,
-    {
-      rating,
-      'version-id': versionId,
-      'voter-id': voterId,
-      'vote-style': voteStyle,
-    },
-  )
-}
-
 function deleteDesign(designId: string) {
   return deleteRequest<null>(`v1/designs/${designId}`)
 }
 
+function getPaginatedDesign() {
+  return getRequest<{latest: Design[]; popular: Design[]}>(
+    'v1/designs/paginated/q',
+  )
+}
+
 export function useCreateDesignFromDraft() {
   const qc = useQueryClient()
+  const navigate = useNavigate()
 
-  const {images, imagesByUrl, ...design} = useCreateDesignStore(
+  const design = useCreateDesignStore(
     React.useCallback(
       state => ({
         name: state.name ?? '',
         description: state.description,
-        question: state.question,
-        type: state.type,
-        voteStyle: VoteStyle.FiveStar,
-        images: state.images,
-        imagesByUrl: state.imagesByUrl,
+        question: state.question ?? '',
+        designType: state.type,
+        isPublic: state.isPublic ?? true,
+        voteStyle: state.voteStyle,
       }),
       [],
     ),
   )
+  const images = useUploadDesignImagesStore(state => state.images)
+  const clearImages = useUploadDesignImagesStore(state => state.clearState)
+
   const clearDraftState = useCreateDesignStore(state => state.clearState)
-  const navigate = useNavigate()
-  const designVersions = imagesByUrl.map((img, index) => ({
-    name: images[img].description ?? `#${index + 1}`,
-    pictures: [img],
-    description: null,
-  }))
 
   return useMutation(
-    () =>
-      createDesign({
-        name: design.name,
-        description: design.description ?? null,
-        question: design.question ?? '',
-        'vote-style': design.voteStyle,
-        'design-type': design.type,
-        img: null,
-      }).then(async data => {
-        const designId = data?.['design-id']
-        const [result] = await Promise.all([
-          createDesignVersions(designId, designVersions),
-          publishDesign(designId),
-        ])
-        return result['design-id']
-      }),
+    () => createDesign({...design, images: images.map(img => img.file)}),
     {
-      onSettled: designId => {
+      onSettled: data => {
         // clear out draft from localstorage and zustand
         // refetch designs to include the new one
-        navigate(`/design/${designId}`)
         window.localStorage.removeItem('design-info')
         clearDraftState()
+        clearImages()
         qc.invalidateQueries({queryKey: 'designs'})
+        navigate(`/results/${data.shortUrl}`)
       },
     },
   )
@@ -243,9 +175,9 @@ export function useCreateDesignFromDraft() {
 
 export function useDesign(
   designId: string,
-  options: QueryOptions<NormalizedDesign, AxiosError> = {},
+  options: QueryOptions<Design, AxiosError> = {},
 ) {
-  const {data, ...rest} = useQuery<NormalizedDesign, AxiosError>({
+  const {data, ...rest} = useQuery<Design, AxiosError>({
     queryKey: ['design', {designId}],
     queryFn: () => getDesign(designId),
     refetchOnWindowFocus: true,
@@ -253,37 +185,50 @@ export function useDesign(
     ...options,
   })
 
-  return {data: data ?? loadingDesign, ...rest}
+  return {data: data ?? singleLoadingDesign, ...rest}
 }
 
 export function useUrlDesign(
   shortUrl: string,
-  options: QueryOptions<NormalizedDesign, AxiosError> = {},
+  options: QueryOptions<Design, AxiosError<Design>> = {},
 ) {
   const qc = useQueryClient()
   const {data, ...rest} = useQuery({
     queryKey: ['design', {shortUrl}],
     queryFn: () => getDesignByShortUrl(shortUrl),
     onSettled(data) {
-      qc.setQueryData<NormalizedDesign>(
-        ['design', {designId: data?.design.designId}],
-        old => {
-          if (data) {
-            return data
-          }
-          if (old) {
-            return old
-          }
-          return loadingDesign
-        },
-      )
+      qc.setQueryData<Design>(['design', {designId: data?.designId}], old => {
+        if (data) {
+          return data
+        }
+        if (old) {
+          return old
+        }
+        return singleLoadingDesign
+      })
     },
     ...options,
   })
   return {
-    data: data ?? loadingDesign,
+    data: data ?? singleLoadingDesign,
     ...rest,
   }
+}
+
+export enum OrderBy {
+  Latest = 'latest',
+  Popular = 'popular',
+}
+export function useHomeDesigns(
+  options: QueryOptions<{latest: Design[]; popular: Design[]}, AxiosError> = {},
+) {
+  const {data, ...rest} = useQuery({
+    queryKey: 'home-designs',
+    queryFn: () => getPaginatedDesign(),
+    ...options,
+  })
+
+  return {data: data ?? {latest: [], popular: []}, ...rest}
 }
 
 export function useDesigns(options: QueryOptions<Design[], AxiosError> = {}) {
@@ -379,31 +324,6 @@ export function usePublishDesign(
   })
 }
 
-interface VoteMutateParams {
-  versionId: string
-  voterId: string
-  voteStyle: VoteStyle
-  rating: number | null | undefined
-}
-
-export type VoteFunction = UseMutateFunction<
-  null,
-  AxiosError<any>,
-  VoteMutateParams,
-  unknown
->
-
-export function useVoteDesignVersion(
-  designId: string,
-  options: QueryOptions<null, AxiosError> = {},
-) {
-  return useMutation(
-    ({versionId, voterId, rating = null, voteStyle}: VoteMutateParams) =>
-      voteDesignVersion({designId, versionId, rating, voterId, voteStyle}),
-    {...options},
-  )
-}
-
 export function useDeleteDesign(options: QueryOptions<null, AxiosError> = {}) {
   const qc = useQueryClient()
   return useMutation((designId: string) => deleteDesign(designId), {
@@ -426,57 +346,6 @@ export function useCreateMultipleDesignVersions(
         qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]}),
     },
   )
-}
-
-export function useAddOpinion(
-  designId: string,
-  options: QueryOptions<Opinion, AxiosError> = {},
-) {
-  const qc = useQueryClient()
-
-  return useMutation(
-    (params: {voterId: string; opinion: string; versionId: string}) =>
-      addOpinion(designId, {
-        'version-id': params.versionId,
-        opinion: params.opinion,
-        'voter-id': params.voterId,
-      }),
-    {
-      ...options,
-      onSettled: () =>
-        qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]}),
-    },
-  )
-}
-
-export function useGiveDesignFeedback(
-  designId: string,
-  options: QueryOptions<undefined, AxiosError> = {},
-) {
-  const qc = useQueryClient()
-
-  // Get necessary data from vote state
-  const feedbackBody = useVoteDesignState(state => ({
-    comments: Object.entries(state.comments).filter(([_, v]) => !!v) as [
-      string,
-      string,
-    ][],
-    ratings: Object.entries(state.currentRatings).filter(([_, v]) => !!v) as [
-      string,
-      number,
-    ][],
-    'voter-name': state.voterName ?? null,
-  }))
-
-  const clearVoteState = useVoteDesignState(state => state.clearState)
-
-  return useMutation(() => addDesignFeedback(designId, feedbackBody), {
-    ...options,
-    onSettled: () => {
-      qc.invalidateQueries({exact: true, queryKey: ['design', {designId}]})
-      clearVoteState()
-    },
-  })
 }
 
 export function useApiUser(

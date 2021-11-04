@@ -10,7 +10,6 @@ if (process.env.NODE_ENV === 'production') {
   SplitBee.init()
 }
 
-const AuthenticatedApp = React.lazy(() => import('./authenticated-app'))
 const UnauthenticatedApp = React.lazy(
   () => import(/* webpackPrefetch: true */ './unauthenticated-app'),
 )
@@ -30,7 +29,7 @@ function App() {
 
   return (
     <React.Suspense fallback={<FullPageSpinner />}>
-      {isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />}
+      <UnauthenticatedApp />
     </React.Suspense>
   )
 }

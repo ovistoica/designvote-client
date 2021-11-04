@@ -2,12 +2,14 @@ import * as React from 'react'
 import {Button} from '@chakra-ui/button'
 import {CheckIcon} from '@chakra-ui/icons'
 import {Flex, Heading, Stack, Text} from '@chakra-ui/layout'
-import {useCreateDesignFromDraft} from 'utils/design-query'
-import {useDesign} from 'utils/design-query'
-import {useCreateDesignStore} from 'store'
+import {useCreateDesignFromDraft} from 'api/design-query'
+import {useDesign} from 'api/design-query'
+import {useCreateDesignStore, useUploadDesignImagesStore} from 'store'
 import {CreateDesignStep} from 'types'
+import {useNavigate} from 'react-router'
 
 export function PublishStep() {
+  const navigate = useNavigate()
   const {
     mutate,
     data: designId,
@@ -21,13 +23,14 @@ export function PublishStep() {
         description: state.description ?? '',
         type: state.type,
         question: state.question ?? '',
-        imagesByUrl: state.imagesByUrl ?? [],
         voteStyle: state.voteStyle,
       }),
       [],
     ),
   )
-  const {isLoading, isSuccess: designLoaded} = useDesign(designId ?? '', {
+  const images = useUploadDesignImagesStore(state => state.images)
+
+  const {isLoading, isSuccess: designLoaded, data} = useDesign(designId ?? '', {
     enabled: isSuccess,
   })
   const setStep = useCreateDesignStore(
@@ -35,7 +38,13 @@ export function PublishStep() {
   )
 
   const isDesignLoading = isCreateLoading || isLoading
-  const notEnoughVersions = designDraft.imagesByUrl.length < 2
+  const notEnoughVersions = images.length < 2
+
+  React.useEffect(() => {
+    if (designLoaded && data.shortUrl) {
+      navigate(`/results/${data.shortUrl}`)
+    }
+  }, [data.shortUrl, designLoaded, navigate])
 
   if (!designDraft.name || !designDraft.question) {
     return (

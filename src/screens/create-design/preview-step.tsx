@@ -3,11 +3,11 @@ import {Button} from '@chakra-ui/button'
 import {Box, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
 import {Input, useColorModeValue as mode, useDisclosure} from '@chakra-ui/react'
 import {useCallback} from 'react'
-import {useCreateDesignStore} from 'store'
+import {useCreateDesignStore, useUploadDesignImagesStore} from 'store'
 import {CreateDesignStep, VoteStyle} from 'types'
 import {getDesignSurveyType} from 'utils/design'
 import {useAuth} from 'context/auth-context'
-import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
+import {RateStarsVotingCard} from 'screens/design/rate-five-stars/star-rating-card'
 import {useZoomModalState, ZoomModal} from 'components/zoom-modal'
 
 export function PreviewStep() {
@@ -17,27 +17,34 @@ export function PreviewStep() {
         question: state.question,
         name: state.name,
         description: state.description,
-        images: state.images,
-        imagesByUrl: state.imagesByUrl,
         voteStyle: state.voteStyle,
         designType: state.type,
       }),
       [],
     ),
   )
+  const images = useUploadDesignImagesStore(state => state.images)
+
   const {user} = useAuth()
 
   const surveyType = getDesignSurveyType(design.designType)
   const heading = `${user?.nickname} wants your feedback on their ${surveyType}`
 
-  const isDesignInvalid = !design.name || !design.question
-  const notEnoughVersions = design.imagesByUrl.length < 2
+  const isDesignValid = design.name && design.question
+  const hasEnoughVersions = images.length >= 2
   const {isOpen, onOpen, onClose} = useDisclosure()
 
   const setStep = useCreateDesignStore(useCallback(state => state.setStep, []))
-  const setImage = useZoomModalState(state => state.setImage)
+  const setImages = useZoomModalState(state => state.setImages)
+  const setStartSlide = useZoomModalState(state => state.setIndex)
 
-  if (isDesignInvalid) {
+  React.useEffect(() => {
+    if (!isDesignValid && hasEnoughVersions) {
+      setImages(images.map(({url}) => ({url, versionId: 'preview'})))
+    }
+  }, [hasEnoughVersions, images, isDesignValid, setImages])
+
+  if (!isDesignValid) {
     return (
       <Stack spacing="1em" mt="1em" align="center">
         <Heading fontWeight="400" fontSize="xl">
@@ -55,7 +62,7 @@ export function PreviewStep() {
     )
   }
 
-  if (notEnoughVersions) {
+  if (!hasEnoughVersions) {
     return (
       <Stack spacing="1em" mt="1em" align="center">
         <Heading fontWeight="semibold" fontSize="xl">
@@ -125,17 +132,17 @@ export function PreviewStep() {
             rowGap={{base: 8, md: 8, lg: 8}}
             mt="8"
           >
-            {design.imagesByUrl.map((imageUrl, index) => {
+            {images.map(({url}, index) => {
               return (
                 <RateStarsVotingCard
                   index={index}
-                  key={`designVersion${imageUrl}${index}`}
+                  key={`designVersion${url}${index}`}
                   versionId={'irelevant'}
                   inPreview
-                  imageUrl={imageUrl}
+                  imageUrl={url}
                   onClick={() => {
                     onOpen()
-                    setImage(imageUrl, '')
+                    setStartSlide(index)
                   }}
                 />
               )

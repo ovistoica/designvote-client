@@ -11,38 +11,49 @@ import {
   Button,
   useDisclosure,
 } from '@chakra-ui/react'
-import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
+import {RateStarsVotingCard} from 'screens/design/rate-five-stars/star-rating-card'
 import {useNavigate, useParams} from 'react-router'
 import {canSubmit, useVoteDesignState} from 'store/vote-design'
 import {VoteStyle} from 'types'
 import {getDesignSurveyType} from 'utils/design'
-import {useGiveDesignFeedback, useUrlDesign} from 'utils/design-query'
+import {useUrlDesign} from 'api/design-query'
 import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
 import {Footer} from 'components/footer'
 
 export function PublicVoteScreen() {
   const {shortUrl} = useParams()
-  const {data, isLoading, isSuccess} = useUrlDesign(shortUrl)
-  const {design, versions, pictures} = data
+  const {data: design, isLoading, isSuccess} = useUrlDesign(shortUrl)
   const setVoterName = useVoteDesignState(state => state.setVoterName)
   const canSubmitFeedback = useVoteDesignState(canSubmit)
   const {
     mutate: submitFeedback,
     isSuccess: isVotingSuccess,
     isLoading: isVoteLoading,
-  } = useGiveDesignFeedback(design.designId, {
-    enabled: isSuccess,
-  })
+  } = {mutate: () => {}, isSuccess: false, isLoading: true}
+  // } = useGiveDesignFeedback(design.designId, {
+  //   enabled: isSuccess,
+  // })
   const navigate = useNavigate()
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const setImage = useZoomModalState(state => state.setImage)
+  const setImages = useZoomModalState(state => state.setImages)
+  const setStartSlide = useZoomModalState(state => state.setIndex)
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      setImages(
+        design.versions.map(v => ({url: v.imageUrl, versionId: v.versionId})),
+      )
+    }
+  }, [design.versions, isSuccess, setImages])
 
   const surveyType = isLoading
     ? 'Loading...'
     : getDesignSurveyType(design.designType)
   const heading = isLoading
     ? 'Loading survey...'
-    : `${design.nickname} wants your feedback on their ${surveyType}`
+    : `${
+        design.ownerName ?? design.ownerNickname
+      } wants your feedback on their ${surveyType}`
 
   React.useEffect(() => {
     if (isVotingSuccess) {
@@ -153,28 +164,24 @@ export function PublicVoteScreen() {
             ) : (
               design.versions
                 .sort((a, b) => {
-                  const {name: nameA} = versions[a]
-                  const {name: nameB} = versions[b]
+                  const {name: nameA} = a
+                  const {name: nameB} = b
                   if (nameA === nameB) {
                     return 0
                   }
                   return nameA > nameB ? 1 : -1
                 })
-                .map((vId, index) => {
-                  const {
-                    pictures: [picId],
-                    name,
-                  } = versions[vId]
-                  const {uri: imageUrl} = pictures[picId]
+                .map((v, index) => {
+                  const {imageUrl, versionId} = v
                   return (
                     <RateStarsVotingCard
                       index={index}
-                      key={`designVersion${vId}`}
-                      versionId={vId}
+                      key={`designVersion${versionId}`}
+                      versionId={versionId}
                       imageUrl={imageUrl}
                       onClick={() => {
-                        setImage(imageUrl, name)
                         onOpen()
+                        setStartSlide(index)
                       }}
                     />
                   )

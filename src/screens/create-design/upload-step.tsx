@@ -1,9 +1,8 @@
 import {Box, Flex, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
 import {useColorModeValue as mode} from '@chakra-ui/react'
 import {ImageDropInput} from 'components/image-input'
-import {useCreateDesignStore} from 'store'
+import {useCreateDesignStore, useUploadDesignImagesStore} from 'store'
 import {Image, ImageProps} from '@chakra-ui/image'
-import shallow from 'zustand/shallow'
 import {useCallback} from 'react'
 import {AddIcon} from '@chakra-ui/icons'
 import {Button} from '@chakra-ui/button'
@@ -22,9 +21,7 @@ function UploadedImage({
   description,
   ...rest
 }: UploadedImageProps) {
-  const onDeletePress = useCreateDesignStore(
-    useCallback(state => state.deleteVersion, []),
-  )
+  const onDeletePress = useUploadDesignImagesStore(state => state.deleteImage)
 
   return (
     <Box role="group" position="relative">
@@ -58,21 +55,10 @@ export function UploadStep() {
     ),
   )
 
-  const addVersion = useCreateDesignStore(
-    useCallback(state => state.addVersion, []),
-  )
-  const imagesByUrl = useCreateDesignStore(
-    useCallback(state => state.imagesByUrl, []),
-    shallow,
-  )
-  const setStep = useCreateDesignStore(useCallback(state => state.setStep, []))
+  const addImages = useUploadDesignImagesStore(state => state.addImages)
+  const images = useUploadDesignImagesStore(state => state.images)
 
-  const onImageUpload = useCallback(
-    (imageUrls: string[]) => {
-      imageUrls.forEach(imageUrl => addVersion({url: imageUrl}))
-    },
-    [addVersion],
-  )
+  const setStep = useCreateDesignStore(useCallback(state => state.setStep, []))
 
   if (!design.name || !design.question) {
     return (
@@ -109,7 +95,7 @@ export function UploadStep() {
           maxW={{base: 'inherit', md: '3xl'}}
         >
           <ImageDropInput
-            onImageUpload={onImageUpload}
+            onImageUpload={addImages}
             h="15em"
             w="15em"
             description="Upload 2 or more versions of your design"
@@ -118,7 +104,7 @@ export function UploadStep() {
             }
             bg={mode('gray.50', 'gray.800')}
           />
-          {imagesByUrl.map(url => {
+          {images.map(({url}) => {
             return (
               <UploadedImage
                 imageUrl={url}
@@ -134,7 +120,7 @@ export function UploadStep() {
           size="lg"
           my="8"
           onClick={() => setStep(CreateDesignStep.Preview)}
-          disabled={imagesByUrl.length < 2}
+          disabled={images.length < 2}
         >
           Next
         </Button>

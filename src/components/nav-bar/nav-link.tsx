@@ -20,12 +20,12 @@ const DesktopNavLink = (props: DesktopNavLinkProps) => {
     <Link
       as={RouterLink}
       aria-current={active ? 'page' : undefined}
-      fontWeight="semibold"
+      // fontWeight="semibold"
       color={mode('gray.600', 'gray.300')}
       {...rest}
       _activeLink={{
         color: mode('orange.600', 'orange.300'),
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
       }}
     />
   )
@@ -35,10 +35,11 @@ interface MobileNavLinkProps {
   icon: React.ElementType
   children: React.ReactNode
   to?: string
+  onClick: () => void
 }
 
 const MobileNavLink = (props: MobileNavLinkProps) => {
-  const {icon, children, to} = props
+  const {icon, children, to, onClick} = props
   return (
     <Flex
       as={RouterLink}
@@ -48,6 +49,7 @@ const MobileNavLink = (props: MobileNavLinkProps) => {
       align="center"
       rounded="md"
       cursor="pointer"
+      onClick={onClick}
       _hover={{bg: mode('gray.50', 'gray.600')}}
     >
       <Icon as={icon} color={mode('orange.600', 'orange.400')} fontSize="xl" />

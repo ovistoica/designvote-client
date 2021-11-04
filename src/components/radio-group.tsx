@@ -1,8 +1,14 @@
-import {useColorModeValue as mode} from '@chakra-ui/color-mode'
-import {Box, SimpleGrid} from '@chakra-ui/layout'
-import {useRadio, useRadioGroup, UseRadioProps} from '@chakra-ui/radio'
+import {
+  Box,
+  SimpleGrid,
+  useRadio,
+  useRadioGroup,
+  UseRadioProps,
+  useColorModeValue as mode,
+  Center,
+} from '@chakra-ui/react'
 
-const RadioCard: React.FC<UseRadioProps> = props => {
+const RadioCard: React.FC<UseRadioProps & {icon?: JSX.Element}> = props => {
   const {getInputProps, getCheckboxProps} = useRadio(props)
   const accentColor = mode('orange.500', 'orange.200')
 
@@ -12,7 +18,8 @@ const RadioCard: React.FC<UseRadioProps> = props => {
   return (
     <Box as="label">
       <input {...input} />
-      <Box
+      <Center
+        flexDir="column"
         {...checkbox}
         cursor="pointer"
         borderWidth="1px"
@@ -31,13 +38,13 @@ const RadioCard: React.FC<UseRadioProps> = props => {
         py={3}
       >
         {props.children}
-      </Box>
+      </Center>
     </Box>
   )
 }
 
 interface RadioGroupProps {
-  options: {value: string; label: string}[]
+  options: {value: string; label: string; icon?: JSX.Element}[]
   name: string
   onChange: (val: string | number) => void
   defaultValue?: string | number
@@ -64,6 +71,7 @@ export function RadioGroup({
         const radio = getRadioProps({value: option.value})
         return (
           <RadioCard key={option.value} {...radio}>
+            {option.icon ?? null}
             {option.label}
           </RadioCard>
         )

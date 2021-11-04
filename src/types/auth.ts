@@ -3,8 +3,7 @@ import {SubscriptionStatus} from './enums'
 export interface Auth0User {
   /**
    * First name of user
-   */
-  given_name: string
+   */ given_name: string
 
   /**
    * Last name of user
@@ -59,5 +58,12 @@ export interface APIUser {
   nickname?: string
   subscriptionStatus: SubscriptionStatus
   stripeId?: string
+  picture: string
+}
+
+export interface PublicUser {
+  nickname?: string
+  uid: string
+  name: string
   picture: string
 }

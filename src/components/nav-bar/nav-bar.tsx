@@ -28,33 +28,32 @@ export const UnauthenticatedNavBar = (props: NavBarProps) => {
       >
         <Box maxW="7xl" mx="auto" py="4" px={{base: '6', md: '8'}}>
           <Flex as="nav" justify="space-between">
-            <HStack spacing="8">
+            <HStack>
               <RouterLink to="/" rel="home">
                 <VisuallyHidden>Designvote app</VisuallyHidden>
                 <Logo h="6" iconColor="orange.500" />
               </RouterLink>
+            </HStack>
+            <HStack spacing="8">
               <HStack display={{base: 'none', lg: 'flex'}} spacing="8">
                 <NavLink.Desktop active={pathname === '/'} to="/">
-                  Product
-                </NavLink.Desktop>
-                <NavLink.Desktop to="/pricing" active={pathname === '/pricing'}>
-                  Pricing
+                  Discover
                 </NavLink.Desktop>
               </HStack>
+              <Flex align="center">
+                <HStack spacing="8" display={{base: 'none', md: 'flex'}}>
+                  <NavLink.Desktop onClick={login} to="">
+                    Log in{' '}
+                  </NavLink.Desktop>
+                  <Button colorScheme="orange" rounded="full" onClick={login}>
+                    Sign Up
+                  </Button>
+                </HStack>
+                <Box ml="5">
+                  <MobileNav />
+                </Box>
+              </Flex>
             </HStack>
-            <Flex align="center">
-              <HStack spacing="8" display={{base: 'none', md: 'flex'}}>
-                <NavLink.Desktop onClick={login} to="">
-                  Log in{' '}
-                </NavLink.Desktop>
-                <Button colorScheme="orange" rounded="full" onClick={login}>
-                  Sign Up
-                </Button>
-              </HStack>
-              <Box ml="5">
-                <MobileNav />
-              </Box>
-            </Flex>
           </Flex>
         </Box>
       </Box>

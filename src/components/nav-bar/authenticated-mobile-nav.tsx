@@ -7,12 +7,19 @@ import {
   useBoolean,
   useFocusOnShow,
   useColorModeValue as mode,
+  VStack,
+  Button,
+  HStack,
+  Avatar,
+  Text,
 } from '@chakra-ui/react'
+import {useAuth} from 'context/auth-context'
 import {HTMLMotionProps, motion, Variants} from 'framer-motion'
 import * as React from 'react'
 import FocusLock from 'react-focus-lock'
 import {HiCog, HiOutlineMenu, HiOutlineX, HiHome} from 'react-icons/hi'
 import {RemoveScroll} from 'react-remove-scroll'
+import {useNavigate} from 'react-router'
 import {Logo} from '../logo'
 import {NavLink} from './nav-link'
 
@@ -31,11 +38,12 @@ const variants: Variants = {
   },
 }
 
-const Backdrop = ({show}: {show?: boolean}) => (
+const Backdrop = ({show, off}: {show?: boolean; off: () => void}) => (
   <Portal>
     <motion.div
       initial={false}
       animate={show ? 'show' : 'hide'}
+      onClick={off}
       transition={{duration: 0.1}}
       variants={{
         show: {opacity: 1, display: 'revert'},
@@ -77,13 +85,15 @@ export const AuthenticatedMobileNav = () => {
   const [show, {toggle, off}] = useBoolean()
   const ref = React.useRef<HTMLDivElement>(null)
   useFocusOnShow(ref, {visible: show, shouldFocus: true})
+  const navigate = useNavigate()
+  const {user} = useAuth()
 
   return (
     <>
       <Box
         as="button"
         type="button"
-        p="1"
+        p="2"
         fontSize="2xl"
         color="gray.600"
         onClick={toggle}
@@ -94,7 +104,7 @@ export const AuthenticatedMobileNav = () => {
 
       <Transition in={show}>
         <RemoveScroll enabled={show}>
-          <Backdrop show={show} />
+          <Backdrop show={show} off={off} />
         </RemoveScroll>
         <FocusLock disabled={!show} returnFocus>
           <Box
@@ -123,14 +133,43 @@ export const AuthenticatedMobileNav = () => {
                   </Center>
                 </Box>
               </Flex>
-              <SimpleGrid as="nav" gap="6" mt="8" columns={{base: 1, sm: 2}}>
-                <NavLink.Mobile icon={HiHome} to="/">
-                  Home
+              <HStack spacing="4" mt="8">
+                <Avatar src={user?.picture} name={user?.name} size="sm" />
+                <Box>
+                  <Text fontSize="sm">{user?.name}</Text>
+                  <Text fontSize="sm" color="gray.500">
+                    {user?.email}
+                  </Text>
+                </Box>
+              </HStack>
+              <SimpleGrid as="nav" gap="8" mt="8" columns={{base: 1, sm: 2}}>
+                <NavLink.Mobile icon={HiHome} to="/" onClick={off}>
+                  Discover
                 </NavLink.Mobile>
-                <NavLink.Mobile icon={HiCog} to="/settings">
+                <NavLink.Mobile icon={HiCog} to="/settings" onClick={off}>
                   Settings
                 </NavLink.Mobile>
               </SimpleGrid>
+              <VStack mt="8" spacing="4">
+                <Button
+                  w="full"
+                  colorScheme="orange"
+                  onClick={() => navigate('/create')}
+                >
+                  Create poll
+                </Button>
+                {/* <Button
+                  w="full"
+                  onClick={() => navigate('/create')}
+                  leftIcon={<FaRegStar />}
+                  fontWeight="regular"
+                >
+                  <Text as="span" fontWeight="bold" mr="1">
+                    4
+                  </Text>
+                  Favorites
+                </Button> */}
+              </VStack>
             </Box>
           </Box>
         </FocusLock>

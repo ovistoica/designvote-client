@@ -19,15 +19,12 @@ import {
   useToast,
 } from '@chakra-ui/react'
 import {useParams} from 'react-router'
-import {useDesign} from 'utils/design-query'
+import {useDesign} from 'api/design-query'
 import {DesignInfoTab, PreviewTab, ResultsTab, VersionsTab} from './tabs'
 
 export const ManageDesign = () => {
   const {designId} = useParams()
-  const {
-    data: {design},
-    isLoading,
-  } = useDesign(designId)
+  const {data: design, isLoading} = useDesign(designId)
 
   const websiteLink = window.location.origin
   const link = isLoading

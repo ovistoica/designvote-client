@@ -9,9 +9,9 @@ import {
 import {Box, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
 import {useManageDesign} from 'store'
 import {DesignTab, VoteStyle} from 'types'
-import {useDesign} from 'utils/design-query'
+import {useDesign} from 'api/design-query'
 import {FullPageSpinner} from 'components/lib'
-import {RateStarsVotingCard} from 'components/voting-card/start-rating-card'
+import {RateStarsVotingCard} from 'screens/design/rate-five-stars/star-rating-card'
 import {getDesignSurveyType} from 'utils/design'
 import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
 import {useAuth} from 'context/auth-context'
@@ -21,15 +21,17 @@ interface PreviewTabProps {
 }
 
 export function PreviewTab({designId}: PreviewTabProps) {
-  const {data, isLoading} = useDesign(designId)
-  const {design, versions, pictures} = data
+  const {data: design, isLoading} = useDesign(designId)
   const {setTab} = useManageDesign(
     React.useCallback(state => ({setTab: state.setTab}), []),
   )
 
   const {user} = useAuth()
   const {isOpen, onOpen, onClose} = useDisclosure()
-  const setImage = useZoomModalState(state => state.setImage)
+  const setImages = useZoomModalState(state => state.setImages)
+  const setStartSlide = useZoomModalState(state => state.setIndex)
+  const isDesignValid = design.name && design.question
+  const hasEnoughVersions = design.versions.length >= 2
 
   const surveyType = isLoading
     ? 'Loading...'
@@ -38,11 +40,19 @@ export function PreviewTab({designId}: PreviewTabProps) {
     ? 'Loading survey...'
     : `${user?.nickname} wants your feedback on their ${surveyType}`
 
+  React.useEffect(() => {
+    if (isDesignValid && hasEnoughVersions) {
+      setImages(
+        design.versions.map(v => ({url: v.imageUrl, versionId: v.versionId})),
+      )
+    }
+  }, [design.versions, hasEnoughVersions, isDesignValid, setImages])
+
   if (isLoading) {
     return <FullPageSpinner h="100%" />
   }
 
-  if (!design.name || !design.question) {
+  if (!isDesignValid) {
     return (
       <Stack spacing="1em" mt="1em" align="center">
         <Heading fontWeight="400" fontSize="xl">
@@ -60,7 +70,7 @@ export function PreviewTab({designId}: PreviewTabProps) {
     )
   }
 
-  if (design.versions.length < 2) {
+  if (!hasEnoughVersions) {
     return (
       <Stack spacing="1em" mt="1em" align="center">
         <Heading fontWeight="400" fontSize="xl">
@@ -135,29 +145,25 @@ export function PreviewTab({designId}: PreviewTabProps) {
             ) : (
               design.versions
                 .sort((a, b) => {
-                  const {name: nameA} = versions[a]
-                  const {name: nameB} = versions[b]
+                  const {name: nameA} = a
+                  const {name: nameB} = b
                   if (nameA === nameB) {
                     return 0
                   }
                   return nameA > nameB ? 1 : -1
                 })
-                .map((vId, index) => {
-                  const {
-                    pictures: [picId],
-                    name,
-                  } = versions[vId]
-                  const {uri: imageUrl} = pictures[picId]
+                .map((v, index) => {
+                  const {imageUrl, versionId} = v
                   return (
                     <RateStarsVotingCard
                       index={index}
-                      key={`designVersion${vId}`}
-                      versionId={vId}
+                      key={`designVersion${versionId}`}
+                      versionId={versionId}
                       inPreview
                       imageUrl={imageUrl}
                       onClick={() => {
-                        setImage(imageUrl, name)
                         onOpen()
+                        setStartSlide(index)
                       }}
                     />
                   )

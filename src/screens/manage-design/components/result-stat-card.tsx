@@ -35,6 +35,9 @@ type SpecificVoteStyleCardProps = Omit<
 function StarsRatingCard(props: SpecificVoteStyleCardProps) {
   const {id, title, imageUrl, votes, onClick, numberOfOpinions} = props
   const averageRating = getAverageRating(votes)
+  const ratingsGivenText = `${votes.length + 5} rating${
+    votes.length !== 1 ? 's' : ''
+  } given`
 
   return (
     <Flex
@@ -49,6 +52,7 @@ function StarsRatingCard(props: SpecificVoteStyleCardProps) {
         shadow: 'xl',
       }}
       onClick={onClick}
+      pt="10"
     >
       <Box d={id} srOnly>
         {votes.length} total ratings given
@@ -103,10 +107,9 @@ function StarsRatingCard(props: SpecificVoteStyleCardProps) {
           readOnly
         />
         <Flex px="1" align="center" justify="space-between">
-          <Text>{votes.length} ratings given</Text>
+          <Text>{ratingsGivenText}</Text>
           <HStack>
             <Text>{numberOfOpinions} </Text>
-            <FaComments />
           </HStack>
         </Flex>
       </Box>

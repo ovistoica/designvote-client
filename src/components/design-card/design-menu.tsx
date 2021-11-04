@@ -11,7 +11,7 @@ import {HiDotsHorizontal} from 'react-icons/hi'
 import {DeleteIcon, EditIcon} from '@chakra-ui/icons'
 import {FiLink} from 'react-icons/fi'
 import {DeleteResourceAlert} from 'components/lib'
-import {useDeleteDesign} from 'utils/design-query'
+import {useDeleteDesign} from 'api/design-query'
 
 interface DesignMenuProps {
   designId: string
