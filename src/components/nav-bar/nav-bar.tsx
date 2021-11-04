@@ -39,15 +39,6 @@ export const UnauthenticatedNavBar = (props: NavBarProps) => {
                 <NavLink.Desktop active={pathname === '/'} to="/">
                   Discover
                 </NavLink.Desktop>
-                <NavLink.Desktop active={pathname === '/latest'} to="/latest">
-                  Latest
-                </NavLink.Desktop>
-                <NavLink.Desktop active={pathname === '/popular'} to="/popular">
-                  Popular
-                </NavLink.Desktop>
-                <NavLink.Desktop active={pathname === '/support'} to="/support">
-                  Support
-                </NavLink.Desktop>
               </HStack>
               <Flex align="center">
                 <HStack spacing="8" display={{base: 'none', md: 'flex'}}>

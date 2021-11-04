@@ -7,14 +7,12 @@ import {
   HStack,
   useColorModeValue as mode,
   VisuallyHidden,
-  Text,
 } from '@chakra-ui/react'
 import {useAuth} from 'context/auth-context'
 import {Logo} from '../logo'
 import {NavLink} from './nav-link'
 import {Link as RouterLink, useLocation, useNavigate} from 'react-router-dom'
 import {AuthenticatedMobileNav} from './authenticated-mobile-nav'
-import {FaRegStar} from 'react-icons/fa'
 
 interface NavBarProps extends BoxProps {}
 
@@ -43,15 +41,6 @@ export const AuthenticatedNavBar = (props: NavBarProps) => {
                 <NavLink.Desktop active={pathname === '/'} to="/">
                   Discover
                 </NavLink.Desktop>
-                <NavLink.Desktop active={pathname === '/latest'} to="/latest">
-                  Latest
-                </NavLink.Desktop>
-                <NavLink.Desktop active={pathname === '/popular'} to="/popular">
-                  Popular
-                </NavLink.Desktop>
-                <NavLink.Desktop active={pathname === '/support'} to="/support">
-                  Support
-                </NavLink.Desktop>
                 <NavLink.Desktop
                   active={pathname === '/settings'}
                   to="/settings"
@@ -61,7 +50,7 @@ export const AuthenticatedNavBar = (props: NavBarProps) => {
               </HStack>
               <Flex align="center">
                 <HStack spacing="4" display={{base: 'none', lg: 'flex'}}>
-                  <Button
+                  {/* <Button
                     variant="outline"
                     size="sm"
                     fontWeight="400"
@@ -71,7 +60,7 @@ export const AuthenticatedNavBar = (props: NavBarProps) => {
                       4
                     </Text>
                     Favorites
-                  </Button>
+                  </Button> */}
                   <Button
                     as={RouterLink}
                     to="/create"

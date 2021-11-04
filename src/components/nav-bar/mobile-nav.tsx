@@ -15,13 +15,7 @@ import {HTMLMotionProps, motion, Variants} from 'framer-motion'
 import * as React from 'react'
 import FocusLock from 'react-focus-lock'
 import {FaHome} from 'react-icons/fa'
-import {
-  HiOutlineClock,
-  HiOutlineMenu,
-  HiOutlineX,
-  HiSupport,
-} from 'react-icons/hi'
-import {SiBuzzfeed} from 'react-icons/si'
+import {HiOutlineMenu, HiOutlineX} from 'react-icons/hi'
 import {RemoveScroll} from 'react-remove-scroll'
 import {Logo} from '../logo'
 import {NavLink} from './nav-link'
@@ -139,22 +133,16 @@ export const MobileNav = () => {
                 <NavLink.Mobile icon={FaHome} to="/" onClick={off}>
                   Discover
                 </NavLink.Mobile>
-                <NavLink.Mobile
-                  icon={HiOutlineClock}
-                  to="/latest"
-                  onClick={off}
-                >
-                  Latest
-                </NavLink.Mobile>
-                <NavLink.Mobile icon={SiBuzzfeed} to="/popular" onClick={off}>
-                  Popular
-                </NavLink.Mobile>
-                <NavLink.Mobile icon={HiSupport} to="/support" onClick={off}>
-                  Support
-                </NavLink.Mobile>
               </SimpleGrid>
               <VStack mt="8" spacing="4">
-                <Button w="full" colorScheme="orange" onClick={login}>
+                <Button
+                  w="full"
+                  colorScheme="orange"
+                  onClick={() => {
+                    off()
+                    login()
+                  }}
+                >
                   Create account
                 </Button>
                 <Box
@@ -166,7 +154,10 @@ export const MobileNav = () => {
                   <Box
                     as="a"
                     color={mode('orange.600', 'orange.400')}
-                    onClick={login}
+                    onClick={() => {
+                      off()
+                      login()
+                    }}
                   >
                     Log in
                   </Box>
