@@ -11,7 +11,7 @@ import {
   Button,
   useDisclosure,
 } from '@chakra-ui/react'
-import {RateStarsVotingCard} from 'screens/design/rate-five-stars/star-rating-card'
+import {RateStarsVotingCard} from 'components/voting-grid/rate-five-stars/star-rating-card'
 import {useNavigate, useParams} from 'react-router'
 import {canSubmit, useVoteDesignState} from 'store/vote-design'
 import {VoteStyle} from 'types'

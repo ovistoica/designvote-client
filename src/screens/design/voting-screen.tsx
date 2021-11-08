@@ -15,13 +15,11 @@ import {useNavigate, useParams} from 'react-router'
 import {useUrlDesign} from 'api/design-query'
 import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
 import {Footer} from 'components/footer'
-import {ChooseOneDesignGrid} from './choose-one/choose-one-grid'
-import {VoteStyle} from 'types'
-import {RateFiveStarsGrid} from './rate-five-stars/rate-five-stars-grid'
-import {DesignStats} from './design-stats'
+import {DesignStats} from '../../components/design-stats'
 import {DEFAULT_TAGS} from './dummy-data'
 import {useHasVoted} from 'utils/hooks'
 import {getDesignSurveyType} from 'utils/design'
+import {VotingGrid} from 'components/voting-grid'
 
 export function DesignScreen() {
   const {shortUrl} = useParams()
@@ -43,11 +41,6 @@ export function DesignScreen() {
 
   // Check if current user already voted on this design
   const hasVoted = useHasVoted(design)
-
-  const VotingGrid =
-    isSuccess && design.voteStyle === VoteStyle.Choose
-      ? ChooseOneDesignGrid
-      : RateFiveStarsGrid
 
   React.useEffect(() => {
     if (isSuccess && hasVoted) {
@@ -109,6 +102,7 @@ export function DesignScreen() {
             <Spinner />
           ) : (
             <VotingGrid
+              voteStyle={design.voteStyle}
               designUrl={shortUrl}
               onVersionClick={(index: number) => {
                 onOpen()
