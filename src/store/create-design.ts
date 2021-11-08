@@ -2,8 +2,6 @@ import {CreateDesignStep, DesignType, VoteStyle} from 'types'
 import create from 'zustand'
 import {persist} from 'zustand/middleware'
 
-export type VersionInfo = {url: string; description?: string}
-
 export type State = {
   step: CreateDesignStep
   name?: string
@@ -57,7 +55,7 @@ const initialState: InitialState = {
 
 export const useCreateDesignStore = create<State>(
   persist(
-    (set, get) => ({
+    set => ({
       step: CreateDesignStep.Create,
       type: DesignType.Web,
       voteStyle: VoteStyle.Choose,

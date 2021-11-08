@@ -18,7 +18,7 @@ import {useUrlDesign} from 'api/design-query'
 import {Footer} from 'components/footer'
 import {OpinionsSection} from './opinions'
 import {DEFAULT_TAGS} from './dummy-data'
-import {DesignStats} from './design-stats'
+import {DesignStats} from '../../components/design-stats'
 import {StatCard} from './results-stat-card'
 
 export function ResultsScreen() {

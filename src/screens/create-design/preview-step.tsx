@@ -1,14 +1,21 @@
 import * as React from 'react'
-import {Button} from '@chakra-ui/button'
-import {Box, Heading, SimpleGrid, Stack, Text} from '@chakra-ui/layout'
-import {Input, useColorModeValue as mode, useDisclosure} from '@chakra-ui/react'
 import {useCallback} from 'react'
+import {Button} from '@chakra-ui/button'
+import {Box, Heading, Stack, Text} from '@chakra-ui/layout'
+import {
+  Grid,
+  HStack,
+  useColorModeValue as mode,
+  useDisclosure,
+} from '@chakra-ui/react'
 import {useCreateDesignStore, useUploadDesignImagesStore} from 'store'
-import {CreateDesignStep, VoteStyle} from 'types'
+import {CreateDesignStep} from 'types'
 import {getDesignSurveyType} from 'utils/design'
 import {useAuth} from 'context/auth-context'
-import {RateStarsVotingCard} from 'screens/design/rate-five-stars/star-rating-card'
 import {useZoomModalState, ZoomModal} from 'components/zoom-modal'
+import {DesignStats} from 'components/design-stats'
+import {VotingGrid} from './preview-voting-grid'
+import {FaRegThumbsUp} from 'react-icons/fa'
 
 export function PreviewStep() {
   const design = useCreateDesignStore(
@@ -39,7 +46,7 @@ export function PreviewStep() {
   const setStartSlide = useZoomModalState(state => state.setIndex)
 
   React.useEffect(() => {
-    if (!isDesignValid && hasEnoughVersions) {
+    if (isDesignValid && hasEnoughVersions) {
       setImages(images.map(({url}) => ({url, versionId: 'preview'})))
     }
   }, [hasEnoughVersions, images, isDesignValid, setImages])
@@ -81,107 +88,48 @@ export function PreviewStep() {
   }
   return (
     <>
-      <Box as="section" bg={mode('gray.50', 'gray.800')} pb="24">
-        <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '6', md: '8'}}>
-          <Stack
-            direction={{base: 'column', lg: 'row'}}
-            spacing={{base: '3rem', lg: '2rem'}}
-            mt="8"
-            align={{lg: 'center'}}
-            justify="space-between"
-          >
-            <Box flex="1">
-              <Text
-                size="xs"
-                textTransform="uppercase"
-                fontWeight="semibold"
-                color={mode('gray.600', 'gray.300')}
-                letterSpacing="wide"
+      <Box as="section" bg={mode('gray.50', 'gray.800')} pt="0" pb="24">
+        <Box
+          maxW={{base: 'xl', md: '7xl'}}
+          mx="auto"
+          px={{base: '6', md: '8'}}
+          pt="8"
+        >
+          <Grid gridTemplateColumns={{base: '1fr', md: '65fr 35fr'}} gap="6">
+            <Stack>
+              <HStack
+                align="center"
+                justifyContent={'space-between'}
+                maxW={{base: 'xl', md: '7xl'}}
+                w={'full'}
               >
-                {surveyType}
-              </Text>
-              <Heading
-                as="h1"
-                size="xl"
-                color={mode('gray.700', 'gray.300')}
-                mt="4"
-                fontWeight="bold"
-                letterSpacing="tight"
-              >
-                {heading}
-              </Heading>
-              <Text mt="4" fontSize="lg" fontWeight="medium">
-                {design.question}
-              </Text>
-              <Text
-                color={mode('gray.600', 'gray.400')}
-                mt={{base: '8', md: 16}}
-                fontSize="md"
-                fontWeight="extrabold"
-              >
-                {design.voteStyle === VoteStyle.Choose
-                  ? 'Choose your favorite '
-                  : 'Rate your favorites '}
-                and leave your feedback below:
-              </Text>
-            </Box>
-          </Stack>
-          <SimpleGrid
-            columns={{base: 1, md: 2, lg: 3}}
-            spacing={{base: '2', md: '8', lg: '8'}}
-            rowGap={{base: 8, md: 8, lg: 8}}
-            mt="8"
-          >
-            {images.map(({url}, index) => {
-              return (
-                <RateStarsVotingCard
-                  index={index}
-                  key={`designVersion${url}${index}`}
-                  versionId={'irelevant'}
-                  inPreview
-                  imageUrl={url}
-                  onClick={() => {
-                    onOpen()
-                    setStartSlide(index)
-                  }}
-                />
-              )
-            })}
-          </SimpleGrid>
-          <Stack
-            direction={{base: 'column', lg: 'row'}}
-            spacing={{base: '3rem', lg: '2rem'}}
-            mt="8"
-            align={{lg: 'center'}}
-            justify="space-between"
-          >
-            <Box flex="1">
-              <Heading
-                as="h1"
-                size="xl"
-                color={mode('gray.700', 'gray.300')}
-                mt="4"
-                fontWeight="bold"
-                letterSpacing="tight"
-              >
-                Send your feedback
-              </Heading>
-              <Text
-                color={mode('gray.600', 'gray.400')}
-                mt={{base: '4', md: '4'}}
-                fontSize="lg"
-                fontWeight="extrabold"
-              >
-                Let {user?.nickname} know who you are:
-              </Text>
-              <Stack direction={{base: 'column', md: 'row'}} spacing="8" mt="4">
-                <Input size="lg" placeholder="Enter your name" maxW="md" />
-                <Button size="lg" colorScheme="orange" disabled={true}>
-                  Submit feedback
+                <Heading fontWeight="600" color={mode('gray.700', 'gray.200')}>
+                  {design.question}
+                </Heading>
+                <Button
+                  colorScheme={'orange'}
+                  rightIcon={<FaRegThumbsUp />}
+                  size={'sm'}
+                  onClick={() => setStep(CreateDesignStep.Share)}
+                >
+                  Looks good
                 </Button>
-              </Stack>
-            </Box>
-          </Stack>
+              </HStack>
+              <Text color={mode('gray.700', 'gray.300')}>
+                {design.description ?? heading}
+              </Text>
+            </Stack>
+            <DesignStats votes={0} opinions={0} />
+          </Grid>
+        </Box>
+        <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '6', md: '8'}}>
+          <VotingGrid
+            voteStyle={design.voteStyle}
+            onVersionClick={(index: number) => {
+              onOpen()
+              setStartSlide(index)
+            }}
+          />
         </Box>
       </Box>
       <ZoomModal isOpen={isOpen} onClose={onClose} />
