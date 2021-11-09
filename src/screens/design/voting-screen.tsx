@@ -20,15 +20,39 @@ import {DEFAULT_TAGS} from './dummy-data'
 import {useHasVoted} from 'utils/hooks'
 import {getDesignSurveyType} from 'utils/design'
 import {VotingGrid} from 'components/voting-grid'
+import {useAuth} from '../../context/auth-context'
+
+/**
+ * If the user already voted on this design or if he is the
+ * owner, navigate to the results screen
+ * @param shortUrl
+ */
+function useNavigateToResultsIfUserVoted(shortUrl: string) {
+  const {data: design, isSuccess} = useUrlDesign(shortUrl)
+
+  // Check if current user already voted on this design
+  const hasVoted = useHasVoted(design)
+
+  const navigate = useNavigate()
+  const {user} = useAuth()
+  const loggedInUserId = user?.sub
+
+  React.useEffect(() => {
+    if (isSuccess && (hasVoted || design.uid === loggedInUserId)) {
+      navigate(`/results/${shortUrl}`)
+    }
+  }, [design.uid, hasVoted, isSuccess, loggedInUserId, navigate, shortUrl])
+}
 
 export function DesignScreen() {
   const {shortUrl} = useParams()
+  useNavigateToResultsIfUserVoted(shortUrl)
+
   const {data: design, isLoading, isSuccess} = useUrlDesign(shortUrl)
   const {question, description} = design
   const {isOpen, onOpen, onClose} = useDisclosure()
   const setImages = useZoomModalState(state => state.setImages)
   const setStartSlide = useZoomModalState(state => state.setIndex)
-  const navigate = useNavigate()
 
   const surveyType = isLoading
     ? 'Loading...'
@@ -38,15 +62,6 @@ export function DesignScreen() {
     : `${
         design.ownerName ?? design.ownerNickname
       } wants your feedback on their ${surveyType}`
-
-  // Check if current user already voted on this design
-  const hasVoted = useHasVoted(design)
-
-  React.useEffect(() => {
-    if (isSuccess && hasVoted) {
-      navigate(`/results/${shortUrl}`)
-    }
-  }, [hasVoted, isSuccess, navigate, shortUrl])
 
   React.useEffect(() => {
     if (isSuccess) {
@@ -94,6 +109,7 @@ export function DesignScreen() {
             <DesignStats
               votes={design.totalVotes}
               opinions={design.opinions.length}
+              designUrl={shortUrl}
             />
           </Grid>
         </Box>

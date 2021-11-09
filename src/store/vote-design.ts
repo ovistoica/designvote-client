@@ -63,9 +63,7 @@ export const getChosen = memoize(
 export const canSubmit = (state: VoteDesignState) => {
   const {currentRatings} = state
 
-  const hasRatings = Object.values(currentRatings).filter(r => !!r).length > 0
-
-  return hasRatings
+  return Object.values(currentRatings).filter(r => !!r).length > 0
 }
 
 export const useVoteDesignState = create<VoteDesignState>(

@@ -30,8 +30,16 @@ function OpinionView({
   createdAt,
 }: Opinion) {
   return (
-    <Grid gridTemplateColumns="1fr 24fr" alignContent="center">
-      <Avatar boxSize="1.8em" src={ownerPicture} name={ownerName} />
+    <Grid
+      gridTemplateColumns={{base: '2fr 12fr', md: '2fr 24fr', lg: '1fr 24fr'}}
+      alignContent="center"
+    >
+      <Avatar
+        mt={'1'}
+        boxSize={{base: '1.5em', md: '1.8em'}}
+        src={ownerPicture}
+        name={ownerName}
+      />
       <Stack spacing={1}>
         <HStack>
           <Text fontWeight="600" color={mode('gray.800', 'gray.200')}>

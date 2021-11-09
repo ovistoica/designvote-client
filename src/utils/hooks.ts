@@ -1,9 +1,9 @@
-import {useBreakpoint} from '@chakra-ui/media-query'
 import {useAuth} from 'context/auth-context'
 import * as React from 'react'
 import {useLocation} from 'react-router'
 import {Design, SubscriptionStatus} from 'types'
 import {useApiUser, useDesigns} from '../api/design-query'
+import {useClipboard, useToast} from '@chakra-ui/react'
 
 export function useSafeDispatch<Value = unknown>(
   dispatch: React.Dispatch<Value>,
@@ -107,12 +107,6 @@ export function useAsync<Result = unknown>(
   }
 }
 
-export function useIsMobile() {
-  const currentBreak = useBreakpoint()
-
-  return currentBreak === 'base' || currentBreak === 'sm'
-}
-
 export function useFormattedLocationName() {
   const {data: designs} = useDesigns()
 
@@ -161,14 +155,17 @@ export function useCanCreateDesigns() {
     }
 
     default: {
-      if (designs.length < 2) {
-        return true
-      }
-      return false
+      return designs.length < 2
     }
   }
 }
 
+/**
+ * Checks if user has voted on the design
+ * IMPORTANT: This function does not check if the user is the OWNER
+ * of the design. That check needs to be done separately
+ * @param design
+ */
 export function useHasVoted(design: Design): boolean {
   const {user} = useAuth()
   if (!user) {
@@ -179,4 +176,27 @@ export function useHasVoted(design: Design): boolean {
   const hasVoted = design.votes.find(v => v.uid === uid)
 
   return !!hasVoted
+}
+
+/**
+ * Returns a function that copies the voting link to clipboard
+ * and shows a toast informing user that the link was copied
+ * @param designUrl
+ */
+export function useShareDesignLink(designUrl: string) {
+  const websiteLink = window.location.origin
+  const link = `${websiteLink}/design/${designUrl}`
+  const {onCopy} = useClipboard(link)
+  const toast = useToast()
+
+  return () => {
+    onCopy()
+    toast({
+      title: 'Link copied to clipboard.',
+      description: 'Go ahead and share it with your friends :)',
+      status: 'success',
+      duration: 4000,
+      isClosable: true,
+    })
+  }
 }

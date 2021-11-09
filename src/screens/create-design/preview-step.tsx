@@ -119,7 +119,7 @@ export function PreviewStep() {
                 {design.description ?? heading}
               </Text>
             </Stack>
-            <DesignStats votes={0} opinions={0} />
+            <DesignStats votes={0} opinions={0} designUrl={'preview'} />
           </Grid>
         </Box>
         <Box maxW={{base: 'xl', md: '7xl'}} mx="auto" px={{base: '6', md: '8'}}>

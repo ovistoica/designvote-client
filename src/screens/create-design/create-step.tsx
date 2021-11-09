@@ -13,7 +13,6 @@ import {
   PopoverArrow,
   PopoverBody,
   PopoverTrigger,
-  Code,
   Button,
   Text,
   FormHelperText,
@@ -94,7 +93,6 @@ function QuestionPopover() {
             </Text>{' '}
             Which logo better suggests this app is for designers?
           </Text>
-          <Code></Code>
         </PopoverBody>
       </PopoverContent>
     </Popover>

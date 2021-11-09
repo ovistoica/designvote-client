@@ -2,24 +2,25 @@ import * as React from 'react'
 import {
   Box,
   Text,
-  Flex,
   Grid,
   Heading,
   Spinner,
   Stack,
-  Tag,
   useDisclosure,
   useColorModeValue as mode,
   SimpleGrid,
+  Button,
 } from '@chakra-ui/react'
 import {useZoomModalState, ZoomModal} from 'components/zoom-modal'
 import {useParams} from 'react-router-dom'
 import {useUrlDesign} from 'api/design-query'
 import {Footer} from 'components/footer'
 import {OpinionsSection} from './opinions'
-import {DEFAULT_TAGS} from './dummy-data'
 import {DesignStats} from '../../components/design-stats'
 import {StatCard} from './results-stat-card'
+import {FaShare} from 'react-icons/fa'
+import {useShareDesignLink} from '../../utils/hooks'
+import {getDesignSurveyType} from '../../utils/design'
 
 export function ResultsScreen() {
   const {shortUrl} = useParams()
@@ -28,6 +29,17 @@ export function ResultsScreen() {
   const {isOpen, onOpen, onClose} = useDisclosure()
   const setImages = useZoomModalState(state => state.setImages)
   const setStartSlide = useZoomModalState(state => state.setIndex)
+
+  const surveyType = isLoading
+    ? 'Loading...'
+    : getDesignSurveyType(design.designType)
+  const defaultDescription = isLoading
+    ? 'Loading survey...'
+    : `${
+        design.ownerName ?? design.ownerNickname
+      } wants your feedback on their ${surveyType}`
+
+  const shareDesign = useShareDesignLink(shortUrl)
 
   React.useEffect(() => {
     if (isSuccess) {
@@ -46,39 +58,32 @@ export function ResultsScreen() {
           px={{base: '6', md: '8'}}
           pt="8"
         >
-          <Grid gridTemplateColumns={{base: '1fr', md: '65fr 35fr'}} gap="6">
-            <Stack>
+          <Grid gridTemplateColumns={{base: '1fr', md: '65fr 35fr'}} gap="4">
+            <Stack spacing={6}>
               <Heading
+                as={'h1'}
                 fontWeight="600"
-                size="2xl"
+                w={'full'}
+                fontSize={{base: '3xl', md: '5xl', lg: '5xl'}}
                 color={mode('gray.700', 'gray.300')}
               >
                 {question}
               </Heading>
-              {description ? (
-                <Text color={mode('gray.600', 'gray.400')} fontSize="lg">
-                  {description}
-                </Text>
-              ) : null}
-
-              <Flex wrap="wrap" py="5">
-                {
-                  // TODO: Change default tags
-                }
-                {DEFAULT_TAGS.map(t => (
-                  <Tag
-                    variant="solid"
-                    colorScheme="blue"
-                    key={`tag${t}`}
-                    m="1"
-                    size="lg"
-                  >
-                    {t}
-                  </Tag>
-                ))}
-              </Flex>
+              <Text color={mode('gray.600', 'gray.400')} fontSize="lg">
+                {description ?? defaultDescription}
+              </Text>
+              <Button
+                my={'4'}
+                display={{base: 'flex', md: 'none'}}
+                onClick={shareDesign}
+                colorScheme={'orange'}
+                leftIcon={<FaShare />}
+              >
+                Share design
+              </Button>
             </Stack>
             <DesignStats
+              designUrl={design.shortUrl}
               votes={design.totalVotes}
               opinions={design.opinions.length}
             />

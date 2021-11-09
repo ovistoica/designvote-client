@@ -1,11 +1,9 @@
-import {ArrowForwardIcon} from '@chakra-ui/icons'
 import {
   Avatar,
   HStack,
   Text,
   Box,
   useColorModeValue as mode,
-  Button,
   Flex,
   Stack,
 } from '@chakra-ui/react'
@@ -74,14 +72,14 @@ export function TopExperts() {
           src="https://lh3.googleusercontent.com/a-/AOh14GgfzdPiMsPqaFsil1wetBNu9fi1kVkm7wnFyNYnKw=s96-c"
           upvotes={8}
         />
-        <Button
-          colorScheme="orange"
-          variant="outline"
-          w="full"
-          rightIcon={<ArrowForwardIcon />}
-        >
-          View All
-        </Button>
+        {/*<Button*/}
+        {/*  colorScheme="orange"*/}
+        {/*  variant="outline"*/}
+        {/*  w="full"*/}
+        {/*  rightIcon={<ArrowForwardIcon />}*/}
+        {/*>*/}
+        {/*  View All*/}
+        {/*</Button>*/}
       </Stack>
     </Box>
   )

@@ -1,6 +1,4 @@
-import '@fontsource/poppins/400.css'
-import '@fontsource/poppins/600.css'
-
+import * as React from 'react'
 import {
   ChakraProvider,
   ColorModeScript,
@@ -69,10 +67,6 @@ const theme = extendTheme({
       800: '#053d37',
       900: '#001613',
     },
-  },
-  fonts: {
-    heading: 'Poppins',
-    body: 'Poppins',
   },
   styles: {
     global: props => ({

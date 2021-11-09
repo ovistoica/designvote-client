@@ -12,6 +12,7 @@ import {Logo} from '../logo'
 import {MobileNav} from './mobile-nav'
 import {NavLink} from './nav-link'
 import {Link as RouterLink, useLocation} from 'react-router-dom'
+import {scrollToTop} from 'utils/window'
 
 interface NavBarProps extends BoxProps {}
 
@@ -29,7 +30,7 @@ export const UnauthenticatedNavBar = (props: NavBarProps) => {
         <Box maxW="7xl" mx="auto" py="4" px={{base: '6', md: '8'}}>
           <Flex as="nav" justify="space-between">
             <HStack>
-              <RouterLink to="/" rel="home">
+              <RouterLink to="/" rel="home" onClick={scrollToTop}>
                 <VisuallyHidden>Designvote app</VisuallyHidden>
                 <Logo h="6" iconColor="orange.500" />
               </RouterLink>

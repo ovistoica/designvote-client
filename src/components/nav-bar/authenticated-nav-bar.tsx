@@ -13,6 +13,8 @@ import {Logo} from '../logo'
 import {NavLink} from './nav-link'
 import {Link as RouterLink, useLocation, useNavigate} from 'react-router-dom'
 import {AuthenticatedMobileNav} from './authenticated-mobile-nav'
+import {useCreateDesignStore} from 'store'
+import {scrollToTop} from 'utils/window'
 
 interface NavBarProps extends BoxProps {}
 
@@ -20,6 +22,8 @@ export const AuthenticatedNavBar = (props: NavBarProps) => {
   const {user} = useAuth()
   const {pathname} = useLocation()
   const navigate = useNavigate()
+  const clearOldDraft = useCreateDesignStore(state => state.clearState)
+
   return (
     <Box position="fixed" w="full" zIndex="1000" {...props}>
       <Box
@@ -31,7 +35,7 @@ export const AuthenticatedNavBar = (props: NavBarProps) => {
         <Box maxW="7xl" mx="auto" py="4" px={{base: '6', md: '8'}}>
           <Flex as="nav" justify="space-between">
             <HStack>
-              <RouterLink to="/" rel="home">
+              <RouterLink to="/" rel="home" onClick={scrollToTop}>
                 <VisuallyHidden>Designvote app</VisuallyHidden>
                 <Logo h="6" iconColor="orange.500" />
               </RouterLink>
@@ -67,6 +71,7 @@ export const AuthenticatedNavBar = (props: NavBarProps) => {
                     colorScheme="orange"
                     size="sm"
                     onClick={() => {
+                      clearOldDraft()
                       navigate('/create')
                     }}
                   >

@@ -1,5 +1,5 @@
-import {chakra, HTMLChakraProps} from '@chakra-ui/react'
-import {HTMLMotionProps, motion} from 'framer-motion'
+import {chakra} from '@chakra-ui/react'
+import {motion} from 'framer-motion'
 
 const ActiveIndicatorImpl = chakra('div', {
   baseStyle: {
@@ -14,6 +14,4 @@ const ActiveIndicatorImpl = chakra('div', {
   },
 })
 
-export type ActiveIndicatorProps = HTMLChakraProps<'div'> &
-  HTMLMotionProps<'div'>
 export const ActiveIndicator = motion(ActiveIndicatorImpl)

@@ -1,4 +1,3 @@
-import {ArrowForwardIcon} from '@chakra-ui/icons'
 import {
   Text,
   Box,
@@ -28,6 +27,7 @@ import {useNavigate} from 'react-router'
 import {useAuth} from 'context/auth-context'
 import {DesignInfo} from './cards/design-info'
 import {FaComment, FaStamp} from 'react-icons/fa'
+import {useCreateDesignStore} from '../../store'
 
 interface DesignProps {
   question: string
@@ -94,9 +94,11 @@ function DesignCard({
 function BannerSection() {
   const {login, isAuthenticated} = useAuth()
   const navigate = useNavigate()
+  const clearOldDraft = useCreateDesignStore(state => state.clearState)
 
   const onClick = () => {
     if (isAuthenticated) {
+      clearOldDraft()
       navigate('/create')
     } else {
       login({redirectUri: `${window.location.origin}/create`})
@@ -215,24 +217,24 @@ export function Home() {
         >
           <Flex align="center" pb="4" w={{base: 'full', lg: '3xl', xl: '6xl'}}>
             <Heading size="md">Popular</Heading>
-            <Button
-              mx="2"
-              variant="link"
-              colorScheme="orange"
-              rightIcon={<ArrowForwardIcon />}
-            >
-              View all
-            </Button>
+            {/*<Button*/}
+            {/*  mx="2"*/}
+            {/*  variant="link"*/}
+            {/*  colorScheme="orange"*/}
+            {/*  rightIcon={<ArrowForwardIcon />}*/}
+            {/*>*/}
+            {/*  View all*/}
+            {/*</Button>*/}
           </Flex>
           <SimpleGrid
             columns={{base: 1, md: 2, lg: 4, xl: 4}}
             gridGap="4"
             rowGap="6"
           >
-            {popular.slice(0, 4).map((design, index) => (
+            {popular.slice(0, 4).map(design => (
               <DesignCard
                 opinions={design?.totalOpinions ?? 0}
-                key={design.designId}
+                key={`popularDesigns${design.designId}`}
                 question={design.question}
                 img={design.img}
                 votes={design.totalVotes}
@@ -284,14 +286,14 @@ export function Home() {
                     </>
                   ))}
 
-                  <Button
-                    variant="outline"
-                    colorScheme="orange"
-                    w="full"
-                    rightIcon={<ArrowForwardIcon />}
-                  >
-                    View All
-                  </Button>
+                  {/*<Button*/}
+                  {/*  variant="outline"*/}
+                  {/*  colorScheme="orange"*/}
+                  {/*  w="full"*/}
+                  {/*  rightIcon={<ArrowForwardIcon />}*/}
+                  {/*>*/}
+                  {/*  View All*/}
+                  {/*</Button>*/}
                 </Stack>
               </Box>
               <GridItem>

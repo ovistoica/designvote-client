@@ -1,8 +1,5 @@
 import React from 'react'
 import {
-  useColorMode,
-  useColorModeValue,
-  IconButton,
   Flex,
   Text,
   Box,
@@ -14,36 +11,10 @@ import {
   AlertDialogHeader,
   AlertDialogBody,
   AlertDialogFooter,
-  IconButtonProps,
   BoxProps,
-  Link,
-  LinkProps,
-  Circle,
-  SquareProps,
   Grid,
 } from '@chakra-ui/react'
-import {FaMoon, FaSun} from 'react-icons/fa'
 import * as colors from 'styles/colors'
-import {useTheme} from '@emotion/react'
-import {Link as RouterLink} from 'react-router-dom'
-
-type ColorModeSwitcherProps = Omit<IconButtonProps, 'aria-label'>
-
-const ColorModeSwitcher = (props: ColorModeSwitcherProps) => {
-  const {toggleColorMode} = useColorMode()
-  const text = useColorModeValue('dark', 'light')
-  const SwitchIcon = useColorModeValue(FaMoon, FaSun)
-
-  return (
-    <IconButton
-      size="md"
-      onClick={toggleColorMode}
-      icon={<SwitchIcon />}
-      aria-label={`Switch to ${text} mode`}
-      {...props}
-    />
-  )
-}
 
 function FullPageSpinner(props: BoxProps) {
   return (
@@ -177,57 +148,6 @@ function DeleteResourceAlert({
   )
 }
 
-interface NavLinkProps extends LinkProps {
-  to: string
-}
-
-function NavLink(props: NavLinkProps) {
-  const {colors} = useTheme() as any
-  const brand = useColorModeValue(colors.orange[500], colors.orange[600])
-  return (
-    <Link
-      as={RouterLink}
-      _hover={{
-        color: brand,
-        textDecoration: 'none',
-      }}
-      _focus={{outline: 'none'}}
-      _active={{outline: 'none'}}
-      px="1em"
-      {...props}
-    />
-  )
-}
-
-interface SocialIconProps extends SquareProps {
-  icon: JSX.Element
-}
-
-function SocialIcon({icon, ...restProps}: SocialIconProps) {
-  const {colors} = useTheme() as any
-  const textInfoColor = useColorModeValue('textInfoLight', 'gray.400')
-  const iconColor = useColorModeValue('white', 'gray.900')
-  const brand = useColorModeValue(colors.orange[500], colors.orange[600])
-
-  return (
-    <Circle
-      cursor="pointer"
-      bg={textInfoColor}
-      w="2.2em"
-      h="2.2em"
-      color={iconColor}
-      mx="0.5em"
-      transition="0.2s all"
-      _hover={{
-        bg: brand,
-      }}
-      {...restProps}
-    >
-      {icon}
-    </Circle>
-  )
-}
-
 const Container: React.FC<BoxProps> = ({children, ...rest}) => {
   return (
     <Grid
@@ -246,12 +166,9 @@ const Container: React.FC<BoxProps> = ({children, ...rest}) => {
 }
 
 export {
-  ColorModeSwitcher,
   FullPageSpinner,
   ErrorMessage,
   FullPageErrorFallback,
   DeleteResourceAlert,
-  NavLink,
-  SocialIcon,
   Container,
 }

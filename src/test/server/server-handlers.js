@@ -38,8 +38,7 @@ const handlers = [
         if (shouldFail(req)) {
           throw new Error('Request failure (for testing purposes).')
         }
-        const result = await handler.resolver(req, res, ctx)
-        return result
+        return handler.resolver(req, res, ctx)
       } catch (error) {
         const status = error.status || 500
         return res(
@@ -61,9 +60,7 @@ function shouldFail(req) {
     window.localStorage.getItem('__bookshelf_failure_rate__') || 0,
   )
   if (Math.random() < failureRate) return true
-  if (requestMatchesFailConfig(req)) return true
-
-  return false
+  return requestMatchesFailConfig(req)
 }
 
 function requestMatchesFailConfig(req) {
@@ -73,6 +70,7 @@ function requestMatchesFailConfig(req) {
       match(urlMatch, req.url.pathname).matches
     )
   }
+
   try {
     const failConfig = JSON.parse(
       window.localStorage.getItem('__bookshelf_request_fail_config__') || '[]',

@@ -5,15 +5,12 @@ export function isUser(obj: unknown): obj is Auth0User {
   const givenName = (obj as Auth0User).given_name
   const picture = (obj as Auth0User).picture
 
-  if (
+  return !!(
     givenName &&
     typeof givenName === 'string' &&
     picture &&
     typeof picture === 'string'
-  ) {
-    return true
-  }
-  return false
+  )
 }
 
 export function isApiDesign(obj: unknown): obj is ApiDesign {
