@@ -25,7 +25,7 @@ import {Footer} from 'components/footer'
 import {TopExperts} from './experts'
 import {useNavigate} from 'react-router'
 import {useAuth} from 'context/auth-context'
-import {DesignInfo} from './cards/design-info'
+import {DesignInfo} from '../../components/cards/design-info'
 import {FaComment, FaStamp} from 'react-icons/fa'
 import {useCreateDesignStore} from '../../store'
 

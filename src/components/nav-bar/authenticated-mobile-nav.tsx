@@ -18,6 +18,7 @@ import {HTMLMotionProps, motion, Variants} from 'framer-motion'
 import * as React from 'react'
 import FocusLock from 'react-focus-lock'
 import {HiCog, HiOutlineMenu, HiOutlineX, HiHome} from 'react-icons/hi'
+import {MdDesignServices} from 'react-icons/md'
 import {RemoveScroll} from 'react-remove-scroll'
 import {useNavigate} from 'react-router'
 import {Logo} from '../logo'
@@ -145,6 +146,13 @@ export const AuthenticatedMobileNav = () => {
               <SimpleGrid as="nav" gap="8" mt="8" columns={{base: 1, sm: 2}}>
                 <NavLink.Mobile icon={HiHome} to="/" onClick={off}>
                   Discover
+                </NavLink.Mobile>
+                <NavLink.Mobile
+                  icon={MdDesignServices}
+                  to="/my-designs"
+                  onClick={off}
+                >
+                  My designs
                 </NavLink.Mobile>
                 <NavLink.Mobile icon={HiCog} to="/settings" onClick={off}>
                   Settings

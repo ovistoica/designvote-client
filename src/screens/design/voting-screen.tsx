@@ -39,7 +39,7 @@ function useNavigateToResultsIfUserVoted(shortUrl: string) {
 
   React.useEffect(() => {
     if (isSuccess && (hasVoted || design.uid === loggedInUserId)) {
-      navigate(`/results/${shortUrl}`)
+      navigate(`/results/${shortUrl}`, {replace: true})
     }
   }, [design.uid, hasVoted, isSuccess, loggedInUserId, navigate, shortUrl])
 }

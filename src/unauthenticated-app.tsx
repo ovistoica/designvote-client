@@ -17,6 +17,7 @@ import {CreateDesign} from 'screens/create-design'
 import {LatestScreen} from 'screens/latest'
 import {PopularScreen} from 'screens/popular'
 import {SupportScreen} from 'screens/support'
+import {UserDesigns} from 'screens/user-designs'
 
 function AppRoutes() {
   return (
@@ -35,6 +36,7 @@ function AppRoutes() {
       <Route path="/latest" element={<LatestScreen />} />
       <Route path="/popular" element={<PopularScreen />} />
       <Route path="/support" element={<SupportScreen />} />
+      <Route path="/my-designs" element={<UserDesigns />} />
     </Routes>
   )
 }

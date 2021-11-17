@@ -46,6 +46,12 @@ export const AuthenticatedNavBar = (props: NavBarProps) => {
                   Discover
                 </NavLink.Desktop>
                 <NavLink.Desktop
+                  active={pathname === '/my-designs'}
+                  to="/my-designs"
+                >
+                  My designs
+                </NavLink.Desktop>
+                <NavLink.Desktop
                   active={pathname === '/settings'}
                   to="/settings"
                 >

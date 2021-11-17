@@ -12,7 +12,6 @@ import {
   Avatar,
 } from '@chakra-ui/react'
 import {FaStamp, FaComment} from 'react-icons/fa'
-// import {HiCash} from 'react-icons/hi'
 import {formatCreatedAt} from 'utils/date'
 
 export const Card = (props: BoxProps) => (
