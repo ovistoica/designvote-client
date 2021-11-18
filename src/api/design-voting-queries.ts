@@ -5,11 +5,12 @@ import {
   useMutation,
   UseMutationOptions,
 } from 'react-query'
-import {useVoteDesignState} from 'store/vote-design'
-import {Opinion} from 'types'
+import {useRatingsState} from 'store/ratings'
+import {Opinion, VoteAccess} from 'types'
 import {postRequest} from './axios-client'
 import {filterNullValues} from '../utils/object'
 import {invalidateDesign} from './query-utils'
+import {useVoteHistoryState} from '../store/voting-history'
 
 interface AddOpinionBody {
   opinion: string
@@ -18,10 +19,13 @@ interface AddOpinionBody {
 interface VoteDesignVersionParams {
   designId: string
   versionId: string
+  voteAccess: VoteAccess
 }
 
 type DesignRatingVoteBody = {
   ratings: Record<string, number>
+  voteAccess: VoteAccess
+  voterName?: string
 }
 
 /******************************* Api calls ********************************** */
@@ -40,9 +44,14 @@ function addDesignRating(designId: string, body: DesignRatingVoteBody) {
   )
 }
 
-function voteDesignVersion({designId, versionId}: VoteDesignVersionParams) {
+function voteDesignVersion({
+  designId,
+  versionId,
+  voteAccess,
+}: VoteDesignVersionParams) {
   return postRequest<null>(`v1/designs/${designId}/vote/choose`, {
     versionId,
+    voteAccess,
   })
 }
 
@@ -51,24 +60,31 @@ function voteDesignVersion({designId, versionId}: VoteDesignVersionParams) {
 export function useAddDesignRatings(
   designId: string,
   shortUrl: string,
+  voteAccess: VoteAccess,
   options: UseMutationOptions<undefined, AxiosError> = {},
 ) {
   const qc = useQueryClient()
 
   // Get necessary data from vote state
-  const feedbackBody = useVoteDesignState(state => ({
-    ratings: filterNullValues(state.currentRatings),
-  }))
+  const ratings = useRatingsState(state =>
+    filterNullValues(state.currentRatings),
+  )
+  const voterName = useVoteHistoryState(state => state.voterName)
 
-  const clearVoteState = useVoteDesignState(state => state.clearState)
+  const clearVoteState = useRatingsState(state => state.clearState)
+  const setVotedDesign = useVoteHistoryState(state => state.setVotedDesign)
 
-  return useMutation(() => addDesignRating(designId, feedbackBody), {
-    ...options,
-    onSettled: () => {
-      invalidateDesign(qc, designId, shortUrl)
-      clearVoteState()
+  return useMutation(
+    () => addDesignRating(designId, {ratings, voterName, voteAccess}),
+    {
+      ...options,
+      onSettled: () => {
+        invalidateDesign(qc, designId, shortUrl)
+        clearVoteState()
+        setVotedDesign(shortUrl)
+      },
     },
-  })
+  )
 }
 
 export function useAddOpinion(
@@ -93,19 +109,22 @@ export function useAddOpinion(
 export function useVoteDesignVersion(
   designId: string,
   shortUrl: string,
+  voteAccess: VoteAccess,
   options: QueryOptions<null, AxiosError> = {},
 ) {
   const qc = useQueryClient()
 
-  const clearVoteState = useVoteDesignState(state => state.clearState)
+  const clearVoteState = useRatingsState(state => state.clearState)
+  const setVotedDesign = useVoteHistoryState(state => state.setVotedDesign)
 
   return useMutation(
-    (versionId: string) => voteDesignVersion({designId, versionId}),
+    (versionId: string) => voteDesignVersion({designId, versionId, voteAccess}),
     {
       ...options,
       onSettled: () => {
         invalidateDesign(qc, designId, shortUrl)
         clearVoteState()
+        setVotedDesign(shortUrl)
       },
     },
   )

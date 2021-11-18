@@ -1,4 +1,4 @@
-import {DesignType, VoteStyle} from './enums'
+import {DesignType, VoteAccess, VoteStyle} from './enums'
 
 export interface Vote {
   id: string
@@ -56,6 +56,7 @@ export interface Design {
   question: string
   designType: DesignType
   voteStyle: VoteStyle
+  voteAccess: VoteAccess
   createdAt: string
   updatedAt: string
   votes: Vote[]

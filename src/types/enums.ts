@@ -26,6 +26,11 @@ export enum VoteStyle {
   FiveStar = 'five-star',
 }
 
+export enum VoteAccess {
+  Anonymous = 'anonymous',
+  LoggedIn = 'logged-in',
+}
+
 export enum PriceDuration {
   Monthly = 'monthly',
   Yearly = 'yearly',

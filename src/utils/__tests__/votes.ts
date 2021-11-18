@@ -1,4 +1,5 @@
 import {getVotePercent} from '../votes'
+
 const cases = [
   [0, 0, 0],
   [-2, -2, 0],
@@ -17,14 +18,6 @@ describe("'getVotePercent' utility", () => {
       expect(result).toEqual(expectedResult)
     },
   )
-
-  test('calling with non-number parameters results in error', () => {
-    expect(() =>
-      getVotePercent(('a' as unknown) as number, ('b' as unknown) as number),
-    ).toThrowErrorMatchingInlineSnapshot(
-      `"Invalid arguments provided. Please provide valid numbers"`,
-    )
-  })
 
   test('calling with the total smaller than the part, results in early error', () => {
     expect(() => getVotePercent(10, 11)).toThrowErrorMatchingInlineSnapshot(

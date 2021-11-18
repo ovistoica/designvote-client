@@ -1,23 +1,24 @@
 import {
-  FormControl,
-  Input,
-  FormLabel,
-  FormErrorMessage,
   As,
-  Stack,
+  Button,
   Flex,
+  FormControl,
+  FormErrorMessage,
+  FormHelperText,
+  FormLabel,
+  Icon,
+  Input,
   Popover,
-  PopoverContent,
-  PopoverHeader,
-  PopoverCloseButton,
   PopoverArrow,
   PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
   PopoverTrigger,
-  Button,
+  Stack,
   Text,
-  FormHelperText,
 } from '@chakra-ui/react'
-import {Formik, Form, FormikTouched} from 'formik'
+import {Form, Formik, FormikTouched} from 'formik'
 import {Persist} from 'formik-persist'
 import debounce from 'lodash.debounce'
 import memoize from 'lodash.memoize'
@@ -26,8 +27,10 @@ import * as yup from 'yup'
 import * as React from 'react'
 import {CheckCircleIcon, QuestionIcon, StarIcon} from '@chakra-ui/icons'
 import {RadioGroup} from 'components/radio-group'
-import {CreateDesignStep, DesignType, VoteStyle} from 'types'
+import {CreateDesignStep, DesignType, VoteAccess, VoteStyle} from 'types'
 import {useCreateDesignStore} from 'store'
+import {AiOutlineQuestion} from 'react-icons/ai'
+import {BiGroup} from 'react-icons/bi'
 
 interface Values {
   name: string
@@ -57,6 +60,7 @@ const validationSchema = yup.object().shape({
       DesignType.Other,
     ]),
   voteStyle: yup.string().oneOf([VoteStyle.FiveStar, VoteStyle.Choose]),
+  voteAccess: yup.string().oneOf([VoteAccess.Anonymous, VoteAccess.LoggedIn]),
 })
 
 interface FormRowsProps {
@@ -98,6 +102,7 @@ function QuestionPopover() {
     </Popover>
   )
 }
+
 function ModePopover() {
   return (
     <Popover trigger="hover">
@@ -149,6 +154,39 @@ function VoteStylePopover() {
             </Text>{' '}
             Voters just select their favorite design. You are shown % how many
             people chose a certain design
+          </Text>
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
+function VoteAccessPopover() {
+  return (
+    <Popover trigger="hover">
+      <PopoverTrigger>
+        <QuestionIcon width="1em" height="1em" mb="0.5rem" cursor="help" />
+      </PopoverTrigger>
+      <PopoverContent>
+        <PopoverHeader fontWeight="semibold">
+          Who can vote on your survey
+        </PopoverHeader>
+        <PopoverArrow />
+        <PopoverCloseButton />
+        <PopoverBody>
+          Choose if you allow anonymous voting on your designs. People still
+          need to login in order to leave comments.
+          <Text mt={2}>
+            <Text as="span" fontWeight="semibold">
+              Anonymoys voting
+            </Text>{' '}
+            Anyone can vote
+          </Text>
+          <Text mt={2}>
+            <Text as="span" fontWeight="semibold">
+              Only people with accounts
+            </Text>{' '}
+            Voters need to register an account before they can vote
           </Text>
         </PopoverBody>
       </PopoverContent>
@@ -214,6 +252,7 @@ function CreateStep() {
         type: state.type,
         question: state.question ?? '',
         voteStyle: state.voteStyle,
+        voteAccess: state.voteAccess,
       }),
       [],
     ),
@@ -226,6 +265,7 @@ function CreateStep() {
         question: state.setQuestion,
         type: state.setType,
         voteStyle: state.setVoteStyle,
+        voteAccess: state.setVoteAccess,
       }),
       [],
     ),
@@ -317,6 +357,50 @@ function CreateStep() {
                   ) => void
                   formikHandler(e)
                   set.voteStyle(e as VoteStyle)
+                }}
+              />
+            </FormControl>
+            <FormControl id="voteAccess" py="0.5em" isRequired>
+              <Flex alignItems="center">
+                <FormLabel marginInlineEnd="0.2rem">Who can vote?</FormLabel>
+                <VoteAccessPopover />
+              </Flex>
+
+              <RadioGroup
+                options={[
+                  {
+                    label: 'Anonymous voting',
+                    value: VoteAccess.Anonymous,
+                    icon: (
+                      <Icon
+                        as={AiOutlineQuestion}
+                        mb="1"
+                        color="teal.500"
+                        boxSize={'1.5em'}
+                      />
+                    ),
+                  },
+                  {
+                    label: 'Only people with accounts',
+                    value: VoteAccess.LoggedIn,
+                    icon: (
+                      <Icon
+                        as={BiGroup}
+                        mb="1"
+                        color="teal.500"
+                        boxSize={'1.5em'}
+                      />
+                    ),
+                  },
+                ]}
+                name="voteAccess"
+                defaultValue={initialValues.voteAccess}
+                onChange={e => {
+                  const formikHandler = handleChange('voteAccess') as (
+                    e: string | number,
+                  ) => void
+                  formikHandler(e)
+                  set.voteAccess(e as VoteAccess)
                 }}
               />
             </FormControl>

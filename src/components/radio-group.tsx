@@ -1,5 +1,6 @@
 import {
   Box,
+  Text,
   SimpleGrid,
   useRadio,
   useRadioGroup,
@@ -24,6 +25,7 @@ const RadioCard: React.FC<UseRadioProps & {icon?: JSX.Element}> = props => {
         cursor="pointer"
         borderWidth="1px"
         borderRadius="md"
+        textAlign={'center'}
         boxShadow="md"
         _checked={{
           bg: accentColor,
@@ -72,7 +74,7 @@ export function RadioGroup({
         return (
           <RadioCard key={option.value} {...radio}>
             {option.icon ?? null}
-            {option.label}
+            <Text textAlign={'center'}>{option.label}</Text>
           </RadioCard>
         )
       })}

@@ -7,7 +7,14 @@ import {
   UseQueryOptions,
 } from 'react-query'
 import {useUploadDesignImagesStore, useCreateDesignStore} from 'store'
-import {ApiDesign, APIUser, Design, DesignType, VoteStyle} from 'types'
+import {
+  ApiDesign,
+  APIUser,
+  Design,
+  DesignType,
+  VoteAccess,
+  VoteStyle,
+} from 'types'
 import {
   deleteRequest,
   getRequest,
@@ -27,6 +34,7 @@ interface CreateDesignBody {
   question: string
   designType: DesignType
   voteStyle: VoteStyle
+  voteAccess: VoteAccess
   isPublic: boolean
   images: File[]
 }
@@ -72,6 +80,7 @@ function createDesign(design: CreateDesignBody) {
   data.append('designType', design.designType)
   data.append('question', design.question)
   data.append('voteStyle', design.voteStyle)
+  data.append('voteAccess', design.voteAccess)
   data.append('description', design.description ?? '')
   data.append('isPublic', String(design.isPublic) ?? 'true')
   return apiClient
@@ -148,6 +157,7 @@ export function useCreateDesignFromDraft() {
         designType: state.type,
         isPublic: state.isPublic ?? true,
         voteStyle: state.voteStyle,
+        voteAccess: state.voteAccess,
       }),
       [],
     ),
@@ -167,7 +177,7 @@ export function useCreateDesignFromDraft() {
         clearDraftState()
         clearImages()
         qc.invalidateQueries({queryKey: 'designs'})
-        navigate(`/results/${data.shortUrl}`)
+        navigate(`/results/${data.shortUrl}`, {replace: true})
       },
     },
   )
@@ -219,6 +229,7 @@ export enum OrderBy {
   Latest = 'latest',
   Popular = 'popular',
 }
+
 export function useHomeDesigns(
   options: QueryOptions<{latest: Design[]; popular: Design[]}, AxiosError> = {},
 ) {

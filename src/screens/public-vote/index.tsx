@@ -13,23 +13,28 @@ import {
 } from '@chakra-ui/react'
 import {RateStarsVotingCard} from 'components/voting-grid/rate-five-stars/star-rating-card'
 import {useNavigate, useParams} from 'react-router'
-import {canSubmit, useVoteDesignState} from 'store/vote-design'
+import {canSubmitRatings, useRatingsState} from 'store/ratings'
 import {VoteStyle} from 'types'
 import {getDesignSurveyType} from 'utils/design'
 import {useUrlDesign} from 'api/design-query'
 import {ZoomModal, useZoomModalState} from 'components/zoom-modal'
 import {Footer} from 'components/footer'
+import {useVoteHistoryState} from '../../store/voting-history'
 
 export function PublicVoteScreen() {
   const {shortUrl} = useParams()
   const {data: design, isLoading, isSuccess} = useUrlDesign(shortUrl)
-  const setVoterName = useVoteDesignState(state => state.setVoterName)
-  const canSubmitFeedback = useVoteDesignState(canSubmit)
+  const setVoterName = useVoteHistoryState(state => state.setVoterName)
+  const canSubmitFeedback = useRatingsState(canSubmitRatings)
   const {
     mutate: submitFeedback,
     isSuccess: isVotingSuccess,
     isLoading: isVoteLoading,
-  } = {mutate: () => {}, isSuccess: false, isLoading: true}
+  } = {
+    mutate: () => {},
+    isSuccess: false,
+    isLoading: true,
+  }
   // } = useGiveDesignFeedback(design.designId, {
   //   enabled: isSuccess,
   // })

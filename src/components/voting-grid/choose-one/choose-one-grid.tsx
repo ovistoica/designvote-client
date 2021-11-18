@@ -2,16 +2,17 @@ import {StarIcon} from '@chakra-ui/icons'
 import {
   Button,
   Flex,
-  SimpleGrid,
-  useRadioGroup,
-  Text,
   Link,
+  SimpleGrid,
+  Text,
   useColorModeValue as mode,
+  useRadioGroup,
 } from '@chakra-ui/react'
 import {useUrlDesign} from 'api/design-query'
 import {useVoteDesignVersion} from 'api/design-voting-queries'
 import {useAuth} from 'context/auth-context'
 import {ChooseDesignCard} from './choose-card'
+import {VoteAccess} from '../../../types'
 
 interface ChooseGridProps {
   onVersionClick: (index: number) => void
@@ -28,8 +29,15 @@ export function ChooseOneDesignGrid({
   const {mutate: vote, isLoading} = useVoteDesignVersion(
     design.designId,
     designUrl,
+    design.voteAccess,
   )
-  const canSubmit = isAuthenticated && selectedVersion
+
+  let canSubmit
+  if (design.voteAccess === VoteAccess.Anonymous) {
+    canSubmit = !!selectedVersion
+  } else {
+    canSubmit = isAuthenticated && !!selectedVersion
+  }
 
   return (
     <>
@@ -67,11 +75,13 @@ export function ChooseOneDesignGrid({
           })}
       </SimpleGrid>
       <Flex mt="12" alignItems="center">
-        {!isAuthenticated ? (
+        {!isAuthenticated && design.voteAccess === VoteAccess.LoggedIn ? (
           <Text color={mode('gray.600', 'gray.400')} px="2">
-            You must be logged in to provide feedback.{' '}
+            Only logged in users can vote. Please{' '}
             <Link
-              fontWeight="500"
+              fontWeight="700"
+              px={'1'}
+              textDecoration={'underline'}
               onClick={() => {
                 login({
                   appState: {
@@ -81,7 +91,8 @@ export function ChooseOneDesignGrid({
               }}
             >
               Sign in
-            </Link>
+            </Link>{' '}
+            to continue
           </Text>
         ) : null}
         <Button

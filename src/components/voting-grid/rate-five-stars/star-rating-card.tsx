@@ -1,6 +1,6 @@
 import {useColorModeValue as mode} from '@chakra-ui/color-mode'
 import {useToken} from '@chakra-ui/system'
-import {getRating, useVoteDesignState} from 'store/vote-design'
+import {getRating, useRatingsState} from 'store/ratings'
 import {withStyles} from '@material-ui/core'
 import Rating from '@material-ui/lab/Rating'
 import {Center, Flex, Stack, Text} from '@chakra-ui/layout'
@@ -29,8 +29,8 @@ export function RateStarsVotingCard({
 }: RateStarsCardProps) {
   const textColor = mode('gray.400', 'gray.600')
   const colorHex = useToken('colors', textColor)
-  const currentRating = useVoteDesignState(getRating(versionId))
-  const setRating = useVoteDesignState(state => state.setRating)
+  const currentRating = useRatingsState(getRating(versionId))
+  const setRating = useRatingsState(state => state.setRating)
   const StyledRating = withStyles({
     iconEmpty: {
       color: colorHex,

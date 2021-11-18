@@ -4,6 +4,7 @@ import {useLocation} from 'react-router'
 import {Design, SubscriptionStatus} from 'types'
 import {useApiUser, useDesigns} from '../api/design-query'
 import {useClipboard, useToast} from '@chakra-ui/react'
+import {hasVotedOnDesign, useVoteHistoryState} from '../store/voting-history'
 
 export function useSafeDispatch<Value = unknown>(
   dispatch: React.Dispatch<Value>,
@@ -168,14 +169,12 @@ export function useCanCreateDesigns() {
  */
 export function useHasVoted(design: Design): boolean {
   const {user} = useAuth()
-  if (!user) {
-    return false
-  }
-  const {sub: uid} = user
+  const {sub: uid} = user ?? {sub: 'user_not_logged_in'}
 
-  const hasVoted = design.votes.find(v => v.uid === uid)
+  const hasVotedAuth = design.votes.find(v => v.uid === uid)
+  const hasVotedAnon = useVoteHistoryState(hasVotedOnDesign(design.shortUrl))
 
-  return !!hasVoted
+  return hasVotedAnon || !!hasVotedAuth
 }
 
 /**

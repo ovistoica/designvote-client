@@ -17,6 +17,7 @@ import {useUrlDesign} from 'api/design-query'
 import {useAddOpinion} from 'api/design-voting-queries'
 import {formatCreatedAt} from 'utils/date'
 import {Comment} from 'assets/icons'
+import {useAuth} from '../../context/auth-context'
 
 interface OpinionsSectionProps {
   designUrl: string
@@ -56,6 +57,7 @@ function OpinionView({
 }
 
 export function OpinionsSection({designUrl}: OpinionsSectionProps) {
+  const {isAuthenticated, login} = useAuth()
   const {data: design, isLoading} = useUrlDesign(designUrl)
   const {mutate: submitOpinion, isLoading: isAddOpinionLoading} = useAddOpinion(
     design.designId,
@@ -86,7 +88,19 @@ export function OpinionsSection({designUrl}: OpinionsSectionProps) {
           {design.opinions.length} Opinions
         </Heading>
       </HStack>
-      <CommentInput onSubmit={submitOpinion} isLoading={isAddOpinionLoading} />
+      <CommentInput
+        onClick={() => {
+          if (!isAuthenticated) {
+            login({
+              appState: {
+                returnTo: `${window.location.origin}/results/${designUrl}`,
+              },
+            })
+          }
+        }}
+        onSubmit={submitOpinion}
+        isLoading={isAddOpinionLoading}
+      />
       <Stack divider={<StackDivider color="gray.200" />} mt="5" spacing="4">
         {design.opinions.map(opinion => {
           return (

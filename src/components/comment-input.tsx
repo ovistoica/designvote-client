@@ -20,6 +20,7 @@ const initialTouched: FormikTouched<Values> = {}
 interface CommentsSectionProps {
   onChange?: (comment: string) => void
   onSubmit: (comment: string) => void
+  onClick?: () => void
   initialValue?: string
   isLoading?: boolean
 }
@@ -28,6 +29,7 @@ export function CommentInput({
   onChange,
   onSubmit,
   initialValue = '',
+  onClick,
   isLoading = false,
 }: CommentsSectionProps) {
   const initialValues = {comment: initialValue}
@@ -58,6 +60,7 @@ export function CommentInput({
           name="comment"
           variant="flushed"
           type="text"
+          onClick={onClick}
           bg={mode('white', 'gray.700')}
           as="textarea"
           placeholder="Leave your opinion"
