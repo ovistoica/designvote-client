@@ -1,4 +1,10 @@
-import {Design, DesignType, NormalizedDesign, VoteStyle} from 'types'
+import {
+  Design,
+  DesignType,
+  NormalizedDesign,
+  VoteAccess,
+  VoteStyle,
+} from 'types'
 
 export const singleLoadingDesign: Design = {
   ownerNickname: 'loading',
@@ -17,6 +23,7 @@ export const singleLoadingDesign: Design = {
   totalOpinions: 0,
   opinions: [],
   designType: DesignType.Mobile,
+  voteAccess: VoteAccess.Anonymous,
   shortUrl: 'Loading...',
   voteStyle: VoteStyle.Choose,
   createdAt: new Date().toISOString(),

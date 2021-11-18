@@ -1,4 +1,4 @@
-import {CreateDesignStep, DesignType, VoteStyle} from 'types'
+import {CreateDesignStep, DesignType, VoteAccess, VoteStyle} from 'types'
 import create from 'zustand'
 import {persist} from 'zustand/middleware'
 
@@ -10,12 +10,14 @@ export type State = {
   type: DesignType
   isPublic?: boolean
   voteStyle: VoteStyle
+  voteAccess: VoteAccess
   shownPreviewTooltip: boolean
   setName: (name: string) => void
   setDescription: (name: string) => void
   setQuestion: (name: string) => void
   setType: (type: DesignType) => void
   setVoteStyle: (style: VoteStyle) => void
+  setVoteAccess: (access: VoteAccess) => void
   setStep: (step: CreateDesignStep) => void
   setShownTooltip: (val: boolean) => void
   saveDesignInfo: (values: Values) => void
@@ -39,6 +41,7 @@ type InitialState = {
   type: DesignType
 
   voteStyle: VoteStyle
+  voteAccess: VoteAccess
   shownPreviewTooltip: boolean
 }
 
@@ -46,6 +49,7 @@ const initialState: InitialState = {
   step: CreateDesignStep.Create,
   type: DesignType.Web,
   voteStyle: VoteStyle.Choose,
+  voteAccess: VoteAccess.Anonymous,
   question: undefined,
   isPublic: undefined,
   name: undefined,
@@ -59,12 +63,14 @@ export const useCreateDesignStore = create<State>(
       step: CreateDesignStep.Create,
       type: DesignType.Web,
       voteStyle: VoteStyle.Choose,
+      voteAccess: VoteAccess.Anonymous,
       shownPreviewTooltip: false,
       setName: (name: string) => set({name}),
       setDescription: (description: string) => set({description}),
       setQuestion: (question: string) => set({question}),
       setType: (type: DesignType) => set({type}),
       setVoteStyle: (voteStyle: VoteStyle) => set({voteStyle}),
+      setVoteAccess: (voteAccess: VoteAccess) => set({voteAccess}),
       setStep: (step: CreateDesignStep) => set({step}),
       setShownTooltip: (val: boolean) => set({shownPreviewTooltip: val}),
       saveDesignInfo: (values: Values) => set(() => ({...values})),

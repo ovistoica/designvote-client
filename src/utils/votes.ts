@@ -1,14 +1,10 @@
 import * as React from 'react'
 import {useCookies} from 'react-cookie'
-import faker from 'faker'
 import {useAuth} from 'context/auth-context'
 import {Vote} from 'types'
+import {uuidv4} from 'utils/uuid'
 
 export function getVotePercent(totalVotes: number, versionVotes: number) {
-  if (typeof totalVotes !== 'number' || typeof versionVotes !== 'number') {
-    throw new Error('Invalid arguments provided. Please provide valid numbers')
-  }
-
   if (totalVotes < versionVotes) {
     throw new Error(
       'Invalid arguments. The total should be bigger than the part',
@@ -22,9 +18,7 @@ export function getVotePercent(totalVotes: number, versionVotes: number) {
 }
 
 function generateVoterId() {
-  faker.seed(Date.now())
-
-  return `anonymous|${faker.random.uuid()}`
+  return `anonymous|${uuidv4()}`
 }
 
 export function useVoterId(): string {

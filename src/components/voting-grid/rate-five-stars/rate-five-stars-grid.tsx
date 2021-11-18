@@ -1,9 +1,17 @@
-import {Button, SimpleGrid, Flex, Text, Link} from '@chakra-ui/react'
+import {
+  Button,
+  useColorModeValue as mode,
+  SimpleGrid,
+  Flex,
+  Text,
+  Link,
+} from '@chakra-ui/react'
 import {RateStarsVotingCard} from 'components/voting-grid/rate-five-stars/star-rating-card'
-import {canSubmit, useVoteDesignState} from 'store/vote-design'
+import {canSubmitRatings, useRatingsState} from 'store/ratings'
 import {useUrlDesign} from 'api/design-query'
 import {useAddDesignRatings} from 'api/design-voting-queries'
 import {useAuth} from 'context/auth-context'
+import {VoteAccess} from '../../../types'
 
 interface RateFiveStarsGridProps {
   designUrl: string
@@ -16,12 +24,18 @@ export function RateFiveStarsGrid({
 }: RateFiveStarsGridProps) {
   const {isAuthenticated, login} = useAuth()
   const {data: design} = useUrlDesign(designUrl)
-  const canSubmitFeedback = useVoteDesignState(canSubmit)
+  const canSubmitFeedback = useRatingsState(canSubmitRatings)
   const {
     mutate: submitFeedback,
     isLoading: isVoteLoading,
-  } = useAddDesignRatings(design.designId, designUrl)
-  const submitEnabled = canSubmitFeedback && isAuthenticated
+  } = useAddDesignRatings(design.designId, designUrl, design.voteAccess)
+
+  let canVote
+  if (design.voteAccess === VoteAccess.Anonymous) {
+    canVote = canSubmitFeedback
+  } else {
+    canVote = isAuthenticated && canSubmitFeedback
+  }
   return (
     <>
       <SimpleGrid
@@ -57,11 +71,13 @@ export function RateFiveStarsGrid({
       </SimpleGrid>
 
       <Flex mt="12" alignItems="center">
-        {!isAuthenticated ? (
-          <Text color="gray.600" px="2">
-            You must be logged in to provide feedback.{' '}
+        {!isAuthenticated && design.voteAccess === VoteAccess.LoggedIn ? (
+          <Text color={mode('gray.600', 'gray.400')} px="2">
+            Only logged in users can vote. Please{' '}
             <Link
-              fontWeight="500"
+              fontWeight="700"
+              px={'1'}
+              textDecoration={'underline'}
               onClick={() => {
                 login({
                   appState: {
@@ -71,14 +87,15 @@ export function RateFiveStarsGrid({
               }}
             >
               Sign in
-            </Link>
+            </Link>{' '}
+            to continue
           </Text>
         ) : null}
         <Button
           size="lg"
           width={{base: 'full', md: 'auto'}}
           colorScheme="orange"
-          disabled={!submitEnabled}
+          disabled={!canVote}
           onClick={() => submitFeedback()}
           isLoading={isVoteLoading}
         >

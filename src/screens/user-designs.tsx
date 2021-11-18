@@ -53,13 +53,18 @@ export const UserDesigns = withAuthenticationRequired(() => {
                       <Heading as="h1" fontWeight="bold" fontSize="2xl">
                         My Designs
                       </Heading>
-                      <Text>You don't have any designs yet</Text>
-                      <Button
-                        colorScheme={'orange'}
-                        onClick={() => navigate('/create', {replace: true})}
-                      >
-                        Create your first design
-                      </Button>
+                      {!designs.length ? (
+                        <>
+                          {' '}
+                          <Text>You don't have any designs yet</Text>
+                          <Button
+                            colorScheme={'orange'}
+                            onClick={() => navigate('/create', {replace: true})}
+                          >
+                            Create your first design
+                          </Button>{' '}
+                        </>
+                      ) : null}
                     </Stack>
                   </Flex>
                   <Stack spacing="6" py="5" px="8" flex={1}>
