@@ -27,9 +27,11 @@ import * as yup from 'yup'
 import * as React from 'react'
 import {CheckCircleIcon, QuestionIcon, StarIcon} from '@chakra-ui/icons'
 import {RadioGroup} from 'components/radio-group'
+import {RadioCheckboxGroup} from 'components/radio-checkbox-group'
 import {CreateDesignStep, DesignType, VoteAccess, VoteStyle} from 'types'
 import {useCreateDesignStore} from 'store'
 import {AiOutlineQuestion} from 'react-icons/ai'
+import {MdPublic, MdLockOutline} from 'react-icons/md'
 import {BiGroup} from 'react-icons/bi'
 
 interface Values {
@@ -38,6 +40,8 @@ interface Values {
   description: string
   type: DesignType
   voteStyle: VoteStyle
+  voteAccess: VoteAccess
+  isPublic: 'true' | 'false'
 }
 
 const initialTouched: FormikTouched<Values> = {}
@@ -61,6 +65,7 @@ const validationSchema = yup.object().shape({
     ]),
   voteStyle: yup.string().oneOf([VoteStyle.FiveStar, VoteStyle.Choose]),
   voteAccess: yup.string().oneOf([VoteAccess.Anonymous, VoteAccess.LoggedIn]),
+  isPublic: yup.string().oneOf(['true', 'false']),
 })
 
 interface FormRowsProps {
@@ -252,6 +257,7 @@ function CreateStep() {
         type: state.type,
         question: state.question ?? '',
         voteStyle: state.voteStyle,
+        isPublic: state.isPublic,
         voteAccess: state.voteAccess,
       }),
       [],
@@ -264,6 +270,7 @@ function CreateStep() {
         description: state.setDescription,
         question: state.setQuestion,
         type: state.setType,
+        isPublic: state.setIsPublic,
         voteStyle: state.setVoteStyle,
         voteAccess: state.setVoteAccess,
       }),
@@ -281,7 +288,7 @@ function CreateStep() {
         initialValues={initialValues}
         initialTouched={initialTouched}
         onSubmit={values => {
-          saveDesign({...values, isPublic: true})
+          saveDesign({...values})
           setStep(CreateDesignStep.Upload)
         }}
       >
@@ -331,6 +338,41 @@ function CreateStep() {
               error={errors.description}
               type="textarea"
             />
+            <FormControl id="isPublic" py="0.5em" isRequired>
+              <Flex alignItems="center">
+                <FormLabel marginInlineEnd="0.2rem">Survey Type</FormLabel>
+                <VoteStylePopover />
+              </Flex>
+              <RadioCheckboxGroup
+                values={[
+                  {
+                    icon: MdPublic,
+                    value: 'true',
+                    title: 'Public survey',
+                    description:
+                      'This survey will be visible on the front page',
+                  },
+                  {
+                    icon: MdLockOutline,
+                    value: 'false',
+                    title: 'Private survey',
+                    description:
+                      'This survey will only be available for internal usage',
+                  },
+                ]}
+                name="isPublic"
+                onChange={e => {
+                  const formikHandler = handleChange('isPublic') as (
+                    e: string,
+                  ) => void
+                  if (e !== 'true' && e !== 'false') {
+                    return
+                  }
+                  formikHandler(e)
+                  set.isPublic(e)
+                }}
+              />
+            </FormControl>
             <FormControl id="voteStyle" py="0.5em" isRequired>
               <Flex alignItems="center">
                 <FormLabel marginInlineEnd="0.2rem">Voting style</FormLabel>

@@ -35,7 +35,7 @@ interface CreateDesignBody {
   designType: DesignType
   voteStyle: VoteStyle
   voteAccess: VoteAccess
-  isPublic: boolean
+  isPublic: 'true' | 'false'
   images: File[]
 }
 
@@ -82,7 +82,7 @@ function createDesign(design: CreateDesignBody) {
   data.append('voteStyle', design.voteStyle)
   data.append('voteAccess', design.voteAccess)
   data.append('description', design.description ?? '')
-  data.append('isPublic', String(design.isPublic) ?? 'true')
+  data.append('isPublic', design.isPublic)
   return apiClient
     .post('v2/designs', data, {
       headers: {'Content-Type': 'multipart/form-data;'},
@@ -155,7 +155,7 @@ export function useCreateDesignFromDraft() {
         description: state.description,
         question: state.question ?? '',
         designType: state.type,
-        isPublic: state.isPublic ?? true,
+        isPublic: state.isPublic,
         voteStyle: state.voteStyle,
         voteAccess: state.voteAccess,
       }),
@@ -223,11 +223,6 @@ export function useUrlDesign(
     data: data ?? singleLoadingDesign,
     ...rest,
   }
-}
-
-export enum OrderBy {
-  Latest = 'latest',
-  Popular = 'popular',
 }
 
 export function useHomeDesigns(

@@ -8,7 +8,7 @@ export type State = {
   description?: string
   question?: string
   type: DesignType
-  isPublic?: boolean
+  isPublic: 'true' | 'false'
   voteStyle: VoteStyle
   voteAccess: VoteAccess
   shownPreviewTooltip: boolean
@@ -18,6 +18,7 @@ export type State = {
   setType: (type: DesignType) => void
   setVoteStyle: (style: VoteStyle) => void
   setVoteAccess: (access: VoteAccess) => void
+  setIsPublic: (isPublic: 'true' | 'false') => void
   setStep: (step: CreateDesignStep) => void
   setShownTooltip: (val: boolean) => void
   saveDesignInfo: (values: Values) => void
@@ -29,7 +30,7 @@ interface Values {
   question: string
   description: string
   type: DesignType
-  isPublic: boolean
+  isPublic: 'true' | 'false'
 }
 
 type InitialState = {
@@ -37,7 +38,7 @@ type InitialState = {
   name?: string
   description?: string
   question?: string
-  isPublic?: boolean
+  isPublic: 'true' | 'false'
   type: DesignType
 
   voteStyle: VoteStyle
@@ -51,7 +52,7 @@ const initialState: InitialState = {
   voteStyle: VoteStyle.Choose,
   voteAccess: VoteAccess.Anonymous,
   question: undefined,
-  isPublic: undefined,
+  isPublic: 'false',
   name: undefined,
   description: undefined,
   shownPreviewTooltip: false,
@@ -64,10 +65,12 @@ export const useCreateDesignStore = create<State>(
       type: DesignType.Web,
       voteStyle: VoteStyle.Choose,
       voteAccess: VoteAccess.Anonymous,
+      isPublic: 'false',
       shownPreviewTooltip: false,
       setName: (name: string) => set({name}),
       setDescription: (description: string) => set({description}),
       setQuestion: (question: string) => set({question}),
+      setIsPublic: isPublic => set({isPublic}),
       setType: (type: DesignType) => set({type}),
       setVoteStyle: (voteStyle: VoteStyle) => set({voteStyle}),
       setVoteAccess: (voteAccess: VoteAccess) => set({voteAccess}),
