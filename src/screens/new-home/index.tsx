@@ -19,7 +19,7 @@ import {
   StackProps,
   SimpleGrid,
 } from '@chakra-ui/react'
-import {useHomeDesigns} from 'api/design-query'
+import {useDesigns, useHomeDesigns} from 'api/design-query'
 import {DesignerBanner} from './designers-banner'
 import {Footer} from 'components/footer'
 import {TopExperts} from './experts'
@@ -95,6 +95,12 @@ function BannerSection() {
   const {login, isAuthenticated} = useAuth()
   const navigate = useNavigate()
   const clearOldDraft = useCreateDesignStore(state => state.clearState)
+  const {data: designs} = useDesigns()
+
+  const buttonText =
+    designs.length === 0
+      ? 'Create your first design pool'
+      : 'Create design pool'
 
   const onClick = () => {
     if (isAuthenticated) {
@@ -140,7 +146,7 @@ function BannerSection() {
             colorScheme="orange"
             mb={{base: 4, md: 8, lg: 0}}
           >
-            Create your first design poll
+            {buttonText}
           </Button>
         </Stack>
         <Box display={{base: 'none', md: 'block'}}>
