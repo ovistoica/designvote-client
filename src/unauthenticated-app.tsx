@@ -18,6 +18,8 @@ import {LatestScreen} from 'screens/latest'
 import {PopularScreen} from 'screens/popular'
 import {SupportScreen} from 'screens/support'
 import {UserDesigns} from 'screens/user-designs'
+import {StripeContext} from './context/stripe'
+import {CheckoutScreen} from './screens/checkout'
 
 function AppRoutes() {
   return (
@@ -37,6 +39,14 @@ function AppRoutes() {
       <Route path="/popular" element={<PopularScreen />} />
       <Route path="/support" element={<SupportScreen />} />
       <Route path="/my-designs" element={<UserDesigns />} />
+      <Route
+        path="/checkout"
+        element={
+          <StripeContext>
+            <CheckoutScreen />
+          </StripeContext>
+        }
+      />
     </Routes>
   )
 }
